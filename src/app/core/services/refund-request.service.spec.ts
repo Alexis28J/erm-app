@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { UserService } from './user-service';
+import { RefundRequestService } from './refund-request.service';
 
-describe('UserService', () => {
-  let service: UserService;
+describe('RefundRequestService', () => {
+  let service: RefundRequestService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(UserService);
+    service = TestBed.inject(RefundRequestService);
   });
 
   it('should be created', () => {
