@@ -6,31 +6,31 @@ export const EXPENSE_CATEGORIES: ExpenseCategory[] = [
   {
     id: '1',
     name: ExpenseCategoryName.TAXI,
-    maxAmount: 50,
+    maxAmount: 20,
     receiptRequired: true
   },
   {
     id: '2',
     name: ExpenseCategoryName.TRAIN,
-    maxAmount: 200,
+    maxAmount: 50,
     receiptRequired: true
   },
   {
     id: '3',
     name: ExpenseCategoryName.BOARD,
-    maxAmount: 70,
+    maxAmount: 25,
     receiptRequired: true
   },
   {
     id: '4',
     name: ExpenseCategoryName.HOTEL,
-    maxAmount: 120,
+    maxAmount: 100,
     receiptRequired: true
   },
   {
     id: '5',
     name: ExpenseCategoryName.FUEL,
-    maxAmount: 100,
+    maxAmount: 70,
     receiptRequired: true
   },
   {

@@ -1,0 +1,68 @@
+<!------------------- TOOLBAR ----------------------->
+<mat-toolbar color="primary">
+
+    <span>ERM</span>
+
+    <span class="spacer"></span>
+
+    <!---------- PULSANTE "PERSONAL AREA" ----------->
+    <button mat-button [matMenuTriggerFor]="loginMenu">
+
+        <mat-icon>arrow_drop_down</mat-icon>
+        Personal Area
+
+    </button>
+
+</mat-toolbar>
+
+
+<!-- MENU (TENDINA) DEL PULSANTE "PERSONAL AREA" -->
+<mat-menu #loginMenu>
+
+    <button mat-menu-item routerLink="/login">
+
+        <mat-icon>login</mat-icon>
+        Login
+
+    </button>
+
+</mat-menu>
+
+
+<!----------------------------------- CONTAINER DELLA HOME ------------------------------------>
+<div class="home-container">
+
+    <!----------------------------------- CARD PRINCIPALE ------------------------------------>
+    <mat-card>
+
+        <!---------- HEADER DELLA CARD ---------->
+        <mat-card-header>
+
+            <mat-card-title>
+                Expense Reimbursement Management
+            </mat-card-title>
+
+        </mat-card-header>
+
+
+        <!----------------------------- CONTENUTO DELLA CARD ------------------------------------>
+        <mat-card-content>
+
+            <p>Application for managing corporate expense reimbursement requests.</p>
+            <p>Employees can submit requests, while the HR department can review and approve them.</p>
+
+        </mat-card-content>
+
+        <!----------------------------- AZIONI DELLA CARD ------------------------------------>
+        <mat-card-actions>
+
+            <button mat-raised-button color="primary" routerLink="/login">
+                Login
+            </button>
+
+        </mat-card-actions>
+
+    </mat-card>
+
+
+</div>

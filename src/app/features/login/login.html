@@ -1,0 +1,98 @@
+<div class="login-container">
+
+    <mat-card>
+
+        <!-- HEADER DEL LOGIN CARD -->
+        <mat-card-header>
+
+            <!-- TITOLO E SOTTOTITOLO DEL LOGIN CARD -->
+            <mat-card-title>
+                Login to
+            </mat-card-title>
+
+            <mat-card-subtitle>
+                Expense Reimbursement Management
+            </mat-card-subtitle>
+
+        </mat-card-header>
+
+
+        <!--------------------- CONTENUTO DEL LOGIN CARD --------------------->
+        <mat-card-content>
+
+
+            <!----------------- FORM PER IL LOGIN --------------->
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+
+                <!---------------------- CAMPO EMAIL ----------------------->
+                <mat-form-field appearance="outline">
+
+
+                    <mat-label>Email</mat-label>
+
+                    <input matInput type="email" formControlName="email">
+
+                    <!-- Controllo errori per il campo email con @if -->
+                    @if (loginForm.get('email')?.hasError('required')) {
+                    <mat-error>Email is required</mat-error>
+
+                    } @else if (loginForm.get('email')?.hasError('email')) {
+                    <mat-error>Please enter a valid email address</mat-error>
+                    }
+
+
+                </mat-form-field>
+
+
+                <!---------------------- CAMPO PASSWORD ----------------------->
+                <mat-form-field appearance="outline">
+
+
+                    <mat-label>Password</mat-label>
+
+                    <input matInput type="password" formControlName="password">
+
+                    @if (loginForm.get('password')?.hasError('required')) {
+                    <mat-error>Password is required</mat-error>
+                    }
+
+                </mat-form-field>
+
+                <!-- MESSAGGIO DI ERRORE GENERALE -->
+                @if (errorMessage) {
+                <p class="error-message">
+                    {{errorMessage}}
+                </p>
+                }
+
+                <!-- PULSANTE DI LOGIN -->
+                <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
+                    Login
+                </button>
+
+            </form>
+
+
+            <!-- AZIONI DEL LOGIN CARD -->
+            <mat-card-actions>
+
+                <!-- PULSANTE PER TORNARE ALLA HOME -->
+                <button mat-raised-button routerLink="">
+                    <mat-icon>home</mat-icon>
+                    Back to Home
+                </button>
+
+                <!-- PULSANTE PER RIPRISTINARE LA PASSWORD -->
+                <button mat-raised-button routerLink="">
+                    <mat-icon>lock_reset</mat-icon>
+                    Reset Password
+                </button>
+
+            </mat-card-actions>
+
+        </mat-card-content>
+
+    </mat-card>
+
+</div>

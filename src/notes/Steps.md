@@ -28,5 +28,25 @@ Senza questi file, sarei costretto a modificare manualmente le impostazioni e le
 8. Nel file `app.config.ts`, ho importato e configurato i provider per HttpClient, il router e la gestione globale degli errori del browser.
 
 
-9. Ho creato la cartella features e dentro ho creato i componenti `login-employee-component` e `login-hr-component`
+9. Ho creato la cartella `features` e dentro ho creato i componenti `home` e `login`. 
+Creerò una solo un componente login per entrambi tipi di dipendente.
+Nel mio modello ho già `role: UserRole` e nel mio AuthService ho già impostato i metodi `isEmployee()`
+`isHr()`. Quindi, basterebbe che il sito reindirizzi l'utente a un determinato dashboard a seconda del suo ruolo. 
+
+
+10. Sempre dentro `features`, ho creato le cartelle `employee` e `hr`.
+Dentro `employee` ho creato 3 componenti: `employee-dashboard`, `request-list` e `new-request`.
+E dentro `hr` ho creato altri 3 componenti: `hr-dashboard`, `request-list` e `request-detail`.
+
+
+11. Su app.routes.ts, ho configurato la rotta delle pagine `home` e `login`. 
+    (vedi file `app.routes.ts.md` per vederlo in modo più dettagliato)
+
+
+12. Nel template di `home`, ho messo una struttura base facendo uso di contenitori `div` e moduli di Angular Material come `MatButtonModule`. Inoltre, ho impostato la route di login tramite il `routerLink` sul pulsante Login. Ho aggiunto anche un po' di css.
+   
+
+13. Per la (unica) pagina di login, ho deciso di implementare una struttura base facendo uso del Reactive Form che è lo standard nei progetti Angular. 
+
+
 

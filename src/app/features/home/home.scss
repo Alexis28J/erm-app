@@ -1,0 +1,24 @@
+.spacer {
+    flex: auto;
+}
+
+mat-toolbar {
+    border-bottom: 1px solid #ccc;
+    background-color: #f4f3f6;
+}
+
+.home-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+}
+
+mat-card{
+    width: 600px;
+    padding: 20px;
+}
+
+mat-card-actions {
+    display: flex;
+    justify-content: center;
+}
