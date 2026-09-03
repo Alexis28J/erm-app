@@ -19,7 +19,9 @@ export class AuthService {
 
 
     // METODO PER LOGGARSI
-    login(email: string, password: string) {
+    login(email: string, password: string): Observable<User | undefined> {  // Ho tipizzato il ritorno come Observable di User o undefined.
+    // Quindi significa che il ritorno sarà l'utente trovato o undefined se non esiste.
+    // Perché Observable? Perché la chiamata a getUsers() restituisce un Observable e vogliamo mantenere la natura asincrona della richiesta.
 
         return this.userService.getUsers()  // Recupera tutti gli utenti dal servizio utente.
 

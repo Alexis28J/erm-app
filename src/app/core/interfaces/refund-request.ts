@@ -2,8 +2,8 @@ import { RequestStatus } from "./enum";
 import { Expense } from "./expense";
 
 export interface RefundRequest {
-    id: string;
-    userId: string;
+    id: string;  
+    userId: string;   
     referenceMonth: string; 
     creationDate: string;   
     lastUpdateDate: string;  

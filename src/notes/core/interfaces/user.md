@@ -8,9 +8,11 @@ export interface User {
     name: string;
     surname: string;
     email: string;
+    password: string; // in un progetto reale, la password non dovrebbe essere memorizzata in chiaro
     employeeCode: string;
     role: UserRole;
     active?: boolean; 
+      // La differenza tra 'id' e 'employeeCode' è che 'id' è l'identificativo univoco dell'utente nel sistema, mentre 'employeeCode' è il codice identificativo dell'impiegato.
 }
 ```
 
@@ -22,3 +24,5 @@ export interface User {
   Attivo significa che l'utente può accedere al sistema e fare richieste di rimborso, mentre inattivo significa che l'utente non può accedere al sistema e non può fare richieste di rimborso.
 
   Un utente può essere disattivato dall'amministratore del sistema per vari motivi, come ad esempio la cessazione del rapporto di lavoro o la sospensione dell'account.
+
+

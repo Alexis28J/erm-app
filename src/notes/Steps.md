@@ -49,4 +49,16 @@ E dentro `hr` ho creato altri 3 componenti: `hr-dashboard`, `request-list` e `re
 13. Per la (unica) pagina di login, ho deciso di implementare una struttura base facendo uso del Reactive Form che è lo standard nei progetti Angular. 
 
 
+14. Ho creato, in modo basico, il `dashboard dell'employee` con i pulsanti di azione e la gestione dell'utente corrente.
+In questo modo, l'utente può vedere le informazioni principali e accedere rapidamente alle azioni disponibili nel dashboard.
+Inoltre, ho aggiunto nel file delle rotte, il path di questo componente. 
 
+
+15. Ho implementato `l'Auth Guard` per proteggere le rotte delle pagine. Per fare ciò, ho fatto uso delle Functional Guards.
+
+
+16. Continuando con la protezione delle rotte, ho deciso di implementare il `RoleGuard` perché dopo l'Auth Guard, il Role Guard è la protezione più importante dell'applicazione. L'Auth Guard verifica che l'utente sia autenticato ma il RoleGuard verifica che l'utente autenticato abbia il ruolo corretto. L'obbiettivo di implementarlo è proteggere le aree dell'applicazione designati a un ruolo specifico. 
+Per ultimo, ho modificato la rotta della dashboard del EMPLOYEE, aggiustandola alle nuove condizioni.
+
+
+17. Ho creato la logica della dashboard HR usando la stessa logica che ho usato per quello dell'employee. 

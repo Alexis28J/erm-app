@@ -1,1 +1,70 @@
-<p>employee-dashboard works!</p>
+<!-- TOOLBAR DEL DASHBOARD DELL'IMPIEGATO (HEADER) -->
+<mat-toolbar color="primary">
+
+    <!-- Logo dell'applicazione -->
+    <span>ERM</span>
+
+    <!-- Separatore -->
+    <span class="spacer"></span>
+
+    <!-- Informazioni dell'utente corrente -->
+    <span>
+        {{currentUser?.name}}
+        {{currentUser?.surname}}
+       ({{currentUser?.email}})
+    </span>
+
+    <!-- Separatore -->
+    <span class="spacer"></span>
+
+    <!-- Pulsante di logout -->
+    <button mat-button (click)="logout()">
+        Logout
+    </button>
+
+</mat-toolbar>
+
+
+<!-- CONTENITORE DEL DASHBOARD DELL'IMPIEGATO -->
+<div class="dashboard-container">
+
+    <!-- Scheda principale del dashboard -->
+    <mat-card>
+
+        <!-- Header della scheda principale -->
+        <mat-card-header>
+
+            <mat-card-title>
+                Welcome, dear {{currentUser?.name}}
+            </mat-card-title>
+
+        </mat-card-header>
+
+
+        <!-- Contenuto della scheda principale -->
+        <mat-card-content>
+            <p>
+                Here you can manage your expense reimbursement requests. <br>
+                Click the "New Request" button if you wish to make a new refund request, <br>
+                or the "Request List" button to view all previous requests.
+            </p>
+        </mat-card-content>
+
+    </mat-card>
+
+
+    <!-- CONTENITORE DEI PULSANTI DI AZIONE DEL DASHBOARD -->
+    <div class="actions-container">
+
+        <button mat-raised-button color="primary">
+            New Request
+        </button>
+
+        <button mat-raised-button>
+            Request List
+        </button>
+
+    </div>
+
+
+</div>

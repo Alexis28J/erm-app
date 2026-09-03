@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { map, tap } from 'rxjs/operators';
 import { User } from '../interfaces/user';
 import { UserRole } from '../interfaces/enum';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +17,7 @@ export class AuthService {
 
 
     // METODO PER LOGGARSI
-    login(email: string, password: string) {
+    login(email: string, password: string): Observable<User | undefined> {
 
         return this.userService.getUsers()
             .pipe(
@@ -68,7 +69,6 @@ export class AuthService {
     // METODO PER VERIFICARE SE L'UTENTE È LOGGATO
     isLoggedIn(): boolean {
         return !!this.getCurrentUser();
-
     }
 
 

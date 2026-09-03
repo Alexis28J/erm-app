@@ -1,1 +1,72 @@
-<p>hr-dashboard works!</p>
+<!-- TOOLBAR DEL DASHBOARD DELL'HR (HEADER) -->
+<mat-toolbar color="primary">
+
+    <!-- Logo dell'applicazione -->
+    <span>ERM - HR Area</span>
+
+    <!-- Separatore -->
+    <span class="spacer"></span>
+
+    <!-- Informazioni dell'utente corrente -->
+    <span>
+        {{currentUser?.name}}
+        {{currentUser?.surname}}
+        ({{currentUser?.email}})
+    </span>
+
+    <!-- Separatore -->
+    <span class="spacer"></span>
+
+    <!-- Pulsante di logout -->
+    <button mat-button (click)="logout()">
+        Logout
+    </button>
+
+</mat-toolbar>
+
+
+<!-- CONTENITORE DEL DASHBOARD DELL'HR -->
+<div class="dashboard-container">
+
+    <!-- Scheda principale del dashboard -->
+    <mat-card>
+
+        <!-- Header della scheda principale -->
+        <mat-card-header>
+
+            <mat-card-title>
+                HR Dashboard
+            </mat-card-title>
+
+        </mat-card-header>
+
+
+        <!-- Contenuto della scheda principale -->
+        <mat-card-content>
+
+            <p>
+                Welcome, dear {{currentUser?.name}}
+            </p>
+
+            <p>
+                From this area you will be able to review
+                and approve expense reimbursement requests.
+            </p>
+
+        </mat-card-content>
+
+    </mat-card>
+
+
+    <!-- CONTENITORE DEI PULSANTI DI AZIONE DEL DASHBOARD -->
+    <div class="actions-container">
+        <button mat-raised-button color="primary">
+            Request List
+        </button>
+
+        <button mat-raised-button>
+            Employee List
+        </button>
+    </div>
+
+</div>

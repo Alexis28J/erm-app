@@ -1,0 +1,51 @@
+/* Stile della barra degli strumenti principale */
+mat-toolbar {
+    border-bottom: 1px solid #ccc;
+    background-color: #f4f3f6;
+}
+
+
+/* Stile del contenitore principale del dashboard */
+.spacer {
+    flex: 1 1 auto;
+}
+
+
+/* Stile del contenitore dei pulsanti di azione del dashboard */
+.dashboard-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    p {
+        line-height: 1.6;
+        color: #333;
+        text-align: center;
+        font-size: 16px;
+    }
+}
+
+
+/* Stile della scheda principale del dashboard */
+mat-card {
+    padding: 20px;
+}
+
+
+/* Stile dell'header della scheda principale del dashboard */
+mat-card-header {
+    display: flex;
+    justify-content: center;
+}
+
+
+/* Stile del contenitore dei pulsanti di azione del dashboard */
+.actions-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}

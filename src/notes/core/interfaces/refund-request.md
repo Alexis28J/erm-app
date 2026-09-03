@@ -4,7 +4,7 @@ import { Expense } from "./expense";
 
 export interface RefundRequest {
     id: string;
-    userId: string;
+    userId: string; // è l'ID dell'utente che ha effettuato la richiesta di rimborso. Corrisponde all'ID dell'utente nel modello User.
     referenceMonth: string;  //mese di riferimento della richiesta di rimborso, formato YYYY-MM
     creationDate: string;  // data di creazione della richiesta
     lastUpdateDate: string;  // data dell'ultimo aggiornamento della richiesta, quindi può essere la data di approvazione o di rifiuto della richiesta
