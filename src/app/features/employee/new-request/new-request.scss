@@ -1,0 +1,85 @@
+// CONTAINER PRINCIPALE
+.page-container {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+// CARD PRINCIPALE
+mat-card {
+    border-radius: 16px;
+}
+
+
+// TITOLO DELLA CARD
+mat-card-title {
+    display: flex;
+    align-items: center;
+    
+    gap: 8px;
+    padding-bottom: 24px;
+}
+
+
+// SEZIONE DEL FORM
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+
+// CAMPI DEL FORM
+mat-form-field {
+    width: 100%;
+}
+
+
+// HEADER DELLA SEZIONE SPESE
+.expenses-header {
+    margin-top: 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+// SEZIONE DELLE SPESE
+.expenses-section {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+// CARD DELLE SINGOLE SPESE
+.expenses-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+
+// SEZIONE DEL TOTALE
+.total-section {
+    display: flex;
+    justify-content: flex-end;
+
+    font-size: 20px;
+
+    gap: 12px;
+}
+
+
+// SEZIONE DELLE AZIONI
+.actions {
+    margin-top: 24px;
+    gap: 12px;
+
+    display: flex;
+    justify-content: flex-end;
+}

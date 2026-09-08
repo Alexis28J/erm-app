@@ -62,3 +62,20 @@ Per ultimo, ho modificato la rotta della dashboard del EMPLOYEE, aggiustandola a
 
 
 17. Ho creato la logica della dashboard HR usando la stessa logica che ho usato per quello dell'employee. 
+
+
+18. Ho configurato la route del componente "request-list di employee". Inoltre, ho collegato il pulsante "request-list", che si trova nel template della dashboard, con il componente "request-list" attraverso la direttiva "routerLink".
+
+
+19. Ho impostato la logica di `request-list.ts` usando i signal e creato la tabella in cui viene visualizzata la lista di richieste dell'utente corrente. 
+Mi sono servito del componente MatTable di Angular Material per creare la tabella. 
+Una delle colonne della tabella si chiama "actions" e ha, per ogni richiesta della lista, un pulsante chiamato "View details". Premendo questo pulsante, l'utente potrà vedere i dettagli di tale richiesta.
+
+
+20. Quindi, ho creato il componente `request-details.ts` per visualizzare i dettagli di una richiesta di rimborso specifica.
+I dettagli della richiesta di rimborso vengono gestiti tramite il Signal 'request', che contiene tutte le informazioni necessarie per visualizzare i dettagli nella vista HTML.
+
+
+21. Per l'opzione `new-request` della dashboard employee, ho creato il rispettivo componente.
+Affinché possa visualizzare la pagina, così come ho fatto con request-list, ho configurato la path di questo componente in app.routes.ts.
+Poi nel template di employee-dashboard, ho collegato il pulsante al componente new-request tramite il servizio RouterLink.

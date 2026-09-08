@@ -44,6 +44,38 @@ export const routes: Routes = [
             )
     },
     {
+        path: 'employee/request-list',
+        loadComponent: () =>
+            import(
+                './features/employee/request-list/request-list'
+            ).then(m => m.RequestList)
+    },
+    {
+        path: 'employee/request-details/:id',
+        canActivate: [
+            authGuard,
+            roleGuard
+        ],
+        data: {
+            role: UserRole.EMPLOYEE
+        },
+        loadComponent: () =>
+            import(
+                './features/employee/request-details/request-details'
+            ).then(m => m.RequestDetails)
+    },
+    {
+        path: 'employee/new-request',
+        canActivate: [authGuard, roleGuard],
+        data: {
+            role: UserRole.EMPLOYEE
+        },
+        loadComponent: () =>
+            import(
+                './features/employee/new-request/new-request'
+            ).then(m => m.NewRequest)
+    },
+    {
         path: '**',
         redirectTo: ''
     },

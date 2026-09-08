@@ -17,7 +17,7 @@ export const EXPENSE_CATEGORIES: ExpenseCategory[] = [
   },
   {
     id: '3',
-    name: ExpenseCategoryName.BOARD,
+    name: ExpenseCategoryName.MEAL,
     maxAmount: 25,
     receiptRequired: true
   },

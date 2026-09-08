@@ -1,3 +1,6 @@
+# COMMENTI
+
+``` HTML
 <!-- CONTAINER PRINCIPALE -->
 <div class="container">
 
@@ -52,7 +55,7 @@
 
                     <td mat-cell *matCellDef="let request">
 
-                        {{ request.creationDate | date: 'yyyy-MM-dd' }}
+                        {{ request.creationDate }}
 
                     </td>
 
@@ -71,22 +74,27 @@
                     <td mat-cell *matCellDef="let request">
 
                         <span [ngClass]="request.status.toLowerCase()">
+                            <!-- Perché metto .toLowerCase()? Risposta: per far corrispondere la classe CSS con lo status in minuscolo -->
+                            <!-- {{ request.status | toLowerCase }} -->
+                            <!-- se voglio sostituire PARTIAL_APPROVED CON Partial Approved, posso farlo qui  -->
+                            <!-- {{ request.status === 'PARTIAL_APPROVED' ? 'Partial Approved' : request.status }} -->
+                            <!-- Ma se voglio fare lo stesso per altri status, avrei bisogno di utilizzare @if -->
 
                             @if (request.status === 'PARTIAL_APPROVED') {
-                            Partial Approved
+                            'Partial Approved'
                             }
 
                             @if (request.status === 'APPROVED') {
-                            Approved
+                            'Approved'
                             }
                             @if (request.status === 'REJECTED') {
-                            Rejected
+                            'Rejected'
                             }
                             @if (request.status === 'DRAFT') {
-                            Draft
+                            'Draft'
                             }
                             @if (request.status === 'PENDING') {
-                            Pending
+                            'Pending'
                             }
 
                         </span>
@@ -136,13 +144,19 @@
                 <ng-container matColumnDef="actions">
 
                     <th mat-header-cell *matHeaderCellDef>
+
                         Actions
+
                     </th>
 
                     <td mat-cell *matCellDef="let request">
+
                         <button mat-raised-button color="primary" (click)="viewDetails(request.id)">
+
                             View Details
+
                         </button>
+
                     </td>
 
                 </ng-container>
@@ -150,8 +164,9 @@
 
                 <!-- RIGA DELL'HEADER DELLA TABELLA -->
                 <tr mat-header-row *matHeaderRowDef="displayedColumns">
+                    <!-- *matHeaderRowDef è una direttiva strutturale utilizzata per definire la riga di intestazione (header row) di una tabella.
+                     Quindi "displayedColumns" definisce quali colonne devono essere visualizzate nell'header della tabella e il loro ordine (da sinistra a destra). -->
                 </tr>
-
 
                 <!-- RIGA DEI DATI DELLA TABELLA -->
                 <tr mat-row *matRowDef="
@@ -175,3 +190,4 @@
     </mat-card>
 
 </div>
+```

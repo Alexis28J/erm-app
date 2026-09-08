@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { User } from '../../../core/interfaces/user';
 import { MatToolbar } from "@angular/material/toolbar";
 import { MatAnchor } from "@angular/material/button";
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from "@angular/material/card";
 
 @Component({
-  imports: [MatToolbar, MatAnchor, MatCard, MatCardHeader, MatCardTitle, MatCardContent],
+  imports: [MatToolbar, MatAnchor, MatCard, MatCardHeader, MatCardTitle, MatCardContent, RouterLink],
   selector: 'app-employee-dashboard',
   styleUrls: ['./employee-dashboard.scss'],
   templateUrl: './employee-dashboard.html',

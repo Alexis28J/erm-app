@@ -1,7 +1,7 @@
 import { ExpenseCategoryName } from './enum';
 
 export interface Expense {
-    id: string;
+    id?: string;
     category: ExpenseCategoryName;
     date: string;
     description: string;

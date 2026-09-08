@@ -1,0 +1,69 @@
+// CARD PRINCIPALE
+mat-card {
+    max-width: 800px;
+    // se voglio centrare la card, posso aggiungere:
+    margin: 40px auto;
+    padding: 20px;
+}
+
+
+// TITOLO DELLA CARD
+mat-card-title {
+    font-size: 28px;
+    font-weight: 600;
+    padding-bottom: 16px;
+}
+
+
+// GRIGLIA DEI DETTAGLI
+.details-grid {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 18px;
+    margin-top: 24px;
+}
+
+
+// ETICHETTE 
+.label {
+    font-weight: 600;
+}
+
+
+// VALORI
+.value {
+    color: #555;
+}
+
+
+// PULSANTI
+.actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+// COLORI STATUS
+.approved {
+    color: green;
+    font-weight: 600;
+}
+
+.pending {
+    color: orange;
+    font-weight: 600;
+}
+
+.rejected {
+    color: red;
+    font-weight: 600;
+}
+
+// Scrivo entrambe le versioni per gestire 
+// sia underscore che trattino
+.partial_approved,
+.partial-approved {
+    color: #1976d2;
+    font-weight: 600;
+}

@@ -1,0 +1,109 @@
+<!-- CONTROLLO SE LA VARIABILE "request" È DEFINITA PRIMA DI VISUALIZZARE I DETTAGLI -->
+@if (request(); as request) {
+
+<!-- CARD PRINCIPALE CHE MOSTRA I DETTAGLI DELLA RICHIESTA -->
+<mat-card>
+
+    <!-- HEADER DELLA CARD -->
+    <mat-card-header>
+
+        <!-- TITOLO DELLA CARD -->
+        <mat-card-title>
+            Request Details
+        </mat-card-title>
+
+    </mat-card-header>
+
+
+    <!-- CONTENUTO DELLA CARD -->
+    <mat-card-content>
+
+        <div class="details-grid">
+
+            <span class="label">
+                Reference Month
+            </span>
+
+            <span class="value">
+                {{ request.referenceMonth }}
+            </span>
+
+            <span class="label">
+                Status
+            </span>
+
+            <span [ngClass]="request.status.toLowerCase()">
+
+                @if (request.status === 'PARTIAL_APPROVED') {
+                Partial Approved
+                }
+                @if (request.status === 'APPROVED') {
+                Approved
+                }
+                @if (request.status === 'REJECTED') {
+                Rejected
+                }
+                @if (request.status === 'DRAFT') {
+                Draft
+                }
+                @if (request.status === 'PENDING') {
+                Pending
+                }
+
+            </span>
+
+            <span class="label">
+                Requested Amount
+            </span>
+
+            <span class="value">
+                {{ request.totalRequestedAmount }} €
+            </span>
+
+            <span class="label">
+                Approved Amount
+            </span>
+
+            <span class="value">
+                {{ request.totalApprovedAmount }} €
+            </span>
+
+            <span class="label">
+                Creation Date
+            </span>
+
+            <span class="value">
+                {{ request.creationDate }}
+            </span>
+
+            <span class="label">
+                Last Update
+            </span>
+
+            <span class="value">
+                {{ request.lastUpdateDate }}
+            </span>
+
+            <span class="label">
+                Note Employee
+            </span>
+
+            <span class="value">
+                {{ request.noteEmployee || '-' }}
+            </span>
+
+            <span class="label">
+                Note HR
+            </span>
+
+            <span class="value">
+                {{ request.noteHr || '-' }}
+            </span>
+
+        </div>
+
+    </mat-card-content>
+
+</mat-card>
+
+}

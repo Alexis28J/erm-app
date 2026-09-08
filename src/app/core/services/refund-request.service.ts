@@ -32,7 +32,7 @@ export class RefundRequestService {
 
   // METODO PER OTTENERE 1 O PIÙ RICHIESTE DI UN UTENTE TRAMITE IL SUO ID
   // Nota: Qui un dipendente può avere più richieste
-  getRequestByUserId(userId: string): Observable<RefundRequest[]> {
+  getRequestsByUserId(userId: string): Observable<RefundRequest[]> {
     return this.http.get<RefundRequest[]>
       (`${this.apiUrl}?userId=${userId}`);
 

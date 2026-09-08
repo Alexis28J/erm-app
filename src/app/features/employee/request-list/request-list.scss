@@ -1,0 +1,61 @@
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+mat-card {
+    padding: 20px;
+}
+
+mat-card-title {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+th {
+    font-weight: 600;
+    background-color: #f5f5f5;
+}
+
+td,
+th {
+    padding: 12px;
+}
+
+.mat-mdc-row:hover {
+    background-color: #fafafa;
+}
+
+button {
+    min-width: 120px;
+}
+
+.approved {
+    color: green;
+    font-weight: 600;
+}
+
+.pending {
+    color: orange;
+    font-weight: 600;
+}
+
+.rejected {
+    color: red;
+    font-weight: 600;
+}
+
+.partial_approved,    // perché ci sono 2 classi partial approved? Risposta: alcuni status potrebbero usare underscore invece del trattino
+.partial-approved {
+    color: #1976d2;
+    font-weight: 600;  
+}
+
+
+
