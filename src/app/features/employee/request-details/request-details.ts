@@ -30,7 +30,7 @@ export class RequestDetails {
     this.refundRequestService
       .getRequestById(this.requestId!),
     {
-      initialValue: null
+      initialValue: null   
     }
   );
 

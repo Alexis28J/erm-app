@@ -73,7 +73,7 @@
             </span>
 
             <span class="value">
-                {{ request.creationDate }}
+                {{ request.creationDate | date: 'yyyy-MM-dd' }}
             </span>
 
             <span class="label">
@@ -81,7 +81,7 @@
             </span>
 
             <span class="value">
-                {{ request.lastUpdateDate }}
+                {{ request.lastUpdateDate | date: 'yyyy-MM-dd' }}
             </span>
 
             <span class="label">

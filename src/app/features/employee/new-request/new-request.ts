@@ -78,8 +78,50 @@ export class NewRequest {
   }
 
 
+  saveDraft(): void {
+
+    const currentUser = this.authService.getCurrentUser();
+
+    if (!currentUser) {
+      return;
+    }
+
+    // Oggetto della richiesta di rimborso
+    const request: RefundRequest = {
+
+      userId: currentUser.id,
+
+      referenceMonth: this.requestForm.value.referenceMonth!,
+
+      noteEmployee: this.requestForm.value.noteEmployee || '',
+
+      noteHr: "",
+
+      expenses: (this.requestForm.value.expenses || []) as Expense[],
+
+      totalRequestedAmount: this.totalAmount,
+
+      totalApprovedAmount: 0,
+
+      status: RequestStatus.DRAFT,
+
+      creationDate: new Date().toISOString(),
+
+      lastUpdateDate: new Date().toISOString(),
+
+    };
+
+    this.refundRequestService.
+    createRequest(request)
+    .subscribe({
+        next: () => this.router.navigate(['/employee/dashboard'])
+      });  
+
+  }
+
+
   // METODO PER L'INVIO DEL FORM
-  onSubmit(): void {
+  submitRequest(): void {
 
     if (this.requestForm.invalid) {
       this.requestForm.markAllAsTouched();
@@ -122,8 +164,9 @@ export class NewRequest {
     // Invio della richiesta al servizio
     this.refundRequestService.createRequest(request)
       .subscribe({
-        next: () => this.router.navigate(['/employee/request-list'])
+        next: () => this.router.navigate(['/employee/dashboard'])
       });
 
   }
 }
+

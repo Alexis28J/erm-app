@@ -157,6 +157,40 @@
 
                         </button>
 
+                        
+                        @if (request.status === 'DRAFT') {
+                            
+                        <button mat-raised-button [matMenuTriggerFor]="menu" color="primary">
+                            Options <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+
+                        <mat-menu #menu="matMenu">
+
+                            <button mat-menu-item>
+                                View Details
+                            </button>
+
+                            <button mat-menu-item
+                                    routerLink="/employee/edit-request/{{request.id}}">
+                            <!-- Utilizzo {{}} per interpolare l'ID della richiesta nell'URL perché Angular non supporta la concatenazione diretta nelle direttive routerLink.
+                                 Quindi sarebbe stato sbagliato concatenare direttamente l'ID nella direttiva routerLink: routerLink="/employee/edit-request/" + request.id -->
+                            <!-- Se invece di utilizzare l'interpolazione avesse usato /:id nell'URL, avrebbe dovuto passare l'ID come parametro separato nel routerLink, ad esempio: routerLink="/employee/edit-request/:id" [queryParams]="{ id: request.id }". 
+                                  Entrambe le soluzioni sono valide a seconda del contesto. Ad esempio, l'interpolazione è più semplice e diretta, mentre l'uso di /:id con queryParams può essere utile in scenari più complessi. -->
+                                  
+                                Edit
+                            </button>
+
+                            <button mat-menu-item
+                                    color="warn"
+                                    (click)="deleteRequest(request.id)">
+
+                                Delete
+                            </button>
+
+                        </mat-menu>
+
+                    }
+
                     </td>
 
                 </ng-container>

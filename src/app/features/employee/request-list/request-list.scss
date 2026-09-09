@@ -51,11 +51,17 @@ button {
     font-weight: 600;
 }
 
-.partial_approved,    // perché ci sono 2 classi partial approved? Risposta: alcuni status potrebbero usare underscore invece del trattino
+
+// Scrivo entrambe le versioni per gestire 
+//sia underscore che trattino
+.partial_approved,    
 .partial-approved {
     color: #1976d2;
     font-weight: 600;  
 }
 
-
+.draft {
+    color: gray;
+    font-weight: 600;
+}
 

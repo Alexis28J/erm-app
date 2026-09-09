@@ -1,5 +1,20 @@
 # COMMENTI
 
+La logica per la gestione delle richieste di rimborso è implementata nei metodi `saveDraft()` e `submitRequest()`.
+
+Il metodo saveDraft() salva la richiesta come bozza, mentre submitRequest() invia la richiesta per l'approvazione.
+
+Entrambi i metodi utilizzano il servizio refundRequestService per interagire con il backend.
+
+Il metodo saveDraft() viene utilizzato quando l'utente vuole salvare la richiesta senza inviarla immediatamente, mentre submitRequest() viene chiamato quando l'utente vuole inviare la richiesta per l'approvazione.
+
+Inoltre, entrambi i metodi aggiornano automaticamente le date di creazione e di ultimo aggiornamento della richiesta.
+
+Il template HTML associato a questo componente contiene il modulo per la creazione di una nuova richiesta di rimborso, con campi per il mese di riferimento, le note del dipendente, le spese e i pulsanti per salvare come bozza o inviare la richiesta.
+
+Ho usato `Angular Reactive Forms` per gestire la validazione e l'invio dei dati del modulo.
+
+
 ```TYPESCRIPT
 import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
@@ -96,6 +111,9 @@ export class NewRequest {
   }
 
   // RICORDA: Il getter è un metodo speciale che viene chiamato come una proprietà, quindi si utilizza this.totalAmount senza parentesi. Lo stesso vale per expenses.
+
+  // DEFINIZIONE DEL GETTER: In Angular (e in TypeScript/JavaScript in generale), un getter è una funzione speciale che permette di accedere a una proprietà di una classe eseguendo del codice logico al suo interno, ma venendo richiamata all'esterno come se fosse una normale variabile.
+
 
   // METODO PER L'INVIO DEL FORM
   onSubmit(): void {

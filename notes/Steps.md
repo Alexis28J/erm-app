@@ -79,3 +79,17 @@ I dettagli della richiesta di rimborso vengono gestiti tramite il Signal 'reques
 21. Per l'opzione `new-request` della dashboard employee, ho creato il rispettivo componente.
 Affinché possa visualizzare la pagina, così come ho fatto con request-list, ho configurato la path di questo componente in app.routes.ts.
 Poi nel template di employee-dashboard, ho collegato il pulsante al componente new-request tramite il servizio RouterLink.
+La logica per la gestione delle richieste di rimborso è implementata nei metodi saveDraft() e submitRequest().
+
+Il template HTML associato a questo componente contiene il modulo per la creazione di una nuova richiesta di rimborso, con campi per il mese di riferimento, le note del dipendente, le spese e i pulsanti per salvare come bozza o inviare la richiesta.
+Ho usato Angular Reactive Forms per gestire la validazione e l'invio dei dati del modulo.
+
+
+22. Per poter implementare la funzione di editare una bozza di richiesta, ho creato il componente `edit-request`.  
+Questo componente gestisce la modifica di una richiesta di rimborso esistente ed è solo accessibile agli utenti autenticati.
+La funzionalità è collegata al pulsante "Modifica" nella lista delle richieste dell'utente. 
+Solo le richieste in stato bozza possono essere modificate.
+Utilizza Angular Reactive Forms per gestire la validazione e l'invio dei dati del modulo.
+
+
+23. 

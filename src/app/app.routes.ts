@@ -65,6 +65,17 @@ export const routes: Routes = [
             ).then(m => m.RequestDetails)
     },
     {
+        path: 'employee/edit-request/:id',
+        canActivate: [authGuard, roleGuard],
+        data: {
+            role: UserRole.EMPLOYEE
+        },
+        loadComponent: () =>
+            import(
+                './features/employee/edit-request/edit-request'
+            ).then(m => m.EditRequest)
+    },
+    {
         path: 'employee/new-request',
         canActivate: [authGuard, roleGuard],
         data: {
