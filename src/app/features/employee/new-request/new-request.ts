@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { Notification } from '../../../shared/notification-service/notification';
 import { FormBuilder, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
@@ -31,6 +32,7 @@ export class NewRequest {
   private authService = inject(AuthService);
   private refundRequestService = inject(RefundRequestService);
   private router = inject(Router);
+  private notificationService = inject(Notification);
 
 
   // FORM
@@ -112,10 +114,13 @@ export class NewRequest {
     };
 
     this.refundRequestService.
-    createRequest(request)
-    .subscribe({
-        next: () => this.router.navigate(['/employee/dashboard'])
-      });  
+      createRequest(request)
+      .subscribe({
+        next: () => {
+          this.notificationService.success('Request saved as draft successfully');
+          this.router.navigate(['/employee/dashboard']);
+        }
+      });
 
   }
 
@@ -164,7 +169,10 @@ export class NewRequest {
     // Invio della richiesta al servizio
     this.refundRequestService.createRequest(request)
       .subscribe({
-        next: () => this.router.navigate(['/employee/dashboard'])
+        next: () => {
+          this.notificationService.success('Request submitted successfully');
+          this.router.navigate(['/employee/dashboard']);
+        }
       });
 
   }

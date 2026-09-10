@@ -10,6 +10,7 @@
             <!-- TITOLO DELLA CARD -->
             <mat-card-title>
                 My Refund Requests
+                <mat-icon>list</mat-icon>
             </mat-card-title>
 
         </mat-card-header>
@@ -155,10 +156,13 @@
 
                         <mat-menu #menu="matMenu">
 
-                            <button mat-menu-item>
+                            <!-- VEDERE DETTAGLI RICHIESTA (METODO VIEW DETAILS) -->
+                            <button mat-menu-item (click)="viewDetails(request.id)">
+
                                 View Details
                             </button>
 
+                            <!-- MODIFICA RICHIESTA (METODO ROUTER LINK) -->
                             <button mat-menu-item routerLink="/employee/edit-request/{{request.id}}">
 
                                 Edit

@@ -1,4 +1,5 @@
 import { Component, effect, inject } from '@angular/core';
+import { Notification } from '../../../shared/notification-service/notification';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,11 +15,12 @@ import { Expense } from '../../../core/interfaces/expense';
 import { RequestStatus } from '../../../core/interfaces/enum';
 import { MatOption } from "@angular/material/select";
 import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule,
     MatInputModule, MatButtonModule, MatProgressSpinnerModule,
-    DatePipe, CurrencyPipe, MatOption, MatSelectModule],
+    DatePipe, CurrencyPipe, MatOption, MatSelectModule, MatIconModule],
   selector: 'app-edit-request',
   styleUrls: ['./edit-request.scss'],
   templateUrl: './edit-request.html',
@@ -48,6 +50,7 @@ export class EditRequest {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private refundRequestService = inject(RefundRequestService);
+  private notificationService = inject(Notification);
 
 
   // INIZIALIZZAZIONE DELLE VARIABILI
@@ -180,6 +183,9 @@ export class EditRequest {
       .subscribe({
 
         next: () => {
+
+          this.notificationService.success('Request saved as draft successfully');
+
           this.router.navigate([
             'employee/request-list'
           ]);
@@ -224,6 +230,9 @@ export class EditRequest {
       )
       .subscribe({
         next: () => {
+
+          this.notificationService.success('Request submitted successfully');
+
           this.router.navigate([
             '/employee/request-list'
           ]);

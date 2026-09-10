@@ -4,47 +4,63 @@
     padding: 20px;
 }
 
+
 mat-card {
     padding: 20px;
 }
 
+
 mat-card-title {
+    display: flex;
+    align-items: center;
+
     font-size: 24px;
     font-weight: 600;
+
+    gap: 8px;
+    padding-bottom: 12px;
 }
+
 
 table {
     width: 100%;
     margin-top: 20px;
 }
 
+
 th {
     font-weight: 600;
     background-color: #f5f5f5;
 }
+
 
 td,
 th {
     padding: 12px;
 }
 
+
 .mat-mdc-row:hover {
     background-color: #fafafa;
 }
 
+
 button {
     min-width: 120px;
 }
+
 
 .approved {
     color: green;
     font-weight: 600;
 }
 
+
 .pending {
     color: orange;
     font-weight: 600;
 }
+
 
 .rejected {
     color: red;
@@ -54,14 +70,14 @@ button {
 
 // Scrivo entrambe le versioni per gestire 
 //sia underscore che trattino
-.partial_approved,    
+.partial_approved,
 .partial-approved {
     color: #1976d2;
-    font-weight: 600;  
+    font-weight: 600;
 }
+
 
 .draft {
     color: gray;
     font-weight: 600;
 }
-

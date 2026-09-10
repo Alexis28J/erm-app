@@ -14,6 +14,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from "@angular/material/menu";
 import { ConfirmDelete } from '../../../shared/dialogs/confirm-delete/confirm-delete';
+import { Notification } from '../../../shared/notification-service/notification';
 
 @Component({
   imports: [MatCardModule, MatTableModule, CommonModule, MatAnchor,
@@ -43,6 +44,7 @@ export class RequestList {
   private refundRequestService = inject(RefundRequestService);
   private router = inject(Router);
   private dialog = inject(MatDialog);
+  private notificationService = inject(Notification);
 
 
   // UTENTE CORRENTE E RICHIESTE DI RIMBORSO
@@ -104,9 +106,12 @@ export class RequestList {
           .deleteRequest(requestId)
           .subscribe({
             next: () => {
+              this.notificationService.success('Request deleted successfully');
               this.loadRequests();
             },
+
             error: (err) => {
+              this.notificationService.error('Error during request deletion');
               console.error(
                 'Error during request deletion:',
                 err

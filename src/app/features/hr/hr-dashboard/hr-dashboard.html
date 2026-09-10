@@ -2,7 +2,7 @@
 <mat-toolbar color="primary">
 
     <!-- Logo dell'applicazione -->
-    <span>ERM - HR Area</span>
+    <img src="https://techjobsfair.it/prod/wp-content/uploads/2022/10/DGS_logo.png" alt="ERM Logo" class="app-logo">
 
     <!-- Separatore -->
     <span class="spacer"></span>
@@ -31,12 +31,15 @@
     <!-- Scheda principale del dashboard -->
     <mat-card>
 
+        <h1>HR Area</h1>
+
         <!-- Header della scheda principale -->
         <mat-card-header>
 
             <mat-card-title>
-                HR Dashboard
+                Welcome, dear {{currentUser?.name}}
             </mat-card-title>
+
 
         </mat-card-header>
 
@@ -45,12 +48,9 @@
         <mat-card-content>
 
             <p>
-                Welcome, dear {{currentUser?.name}}
-            </p>
-
-            <p>
                 From this area you will be able to review
                 and approve expense reimbursement requests.
+                You can manage requests and employees from the actions below.
             </p>
 
         </mat-card-content>

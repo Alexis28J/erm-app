@@ -4,6 +4,12 @@ mat-toolbar {
     background-color: #f4f3f6;
 }
 
+/* Stile del logo dell'applicazione */
+.app-logo {
+    height: 120px;
+    margin-right: 10px;
+}
+
 
 /* Stile del contenitore principale del dashboard */
 .spacer {
@@ -43,9 +49,21 @@ mat-card-header {
 }
 
 
+/* Stile del titolo dell'area Employee */
+h1 {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+}
+
+
 /* Stile del contenitore dei pulsanti di azione del dashboard */
 .actions-container {
     display: flex;
     justify-content: center;
     gap: 40px;
 }
+
+
+
+

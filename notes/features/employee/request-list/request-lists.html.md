@@ -151,7 +151,12 @@
 
                     <td mat-cell *matCellDef="let request">
 
-                        <button mat-raised-button color="primary" (click)="viewDetails(request.id)">
+
+                            <!-- METODO CON ROUTERLINK -->
+                            <!-- <button mat-menu-item routerLink="/employee/request-details/{{request.id}}"> -->
+
+                            <!-- O CON IL METODO VIEW DETAILS --> 
+                            <button mat-menu-item (click)="viewDetails(request.id)">
 
                             View Details
 

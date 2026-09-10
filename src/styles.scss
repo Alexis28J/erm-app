@@ -37,3 +37,15 @@ body {
   height: 100%;
 }
 /* You can add global styles to this file, and also import other style files */
+
+
+// DA CORREGGERE!!! - I colori degli snackbar non vengono applicati correttamente a causa della specificità dei CSS di Angular Material.
+// .success-snackbar {
+//   --mdc-snackbar-container-color: #4caf50 !important;
+//   --mat-snack-bar-button-color: white !important;
+// }
+
+// .error-snackbar {
+//   --mdc-snackbar-container-color: #f44336 !important;
+//   --mat-snack-bar-button-color: white !important;
+// }
