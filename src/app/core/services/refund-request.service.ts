@@ -70,5 +70,12 @@ export class RefundRequestService {
   }
 
 
+  // METODO PER OTTENERE TUTTE LE RICHIESTE DI RIMBORSO (PER L'HR)
+  getAllRequests(): Observable<RefundRequest[]>{  
+    return this.http.get<RefundRequest[]>(this.apiUrl);
+  }
+
+
+
 }
 

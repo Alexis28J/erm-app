@@ -1,3 +1,6 @@
+# COMMENTI
+
+```HTML
 @if (request(); as request) {
 
 <div class="page-container">
@@ -36,9 +39,13 @@
                 <p class="info-item">
                     <span class="info-label">Requested Amount:</span>
                     <span class="info-value">{{ request.totalRequestedAmount | number: '1.2-2' }} €</span>
+                    <!-- Mostra l'importo totale richiesto formattato con due decimali.
+                     Ad esempio, 123.45 € o 0.00 € -->
                 </p>
 
                 <p class="info-item">
+                    <!-- Applica una classe CSS basata sullo stato della richiesta per colorare il testo -->
+                    <!-- .toLowerCase() viene usato per convertire lo stato in minuscolo, in modo che corrisponda alle classi CSS definite nello stylesheet -->
                     <span class="info-label">Status:</span>
                     <span [ngClass]="request.status.toLowerCase()" class="status-badge">
                         {{ request.status === 'APPROVED' ? 'Approved'
@@ -51,7 +58,7 @@
                     </span>
                 </p>
 
-            </div>
+            </div> <!-- fine .request-info -->
 
         </mat-card-content>
 
@@ -69,6 +76,7 @@
         <!-- AREA NOTE DIPENDENTE -->
         <mat-card-content>
             <p>{{ request.noteEmployee || 'No Employee Note.' }}</p>
+            <!-- Mostra le note del dipendente, se presenti. Oppure un messaggio che indica che non ci sono note. -->
         </mat-card-content>
 
 
@@ -91,6 +99,9 @@
             <div class="expenses-container">
 
                 @for (expense of request.expenses; track expense.id) {
+                    <!-- Ciclo attraverso tutte le spese della richiesta di rimborso corrente.
+                     track expense.id significa che Angular utilizza l'ID della spesa come chiave unica per ottimizzare il rendering della lista.
+                     In altre parole, aiuta Angular a identificare in modo univoco ogni elemento della lista per migliorare le prestazioni del rendering. -->
 
                 <div class="expense-row">
 
@@ -115,9 +126,11 @@
                             Amount
                         </mat-label>
 
+                        <!-- Per rendere obbligatorio l'inserimento di un importo approvato, puoi aggiungere l'attributo "required" all'input -->
                         <input matInput type="number" min="0" required [value]="expense.approvedAmount"
                             (input)="updatedApprovedAmount(expense.id!, +$any($event.target).value)">
-
+                        <!-- +$any($event.target).value significa che il valore dell'input viene convertito in numero. 
+                     Questo è necessario perché l'input HTML restituisce sempre una stringa. -->
 
                     </mat-form-field>
 
@@ -125,7 +138,7 @@
 
                 }
 
-            </div>
+            </div> <!-- .expenses-container -->
         </mat-card-content>
 
     </mat-card>
@@ -198,3 +211,4 @@
 </div>
 
 }
+```

@@ -72,12 +72,18 @@ button {
 //sia underscore che trattino
 .partial_approved,
 .partial-approved {
-    color: #1976d2;
+    color: rgb(30, 196, 30);
     font-weight: 600;
 }
 
 
 .draft {
     color: gray;
+    font-weight: 600;
+}
+
+.in_progress,
+.in-progress {
+    color: #009dff;
     font-weight: 600;
 }

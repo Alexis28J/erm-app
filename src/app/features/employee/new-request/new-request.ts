@@ -52,11 +52,13 @@ export class NewRequest {
   // METODO PER AGGIUNGERE UNA SPESA
   addExpense(): void {
 
-    const expense = this.fb.group({
+    const expense = this.fb.group({   
+      id: [crypto.randomUUID(), Validators.required],
       date: ['', Validators.required],
       category: ['', Validators.required],
       description: [''],
-      requestedAmount: ['', Validators.required]
+      requestedAmount: [0, Validators.required],
+      approvedAmount: [0]
     });
     this.expenses.push(expense);
 
