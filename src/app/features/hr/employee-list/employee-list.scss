@@ -1,0 +1,57 @@
+.page-card {
+  margin: 1.5rem;
+}
+
+
+mat-card-title {
+ padding-bottom: 1rem;  // 1rem equivale a uno spazio di base cioè 16px (di solito)
+ font-size: 1.5rem;  
+ font-weight: bold;  
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;  
+}
+
+
+table {
+  width: 100%;
+}
+
+
+.mat-mdc-form-field {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+
+// Stile per i badge di stato (attivo/inattivo)
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 500;
+}
+
+
+.active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+
+.inactive {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+
+// Stile per la colonna delle azioni nella tabella
+.mat-column-actions {
+  width: 180px;
+}
+
+
+.back-button {
+  margin-top: 1rem;
+  margin-left: 1rem;
+}

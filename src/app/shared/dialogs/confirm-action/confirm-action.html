@@ -1,11 +1,12 @@
 <h2 mat-dialog-title>
-  Delete Request
+  {{ data.title }}  
 </h2>
 
 <mat-dialog-content>
 
-  <p>
-    Are you sure you want to delete this request?
+  <p> 
+         <!-- Utilizzo il binding per rendere dinamico il messaggio -->
+         {{ data.message }}
   </p>
 
 </mat-dialog-content>
@@ -25,7 +26,7 @@
     color="warn"
     (click)="onConfirm()">
 
-    Delete
+    Confirm
 
   </button>
 

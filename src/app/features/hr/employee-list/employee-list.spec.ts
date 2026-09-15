@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfirmDelete } from './confirm-delete';
+import { EmployeeList } from './employee-list';
 
-describe('ConfirmDelete', () => {
-  let component: ConfirmDelete;
-  let fixture: ComponentFixture<ConfirmDelete>;
+describe('EmployeeList', () => {
+  let component: EmployeeList;
+  let fixture: ComponentFixture<EmployeeList>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ConfirmDelete],
+      imports: [EmployeeList],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ConfirmDelete);
+    fixture = TestBed.createComponent(EmployeeList);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

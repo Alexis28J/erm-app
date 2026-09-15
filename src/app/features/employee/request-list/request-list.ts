@@ -13,7 +13,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from "@angular/material/menu";
-import { ConfirmDelete } from '../../../shared/dialogs/confirm-delete/confirm-delete';
+import { ConfirmAction } from '../../../shared/dialogs/confirm-action/confirm-action';
 import { Notification } from '../../../shared/notification-service/notification';
 
 @Component({
@@ -89,9 +89,13 @@ export class RequestList {
   // METODO PER ELIMINARE UNA RICHIESTA DI RIMBORSO (BOZZA)
   deleteRequest(requestId: string): void {
 
-    const dialogRef = this.dialog.open(
-      ConfirmDelete,
+    const dialogRef = this.dialog.open(  
+      ConfirmAction,
       {
+        data: {
+          title: 'Delete Request',
+          message: 'Are you sure you want to delete this request?'
+        },
         width: '400px'
       }
     );

@@ -1,0 +1,174 @@
+:host {
+    // :host rappresenta il componente stesso, permettendo di applicare stili al contenitore radice del componente.
+    margin: 0 auto;
+    padding: 24px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+
+// STILE DEI CARDS (EMPLOYEE CARD E STATS CARD)
+.employee-card,
+.stats-card {
+    margin-bottom: 1rem;
+    // rem è un'unità relativa alla dimensione del font radice (root) che normalmente corrisponde a 16px.
+}
+
+mat-card {
+    margin-bottom: 1rem;
+}
+
+mat-card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+
+// LAYOUT DELLE INFORMAZIONI DEL DIPENDENTE (EMPLOYEE INFO)
+.employee-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    // auto-fit significa che le colonne si adatteranno automaticamente allo spazio disponibile, creando nuove colonne se necessario.
+    // minmax(250px, 1fr) significa che ogni colonna avrà una larghezza minima di 250px e si espanderà fino a occupare lo spazio disponibile.
+
+    gap: 1rem;
+    padding-top: 1.5rem;
+    font-size: 1rem;
+    margin-left: 1rem;
+}
+
+
+// LAYOUT DELLE STATISTICHE (STATS GRID)
+.stats-grid {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.stat-item {
+    padding: 1rem;
+    padding-top: 2rem;
+    margin-top: 0.5rem;
+    border-radius: 12px;
+    text-align: center;
+    background: #dcdcdc;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.stat-item h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+
+// STILE DEGLI STATI DELLE RICHIESTE (RIQUADRI COLORATI)
+.total-requests {
+    background: #cde8f7;
+}
+
+.approved-requests {
+    background: #cdeecf;
+}
+
+.rejected-requests {
+    background: #fad0d6;
+}
+
+.pending-requests {
+    background: #fde9a9;
+}
+
+.total-requested-amount {
+    background: #cde8f7;
+}
+
+.total-approved-amount {
+    background: #cdeecf;
+}
+
+
+// LAYOUT DELLE RIGHE DELLE RICHIESTE (REQUEST ROW)
+.request-row {
+    display: grid;
+    grid-template-columns:
+        1fr 1fr 1fr 1fr 1fr auto;
+
+    gap: 1rem;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+
+// STILE DEI BADGE DI STATO (ACTIVE/INACTIVE)
+.badge {
+    padding: 1.5px 8px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.inactive {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+p {
+    display: flex;
+    gap: 0.5rem;
+}
+
+
+// STILE DEGLI STATI DELLE RICHIESTE
+.approved {
+    color: green;
+    font-weight: 600;
+}
+
+
+.pending {
+    color: orange;
+    font-weight: 600;
+}
+
+
+.rejected {
+    color: red;
+    font-weight: 600;
+}
+
+
+// Scrivo entrambe le versioni per gestire 
+//sia underscore che trattino
+.partial_approved,
+.partial-approved {
+    color: rgb(30, 196, 30);
+    font-weight: 600;
+}
+
+
+.draft {
+    color: gray;
+    font-weight: 600;
+}
+
+.in_progress,
+.in-progress {
+    color: #009dff;
+    font-weight: 600;
+}

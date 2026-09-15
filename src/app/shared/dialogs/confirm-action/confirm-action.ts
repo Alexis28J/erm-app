@@ -5,20 +5,21 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   imports: [ MatDialogModule, MatButtonModule ],
-  selector: 'app-confirm-delete',
-  styleUrl: './confirm-delete.scss',
-  templateUrl: './confirm-delete.html',
+  selector: 'app-confirm-action',
+  styleUrls: ['./confirm-action.scss'],
+  templateUrl: './confirm-action.html',
 })
-export class ConfirmDelete {
+export class ConfirmAction {
 
-  readonly dialogRef = inject(MatDialogRef<ConfirmDelete>);
-
+  readonly dialogRef = inject(MatDialogRef<ConfirmAction>);
   readonly data = inject(MAT_DIALOG_DATA);
 
+  // METODO PER CHIUDERE IL DIALOGO SENZA CONFERMA (CANCELLAZIONE)
   onCancel(): void {
     this.dialogRef.close(false);
   }
 
+  // METODO PER CHIUDERE IL DIALOGO CON CONFERMA
   onConfirm(): void{
     this.dialogRef.close(true);
   }

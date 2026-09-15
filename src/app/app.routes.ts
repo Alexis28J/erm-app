@@ -109,8 +109,30 @@ export const routes: Routes = [
             ).then(m => m.RequestDetail)
     },
     {
+        path: 'hr/employee-list',
+        canActivate: [authGuard, roleGuard],
+        data: {
+            role: UserRole.HR
+        },
+        loadComponent: () =>
+            import(
+                './features/hr/employee-list/employee-list'
+            ).then(m => m.EmployeeList)
+    },
+    {
+        path: 'hr/employee-details/:id',
+        canActivate: [authGuard, roleGuard],
+        data: {
+            role: UserRole.HR
+        },
+        loadComponent: () =>
+            import(
+                './features/hr/employee-details/employee-details'
+            ).then(m => m.EmployeeDetails)
+    },
+    {
         path: '**',
         redirectTo: ''
     },
 
-];
+]; 
