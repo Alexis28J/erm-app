@@ -15,10 +15,11 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from "@angular/material/menu";
 import { ConfirmAction } from '../../../shared/dialogs/confirm-action/confirm-action';
 import { Notification } from '../../../shared/notification-service/notification';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   imports: [MatCardModule, MatTableModule, CommonModule, MatAnchor,
-    MatIconModule, MatButtonModule, RouterLink, MatDialogModule, MatMenuModule],
+    MatIconModule, MatButtonModule, RouterLink, MatDialogModule, MatMenuModule, MatProgressSpinnerModule],
   selector: 'app-request-list',
   styleUrls: ['./request-list.scss'],
   templateUrl: './request-list.html',
@@ -92,6 +93,7 @@ export class RequestList {
     const dialogRef = this.dialog.open(  
       ConfirmAction,
       {
+        autoFocus: false,
         data: {
           title: 'Delete Request',
           message: 'Are you sure you want to delete this request?'

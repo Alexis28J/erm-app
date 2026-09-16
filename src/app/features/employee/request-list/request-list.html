@@ -161,18 +161,15 @@
 
                             <!-- VEDERE DETTAGLI RICHIESTA (METODO VIEW DETAILS) -->
                             <button mat-menu-item (click)="viewDetails(request.id)">
-
                                 View Details
                             </button>
 
                             <!-- MODIFICA RICHIESTA (METODO ROUTER LINK) -->
                             <button mat-menu-item routerLink="/employee/edit-request/{{request.id}}">
-
                                 Edit
                             </button>
 
                             <button mat-menu-item color="warn" (click)="deleteRequest(request.id)">
-
                                 Delete
                             </button>
 
@@ -201,9 +198,11 @@
 
             } @else {
 
-            <p>
-                No reimbursement requests found❗
-            </p>
+            <div class="loading-spinner">
+
+                <mat-spinner></mat-spinner>
+
+            </div>
 
             }
 
@@ -211,9 +210,9 @@
 
     </mat-card>
 
-    
-    <button mat-raised-button color="accent" routerLink="/employee/dashboard">
-        Back
+
+    <button mat-raised-button color="accent" routerLink="/employee/dashboard" class="back-btn">
+        Back to the Dashboard
         <mat-icon>arrow_back</mat-icon>
     </button>
 

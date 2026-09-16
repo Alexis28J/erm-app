@@ -7,17 +7,14 @@
 
 html {
   height: 100%;
-  @include mat.theme(
-    (
-      color: (
-        primary: mat.$azure-palette,
+  @include mat.theme((color: (primary: mat.$azure-palette,
         tertiary: mat.$blue-palette,
       ),
       typography: Roboto,
       density: 0,
-    )
-  );
+    ));
 }
+
 
 body {
   // Default the application to a light color theme. This can be changed to
@@ -36,16 +33,211 @@ body {
   margin: 0;
   height: 100%;
 }
+
+
 /* You can add global styles to this file, and also import other style files */
 
 
-// DA CORREGGERE!!! - I colori degli snackbar non vengono applicati correttamente a causa della specificità dei CSS di Angular Material.
-// .success-snackbar {
-//   --mdc-snackbar-container-color: #4caf50 !important;
-//   --mat-snack-bar-button-color: white !important;
-// }
+// Classe per tutte le tabelle Material Design
+.mat-mdc-table {
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 12px !important;
+  overflow: hidden !important; // Impedisce che il contenuto della tabella esca dai bordi arrotondati
+  border-style: solid !important;
+  border-width: 2px !important;
+  border-color: rgba(22, 80, 195, 0.352) !important;
+}
 
-// .error-snackbar {
-//   --mdc-snackbar-container-color: #f44336 !important;
-//   --mat-snack-bar-button-color: white !important;
-// }
+
+// Classe per gli header della tabella Material Design
+.mat-mdc-header-cell {
+  font-weight: bold !important;
+  text-align: center !important;
+  padding: 12px !important;
+  background-color: #c5d7fb !important;
+}
+
+
+// Classe per le celle della tabella Material Design
+.mat-mdc-cell {
+  text-align: center !important;
+  padding: 12px !important;
+}
+
+
+// Classe per l'effetto hover sulle righe della tabella Material Design
+.mat-mdc-row:hover {
+  background-color: #dde5f4 !important;
+}
+
+
+// Classe per tutte le card 
+.mat-mdc-card {
+  padding: 16px !important;
+  margin: 16px !important;
+  border-style: solid !important;
+  border-width: 2px !important;
+  border-color: rgba(22, 80, 195, 0.212) !important;
+  background-color: rgba(21, 99, 255, 0.212) !important;
+  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.4), // Ombra principale per profondità
+    0 0 6px 0 rgba(56, 189, 248, 0.08) !important; // Ombra secondaria per effetto glow
+
+  // Per fare un'animazione quando lo stato della card cambia (ad esempio al passaggio del mouse o al clic)
+  transition: all 0.3s ease !important;
+
+  // Quindi, ora possiamo definire lo stile al passaggio del mouse
+  &:hover {
+    // & è un selettore che si riferisce all'elemento corrente, in questo caso .mat-mdc-card
+    border-color: rgba(60, 98, 250, 0.6) !important;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.4), // Ombra principale per profondità
+      0 0 7px 0 rgba(56, 189, 248, 0.08) !important; // Ombra secondaria per effetto glow
+    /* Solleva leggermente la card */
+    transform: translateY(-0.5px);
+  }
+
+}
+
+
+// Classe per tutti i pulsanti
+.mdc-button--raised {
+  border-style: solid !important;
+  border-width: 2px !important;
+  border-color: rgba(22, 80, 195, 0.35) !important;
+
+  &:hover {
+    border-color: rgba(60, 98, 250, 0.6) !important;
+  }
+}
+
+
+// Classe per la toolbar Material Design
+.mat-toolbar {
+  border-style: solid !important;
+  border-width: 2px !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  background-color: rgba(22, 80, 195, 0.212) !important;
+  box-shadow: 0 3px 5px -2px rgba(0, 0, 0, 0.3);
+  /* Ombra per dare profondità */
+}
+
+/* Contenitore principale a schermo intero */
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  /* Sfondo bianco */
+  z-index: -1;
+  /* Mantiene lo sfondo dietro ai contenuti */
+  overflow: hidden;
+}
+
+/* Stile base per le forme colorate */
+.sphere {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  /* Crea l'effetto sfocato e morbido */
+  opacity: 0.7;
+  animation: fluttua 20s infinite alternate ease-in-out;
+}
+
+/* Definizione dei 4 colori (tonalità simili a #cad5f0) e posizioni iniziali */
+.sphere-1 {
+  width: 400px;
+  height: 400px;
+  background-color: #dce1ef;
+  top: -10%;
+  left: -10%;
+  animation-duration: 25s;
+}
+
+.sphere-2 {
+  width: 500px;
+  height: 500px;
+  background-color: #c7d0e6;
+  bottom: -20%;
+  right: -10%;
+  animation-duration: 30s;
+  animation-delay: -5s; // Ritardo iniziale per la sfera 2
+}
+
+.sphere-3 {
+  width: 350px;
+  height: 350px;
+  background-color: #adbee1;
+  top: 40%;
+  right: 15%;
+  animation-duration: 22s;
+  animation-delay: -2s; // Ritardo iniziale per la sfera 3
+}
+
+.sphere-4 {
+  width: 450px;
+  height: 450px;
+  background-color: #9cb5e6;
+  bottom: 10%;
+  left: 20%;
+  animation-duration: 28s;
+  animation-delay: -7s; // Ritardo iniziale per la sfera 4
+}
+
+
+/* Animazione di movimento e cambio opacità (effetto comparsa/scomparsa) */
+@keyframes fluttua {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.5;
+  }
+
+  25% {
+    transform: translate(25px, 20px) scale(1.1);
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+
+  75% {
+    transform: translate(75px, 60px) scale(1.1);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: translate(100px, 80px) scale(1.2);
+    opacity: 0.4;
+  }
+}
+
+
+/* Menu */
+.mat-mdc-menu-content,
+.mat-mdc-menu-item {
+  background-color: #d0dffd !important;
+
+  &:hover {
+    background-color: #c5d7fb !important;
+  }
+}
+
+
+/* Dialoghi */
+.mat-mdc-dialog-surface {
+  background-color: #dfe7f7 !important;
+}
+
+
+.mat-mdc-progress-spinner {
+  stroke: rgba(60, 98, 250, 0.6) !important; /* Cambia il colore del cerchio */
+}
+
+.loading-spinner {
+  // se voglio centrare il cerchio all'interno del contenitore
+  display: flex !important;
+  justify-content: center !important; /* Centra orizzontalmente */
+  align-items: center !important;     /* Centra verticalmente */
+}

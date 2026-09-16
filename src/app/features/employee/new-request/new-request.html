@@ -43,7 +43,9 @@
                     <!-- SPESE -->
                     <div class="expenses-header">
 
-                        <h3>Expenses</h3>
+                        <h3>Expenses
+                            <mat-icon>receipt</mat-icon>
+                        </h3>
                         <button mat-raised-button color="primary" type="button" (click)="addExpense()">
                             Add Expense
                         </button>
@@ -122,7 +124,7 @@
                         <span>Total Requested: </span>
 
                         <strong>
-                            {{ totalAmount }} €
+                            {{ totalAmount | number: '1.2-2' }} €
                         </strong>
 
                     </div>

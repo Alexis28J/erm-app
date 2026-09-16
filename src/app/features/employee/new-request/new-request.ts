@@ -14,13 +14,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatOptionModule } from "@angular/material/core";
+import { CommonModule } from '@angular/common';
 
 
 
 @Component({
   imports: [ReactiveFormsModule, MatFormFieldModule, MatButtonModule,
     MatCardModule, MatSelectModule, MatIconModule,
-    RouterLink, MatInputModule, MatOptionModule],
+    RouterLink, MatInputModule, MatOptionModule, CommonModule  ],
   selector: 'app-new-request',
   styleUrls: ['./new-request.scss'],
   templateUrl: './new-request.html',

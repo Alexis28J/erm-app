@@ -16,6 +16,7 @@ mat-card {
 mat-card-title {
     display: flex;
     align-items: center;
+    font-weight: 600;
     
     gap: 8px;
     padding-bottom: 24px;
@@ -38,11 +39,16 @@ mat-form-field {
 
 // HEADER DELLA SEZIONE SPESE
 .expenses-header {
-    margin-top: 20px;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    h3 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+    }
 }
 
 

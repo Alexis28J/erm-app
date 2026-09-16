@@ -8,9 +8,11 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from "@angular/m
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmAction } from '../../../shared/dialogs/confirm-action/confirm-action';
 import { Notification } from '../../../shared/notification-service/notification';
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
-  imports: [MatToolbar, MatAnchor, MatCard, MatCardHeader, MatCardTitle, MatCardContent, RouterLink],
+  imports: [MatToolbar, MatAnchor, MatCard, MatCardHeader, MatCardTitle, MatCardContent, RouterLink, MatTooltipModule, MatIconModule],
   selector: 'app-employee-dashboard',
   styleUrls: ['./employee-dashboard.scss'],
   templateUrl: './employee-dashboard.html',
@@ -32,6 +34,7 @@ export class EmployeeDashboard {
   logout(): void {
 
     const dialogRef = this.dialog.open(ConfirmAction, {
+      autoFocus: false,
       data: {
         title: 'Logout',
         message: 'Are you sure you want to log out?'

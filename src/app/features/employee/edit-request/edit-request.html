@@ -60,18 +60,18 @@
 
     <div class="expenses-header">
 
-      <h2>Expenses</h2>
+      <h2>Expenses
+        <mat-icon>receipt</mat-icon>
+      </h2>
 
       <!-- Pulsante per aggiungere una nuova spesa -->
       <button mat-raised-button color="primary" type="button" (click)="addExpense()">
-
         Add Expense
-
       </button>
 
     </div>
 
-    <div formArrayName="expenses">
+    <div formArrayName="expenses" class="expenses-section">
 
       <!-- CICLO SULLE SPESE DEL FORM -->
       @for (expense of expenses.controls; track $index) {
@@ -114,7 +114,7 @@
 
               <mat-form-field appearance="outline">
 
-                <!-- Importo il campo per l'importo richiesto -->
+                <!-- Campo per l'importo richiesto -->
                 <mat-label>Requested Amount</mat-label>
 
                 <input matInput type="number" formControlName="requestedAmount" min="0">
@@ -134,10 +134,10 @@
             </mat-form-field>
 
             <!-- Pulsante per rimuovere la spesa corrente -->
-            <button mat-stroked-button color="warn" type="button" (click)="removeExpense($index)">
-
+            <button mat-stroked-button color="warn" type="button" 
+            (click)="removeExpense($index)"
+            class="remove-btn">
               Remove Expense
-
             </button>
 
           </mat-card-content>
@@ -157,7 +157,7 @@
 
         <h2>
           Total Requested Amount:
-          {{ totalAmount | currency:'EUR' }}
+          {{ totalAmount | number:'1.2-2' }} €
         </h2>
 
       </mat-card-content>
@@ -166,18 +166,20 @@
 
     <div class="actions">
 
+      <!-- Pulsante per tornare indietro -->
+      <button mat-stroked-button color="primary" type="button" routerLink="/employee/request-list">
+        Back
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+
       <!-- Pulsante per salvare la richiesta come bozza -->
       <button mat-stroked-button color="primary" type="button" (click)="saveDraft()">
-
         Save Draft
-
       </button>
 
       <!-- Pulsante per inviare la richiesta -->
       <button mat-raised-button color="accent" type="button" (click)="submitRequest()">
-
         Submit Request
-
       </button>
 
     </div>
@@ -188,12 +190,8 @@
 
 } @else {
 
-<div class="loading-container">
-
+<div class="loading-spinner">
   <mat-spinner></mat-spinner>
-
-  <p>Loading request...</p>
-
 </div>
 
 }

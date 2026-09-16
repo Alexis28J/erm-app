@@ -9,9 +9,11 @@ import { RouterLink } from '@angular/router';
 import { Notification } from '../../../shared/notification-service/notification';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmAction } from '../../../shared/dialogs/confirm-action/confirm-action';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  imports: [MatToolbar, MatAnchor, MatCard, MatCardHeader, MatCardTitle, MatCardContent, RouterLink],
+  imports: [MatToolbar, MatAnchor, MatCard, MatCardHeader, MatCardTitle, MatCardContent, RouterLink, MatTooltipModule, MatIconModule],
   selector: 'app-hr-dashboard',
   styleUrls: ['./hr-dashboard.scss'],
   templateUrl: './hr-dashboard.html',
@@ -34,6 +36,7 @@ export class HrDashboard {
   logout(): void {
 
     const dialogRef = this.dialog.open(ConfirmAction, {
+      autoFocus: false,
       data: {
         title: 'Logout',
         message: 'Are you sure you want to log out?'

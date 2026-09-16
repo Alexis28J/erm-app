@@ -1,8 +1,9 @@
 <!-- TOOLBAR DEL DASHBOARD DELL'IMPIEGATO (HEADER) -->
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" role="banner">
 
     <!-- Logo dell'applicazione -->
-    <img src="https://techjobsfair.it/prod/wp-content/uploads/2022/10/DGS_logo.png" alt="ERM Logo" class="app-logo">
+    <img src="https://techjobsfair.it/prod/wp-content/uploads/2022/10/DGS_logo.png" alt="ERM Logo" class="app-logo"
+        matTooltip="BUILDING THE FUTURE" matTooltipPosition="right">
 
     <!-- Separatore -->
     <span class="spacer"></span>
@@ -20,6 +21,7 @@
     <!-- Pulsante di logout -->
     <button mat-button (click)="logout()">
         Logout
+        <mat-icon>logout</mat-icon>
     </button>
 
 </mat-toolbar>

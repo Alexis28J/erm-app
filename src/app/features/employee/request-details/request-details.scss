@@ -1,19 +1,29 @@
-// CARD PRINCIPALE
-mat-card {
-    max-width: 800px;
-    // se voglio centrare la card, posso aggiungere:
-    margin: 40px auto;
-    padding: 20px;
-}
+:host {
+    padding: 8px;
 
+    mat-card {
+        max-width: 1100px;
+        // per centrare la card orizzontalmente
+        margin: 16px auto !important;
+    }
+
+}
 
 // TITOLO DELLA CARD
 mat-card-title {
     font-size: 28px;
     font-weight: 600;
     padding-bottom: 16px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px; // aggiungo uno spazio tra il titolo e l'icona
 }
 
+mat-card-content {
+    font-size: 18px;
+    line-height: 1.5;
+}
 
 // GRIGLIA DEI DETTAGLI
 .details-grid {
@@ -81,4 +91,11 @@ mat-card-title {
 .in-progress {
     color: #009dff;
     font-weight: 600;
+}
+
+
+// PULSANTE INDIETRO
+.back-btn {
+    margin-top: 24px;
+    margin-left: 115px;
 }

@@ -12,10 +12,11 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   imports: [MatCardModule, MatLabel, MatInputModule, MatFormFieldModule,
-    CommonModule, ReactiveFormsModule, MatButtonModule, RouterLink],
+    CommonModule, ReactiveFormsModule, MatButtonModule, RouterLink, MatIconModule],
   selector: 'app-request-detail',
   styleUrls: ['./request-detail.scss'],
   templateUrl: './request-detail.html',

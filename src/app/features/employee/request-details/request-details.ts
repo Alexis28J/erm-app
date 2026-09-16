@@ -6,10 +6,15 @@ import { RefundRequestService } from '../../../core/services/refund-request.serv
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RefundRequest } from '../../../core/interfaces/refund-request';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 
 @Component({
-  imports: [CommonModule, MatCardModule],
+  imports: [CommonModule, MatCardModule, MatIconModule, MatButtonModule, RouterLink, MatProgressSpinnerModule],
   selector: 'app-request-details',
   styleUrls: ['./request-details.scss'],
   templateUrl: './request-details.html',
