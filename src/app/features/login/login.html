@@ -46,16 +46,20 @@
 
 
                 <!---------------------- CAMPO PASSWORD ----------------------->
-                <mat-form-field appearance="outline">
-
+                <mat-form-field appearance="outline" class="password-field">
 
                     <mat-label>Password</mat-label>
 
-                    <input matInput type="password" formControlName="password">
+                    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
 
                     @if (loginForm.get('password')?.hasError('required')) {
                     <mat-error>Password is required</mat-error>
                     }
+
+                    <!-- Pulsante per mostrare/nascondere la password -->
+                    <button mat-icon-button type="button" (click)="togglePasswordVisibility()">
+                        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
 
                 </mat-form-field>
 

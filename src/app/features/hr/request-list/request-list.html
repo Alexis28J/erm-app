@@ -19,7 +19,9 @@
             @if(requests().length === 0) {
 
             <!-- Messaggio visualizzato quando non ci sono richieste -->
-            <span class="no-found"> No requests found❗</span>
+            <div  class="no-found">
+                <span> No requests found❗</span>
+            </div>
 
             } @else {
 
@@ -118,7 +120,7 @@
     </mat-card>
 
     
-    <button mat-raised-button color="accent" routerLink="/hr/dashboard">
+    <button mat-raised-button color="accent" routerLink="/hr/dashboard" class="back-btn">
         Back to the Dashboard
         <mat-icon>arrow_back</mat-icon>
     </button>

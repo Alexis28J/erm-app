@@ -1,17 +1,5 @@
 .container {
-    // max-width: 1200px;
-    // margin: 20px auto;
-    // padding: 20px;
     margin: 1.5rem;
-}
-
-
-// NON TROVATO 
-// (Messaggio visualizzato quando non ci sono richieste)    
-.no-found {
-    color: gray;
-    font-size: 18px;
-    margin-top: 20px;
 }
 
 
@@ -66,4 +54,23 @@ button {
 .in-progress {
     color: #009dff;
     font-weight: 600;
+}
+
+
+// STILE DEL MESSAGGIO "NON CI SONO RICHIESTE"
+.no-found {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color:rgb(17, 17, 18);
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 20px;
+    padding-bottom: 20px;
+}
+
+
+.back-btn {
+    margin: 1rem;
 }

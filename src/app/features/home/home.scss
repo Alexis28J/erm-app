@@ -2,28 +2,58 @@
     flex: auto;
 }
 
+
 mat-toolbar {
     border-bottom: 1px solid #ccc;
     background-color: #f4f3f6;
 }
 
-.home-container{
+
+.home-container {
     display: flex;
     justify-content: center;
     margin-top: 60px;
 }
 
-mat-card{
+
+mat-card {
     width: 600px;
     padding: 20px;
 }
+
 
 .app-logo {
     height: 120px;
     margin-right: 10px;
 }
 
+
+mat-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    mat-card-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        gap: 10px;
+    }
+}
+
+
+mat-card-content {
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+
 mat-card-actions {
     display: flex;
     justify-content: center;
+    gap: 10px;
 }

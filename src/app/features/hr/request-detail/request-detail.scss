@@ -1,24 +1,27 @@
 .page-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 20px;
 
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
 }
 
-mat-card {
-  border-radius: 16px;
+mat-card-content {
+  font-size: 1.1rem !important;
 }
+
 
 mat-card-header {
   margin-bottom: 16px;
+  padding-top: 8px;
 }
 
 mat-card-title {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 600;
+  margin-bottom: 16px;
 
   display: flex;
   align-items: center;
@@ -39,16 +42,17 @@ mat-card-title {
 .info-item {
   display: flex;
   flex-direction: column;
+  text-align:start;
 }
 
 .info-label {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #666;
   margin-bottom: 4px;
 }
 
 .info-value {
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 600;
 }
 
@@ -154,6 +158,13 @@ mat-card-title {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+  padding: 0px 16px;
+}
+
+.back-btn {
+  margin-right: auto;
+  display: flex;
+  gap: 12px !important;
 }
 
 .approve-btn {

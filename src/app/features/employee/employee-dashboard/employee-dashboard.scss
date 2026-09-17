@@ -53,7 +53,10 @@ mat-card-header {
 h1 {
     font-size: 32px;
     font-weight: bold;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 

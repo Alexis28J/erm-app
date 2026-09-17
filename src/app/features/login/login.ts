@@ -76,6 +76,14 @@ export class Login {
 
   }
 
+
+  // METODO PER MOSTRARE/NASCONDERE LA PASSWORD
+  hidePassword = true;
+
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
+  }
+
 }
 
 

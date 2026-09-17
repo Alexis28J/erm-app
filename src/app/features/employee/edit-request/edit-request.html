@@ -134,9 +134,7 @@
             </mat-form-field>
 
             <!-- Pulsante per rimuovere la spesa corrente -->
-            <button mat-stroked-button color="warn" type="button" 
-            (click)="removeExpense($index)"
-            class="remove-btn">
+            <button mat-stroked-button color="warn" type="button" (click)="removeExpense($index)" class="remove-btn">
               Remove Expense
             </button>
 
@@ -167,10 +165,12 @@
     <div class="actions">
 
       <!-- Pulsante per tornare indietro -->
-      <button mat-stroked-button color="primary" type="button" routerLink="/employee/request-list">
-        Back
-        <mat-icon>arrow_back</mat-icon>
-      </button>
+      <div class="back-btn">
+        <button mat-stroked-button color="primary" type="button" routerLink="/employee/request-list">
+          Back to Request List
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
 
       <!-- Pulsante per salvare la richiesta come bozza -->
       <button mat-stroked-button color="primary" type="button" (click)="saveDraft()">
@@ -190,7 +190,7 @@
 
 } @else {
 
-<div class="loading-spinner">
+<div class="loading-spinner centered-spinner">
   <mat-spinner></mat-spinner>
 </div>
 

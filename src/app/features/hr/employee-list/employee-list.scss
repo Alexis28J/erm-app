@@ -1,21 +1,24 @@
 .page-card {
-  margin: 1.5rem;
-}
+  margin: 2rem !important;
 
+ mat-card-header{
+  padding-bottom: 1rem; 
+  margin-bottom: 1.2rem;
+ }
 
-mat-card-title {
-  padding-bottom: 1rem; // 1rem equivale a uno spazio di base cioè 16px (di solito)
-  font-size: 1.5rem;
+ mat-card-title {
+  font-size: 1.7rem;
   font-weight: bold;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
+}
+
 
 .mat-mdc-form-field {
   width: 100%;
-  margin-bottom: 1rem;
 }
 
 
@@ -46,7 +49,7 @@ mat-card-title {
 }
 
 
+// PULSANTE INDIETRO
 .back-button {
-  margin-top: 1rem;
-  margin-left: 1rem;
+  margin-left: 2rem;
 }

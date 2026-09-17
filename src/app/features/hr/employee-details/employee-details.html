@@ -115,7 +115,7 @@
 <mat-card>
 
     <mat-card-header>
-        <mat-card-title style="padding-bottom: 1rem;">
+        <mat-card-title style="padding-bottom: 2rem;">
             Request History
             <mat-icon>history</mat-icon>
         </mat-card-title>
@@ -123,6 +123,7 @@
 
 
     <mat-card-content>
+        <div class="request-history">
         @for (request of requests(); track request.id) {
 
         <div class="request-row">
@@ -169,6 +170,7 @@
         </div>
 
         }
+        </div>
 
     </mat-card-content>
 
@@ -177,7 +179,7 @@
 }
 
 
-<button mat-raised-button color="accent" routerLink="/hr/employee-list">
+<button mat-raised-button color="accent" routerLink="/hr/employee-list" class="back-btn">
     Back to Employee List
     <mat-icon>arrow_back</mat-icon>
 </button>

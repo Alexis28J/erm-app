@@ -30,13 +30,18 @@ mat-toolbar {
 }
 
 
-/* Stile della scheda principale del dashboard */
-mat-card {
-    padding: 20px;
+/* Titolo del dashboard */
+h1 {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    mat-icon {
+    font-size: 24px;
+}
 }
 
 
-/* Stile dell'header della scheda principale del dashboard */
+/* Header della scheda principale del dashboard */
 mat-card-header {
     display: flex;
     justify-content: center;

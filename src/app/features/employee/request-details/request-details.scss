@@ -94,8 +94,15 @@ mat-card-content {
 }
 
 
+// SPINNER CENTRATO
+.centered-spinner {
+   margin: 250px auto !important; /* Centra verticalmente con margine superiore e inferiore */
+}
+
+
 // PULSANTE INDIETRO
 .back-btn {
     margin-top: 24px;
     margin-left: 115px;
 }
+
