@@ -81,7 +81,7 @@ export class Login {
   hidePassword = true;
 
   togglePasswordVisibility(): void {
-    this.hidePassword = !this.hidePassword;
+    this.hidePassword = !this.hidePassword;   
   }
 
 }

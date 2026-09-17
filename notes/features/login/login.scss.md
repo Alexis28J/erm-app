@@ -12,4 +12,18 @@
 
     padding: 20px;
 }
+
+.password-field {
+// se voglio che il pulsante stia nella stessa riga del input della password, posso usare position: relative;
+    position: relative;
+    display: flex;
+
+    button {
+        width: 40px;  // Imposta la larghezza del pulsante della password
+        position: absolute;
+        right: 0%;  // Posiziona il pulsante orizzontalmente al centro rispetto all'input della password
+        top: 50%;  // Posiziona il pulsante verticalmente al centro rispetto all'input della password
+        transform: translateY(-50%);  // Centra verticalmente il pulsante rispetto all'input della password
+    }
+}
 ```

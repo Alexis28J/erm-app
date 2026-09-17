@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   imports: [ReactiveFormsModule, MatFormFieldModule, MatButtonModule,
     MatCardModule, MatSelectModule, MatIconModule,
-    RouterLink, MatInputModule, MatOptionModule, CommonModule  ],
+    RouterLink, MatInputModule, MatOptionModule, CommonModule],
   selector: 'app-new-request',
   styleUrls: ['./new-request.scss'],
   templateUrl: './new-request.html',
@@ -53,7 +53,7 @@ export class NewRequest {
   // METODO PER AGGIUNGERE UNA SPESA
   addExpense(): void {
 
-    const expense = this.fb.group({   
+    const expense = this.fb.group({
       id: [crypto.randomUUID(), Validators.required],
       date: ['', Validators.required],
       category: ['', Validators.required],
@@ -83,6 +83,7 @@ export class NewRequest {
   }
 
 
+  // METODO PER SALVARE LA RICHIESTA COME BOZZA
   saveDraft(): void {
 
     const currentUser = this.authService.getCurrentUser();

@@ -3,8 +3,7 @@
 
     mat-card {
         max-width: 1100px;
-        // per centrare la card orizzontalmente
-        margin: 16px auto !important;
+        margin: 16px auto !important;  // per centrare la card orizzontalmente
     }
 
 }
@@ -17,7 +16,7 @@ mat-card-title {
 
     display: flex;
     align-items: center;
-    gap: 8px; // aggiungo uno spazio tra il titolo e l'icona
+    gap: 8px; // spazio tra il titolo e l'icona
 }
 
 mat-card-content {
@@ -73,10 +72,8 @@ mat-card-content {
 }
 
 
-// Scrivo entrambe le versioni per gestire 
-//sia underscore che trattino
-.partial_approved,
-.partial-approved {
+.partial_approved,  // Scrivo entrambe le versioni per gestire 
+.partial-approved {  // sia underscore che trattino
     color: rgb(30, 196, 30);
     font-weight: 600;
 }
@@ -96,7 +93,7 @@ mat-card-content {
 
 // SPINNER CENTRATO
 .centered-spinner {
-   margin: 250px auto !important; /* Centra verticalmente con margine superiore e inferiore */
+   margin: 250px auto !important; // Centra verticalmente con margine superiore e inferiore
 }
 
 

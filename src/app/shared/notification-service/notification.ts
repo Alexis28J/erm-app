@@ -11,10 +11,10 @@ export class Notification {
 
         this.snackBar.open(
             message,
-            'Close',
-            {
+            '',  
+            {   
                 duration: 3000,
-                panelClass: ['success-snackbar']
+                panelClass: ['success-snackbar'] // NON USATO AL MOMENTO
             }
         );
 
@@ -25,10 +25,10 @@ export class Notification {
 
         this.snackBar.open(
             message,
-            'Close',
+            '',
             {
                 duration: 5000,
-                panelClass: ['error-snackbar']
+                panelClass: ['error-snackbar'] // NON USATO AL MOMENTO
             }
         )
     }

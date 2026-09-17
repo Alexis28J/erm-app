@@ -70,6 +70,15 @@ export class Login {
       });
 
   }
+
+
+  // METODO PER MOSTRARE/NASCONDERE LA PASSWORD
+  hidePassword = true;  // Stato iniziale della visibilità della password (nascosta)
+
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;   // Cambia lo stato della visibilità della password ogni volta che viene cliccato il pulsante
+  }
+  
 }
 ```
 

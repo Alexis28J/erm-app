@@ -153,7 +153,7 @@ p {
 }
 
 
-// STILE DEGLI STATI DELLE RICHIESTE
+// COLORI DEGLI STATI DELLE RICHIESTE (TESTO)
 .approved {
     color: green;
     font-weight: 600;
@@ -172,10 +172,8 @@ p {
 }
 
 
-// Scrivo entrambe le versioni per gestire 
-//sia underscore che trattino
-.partial_approved,
-.partial-approved {
+.partial_approved,  // Scrivo entrambe le versioni per gestire 
+.partial-approved {  // sia underscore che trattino
     color: rgb(30, 196, 30);
     font-weight: 600;
 }
@@ -192,6 +190,8 @@ p {
     font-weight: 600;
 }
 
+
+// PULSANTE INDIETRO
 .back-btn {
     margin: 0 1rem;
 }

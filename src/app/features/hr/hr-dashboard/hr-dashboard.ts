@@ -13,7 +13,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  imports: [MatToolbar, MatAnchor, MatCard, MatCardHeader, MatCardTitle, MatCardContent, RouterLink, MatTooltipModule, MatIconModule],
+  imports: [MatToolbar, MatAnchor, MatCard,
+    MatCardHeader, MatCardTitle, MatCardContent,
+    RouterLink, MatTooltipModule, MatIconModule],
   selector: 'app-hr-dashboard',
   styleUrls: ['./hr-dashboard.scss'],
   templateUrl: './hr-dashboard.html',
@@ -25,7 +27,7 @@ export class HrDashboard {
   private authService = inject(AuthService);
   private router = inject(Router);
   private notificationService = inject(Notification);
-  private dialog = inject(MatDialog)
+  private dialog = inject(MatDialog);
 
 
   // VARIABILE CHE CONTIENE L'UTENTE CORRENTE (OTTENUTO DAL SERVIZIO DI AUTENTICAZIONE) 

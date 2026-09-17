@@ -16,11 +16,13 @@ mat-card-title {
 }
 
 
+// PULSANTE INDIETRO
 .back-btn {
     margin: 1rem;
 }
 
 
+// COLORI STATUS
 .approved {
     color: green;
     font-weight: 600;
@@ -39,10 +41,10 @@ mat-card-title {
 }
 
 
-// Scrivo entrambe le versioni per gestire 
-//sia underscore che trattino
-.partial_approved,
-.partial-approved {
+
+
+.partial_approved,  // Scrivo entrambe le versioni per gestire 
+.partial-approved { // sia underscore che trattino
     color: rgb(30, 196, 30);
     font-weight: 600;
 }

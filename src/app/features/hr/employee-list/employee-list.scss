@@ -1,18 +1,19 @@
 .page-card {
+
   margin: 2rem !important;
 
- mat-card-header{
-  padding-bottom: 1rem; 
-  margin-bottom: 1.2rem;
- }
+  mat-card-header {
+    padding-bottom: 1rem;
+    margin-bottom: 1.2rem;
+  }
 
- mat-card-title {
-  font-size: 1.7rem;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+  mat-card-title {
+    font-size: 1.7rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
 
 }
 
@@ -22,7 +23,7 @@
 }
 
 
-// Stile per i badge di stato (attivo/inattivo)
+// BADGE DI STATO (ATTIVO/INATTIVO)
 .badge {
   padding: 4px 10px;
   border-radius: 999px;
@@ -43,7 +44,7 @@
 }
 
 
-// Stile per la colonna delle azioni nella tabella
+// COLONNA DELLE AZIONI NELLA TABELLA
 .mat-column-actions {
   width: 180px;
 }

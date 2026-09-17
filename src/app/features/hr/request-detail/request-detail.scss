@@ -18,6 +18,7 @@ mat-card-header {
   padding-top: 8px;
 }
 
+
 mat-card-title {
   font-size: 1.5rem;
   font-weight: 600;
@@ -28,9 +29,12 @@ mat-card-title {
   gap: 8px;
 }
 
+
 .full-width {
   width: 100%;
 }
+
+
 
 // CARD INFORMAZIONE DELLA RICHIESTA
 .request-info {
@@ -42,7 +46,7 @@ mat-card-title {
 .info-item {
   display: flex;
   flex-direction: column;
-  text-align:start;
+  text-align: start;
 }
 
 .info-label {
@@ -57,50 +61,51 @@ mat-card-title {
 }
 
 .status-badge {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 1.5rem;
-    font-weight: 600;
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
+
 
 // COLORI STATUS
 .approved {
-    color: green;
-    font-weight: 600;
+  color: green;
+  font-weight: 600;
 }
 
 
 .pending {
-    color: orange;
-    font-weight: 600;
+  color: orange;
+  font-weight: 600;
 }
 
 
 .rejected {
-    color: red;
-    font-weight: 600;
+  color: red;
+  font-weight: 600;
 }
 
 
-// Scrivo entrambe le versioni per gestire 
-//sia underscore che trattino
 .partial_approved,
+// Scrivo entrambe le versioni per gestire 
 .partial-approved {
-    color: rgb(30, 196, 30);
-    font-weight: 600;
+  // sia underscore che trattino
+  color: rgb(30, 196, 30);
+  font-weight: 600;
 }
 
 
 .draft {
-    color: gray;
-    font-weight: 600;
+  color: gray;
+  font-weight: 600;
 }
 
 .in_progress,
 .in-progress {
-    color: #009dff;
-    font-weight: 600;
+  color: #009dff;
+  font-weight: 600;
 }
 
 
@@ -111,13 +116,14 @@ mat-card-title {
   gap: 12px;
 }
 
-.expense-row {  // Ogni riga di spesa
+.expense-row {
+  // Ogni riga di spesa
   display: grid;
   grid-template-columns:
-    120px    // Category   
-    2fr      // Description  // 2fr significa che questa colonna occuperà due frazioni dello spazio disponibile rispetto alle altre colonne.
-    120px    // Requested Amount
-    180px;   // Approved Amount (input "Amount")
+    120px // Category   
+    2fr // Description  // 2fr significa che questa colonna occuperà due frazioni dello spazio disponibile rispetto alle altre colonne.
+    120px // Requested Amount
+    180px; // Approved Amount (input "Amount")
   gap: 16px;
 
   align-items: center;

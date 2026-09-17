@@ -11,10 +11,9 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 
-
-
 @Component({
-  imports: [MatIconModule, MatCardModule, MatTableModule, DatePipe, CommonModule, MatButtonModule, RouterLink],
+  imports: [MatIconModule, MatCardModule, MatTableModule, DatePipe,
+    CommonModule, MatButtonModule, RouterLink],
   selector: 'app-request-list',
   styleUrls: ['./request-list.scss'],
   templateUrl: './request-list.html',

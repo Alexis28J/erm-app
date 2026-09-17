@@ -1,14 +1,16 @@
+// SPAZIATORE FLESSIBILE PER LAYOUT
 .spacer {
     flex: auto;
 }
 
-
+// TOOLBAR DI ANGULAR MATERIAL
 mat-toolbar {
     border-bottom: 1px solid #ccc;
     background-color: #f4f3f6;
 }
 
 
+// CONTENITORE PRINCIPALE DELLA HOME
 .home-container {
     display: flex;
     justify-content: center;
@@ -16,18 +18,21 @@ mat-toolbar {
 }
 
 
+// CARD DI ANGULAR MATERIAL
 mat-card {
     width: 600px;
     padding: 20px;
 }
 
 
+// LOGO DELL'APPLICAZIONE
 .app-logo {
     height: 120px;
     margin-right: 10px;
 }
 
 
+// HEADER DELLA CARD DI ANGULAR MATERIAL
 mat-card-header {
     display: flex;
     align-items: center;
@@ -44,6 +49,7 @@ mat-card-header {
 }
 
 
+// CONTENUTO DELLA CARD DI ANGULAR MATERIAL
 mat-card-content {
     text-align: center;
     font-size: 16px;
@@ -52,6 +58,7 @@ mat-card-content {
 }
 
 
+// PULSANTI DELLA CARD DI ANGULAR MATERIAL
 mat-card-actions {
     display: flex;
     justify-content: center;

@@ -58,6 +58,11 @@
                     <mat-error>Password is required</mat-error>
                     }
 
+                    <!-- Pulsante per mostrare/nascondere la password -->
+                    <button mat-icon-button type="button" (click)="togglePasswordVisibility()">
+                        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+
                 </mat-form-field>
 
                 @if (errorMessage) {
