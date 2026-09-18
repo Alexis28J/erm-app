@@ -10,7 +10,10 @@ export class Login {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);  // changeDetectorRef è un servizio per forzare l'aggiornamento della vista quando necessario
 
+
+  // MESSAGGIO DI ERRORE (INIZIALMENTE VUOTO)
   errorMessage = '';  // inizializzo il messaggio di errore a una stringa vuota 
 
 
@@ -48,6 +51,9 @@ export class Login {
         if (!user) {
           this.errorMessage =   // Imposto il messaggio di errore se l'autenticazione fallisce
             "Invalid email or password";
+            
+          this.cdr.detectChanges(); // forzare l'aggiornamento della vista per mostrare immediatamente 
+          // il messaggio di errore
 
           return;
         }

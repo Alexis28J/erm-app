@@ -119,6 +119,9 @@ export class RequestDetail {
   }
 
 
+  // VARIABILE PER IL MESSAGGIO DI ERRORE DEL FORM
+  formError = '';
+
   // METODO PER APPROVARE LA RICHIESTA DI RIMBORSO
   approveRequest(): void {
 
@@ -128,6 +131,14 @@ export class RequestDetail {
       return;
     }
 
+    // Se la richiesta non presenta spese approvate (caso provvisorio in fase di sviluppo), 
+    // potrebbe essere necessario gestirlo qui (ad esempio mostrare un messaggio di avviso)
+    if (this.approvedTotal() === 0) {
+      this.formError = 'No expenses have been approved for this request!';
+      return;
+    }
+    /////
+    
     const updatedRequest: RefundRequest = {
 
       ...request,
@@ -148,6 +159,8 @@ export class RequestDetail {
           this.router.navigate(['/hr/request-list']);
         }
       });
+
+
   }
 
 

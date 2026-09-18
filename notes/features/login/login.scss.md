@@ -25,5 +25,6 @@
         top: 50%;  // Posiziona il pulsante verticalmente al centro rispetto all'input della password
         transform: translateY(-50%);  // Centra verticalmente il pulsante rispetto all'input della password
     }
+    
 }
 ```

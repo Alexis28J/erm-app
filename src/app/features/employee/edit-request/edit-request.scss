@@ -53,7 +53,7 @@ mat-form-field {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 16px;
+    padding-bottom: 8px;
 
     h2 {
         display: flex;
@@ -85,16 +85,6 @@ mat-form-field {
 }
 
 
-// SEZIONE DELLE AZIONI
-.actions {
-    margin-top: 24px;
-    gap: 12px;
-
-    display: flex;
-    justify-content: flex-end;
-}
-
-
 // SEZIONE DEL RIEPILOGO
 .summary-card{
     // per allontanare la card dalle altre sezioni
@@ -108,7 +98,25 @@ mat-form-field {
 }
 
 
+// SEZIONE DELLE AZIONI
+.actions {
+    margin: 2.5rem 1rem;
+    gap: 12px;
+
+    display: flex;
+    justify-content: flex-end;
+}
+
+
 // PULSANTE DI RITORNO 
 .back-btn {
     margin-right: auto;
+}
+
+// MESSAGGIO DI ERRORE DEL FORM
+.error-message {
+    color: red;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 5px 14rem;
 }

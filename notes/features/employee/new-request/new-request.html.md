@@ -13,6 +13,12 @@
                 New Refund Request
                 <mat-icon>receipt</mat-icon>
             </mat-card-title>
+
+            <!-- Messaggio di errore quando il form non è valido -->
+            <!-- Se formError è valorizzato (cioè se si verifica uno degli errori nel form), viene visualizzato il messaggio di errore -->
+            @if (formError) {
+            <span class="error-message">{{ formError }}</span>
+            }
         </mat-card-header>
 
 

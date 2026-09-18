@@ -85,6 +85,11 @@
                 Expenses
                 <mat-icon>receipt</mat-icon>
             </mat-card-title>
+
+            @if(formError){
+            <p class="form-error">{{ formError }}</p>
+            }
+
         </mat-card-header>
 
 
@@ -120,7 +125,6 @@
 
                         <input matInput type="number" min="0" required [value]="expense.approvedAmount"
                             (input)="updatedApprovedAmount(expense.id!, +$any($event.target).value)">
-
 
                     </mat-form-field>
 
@@ -185,15 +189,15 @@
     <div class="actions">
 
         <div class="back-btn">
-        <button mat-stroked-button routerLink="/hr/request-list">
-            Request List
-            <mat-icon>arrow_back</mat-icon>
-        </button>
+            <button mat-stroked-button routerLink="/hr/request-list">
+                Request List
+                <mat-icon>arrow_back</mat-icon>
+            </button>
 
-        <button mat-stroked-button [routerLink]="['/hr/employee-details', request.userId]">
-            Employee Details
-            <mat-icon>arrow_back</mat-icon>
-        </button>
+            <button mat-stroked-button [routerLink]="['/hr/employee-details', request.userId]">
+                Employee Details
+                <mat-icon>arrow_back</mat-icon>
+            </button>
         </div>
 
         <button mat-raised-button color="warn" (click)="rejectRequest()" class="reject-btn"

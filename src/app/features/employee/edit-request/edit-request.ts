@@ -201,11 +201,15 @@ export class EditRequest {
   }
 
 
+  // VARIABILE PER IL MESSAGGIO DI ERRORE DEL FORM
+  formError = '';
+
   // METODO PER INVIARE LA RICHIESTA
   submitRequest(): void {
 
     if (this.requestForm.invalid) {
       this.requestForm.markAllAsTouched();
+      this.formError = 'Please fill in all required fields';
       return;
     }
 

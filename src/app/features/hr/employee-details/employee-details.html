@@ -124,53 +124,53 @@
 
     <mat-card-content>
         <div class="request-history">
-        @for (request of requests(); track request.id) {
+            @for (request of requests(); track request.id) {
 
-        <div class="request-row">
+            <!-- Escludo le richieste con stato 'DRAFT'. L'agente HR non dovrebbe visualizzarle -->
+            @if (request.status !== 'DRAFT') {
+            <div class="request-row">
 
-            <span>{{ request.referenceMonth | date: 'yyyy-MM' }}</span>
-            <span>{{ request.creationDate | date: 'yyyy-MM-dd' }}</span>
+                <span>{{ request.referenceMonth | date: 'yyyy-MM' }}</span>
+                <span>{{ request.creationDate | date: 'yyyy-MM-dd' }}</span>
 
-            <!-- <span>{{ request.status }}</span> -->
-            <span class="status" [ngClass]="{
+                <!-- <span>{{ request.status }}</span> -->
+                <span class="status" [ngClass]="{
                 'approved': request.status === 'APPROVED',
                 'rejected': request.status === 'REJECTED',
                 'pending': request.status === 'PENDING',
                 'partial-approved': request.status === 'PARTIAL_APPROVED',
-                'draft': request.status === 'DRAFT',
                 'in-progress': request.status === 'IN_PROGRESS'
             }">
-                @if (request.status === 'PARTIAL_APPROVED') {
-                Partial Approved
-                }
-                @if (request.status === 'APPROVED') {
-                Approved
-                }
-                @if (request.status === 'REJECTED') {
-                Rejected
-                }
-                @if (request.status === 'DRAFT') {
-                Draft
-                }
-                @if (request.status === 'PENDING') {
-                Pending
-                }
-                @if( request.status === 'IN_PROGRESS') {
-                In Progress
-                }
-            </span>
+                    @if (request.status === 'PARTIAL_APPROVED') {
+                    Partial Approved
+                    }
+                    @if (request.status === 'APPROVED') {
+                    Approved
+                    }
+                    @if (request.status === 'REJECTED') {
+                    Rejected
+                    }
+                    @if (request.status === 'PENDING') {
+                    Pending
+                    }
+                    @if( request.status === 'IN_PROGRESS') {
+                    In Progress
+                    }
+                </span>
 
-            <span>{{ request.totalRequestedAmount | number: '1.2-2'}} €</span>
-            <span>{{ request.totalApprovedAmount | number: '1.2-2'}} €</span>
+                <span>{{ request.totalRequestedAmount | number: '1.2-2'}} €</span>
+                <span>{{ request.totalApprovedAmount | number: '1.2-2'}} €</span>
 
-            <button mat-raised-button color="primary" [routerLink]="['/hr/request-details', request.id]">
-                View
-            </button>
+                <button mat-raised-button color="primary" [routerLink]="['/hr/request-details', request.id]">
+                    View
+                </button>
 
+            </div>
+
+            }
+            }
         </div>
 
-        }
-        </div>
 
     </mat-card-content>
 

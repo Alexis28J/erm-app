@@ -16,11 +16,6 @@ mat-card-title {
 }
 
 
-// PULSANTE INDIETRO
-.back-btn {
-    margin: 1rem;
-}
-
 
 // COLORI STATUS
 .approved {
@@ -73,4 +68,12 @@ mat-card-title {
     font-weight: bold;
     margin-top: 20px;
     padding-bottom: 20px;
+}
+
+
+// PULSANTI DI NAVIGAZIONE
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem 1rem;
 }

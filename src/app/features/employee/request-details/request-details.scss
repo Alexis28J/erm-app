@@ -97,9 +97,9 @@ mat-card-content {
 }
 
 
-// PULSANTE INDIETRO
-.back-btn {
-    margin-top: 24px;
-    margin-left: 115px;
+// PULSANTI DI NAVIGAZIONE
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: 3.5rem 4rem;
 }
-

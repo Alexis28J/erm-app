@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from "@angular/material/icon";
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   imports: [ReactiveFormsModule, CommonModule, MatCardModule,
@@ -25,8 +26,10 @@ export class Login {
   // INIEZIONE DELLE DIPENDENZE
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
-  private router = inject(Router);  //ser
+  private router = inject(Router);  
+  private cdr = inject(ChangeDetectorRef);  
 
+  // MESSAGGIO DI ERRORE (INIZIALMENTE VUOTO)
   errorMessage = '';
 
 
@@ -44,7 +47,7 @@ export class Login {
       return;
     }
 
-    const { email, password } = this.loginForm.getRawValue();
+    const { email, password } = this.loginForm.getRawValue();  
 
     this.authService.login(
       email!,
@@ -53,9 +56,8 @@ export class Login {
       .subscribe(user => {
 
         if (!user) {
-          this.errorMessage =
-            "Invalid email or password";
-
+          this.errorMessage = "Invalid email or password";
+          this.cdr.detectChanges(); 
           return;
         }
 

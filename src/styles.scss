@@ -126,7 +126,8 @@ body {
   ANIMAZIONI DELLE SFERE
 //////////////////////////////////////////////////////////////////////////////////*/
 
-// CONTENITORE PRINCIPALE A SCHERMO INTERO
+// TERZA E ULTIMA VERSIONE DELLO SFONDO ANIMATO (ANCOR PIù OTTIMIZZATA)
+
 .background-container {
   position: fixed;
   top: 0;
@@ -138,122 +139,123 @@ body {
   overflow: hidden;
 }
 
+/* 💡 OTTIMIZZAZIONE: Il blur viene applicato una volta sola qui dentro, 
+   evitando il più pesante backdrop-filter */
+.blur-wrapper {
+  width: 100%;
+  height: 100%;
+  filter: blur(60px);
+  /* Ridotto leggermente per performance, ma l'effetto resta soffice */
+  transform: translateZ(0);
+  /* Forza l'accelerazione hardware hardware su Firefox/Chrome */
+}
 
-/* STILE BASE PER LE "SFERE" */
+/* STILE BASE PER LE SFERE */
 .sphere {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.7;
-  will-change: transform, opacity;
+  will-change: transform;
 }
 
-
-/* SFERE INDIVIDUALI */
+/* 💡 OTTIMIZZAZIONE: Dimensioni dimezzate (es. da 500px a 250px).
+   Usiamo scale(2) per riportarle alla grandezza originale senza pesare sulla memoria! */
 .sphere-1 {
-  width: 500px;
-  height: 500px;
+  width: 250px;
+  height: 250px;
   background-color: #cad5f0;
-  top: -10%;
-  left: -10%;
+  top: -5%;
+  left: -5%;
+  opacity: 0.6;
   animation: slow-motion-1 40s infinite ease-in-out alternate;
 }
 
 .sphere-2 {
-  width: 600px;
-  height: 600px;
+  width: 300px;
+  height: 300px;
   background-color: #b8c8eb;
-  bottom: -10%;
-  right: -10%;
+  bottom: -5%;
+  right: -5%;
+  opacity: 0.5;
   animation: slow-motion-2 45s infinite ease-in-out alternate;
 }
 
 .sphere-3 {
-  width: 400px;
-  height: 400px;
+  width: 200px;
+  height: 200px;
   background-color: #9bb5e8;
   top: 30%;
   right: 20%;
+  opacity: 0.5;
   animation: slow-motion-3 38s infinite ease-in-out alternate;
 }
 
 .sphere-4 {
-  width: 550px;
-  height: 550px;
+  width: 275px;
+  height: 275px;
   background-color: #8aa9e6;
   bottom: 15%;
   left: 15%;
+  opacity: 0.5;
   animation: slow-motion-4 50s infinite ease-in-out alternate;
 }
 
-/* Traiettorie personalizzate per ogni forma per evitare movimenti ripetitivi */
+/* 💡 TRAIETTORIE A 3 PUNTI + SCALE INTEGRATO */
 @keyframes slow-motion-1 {
   0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.5;
+    transform: translate(0, 0) scale(2);
   }
 
   50% {
-    transform: translate(15vw, 10vh) scale(1.1);
-    opacity: 0.7;
+    transform: translate(15vw, 10vh) scale(2.2);
   }
 
   100% {
-    transform: translate(5vw, 25vh) scale(0.9);
-    opacity: 0.4;
+    transform: translate(5vw, 25vh) scale(1.8);
   }
 }
 
 @keyframes slow-motion-2 {
   0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.6;
+    transform: translate(0, 0) scale(2);
   }
 
   50% {
-    transform: translate(-20vw, -15vh) scale(0.9);
-    opacity: 0.4;
+    transform: translate(-20vw, -15vh) scale(1.8);
   }
 
   100% {
-    transform: translate(-10vw, 5vh) scale(1.1);
-    opacity: 0.7;
+    transform: translate(-10vw, 5vh) scale(2.2);
   }
 }
 
 @keyframes slow-motion-3 {
   0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.4;
+    transform: translate(0, 0) scale(2);
   }
 
   50% {
-    transform: translate(-10vw, 20vh) scale(1.2);
-    opacity: 0.6;
+    transform: translate(-10vw, 20vh) scale(2.4);
   }
 
   100% {
-    transform: translate(-25vw, -5vh) scale(0.8);
-    opacity: 0.5;
+    transform: translate(-25vw, -5vh) scale(1.6);
   }
 }
 
 @keyframes slow-motion-4 {
   0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.5;
+    transform: translate(0, 0) scale(2);
   }
 
   50% {
-    transform: translate(20vw, -20vh) scale(0.8);
-    opacity: 0.4;
+    transform: translate(20vw, -20vh) scale(1.6);
   }
 
   100% {
-    transform: translate(10vw, -10vh) scale(1.1);
-    opacity: 0.6;
+    transform: translate(10vw, -10vh) scale(2.2);
   }
 }
+
 
 //////////////////////////////////////////////////////////////////////////////////
 /* FINE ANIMAZIONI DELLE SFERE */
@@ -290,15 +292,22 @@ body {
 
 /* SNACKBAR */
 .mdc-snackbar {
-      --mat-sys-inverse-surface: rgba(21, 99, 255, 0.311) !important; /* Colore di sfondo */
-      text-align: center;
+  --mat-sys-inverse-surface: rgba(21, 99, 255, 0.311) !important;
+  /* Colore di sfondo */
+  text-align: center;
+}
+
+mat-mdc-snack-bar-label.panelClass-error {
+  --mat-sys-inverse-surface: rgba(255, 21, 21, 0.311) !important;
 }
 
 
 /* TOOLTIP */
-.mat-tooltip-panel, .mdc-tooltip__surface {
+.mat-tooltip-panel,
+.mdc-tooltip__surface {
   background-color: rgba(244, 245, 246, 0) !important;
   color: #000 !important;
   font-size: 14px !important;
   font-weight: bold !important;
 }
+

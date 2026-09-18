@@ -115,6 +115,56 @@ export class NewRequest {
   // DEFINIZIONE DEL GETTER: In Angular (e in TypeScript/JavaScript in generale), un getter è una funzione speciale che permette di accedere a una proprietà di una classe eseguendo del codice logico al suo interno, ma venendo richiamata all'esterno come se fosse una normale variabile.
 
 
+  // METODO PER SALVARE LA RICHIESTA COME BOZZA
+  saveDraft(): void {
+
+    // Il metodo è molto simile a submitRequest, ma senza i controlli di validità del form e della presenza di spese.
+    // Il metodo saveDraft salva la richiesta come bozza senza effettuare controlli sulla validità del form o sulla presenza di spese.
+
+
+    const currentUser = this.authService.getCurrentUser();
+
+    if (!currentUser) {
+      return;
+    }
+
+    // Oggetto della richiesta di rimborso
+    const request: RefundRequest = {
+
+      userId: currentUser.id,
+
+      referenceMonth: this.requestForm.value.referenceMonth!,
+
+      noteEmployee: this.requestForm.value.noteEmployee || '',
+
+      noteHr: "",
+
+      expenses: (this.requestForm.value.expenses || []) as Expense[],
+
+      totalRequestedAmount: this.totalAmount,
+
+      totalApprovedAmount: 0,
+
+      status: RequestStatus.DRAFT,
+
+      creationDate: new Date().toISOString(),
+
+      lastUpdateDate: new Date().toISOString(),
+
+    };
+
+    this.refundRequestService.
+      createRequest(request)
+      .subscribe({
+        next: () => {
+          this.notificationService.success('Request saved as draft successfully');
+          this.router.navigate(['/employee/dashboard']);
+        }
+      });
+
+  }
+
+
   // METODO PER L'INVIO DEL FORM
   onSubmit(): void {
 
@@ -162,10 +212,87 @@ export class NewRequest {
     // Invia la richiesta al servizio per la creazione di una nuova richiesta di rimborso
     this.refundRequestService.createRequest(request)
       .subscribe({
-        next: () => this.router.navigate(['/employee/request-list'])
+        next: () => {
+          this.notificationService.success('Request submitted successfully');
+          this.router.navigate(['/employee/dashboard']);
+        }
       });
 
   }
+
+
+  // VARIABILE PER IL MESSAGGIO DI ERRORE DEL FORM
+  formError = '';
+
+  // METODO PER L'INVIO DEL FORM
+  submitRequest(): void {
+
+    const currentUser = this.authService.getCurrentUser();
+
+    // Controllo se l'utente corrente esiste
+    if (!currentUser) {
+      return;
+    }
+
+    // NB: Sia .valid che .invalid sono proprietà dei FormGroup e dei FormArray che indicano se il gruppo o l'array è valido o meno
+    
+    // Controllo se il form è valido e se ci sono spese aggiunte
+    if (this.requestForm.invalid && this.expenses.length === 0) {
+      this.requestForm.markAllAsTouched();
+      //this.notificationService.error('Please fill in all required fields');  // Non riesco a personalizzare lo snackbar custom per l'errore!
+      this.formError = 'Please fill in all required fields';
+      return;
+    }
+
+    // Controllo se ci sono spese aggiunte
+    if (this.requestForm.valid && this.expenses.length === 0) {
+      // this.notificationService.error('Please add at least one expense');
+      this.formError = 'Please add at least one expense';
+      return;
+    }
+
+    // Controllo se tutte le spese sono valide
+    if (this.expenses.controls.some(expense => !expense.valid)) {  // se almeno un FormGroup delle spese non è valido
+      this.formError = 'Please fill in all required fields for each expense'; // allora non si può procedere con l'invio della richiesta
+      return;
+    }
+
+
+    // Oggetto della richiesta di rimborso
+    const request: RefundRequest = {
+
+      userId: currentUser.id,
+
+      referenceMonth: this.requestForm.value.referenceMonth!,
+
+      noteEmployee: this.requestForm.value.noteEmployee || '',
+
+      noteHr: "",
+
+      expenses: (this.requestForm.value.expenses) as Expense[],
+
+      totalRequestedAmount: this.totalAmount,
+
+      totalApprovedAmount: 0,
+
+      status: RequestStatus.PENDING,
+
+      creationDate: new Date().toISOString(),
+
+      lastUpdateDate: new Date().toISOString(),
+
+    };
+
+
+    // Invio della richiesta al servizio
+    this.refundRequestService.createRequest(request)
+      .subscribe({
+        next: () => {
+          this.notificationService.success('Request submitted successfully');
+          this.router.navigate(['/employee/dashboard']);
+        }
+      });
+
 }
 
 ```

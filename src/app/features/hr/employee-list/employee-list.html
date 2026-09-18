@@ -93,7 +93,15 @@
 </mat-card>
 
 <!-- Aggiungo un pulsante back -->
-<button mat-raised-button color="accent" routerLink="/hr/dashboard" class="back-button">
-    Back to the Dashboard
-    <mat-icon>arrow_back</mat-icon>
-</button>
+
+<div class="navigation-buttons">
+    <button mat-raised-button color="accent" routerLink="/hr/dashboard">
+        Back to the Dashboard
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+
+    <button mat-raised-button color="accent" routerLink="/hr/request-list">
+        See the Request List
+        <mat-icon>arrow_forward</mat-icon>
+    </button>
+</div>

@@ -69,6 +69,10 @@ mat-form-field {
     margin-bottom: 16px;
 }
 
+.remove-btn {
+    top: 6px;
+}
+
 
 // SEZIONE DEL TOTALE
 .total-section {
@@ -88,4 +92,19 @@ mat-form-field {
 
     display: flex;
     justify-content: flex-end;
+}
+
+
+// PULSANTE DI CANCELLAZIONE
+.cancel-btn {
+    margin-right: auto;
+}
+
+
+// MESSAGGIO DI ERRORE DEL FORM
+.error-message {
+    color: red;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 5px 7rem;
 }

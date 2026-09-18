@@ -77,6 +77,23 @@
 
             </form>
 
+                        <!-- AZIONI DEL LOGIN CARD -->
+            <mat-card-actions>
+
+                <!-- PULSANTE PER TORNARE ALLA HOME -->
+                <button mat-raised-button routerLink="">
+                    <mat-icon>home</mat-icon>
+                    Back to Home
+                </button>
+
+                <!-- PULSANTE PER RIPRISTINARE LA PASSWORD -->
+                <button mat-raised-button routerLink="">
+                    <mat-icon>lock_reset</mat-icon>
+                    Reset Password
+                </button>
+
+            </mat-card-actions>
+
         </mat-card-content>
 
     </mat-card>

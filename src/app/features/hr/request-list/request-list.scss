@@ -70,7 +70,9 @@ button {
 }
 
 
-// PULSANTE INDIETRO
-.back-btn {
-    margin: 1rem;
+// CONTENITORE DEI PULSANTI DI NAVIGAZIONE
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem 1rem;
 }

@@ -10,7 +10,12 @@
                 New Refund Request
                 <mat-icon>receipt</mat-icon>
             </mat-card-title>
+
+            @if (formError) {
+            <span class="error-message">{{ formError }}</span>
+            }
         </mat-card-header>
+
 
 
         <!-- CONTENUTO DELLA CARD -->
@@ -28,7 +33,6 @@
                         <input matInput type="month" formControlName="referenceMonth">
 
                     </mat-form-field>
-
 
                     <!-- Note del dipendente -->
                     <mat-form-field appearance="outline">
@@ -107,7 +111,8 @@
 
 
                             <!-- Pulsante per rimuovere la spesa corrente -->
-                            <button mat-icon-button color="warn" type="button" (click)="removeExpense($index)">
+                            <button mat-icon-button color="warn" type="button" (click)="removeExpense($index)"
+                                class="remove-btn">
                                 <mat-icon>delete</mat-icon>
                             </button>
 
@@ -133,7 +138,7 @@
                     <!-- ACTIONS -->
                     <div class="actions">
 
-                        <button mat-stroked-button routerLink="/employee/dashboard">
+                        <button mat-stroked-button routerLink="/employee/dashboard" class="cancel-btn">
                             Cancel
                         </button>
 
@@ -144,6 +149,7 @@
                         <button mat-raised-button color="primary" (click)="submitRequest()">
                             Submit Request
                         </button>
+
 
                     </div>
 

@@ -8,6 +8,10 @@
   <div class="edit-request-header">
     <h1>Edit Request</h1>
     <mat-icon>edit_document</mat-icon>
+
+    @if (formError) {
+      <span class="error-message">{{ formError }}</span>
+    }
   </div>
 
   <form [formGroup]="requestForm">

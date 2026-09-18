@@ -58,11 +58,11 @@ export class NewRequest {
       date: ['', Validators.required],
       category: ['', Validators.required],
       description: [''],
-      requestedAmount: [0, Validators.required],
+      requestedAmount: [null, Validators.required],
       approvedAmount: [0]
     });
-    this.expenses.push(expense);
 
+    this.expenses.push(expense);
   }
 
 
@@ -129,17 +129,35 @@ export class NewRequest {
   }
 
 
+  // VARIABILE PER IL MESSAGGIO DI ERRORE DEL FORM
+  formError = '';
+
   // METODO PER L'INVIO DEL FORM
   submitRequest(): void {
 
-    if (this.requestForm.invalid) {
-      this.requestForm.markAllAsTouched();
+    const currentUser = this.authService.getCurrentUser();
+
+    // Controllo se l'utente corrente esiste
+    if (!currentUser) {
       return;
     }
 
-    const currentUser = this.authService.getCurrentUser();
+    // Controllo se il form è valido e se ci sono spese aggiunte
+    if (this.requestForm.invalid && this.expenses.length === 0) {
+      this.requestForm.markAllAsTouched();
+      this.formError = 'Please fill in all required fields';
+      return;
+    }
 
-    if (!currentUser) {
+    // Controllo se ci sono spese aggiunte
+    if (this.requestForm.valid && this.expenses.length === 0) {
+      this.formError = 'Please add at least one expense';
+      return;
+    }
+
+    // Controllo se tutte le spese sono valide
+    if (this.expenses.controls.some(expense => !expense.valid)) {
+      this.formError = 'Please fill in all required fields for each expense';
       return;
     }
 
@@ -155,7 +173,7 @@ export class NewRequest {
 
       noteHr: "",
 
-      expenses: (this.requestForm.value.expenses || []) as Expense[],
+      expenses: (this.requestForm.value.expenses) as Expense[],
 
       totalRequestedAmount: this.totalAmount,
 
@@ -179,6 +197,8 @@ export class NewRequest {
         }
       });
 
+
   }
 }
+
 
