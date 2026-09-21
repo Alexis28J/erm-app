@@ -233,13 +233,9 @@
 
 } @else {
 
-  <div class="loading-container">
-
-    <mat-spinner></mat-spinner>
-
-    <p>Loading request...</p>
-
-  </div>
+<div class="loading-spinner centered-spinner">
+  <mat-spinner></mat-spinner>
+</div>
 
 }
 ```

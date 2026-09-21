@@ -35,6 +35,8 @@ export class RequestDetail {
 
       this.request.set(request);
 
+
+      // Controlla se la richiesta è in stato PENDING e non è già stata revisionata
       if (request.status === RequestStatus.PENDING &&
         !this.alreadyReviewed) {
         this.alreadyReviewed = true;
@@ -131,13 +133,13 @@ export class RequestDetail {
       return;
     }
 
-    // Se la richiesta non presenta spese approvate (caso provvisorio in fase di sviluppo), 
-    // potrebbe essere necessario gestirlo qui (ad esempio mostrare un messaggio di avviso)
+    // Controllo se la richiesta ha spese approvate (caso provvisorio in fase di sviluppo)
     if (this.approvedTotal() === 0) {
       this.formError = 'No expenses have been approved for this request!';
       return;
     }
     /////
+    
     
     const updatedRequest: RefundRequest = {
 

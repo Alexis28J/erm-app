@@ -87,6 +87,15 @@ export class RequestDetail {
     }
 
 
+    // Se la richiesta non presenta spese approvate (caso provvisorio in fase di sviluppo), 
+    // potrebbe essere necessario gestirlo qui (ad esempio mostrare un messaggio di avviso)
+    if (this.approvedTotal() === 0) {
+      this.formError = 'No expenses have been approved for this request!';
+      return;
+    }
+    /////
+
+
     const updatedRequest: RefundRequest = {   // crea un nuovo oggetto RefundRequest aggiornato con l'importo approvato modificato per la spesa specificata
       
       ...request,   // Copia tutte le proprietà esistenti della richiesta corrente

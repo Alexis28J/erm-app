@@ -8,9 +8,11 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
-  imports: [CommonModule, MatCardModule, RouterLink, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatCardModule, RouterLink,
+    MatButtonModule, MatIconModule, MatTableModule],
   selector: 'app-employee-details',
   styleUrls: ['./employee-details.scss'],
   templateUrl: './employee-details.html',
@@ -107,5 +109,16 @@ export class EmployeeDetails {
       0
     )
   );
+
+
+  // COLONNE DA VISUALIZZARE NELLA TABELLA DELLE RICHIESTE
+  displayedColumns = [
+    'referenceMonth',
+    'creationDate',
+    'status',
+    'requestedAmount',
+    'approvedAmount',
+    'actions'
+  ]
 
 }

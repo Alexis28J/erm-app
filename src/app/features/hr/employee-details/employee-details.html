@@ -66,6 +66,7 @@
 
             <!-- Richieste totali -->
             <div class="stat-item total-requests">
+                <!-- Se l'utente non ha ancora effettuato richieste -->
                 <h3>{{ totalRequests() }}</h3>
                 <p>Total Requests</p>
             </div>
@@ -123,54 +124,130 @@
 
 
     <mat-card-content>
-        <div class="request-history">
-            @for (request of requests(); track request.id) {
 
-            <!-- Escludo le richieste con stato 'DRAFT'. L'agente HR non dovrebbe visualizzarle -->
-            @if (request.status !== 'DRAFT') {
-            <div class="request-row">
+        @if (requests().length > 0) {
 
-                <span>{{ request.referenceMonth | date: 'yyyy-MM' }}</span>
-                <span>{{ request.creationDate | date: 'yyyy-MM-dd' }}</span>
+        <table mat-table [dataSource]="requests().filter(r => r.status !== 'DRAFT')">
 
-                <!-- <span>{{ request.status }}</span> -->
-                <span class="status" [ngClass]="{
-                'approved': request.status === 'APPROVED',
-                'rejected': request.status === 'REJECTED',
-                'pending': request.status === 'PENDING',
-                'partial-approved': request.status === 'PARTIAL_APPROVED',
-                'in-progress': request.status === 'IN_PROGRESS'
-            }">
-                    @if (request.status === 'PARTIAL_APPROVED') {
-                    Partial Approved
-                    }
-                    @if (request.status === 'APPROVED') {
-                    Approved
-                    }
-                    @if (request.status === 'REJECTED') {
-                    Rejected
-                    }
-                    @if (request.status === 'PENDING') {
-                    Pending
-                    }
-                    @if( request.status === 'IN_PROGRESS') {
-                    In Progress
-                    }
-                </span>
 
-                <span>{{ request.totalRequestedAmount | number: '1.2-2'}} €</span>
-                <span>{{ request.totalApprovedAmount | number: '1.2-2'}} €</span>
+            <!-- Mese di riferimento -->
+            <ng-container matColumnDef="referenceMonth">
 
-                <button mat-raised-button color="primary" [routerLink]="['/hr/request-details', request.id]">
-                    View
-                </button>
+                <th mat-header-cell *matHeaderCellDef>
+                    Month
+                </th>
 
-            </div>
+                <td mat-cell *matCellDef="let request">
+                    {{ request.referenceMonth}}
+                </td>
 
-            }
-            }
+            </ng-container>
+
+
+            <!-- Data di creazione -->
+            <ng-container matColumnDef="creationDate">
+
+                <th mat-header-cell *matHeaderCellDef>
+                    Creation Date
+                </th>
+
+                <td mat-cell *matCellDef="let request">
+                    {{ request.creationDate | date:'yyyy-MM-dd'}}
+                </td>
+
+            </ng-container>
+
+
+            <!-- Status -->
+            <ng-container matColumnDef="status">
+
+                <th mat-header-cell *matHeaderCellDef>
+                    Status
+                </th>
+
+                <td mat-cell *matCellDef='let request'>
+
+                    <span class="status-badge" [ngClass]="request.status.toLowerCase()">
+                        @if (request.status === 'PARTIAL_APPROVED') {
+                        Partial Approved
+                        }
+                        @if (request.status === 'APPROVED') {
+                        Approved
+                        }
+                        @if (request.status === 'REJECTED') {
+                        Rejected
+                        }
+                        @if (request.status === 'PENDING') {
+                        Pending
+                        }
+                        @if( request.status === 'IN_PROGRESS') {
+                        In Progress
+                        }
+                    </span>
+                </td>
+
+            </ng-container>
+
+
+            <!-- Importo richiesto -->
+            <ng-container matColumnDef="requestedAmount">
+
+                <th mat-header-cell *matHeaderCellDef>
+                    Requested Amount
+                </th>
+
+                <td mat-cell *matCellDef="let request">
+                    {{ request.totalRequestedAmount | number: '1.2-2' }}
+                </td>
+
+            </ng-container>
+
+
+            <!-- Importo accettato -->
+            <ng-container matColumnDef="approvedAmount">
+
+                <th mat-header-cell *matHeaderCellDef>
+                    Approved Amount
+                </th>
+
+                <td mat-cell *matCellDef="let request">
+                    {{ request.totalApprovedAmount | number: '1.2-2' }}
+                </td>
+
+            </ng-container>
+
+
+            <!-- Actions -->
+            <ng-container matColumnDef="actions">
+
+                <th mat-header-cell *matHeaderCellDef>
+                    Actions
+                </th>
+
+                <td mat-cell *matCellDef="let request">
+
+                    <button mat-raised-button color="primary" [routerLink]="['/hr/request-details', request.id]">
+                        View
+                    </button>
+                </td>
+
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        </table>
+
+        } @else {
+
+        <div class="empty">
+
+            <p>No requests found❗</p>
+
         </div>
 
+        }
 
     </mat-card-content>
 

@@ -121,60 +121,130 @@
 </mat-card>
 
 
-<mat-card>
-
-    <mat-card-header>
-        <mat-card-title style="padding-bottom: 1rem;">
-            Request History
-            <mat-icon>history</mat-icon>
-        </mat-card-title>
-    </mat-card-header>
-
-
     <mat-card-content>
-        @for (request of requests(); track request.id) {
 
-        <div class="request-row">
+        <table mat-table [dataSource]="requests().filter(request => request.status !== 'DRAFT')" class="history-table">
+        <!-- predicate value è un filtro per escludere le richieste con stato "DRAFT" -->
+        <!-- In questo modo, nella tabella verranno visualizzate solo le richieste che non sono in stato "DRAFT" -->
 
-            <span>{{ request.referenceMonth | date: 'yyyy-MM' }}</span>
-            <span>{{ request.creationDate | date: 'yyyy-MM-dd' }}</span>
-            
-            <!-- <span>{{ request.status }}</span> -->
-            <span class="status" [ngClass]="{
-                'approved': request.status === 'APPROVED',
-                'rejected': request.status === 'REJECTED',
-                'pending': request.status === 'PENDING',
-                'partial-approved': request.status === 'PARTIAL_APPROVED',
-                'draft': request.status === 'DRAFT',
-                'in-progress': request.status === 'IN_PROGRESS'
-            }">
-                @if (request.status === 'PARTIAL_APPROVED') {
-                Partial Approved
-                }
-                @if (request.status === 'APPROVED') {
-                Approved
-                }
-                @if (request.status === 'REJECTED') {
-                Rejected
-                }
-                @if (request.status === 'DRAFT') {
-                Draft
-                }
-                @if (request.status === 'PENDING') {
-                Pending
-                }
-                @if( request.status === 'IN_PROGRESS') {
-                In Progress
-                }
-            </span>
+            <!-- Reference Month -->
 
-            <span>{{ request.totalRequestedAmount | number: '1.2-2'}} €</span>
-            <span>{{ request.totalApprovedAmount | number: '1.2-2'}} €</span>
+            <ng-container matColumnDef="referenceMonth">
+                <th mat-header-cell *matHeaderCellDef>
+                    Month
+                </th>
 
-            <button mat-raised-button color="primary" [routerLink]="['/hr/request-details', request.id]">
-                View
-            </button>
-            <!-- Perché routerLink ha bisogno delle parentesi quadre? Risposta: Le parentesi quadre indicano che stiamo passando un array di segmenti di percorso come input binding, permettendo di costruire dinamicamente l'URL. -->
+                <td mat-cell *matCellDef="let request">
+                    {{ request.referenceMonth }}
+                </td>
+            </ng-container>
+
+            <!-- Creation Date -->
+
+            <ng-container matColumnDef="creationDate">
+                <th mat-header-cell *matHeaderCellDef>
+                    Creation Date
+                </th>
+
+                <td mat-cell *matCellDef="let request">
+                    {{ request.creationDate | date:'yyyy-MM-dd' }}
+                </td>
+            </ng-container>
+
+            <!-- Status -->
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>
+                    Status
+                </th>
+
+                <td mat-cell *matCellDef="let request">
+
+                    <span class="status-badge" [ngClass]="request.status.toLowerCase()">
+
+                    @if (request.status === 'PARTIAL_APPROVED') {
+                    Partial Approved
+                    }
+                    @if (request.status === 'APPROVED') {
+                    Approved
+                    }
+                    @if (request.status === 'REJECTED') {
+                    Rejected
+                    }
+                    @if (request.status === 'PENDING') {
+                    Pending
+                    }
+                    @if( request.status === 'IN_PROGRESS') {
+                    In Progress
+                    }
+
+                    </span>
+
+                </td>
+            </ng-container>
+
+            <!-- Requested Amount -->
+
+            <ng-container matColumnDef="requestedAmount">
+                <th mat-header-cell *matHeaderCellDef>
+                    Requested
+                </th>
+
+                <td mat-cell *matCellDef="let request">
+                    {{ request.totalRequestedAmount | number:'1.2-2' }} €
+                </td>
+            </ng-container>
+
+            <!-- Approved Amount -->
+
+            <ng-container matColumnDef="approvedAmount">
+                <th mat-header-cell *matHeaderCellDef>
+                    Approved
+                </th>
+
+                <td mat-cell *matCellDef="let request">
+                    {{ request.totalApprovedAmount ?? 0 | number:'1.2-2' }} €
+                </td>
+            </ng-container>
+
+            <!-- Actions -->
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>
+                    Actions
+                </th>
+
+                <td mat-cell *matCellDef="let request">
+
+                    <button mat-raised-button color="primary" [routerLink]="['/hr/request-details', request.id]">
+
+                <!-- Perché routerLink ha bisogno delle parentesi quadre? Risposta: Le parentesi quadre indicano che stiamo passando un array di segmenti di percorso come input binding, permettendo di costruire dinamicamente l'URL. -->
+
+                        View
+
+                    </button>
+
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns">
+            </tr>
+
+            <tr mat-row *matRowDef="let row; columns: displayedColumns">
+            </tr>
+
+        </table>
+
+        @if (requests().length === 0) {
+
+        <div class="empty-state">
+
+            <mat-icon>receipt_long</mat-icon>
+
+            <p>
+                No reimbursement requests found
+            </p>
+
         </div>
 
         }
@@ -190,4 +260,81 @@
     Back to Employee List
     <mat-icon>arrow_back</mat-icon>
 </button>
+```
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+# MODIFICA SEZIONE "REQUEST HISTORY"
+
+Ho deciso di sostituire il blocco di codice appartenente all'area Request History con altro che fa uso del componente MatTableModule. In questo modo ha coerenza visiva con il resto del sito.
+
+``` HTML
+<mat-card>
+
+    <mat-card-header>
+        <mat-card-title style="padding-bottom: 2rem;">
+            Request History
+            <mat-icon>history</mat-icon>
+        </mat-card-title>
+    </mat-card-header>
+
+
+    <mat-card-content>
+       <div class="request-history">
+            @for (request of requests(); track request.id) {
+
+            <!-- Escludo le richieste con stato 'DRAFT'. L'agente HR non dovrebbe visualizzarle -->
+            @if (request.status !== 'DRAFT') {
+
+            <div class="request-row">
+
+                <span>{{ request.referenceMonth | date: 'yyyy-MM' }}</span>
+                <span>{{ request.creationDate | date: 'yyyy-MM-dd' }}</span>
+
+                <!-- <span>{{ request.status }}</span> -->
+                <span class="status" [ngClass]="{
+                'approved': request.status === 'APPROVED',
+                'rejected': request.status === 'REJECTED',
+                'pending': request.status === 'PENDING',
+                'partial-approved': request.status === 'PARTIAL_APPROVED',
+                'in-progress': request.status === 'IN_PROGRESS'
+            }">
+                    @if (request.status === 'PARTIAL_APPROVED') {
+                    Partial Approved
+                    }
+                    @if (request.status === 'APPROVED') {
+                    Approved
+                    }
+                    @if (request.status === 'REJECTED') {
+                    Rejected
+                    }
+                    @if (request.status === 'PENDING') {
+                    Pending
+                    }
+                    @if( request.status === 'IN_PROGRESS') {
+                    In Progress
+                    }
+                </span>
+
+                <span>{{ request.totalRequestedAmount | number: '1.2-2'}} €</span>
+                <span>{{ request.totalApprovedAmount | number: '1.2-2'}} €</span>
+
+                <button mat-raised-button color="primary" [routerLink]="['/hr/request-details', request.id]">
+                    View
+                </button>
+            <!-- Perché routerLink ha bisogno delle parentesi quadre? Risposta: Le parentesi quadre indicano che stiamo passando un array di segmenti di percorso come input binding, permettendo di costruire dinamicamente l'URL. -->
+
+            </div>
+
+            }
+
+            }
+            
+        </div>
+
+    </mat-card-content>
+
+</mat-card>
 ```

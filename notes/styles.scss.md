@@ -97,23 +97,33 @@
   ANIMAZIONI DELLE SFERE
 //////////////////////////////////////////////////////////////////////////////////*/
 /// 
-/// SECONDA VERSIONE OTTIMIZZATA
+/// TERZA VERSIONE DELLO SFONDO ANIMATO (MASSIMA OTTIMIZZAZIONE)
 .background-container {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background-color: #ffffff;
   z-index: -1;
   overflow: hidden;
 }
 
-/* 💡 OTTIMIZZAZIONE: Il blur viene applicato una volta sola qui dentro, 
-   evitando il più pesante backdrop-filter */
+/* 🚀 SUPER OTTIMIZZAZIONE: Rimpicciolito e poi scalato */
 .blur-wrapper {
-  width: 100%;
-  height: 100%;
-  filter: blur(60px); /* Ridotto leggermente per performance, ma l'effetto resta soffice */
-  transform: translateZ(0); /* Forza l'accelerazione hardware hardware su Firefox/Chrome */
+  width: 25%;         /* Occupa solo 1/4 dello schermo nei calcoli */
+  height: 25%;        /* Occupa solo 1/4 dello schermo nei calcoli */
+  position: absolute;
+  top: 0;
+  left: 0;
+  
+  filter: blur(20px); /* Ridotto il raggio (perché ora l'area è più piccola) */
+  
+  /* we origin top left per gestire lo scale, e lo ingrandiamo di 4 volte */
+  transform-origin: top left;
+  transform: scale(4) translateZ(0); 
+  
+  backface-visibility: hidden; /* Ulteriore spinta per la GPU */
 }
 
 /* STILE BASE PER LE SFERE */
@@ -123,64 +133,72 @@
   will-change: transform;
 }
 
-/* 💡 OTTIMIZZAZIONE: Dimensioni dimezzate (es. da 500px a 250px).
-   Usiamo scale(2) per riportarle alla grandezza originale senza pesare sulla memoria! */
+/* 🚀 OTTIMIZZAZIONE: Dimensioni ridotte per scalare dentro il wrapper al 25% */
 .sphere-1 {
-  width: 250px; height: 250px;
+  width: 70px;
+  height: 70px;
   background-color: #cad5f0;
-  top: -5%; left: -5%;
+  top: -5%;
+  left: -5%;
   opacity: 0.6;
   animation: slow-motion-1 40s infinite ease-in-out alternate;
 }
 
 .sphere-2 {
-  width: 300px; height: 300px;
+  width: 80px;
+  height: 80px;
   background-color: #b8c8eb;
-  bottom: -5%; right: -5%;
+  bottom: -5%;
+  right: -5%;
   opacity: 0.5;
   animation: slow-motion-2 45s infinite ease-in-out alternate;
 }
 
 .sphere-3 {
-  width: 200px; height: 200px;
+  width: 60px;
+  height: 60px;
   background-color: #9bb5e8;
-  top: 30%; right: 20%;
+  top: 30%;
+  right: 20%;
   opacity: 0.5;
   animation: slow-motion-3 38s infinite ease-in-out alternate;
 }
 
 .sphere-4 {
-  width: 275px; height: 275px;
+  width: 75px;
+  height: 75px;
   background-color: #8aa9e6;
-  bottom: 15%; left: 15%;
+  bottom: 15%;
+  left: 15%;
   opacity: 0.5;
   animation: slow-motion-4 50s infinite ease-in-out alternate;
 }
 
-/* 💡 TRAIETTORIE A 3 PUNTI + SCALE INTEGRATO */
+/* 🚀 NOTA: Abbiamo rimosso lo scale(2) dalle animazioni perché ci pensa già il wrapper! */
 @keyframes slow-motion-1 {
-  0%   { transform: translate(0, 0) scale(2); }
-  50%  { transform: translate(15vw, 10vh) scale(2.2); }
-  100% { transform: translate(5vw, 25vh) scale(1.8); }
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(15vw, 10vh); }
+  100% { transform: translate(5vw, 25vh); }
 }
 
 @keyframes slow-motion-2 {
-  0%   { transform: translate(0, 0) scale(2); }
-  50%  { transform: translate(-20vw, -15vh) scale(1.8); }
-  100% { transform: translate(-10vw, 5vh) scale(2.2); }
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(-20vw, -15vh); }
+  100% { transform: translate(-10vw, 5vh); }
 }
 
 @keyframes slow-motion-3 {
-  0%   { transform: translate(0, 0) scale(2); }
-  50%  { transform: translate(-10vw, 20vh) scale(2.4); }
-  100% { transform: translate(-25vw, -5vh) scale(1.6); }
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(-10vw, 20vh); }
+  100% { transform: translate(-25vw, -5vh); }
 }
 
 @keyframes slow-motion-4 {
-  0%   { transform: translate(0, 0) scale(2); }
-  50%  { transform: translate(20vw, -20vh) scale(1.6); }
-  100% { transform: translate(10vw, -10vh) scale(2.2); }
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(20vw, -20vh); }
+  100% { transform: translate(10vw, -10vh); }
 }
+
 
 //////////////////////////////////////////////////////////////////////////////////
 /* FINE ANIMAZIONI DELLE SFERE */
@@ -601,4 +619,125 @@ Il problema principale non sono le animazioni in sé, ma l'uso combinato di filt
 
 //////////////////////////////////////////////////////////////////////////////////
 /* FINE ANIMAZIONI DELLE SFERE */
+```
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# TERZA VERSIONE DELLO SFONDO ANIMATO (MASSIMA OTTIMIZAZZIONE)
+
+1. IL TRUCCO DEL DOWNSCALING
+
+Invece di applicare il blur su un wrapper a dimensione intera, faccio rimpicciolire il .blur-wrapper al 25% della sua dimensione e poi farlo ingrandire di 4 volte usando transform: scale(4).
+
+Quindi, il browser dovrà calcolare il blur (e i movimenti delle sfere) su un'area 4 volte più piccola (meno pixel), e solo dopo ingrandirà il risultato visivo. Trattandosi di un'animazione astratta e sfocata, la perdita di risoluzione è totalmente invisibile all'occhio umano, ma le performance schizzano alle stelle.
+
+
+2. SOSTITUZIONE FILTER BLUR CON I GRADIENTI RADIALI
+
+Se si vuole eliminare del tutto la proprietà filter (che su alcuni browser mobile consuma molta batteria), posso definire la sfocatura direttamente dentro le sfere usando un radial-gradient che sfuma verso il trasparente. I gradienti nativi sono molto più leggeri da calcolare per la GPU rispetto a un filtro di sfuocatura algoritmico.
+
+```SCSS
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: -1;
+  overflow: hidden;
+}
+
+/* 🚀 SUPER OTTIMIZZAZIONE: Rimpicciolito e poi scalato */
+.blur-wrapper {
+  width: 25%;         /* Occupa solo 1/4 dello schermo nei calcoli */
+  height: 25%;        /* Occupa solo 1/4 dello schermo nei calcoli */
+  position: absolute;
+  top: 0;
+  left: 0;
+  
+  filter: blur(20px); /* Ridotto il raggio (perché ora l'area è più piccola) */
+  
+  /* we origin top left per gestire lo scale, e lo ingrandiamo di 4 volte */
+  transform-origin: top left;
+  transform: scale(4) translateZ(0); 
+  
+  backface-visibility: hidden; /* Ulteriore spinta per la GPU */
+  // backface-visibility serve a migliorare le prestazioni della GPU durante le trasformazioni 3D facendo sì che il retro dell'elemento non venga renderizzato
+}
+
+/* STILE BASE PER LE SFERE */
+.sphere {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+/* 🚀 OTTIMIZZAZIONE: Dimensioni ridotte per scalare dentro il wrapper al 25% */
+.sphere-1 {
+  width: 70px;
+  height: 70px;
+  background-color: #cad5f0;
+  top: -5%;
+  left: -5%;
+  opacity: 0.6;
+  animation: slow-motion-1 40s infinite ease-in-out alternate;
+}
+
+.sphere-2 {
+  width: 80px;
+  height: 80px;
+  background-color: #b8c8eb;
+  bottom: -5%;
+  right: -5%;
+  opacity: 0.5;
+  animation: slow-motion-2 45s infinite ease-in-out alternate;
+}
+
+.sphere-3 {
+  width: 60px;
+  height: 60px;
+  background-color: #9bb5e8;
+  top: 30%;
+  right: 20%;
+  opacity: 0.5;
+  animation: slow-motion-3 38s infinite ease-in-out alternate;
+}
+
+.sphere-4 {
+  width: 75px;
+  height: 75px;
+  background-color: #8aa9e6;
+  bottom: 15%;
+  left: 15%;
+  opacity: 0.5;
+  animation: slow-motion-4 50s infinite ease-in-out alternate;
+}
+
+/* 🚀 NOTA: Abbiamo rimosso lo scale(2) dalle animazioni perché ci pensa già il wrapper! */
+@keyframes slow-motion-1 {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(15vw, 10vh); }
+  100% { transform: translate(5vw, 25vh); }
+}
+
+@keyframes slow-motion-2 {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(-20vw, -15vh); }
+  100% { transform: translate(-10vw, 5vh); }
+}
+
+@keyframes slow-motion-3 {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(-10vw, 20vh); }
+  100% { transform: translate(-25vw, -5vh); }
+}
+
+@keyframes slow-motion-4 {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(20vw, -20vh); }
+  100% { transform: translate(10vw, -10vh); }
+}
+
 ```

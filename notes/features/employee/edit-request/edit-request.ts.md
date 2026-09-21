@@ -234,11 +234,18 @@ export class EditRequest {
   }
 
 
+  // VARIABILE PER IL MESSAGGIO DI ERRORE DEL FORM
+  formError = '';  // Inizializzo come una stringa vuota la variabile per il messaggio di errore del form
+
+
   // METODO PER INVIARE LA RICHIESTA
   submitRequest(): void {  // Metodo per inviare la richiesta compilata dal form.
  
     if (this.requestForm.invalid) {    // Se il form non è valido, interrompiamo l'invio della richiesta.
       this.requestForm.markAllAsTouched();  // Evidenziamo tutti i campi del form come "toccati" (normalmente visualizzati con un bordo rosso o un messaggio di errore) per mostrare eventuali errori di validazione.
+
+      this.formError = 'Please fill in all required fields';  // Mostra un messaggio di errore che indica all'utente di completare tutti i campi obbligatori
+
       return;  // Interrompiamo l'invio della richiesta se il form non è valido.
     }
 
@@ -271,9 +278,13 @@ export class EditRequest {
       )
       .subscribe({   // Gestiamo la risposta dell'aggiornamento della richiesta.
         next: () => {
+
+          this.notificationService.success('Request submitted successfully');
+
           this.router.navigate([
             '/employee/request-list'
           ]);
+
         }
       });
 

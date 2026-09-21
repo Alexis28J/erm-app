@@ -12,6 +12,7 @@
         <mat-card-header>
             <mat-card-title>
                 Request Details
+                <mat-icon>description</mat-icon>
             </mat-card-title>
         </mat-card-header>
 
@@ -69,6 +70,7 @@
         <mat-card-header>
             <mat-card-title>
                 Employee Note
+                <mat-icon>notes</mat-icon>
             </mat-card-title>
         </mat-card-header>
 
@@ -89,6 +91,7 @@
         <mat-card-header>
             <mat-card-title>
                 Expenses
+                <mat-icon>receipt</mat-icon>
             </mat-card-title>
         </mat-card-header>
 
@@ -150,6 +153,7 @@
         <mat-card-header>
             <mat-card-title>
                 HR Note
+                <mat-icon>edit</mat-icon>
             </mat-card-title>
         </mat-card-header>
 
@@ -192,19 +196,29 @@
 
     <!-- PULSANTI ACTIONS -->
     <div class="actions">
-        <button mat-raised-button color="warn" (click)="approveRequest()" class="approve-btn"
-            [disabled]="request.status === 'APPROVED'">
-            Approve
-        </button>
+        <div class="back-btn">
+
+            <button mat-stroked-button routerLink="/hr/request-list">
+                Request List
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+
+            <button mat-stroked-button [routerLink]="['/hr/employee-details', request.userId]">
+                Employee Details
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
 
         <button mat-raised-button color="warn" (click)="rejectRequest()" class="reject-btn"
             [disabled]="request.status === 'REJECTED'">
             Reject
         </button>
 
-        <button mat-stroked-button routerLink="/hr/request-list">
-            Back
+        <button mat-raised-button color="warn" (click)="approveRequest()" class="approve-btn"
+            [disabled]="request.status === 'APPROVED'">
+            Approve
         </button>
+        
     </div>
 
 

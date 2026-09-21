@@ -126,7 +126,7 @@ body {
   ANIMAZIONI DELLE SFERE
 //////////////////////////////////////////////////////////////////////////////////*/
 
-// TERZA E ULTIMA VERSIONE DELLO SFONDO ANIMATO (ANCOR PIù OTTIMIZZATA)
+// TERZA E ULTIMA VERSIONE DELLO SFONDO ANIMATO
 
 .background-container {
   position: fixed;
@@ -139,16 +139,23 @@ body {
   overflow: hidden;
 }
 
-/* 💡 OTTIMIZZAZIONE: Il blur viene applicato una volta sola qui dentro, 
-   evitando il più pesante backdrop-filter */
+
+/* WRAPPER SFERE BLUR */
 .blur-wrapper {
-  width: 100%;
-  height: 100%;
-  filter: blur(60px);
-  /* Ridotto leggermente per performance, ma l'effetto resta soffice */
-  transform: translateZ(0);
-  /* Forza l'accelerazione hardware hardware su Firefox/Chrome */
+  width: 25%;
+  height: 25%;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  filter: blur(20px);
+
+  transform-origin: top left;
+  transform: scale(4) translateZ(0);
+
+  backface-visibility: hidden;  
 }
+
 
 /* STILE BASE PER LE SFERE */
 .sphere {
@@ -157,11 +164,9 @@ body {
   will-change: transform;
 }
 
-/* 💡 OTTIMIZZAZIONE: Dimensioni dimezzate (es. da 500px a 250px).
-   Usiamo scale(2) per riportarle alla grandezza originale senza pesare sulla memoria! */
 .sphere-1 {
-  width: 250px;
-  height: 250px;
+  width: 70px;
+  height: 70px;
   background-color: #cad5f0;
   top: -5%;
   left: -5%;
@@ -170,8 +175,8 @@ body {
 }
 
 .sphere-2 {
-  width: 300px;
-  height: 300px;
+  width: 80px;
+  height: 80px;
   background-color: #b8c8eb;
   bottom: -5%;
   right: -5%;
@@ -180,8 +185,8 @@ body {
 }
 
 .sphere-3 {
-  width: 200px;
-  height: 200px;
+  width: 60px;
+  height: 60px;
   background-color: #9bb5e8;
   top: 30%;
   right: 20%;
@@ -190,8 +195,8 @@ body {
 }
 
 .sphere-4 {
-  width: 275px;
-  height: 275px;
+  width: 75px;
+  height: 75px;
   background-color: #8aa9e6;
   bottom: 15%;
   left: 15%;
@@ -199,60 +204,61 @@ body {
   animation: slow-motion-4 50s infinite ease-in-out alternate;
 }
 
-/* 💡 TRAIETTORIE A 3 PUNTI + SCALE INTEGRATO */
+
+/* ANIMAZIONI DELLE SFERE */
 @keyframes slow-motion-1 {
   0% {
-    transform: translate(0, 0) scale(2);
+    transform: translate(0, 0);
   }
 
   50% {
-    transform: translate(15vw, 10vh) scale(2.2);
+    transform: translate(15vw, 10vh);
   }
 
   100% {
-    transform: translate(5vw, 25vh) scale(1.8);
+    transform: translate(5vw, 25vh);
   }
 }
 
 @keyframes slow-motion-2 {
   0% {
-    transform: translate(0, 0) scale(2);
+    transform: translate(0, 0);
   }
 
   50% {
-    transform: translate(-20vw, -15vh) scale(1.8);
+    transform: translate(-20vw, -15vh);
   }
 
   100% {
-    transform: translate(-10vw, 5vh) scale(2.2);
+    transform: translate(-10vw, 5vh);
   }
 }
 
 @keyframes slow-motion-3 {
   0% {
-    transform: translate(0, 0) scale(2);
+    transform: translate(0, 0);
   }
 
   50% {
-    transform: translate(-10vw, 20vh) scale(2.4);
+    transform: translate(-10vw, 20vh);
   }
 
   100% {
-    transform: translate(-25vw, -5vh) scale(1.6);
+    transform: translate(-25vw, -5vh);
   }
 }
 
 @keyframes slow-motion-4 {
   0% {
-    transform: translate(0, 0) scale(2);
+    transform: translate(0, 0);
   }
 
   50% {
-    transform: translate(20vw, -20vh) scale(1.6);
+    transform: translate(20vw, -20vh);
   }
 
   100% {
-    transform: translate(10vw, -10vh) scale(2.2);
+    transform: translate(10vw, -10vh);
   }
 }
 
@@ -310,4 +316,3 @@ mat-mdc-snack-bar-label.panelClass-error {
   font-size: 14px !important;
   font-weight: bold !important;
 }
-
