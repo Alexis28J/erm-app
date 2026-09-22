@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, ViewChild, effect } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UserService } from '../../../core/services/user.service';
 import { RefundRequestService } from '../../../core/services/refund-request.service';
@@ -8,16 +8,75 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { RefundRequest } from '../../../core/interfaces/refund-request';
+import { catchError, of } from 'rxjs';
 
 @Component({
   imports: [CommonModule, MatCardModule, RouterLink,
-    MatButtonModule, MatIconModule, MatTableModule],
+    MatButtonModule, MatIconModule, MatTableModule,
+    MatSortModule],
   selector: 'app-employee-details',
   styleUrls: ['./employee-details.scss'],
   templateUrl: './employee-details.html',
 })
 export class EmployeeDetails {
+
+  constructor() {
+
+    effect(() => {
+      this.dataSource.data = this.requests().filter(r => r.status !== 'DRAFT');
+    });
+
+  }
+
+  @ViewChild(MatSort)
+
+  set sort(sort: MatSort) {
+
+    if (!sort) {
+      return;
+    }
+
+    this.dataSource.sort = sort;
+
+    this.dataSource.sortingDataAccessor = (
+      item,
+      property
+    ) => {
+
+      switch (property) {
+
+        case 'creationDate':
+          return new Date(item.creationDate).getTime();
+
+        case 'requestedAmount':
+          return item.totalRequestedAmount;
+
+        case 'approvedAmount':
+          return item.totalApprovedAmount ?? 0;
+
+        default:
+          return item[property as keyof RefundRequest] as any;
+
+      }
+
+    };
+
+    // Ordinamento iniziale della tabella (dal più recente al meno recente)
+    this.dataSource.sort.active = 'creationDate';
+    this.dataSource.sort.direction = 'desc';
+    this.dataSource.sort.sortChange.emit({
+      active: 'creationDate',
+      direction: 'desc'
+    });
+
+  }
+
+
+  dataSource = new MatTableDataSource<RefundRequest>();
+
 
   // INIEZIONE DELLE DIPENDENZE
   private route = inject(ActivatedRoute);
@@ -54,6 +113,10 @@ export class EmployeeDetails {
     this.route.paramMap.pipe(
       switchMap(params =>
         this.requestService.getRequestsByUserId(params.get('id')!)
+          .pipe(catchError(error => {
+            console.error(error);
+            return of([]);
+          }))
       )
     ),
     {

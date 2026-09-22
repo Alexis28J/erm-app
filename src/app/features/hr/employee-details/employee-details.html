@@ -96,14 +96,14 @@
             <!-- Quantità totale richiesta -->
             <div class="stat-item total-requested-amount">
                 <h3>{{ totalRequestedAmount() | number: '1.2-2'}} €</h3>
-                <p>Total Requested</p>
+                <p>Total Requested Amount</p>
             </div>
 
 
             <!-- Quantità totale approvata -->
             <div class="stat-item total-approved-amount">
                 <h3>{{ totalApprovedAmount() | number: '1.2-2'}} €</h3>
-                <p>Total Approved</p>
+                <p>Total Approved Amount</p>
             </div>
 
         </div>
@@ -116,7 +116,7 @@
 <mat-card>
 
     <mat-card-header>
-        <mat-card-title style="padding-bottom: 2rem;">
+        <mat-card-title style="padding-bottom: 0.5rem;">
             Request History
             <mat-icon>history</mat-icon>
         </mat-card-title>
@@ -125,20 +125,17 @@
 
     <mat-card-content>
 
-        @if (requests().length > 0) {
-
-        <table mat-table [dataSource]="requests().filter(r => r.status !== 'DRAFT')">
-
+        <table mat-table [dataSource]="dataSource" matSort>
 
             <!-- Mese di riferimento -->
             <ng-container matColumnDef="referenceMonth">
 
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     Month
                 </th>
 
                 <td mat-cell *matCellDef="let request">
-                    {{ request.referenceMonth}}
+                    {{ request.referenceMonth }}
                 </td>
 
             </ng-container>
@@ -147,7 +144,7 @@
             <!-- Data di creazione -->
             <ng-container matColumnDef="creationDate">
 
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     Creation Date
                 </th>
 
@@ -161,7 +158,7 @@
             <!-- Status -->
             <ng-container matColumnDef="status">
 
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     Status
                 </th>
 
@@ -192,12 +189,12 @@
             <!-- Importo richiesto -->
             <ng-container matColumnDef="requestedAmount">
 
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="requestedAmount">
                     Requested Amount
                 </th>
 
                 <td mat-cell *matCellDef="let request">
-                    {{ request.totalRequestedAmount | number: '1.2-2' }}
+                    {{ request.totalRequestedAmount | number: '1.2-2' }} €
                 </td>
 
             </ng-container>
@@ -206,12 +203,12 @@
             <!-- Importo accettato -->
             <ng-container matColumnDef="approvedAmount">
 
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="approvedAmount">
                     Approved Amount
                 </th>
 
                 <td mat-cell *matCellDef="let request">
-                    {{ request.totalApprovedAmount | number: '1.2-2' }}
+                    {{ request.totalApprovedAmount | number: '1.2-2' }} €
                 </td>
 
             </ng-container>
@@ -239,9 +236,9 @@
 
         </table>
 
-        } @else {
+        @if (requests().length === 0) {
 
-        <div class="empty">
+        <div class="no-found">
 
             <p>No requests found❗</p>
 

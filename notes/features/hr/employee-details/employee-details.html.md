@@ -1,13 +1,17 @@
 # COMMENTI
 
 ```HTML
+
 <!-- employee() significa che stiamo accedendo ai dettagli dell'impiegato corrente.
-         as employee significa che stiamo creando un alias locale per l'impiegato corrente.
-         Quindi "Se employee() è definito, allora possiamo accedere ai dettagli dell'impiegato tramite l'alias employee" -->
+as employee significa che stiamo creando un alias locale per l'impiegato corrente.
+Quindi "Se employee() è definito, allora possiamo accedere ai dettagli dell'impiegato tramite l'alias employee" -->
 <!-- L'alias employee può essere utilizzato all'interno di questo blocco per accedere ai dettagli dell'impiegato corrente.
-          Questo ci permette di evitare di dover chiamare employee() ripetutamente all'interno del blocco. -->
+Questo ci permette di evitare di dover chiamare employee() ripetutamente all'interno del blocco. -->
+
 
 @if (employee(); as employee) {
+<!-- Se l'oggetto employee è disponibile. Può darsi che non lo sia ancora se i dati non sono stati caricati. -->
+<!-- Questo controllo serve a evitare errori nel template quando i dati non sono ancora pronti. -->
 
 <mat-card class="employee-card">
 
@@ -104,14 +108,14 @@
             <!-- Quantità totale richiesta -->
             <div class="stat-item total-requested-amount">
                 <h3>{{ totalRequestedAmount() | number: '1.2-2'}} €</h3>
-                <p>Total Requested</p>
+                <p>Total Requested Amount</p>
             </div>
 
 
             <!-- Quantità totale approvata -->
             <div class="stat-item total-approved-amount">
                 <h3>{{ totalApprovedAmount() | number: '1.2-2'}} €</h3>
-                <p>Total Approved</p>
+                <p>Total Approved Amount</p>
             </div>
 
         </div>
@@ -123,14 +127,16 @@
 
     <mat-card-content>
 
-        <table mat-table [dataSource]="requests().filter(request => request.status !== 'DRAFT')" class="history-table">
-        <!-- predicate value è un filtro per escludere le richieste con stato "DRAFT" -->
-        <!-- In questo modo, nella tabella verranno visualizzate solo le richieste che non sono in stato "DRAFT" -->
+        <table mat-table [dataSource]="dataSource" matSort>
+        <!-- [dataSource] è la fonte dei dati per la tabella, in questo caso è collegata alla proprietà dataSource del componente. -->
+        <!-- Quindi [dataSource]="dataSource" indica che la tabella utilizza la proprietà dataSource del componente come fonte dei dati. -->
+        <!-- Mentre [dataSource]="requests()" utilizzerebbe direttamente il signal delle richieste come fonte dei dati. -->
+        <!-- La differenza principale è che utilizzando dataSource si può sfruttare la funzionalità di ordinamento e filtraggio della tabella di Angular Material. -->
 
             <!-- Reference Month -->
 
             <ng-container matColumnDef="referenceMonth">
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     Month
                 </th>
 
@@ -142,7 +148,7 @@
             <!-- Creation Date -->
 
             <ng-container matColumnDef="creationDate">
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     Creation Date
                 </th>
 
@@ -154,7 +160,7 @@
             <!-- Status -->
 
             <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     Status
                 </th>
 
@@ -186,7 +192,7 @@
             <!-- Requested Amount -->
 
             <ng-container matColumnDef="requestedAmount">
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="requestedAmount">
                     Requested
                 </th>
 
@@ -198,7 +204,7 @@
             <!-- Approved Amount -->
 
             <ng-container matColumnDef="approvedAmount">
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="approvedAmount">
                     Approved
                 </th>
 
@@ -237,13 +243,9 @@
 
         @if (requests().length === 0) {
 
-        <div class="empty-state">
+        <div class="no-found">
 
-            <mat-icon>receipt_long</mat-icon>
-
-            <p>
-                No reimbursement requests found
-            </p>
+            <p>No requests found❗</p>
 
         </div>
 
@@ -263,7 +265,7 @@
 ```
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 # MODIFICA SEZIONE "REQUEST HISTORY"
@@ -337,4 +339,4 @@ Ho deciso di sostituire il blocco di codice appartenente all'area Request Histor
     </mat-card-content>
 
 </mat-card>
-```
+``` -->

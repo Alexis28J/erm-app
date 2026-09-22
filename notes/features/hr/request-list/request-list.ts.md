@@ -16,9 +16,46 @@ export class RequestList {
         requests.filter(
           request => request.status !== 'DRAFT'
         ));
-    });
+      this.dataSource.data = this.requests();  // Aggiorna la dataSource della tabella con le richieste filtrate.
+    }); // this.requests() contiene le richieste di rimborso filtrate, escluse quelle in stato 'DRAFT'.
 
   }
+
+  
+  @ViewChild(MatSort)  // @ViewChild è un decoratore che permette di ottenere un riferimento a un elemento figlio del template, in questo caso il MatSort della tabella.
+  // Questo permette di collegare il MatSort alla dataSource della tabella, abilitando l'ordinamento delle colonne. 
+  set sort(sort: MatSort) {  // Imposta il MatSort per la tabella e definisce l'accessor (funzione di accesso) dei dati per l'ordinamento delle colonne.
+    if (!sort) {  // Se il MatSort non è disponibile, esci dalla funzione.
+      return;
+    }
+
+    this.dataSource.sort = sort;  // Collega il MatSort alla dataSource della tabella per abilitare l'ordinamento delle colonne.
+
+    this.dataSource.sortingDataAccessor = (item, property) => {
+
+      // Questo blocco definisce l'accessor (funzione di accesso) dei dati per l'ordinamento delle colonne.
+      // L'accessor dei dati viene utilizzato dalla tabella per determinare come ordinare i valori delle colonne.
+      switch (property) {
+        case 'month': return item.referenceMonth;
+        case 'creationDate': return new Date(item.creationDate).getTime();
+        case 'amount': return item.totalRequestedAmount;
+        default: return item[property as keyof RefundRequest] as any;
+      }
+    };
+
+    // Ordinamento iniziale
+
+    this.dataSource.sort.active = 'creationDate';
+    this.dataSource.sort.direction = 'desc';
+    this.dataSource.sort.sortChange.emit({
+      active: 'creationDate',
+      direction: 'desc'
+    });
+  }
+
+
+  dataSource = new MatTableDataSource<RefundRequest>();  // Fonte dei dati per la tabella delle richieste di rimborso
+
 
   private refundRequestService = inject(RefundRequestService);
   private router = inject(Router);

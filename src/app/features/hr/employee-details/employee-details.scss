@@ -43,7 +43,7 @@ mat-card-title {
 .stats-grid {
     margin-top: 1rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 1rem;
 }
 
@@ -101,41 +101,6 @@ mat-card-title {
 }
 
 
-// LAYOUT DELLE RIGHE DELLE RICHIESTE (REQUEST ROW)
-.request-history {
-    display: flex;
-    flex-direction: column;
-    border: 2px solid rgba(22, 80, 195, 0.298);
-    border-radius: 12px;
-    background-color: white;
-
-    &:hover {
-        border-color: rgba(60, 98, 250, 0.6);
-    }
-}
-
-.request-row {
-    display: grid;
-    grid-template-columns:
-        1fr 1fr 1fr 1fr 1fr auto;
-
-    gap: 1rem;
-    align-items: center;
-    padding: 0.7rem;
-    background-color: white;
-    border-bottom: 1px solid rgba(22, 80, 195, 0.212);
-    border-radius: inherit;
-
-    &:hover {
-        background: #dde5f4;
-
-        // Effetto di sollevamento al passaggio del mouse
-        transform: translateY(-1px);
-        transition: transform 0.3s ease;
-    }
-}
-
-
 // STILE DEI BADGE DI STATO (ACTIVE/INACTIVE)
 .badge {
     padding: 1.5px 8px;
@@ -179,8 +144,10 @@ p {
 }
 
 
-.partial_approved,  // Scrivo entrambe le versioni per gestire 
-.partial-approved {  // sia underscore che trattino
+.partial_approved,
+// Scrivo entrambe le versioni per gestire 
+.partial-approved {
+    // sia underscore che trattino
     color: rgb(30, 196, 30);
     font-weight: 600;
 }
@@ -199,8 +166,7 @@ p {
 
 
 // VUOTO
-.empty {
-
+.no-found {
     display: flex;
     align-items: center;
     justify-content: center;

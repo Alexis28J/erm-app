@@ -1,3 +1,6 @@
+# COMMENTI
+
+```HTML
 <div class="container">
 
     <mat-card>
@@ -26,6 +29,10 @@
             } @else {
 
             <table mat-table [dataSource]="dataSource" matSort>
+                <!-- [dataSource] è la fonte dei dati per la tabella, in questo caso è collegata alla proprietà dataSource del componente. -->
+                <!-- Quindi [dataSource]="dataSource" indica che la tabella utilizza la proprietà dataSource del componente come fonte dei dati. -->
+                <!-- Mentre [dataSource]="requests()" utilizzerebbe direttamente il signal delle richieste come fonte dei dati. -->
+                <!-- La differenza principale è che utilizzando dataSource si può sfruttare la funzionalità di ordinamento e filtraggio della tabella di Angular Material. -->
 
                 <!-- Mese di riferimento -->
                 <ng-container matColumnDef="month">
@@ -132,3 +139,4 @@
     </div>
 
 </div>
+```

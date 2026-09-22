@@ -60,6 +60,16 @@ body {
   text-align: center !important;
   padding: 12px !important;
   background-color: #c5d7fb !important;
+
+  // Se voglio modificare mat-sort-header-container, posso farlo qui.
+  .mat-sort-header-container {
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .mat-sort-header-arrow {
+    opacity: 0.38 !important;
+  }
 }
 
 
@@ -153,7 +163,7 @@ body {
   transform-origin: top left;
   transform: scale(4) translateZ(0);
 
-  backface-visibility: hidden;  
+  backface-visibility: hidden;
 }
 
 
