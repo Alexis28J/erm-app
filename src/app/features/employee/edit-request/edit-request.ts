@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, computed } from '@angular/core';
 import { Notification } from '../../../shared/notification-service/notification';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -18,13 +18,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-bar';
+import { startWith } from 'rxjs';
 
 
 @Component({
   imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule,
     MatInputModule, MatButtonModule, MatProgressSpinnerModule,
     DatePipe, MatOption, MatSelectModule, MatIconModule, RouterLink,
-    CommonModule],
+    CommonModule, ProgressBar],
   selector: 'app-edit-request',
   styleUrls: ['./edit-request.scss'],
   templateUrl: './edit-request.html',
@@ -250,6 +252,20 @@ export class EditRequest {
 
   }
 
+  expensesValue = toSignal(   // Converto l'Observable delle spese in un Signal in modo da poterlo utilizzare reattivamente nel template e nel codice TypeScript
+    this.expenses.valueChanges.pipe(  // Il metodo valueChanges mi permette di osservare i cambiamenti nei valori delle spese in tempo reale mentre .pipe viene utilizzato per applicare operatori RxJS come startWith
+      startWith(this.expenses.getRawValue()) // startWith viene utilizzato per emettere immediatamente il valore iniziale delle spese in modo che il Signal abbia un valore iniziale corretto
+    ),
+    { initialValue: [] }  // Valore iniziale del Signal, utilizzato prima che l'Observable emetta il primo valore (cioè quando il form è appena caricato)
+  )
+
+
+expenseProgressData = computed(() => {
+  return this.expensesValue().map((expense: Expense) => ({
+    category: expense.category ?? '',
+    amount: Number(expense.requestedAmount ?? 0)
+  }) )
+})
 }
 
 

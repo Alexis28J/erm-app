@@ -80,6 +80,7 @@
 
                                 <mat-select formControlName="category">
 
+                                    <mat-option value="" disabled>Select a category</mat-option>
                                     <mat-option value="TAXI">Taxi</mat-option>
                                     <mat-option value="TRAIN">Train</mat-option>
                                     <mat-option value="MEAL">Meal</mat-option>
@@ -109,14 +110,22 @@
 
                             </mat-form-field>
 
-
                             <!-- Pulsante per rimuovere la spesa corrente -->
                             <button mat-icon-button color="warn" type="button" (click)="removeExpense($index)"
                                 class="remove-btn">
                                 <mat-icon>delete</mat-icon>
                             </button>
 
+
+
+
                         </div>
+
+                        <app-progress-bar [category]="expenseProgressData()[$index]?.category"
+                            [amount]="expenseProgressData()[$index]?.amount || 0"></app-progress-bar>
+
+                        <!-- Linea divisoria -->
+                        <mat-divider></mat-divider>
 
                         }
 

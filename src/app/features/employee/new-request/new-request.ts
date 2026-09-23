@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { Notification } from '../../../shared/notification-service/notification';
 import { FormBuilder, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -15,13 +15,17 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatOptionModule } from "@angular/material/core";
 import { CommonModule } from '@angular/common';
-
+import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-bar';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { startWith } from 'rxjs';
+import { MatDivider } from '@angular/material/divider';
 
 
 @Component({
   imports: [ReactiveFormsModule, MatFormFieldModule, MatButtonModule,
     MatCardModule, MatSelectModule, MatIconModule,
-    RouterLink, MatInputModule, MatOptionModule, CommonModule],
+    RouterLink, MatInputModule, MatOptionModule, CommonModule,
+    ProgressBar, MatDivider],
   selector: 'app-new-request',
   styleUrls: ['./new-request.scss'],
   templateUrl: './new-request.html',
@@ -197,8 +201,26 @@ export class NewRequest {
         }
       });
 
-
   }
+
+  // SIGNAL PER TENERE TRACCIA DEI VALORI DELLE SPESE
+  expensesValue = toSignal(   // Converto l'Observable delle spese in un Signal in modo da poterlo utilizzare reattivamente nel template e nel codice TypeScript
+    this.expenses.valueChanges.pipe(  // Il metodo valueChanges mi permette di osservare i cambiamenti nei valori delle spese in tempo reale mentre .pipe viene utilizzato per applicare operatori RxJS come startWith
+      startWith(this.expenses.getRawValue()) // startWith viene utilizzato per emettere immediatamente il valore iniziale delle spese in modo che il Signal abbia un valore iniziale corretto
+    ),
+    { initialValue: [] }  // Valore iniziale del Signal, utilizzato prima che l'Observable emetta il primo valore (cioè quando il form è appena caricato)
+  )
+
+
+  // COMPUTED PER OTTENERE I DATI DI PROGRESSO DELLE SPESE
+  expenseProgressData = computed(() => {   // Dopo averlo convertito in Signal, posso calcolare i dati di progresso delle spese in modo reattivo
+    return this.expensesValue().map((expense: Expense) => ({
+      category: expense.category ?? '',
+      amount: Number(expense.requestedAmount ?? 0)
+    }));
+  });
+
+
 }
 
 

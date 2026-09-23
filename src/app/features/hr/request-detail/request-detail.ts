@@ -13,10 +13,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-bar';
+import { MatDivider } from '@angular/material/divider';
 
 @Component({
-  imports: [MatCardModule, MatLabel, MatInputModule, MatFormFieldModule,
-    CommonModule, ReactiveFormsModule, MatButtonModule, RouterLink, MatIconModule],
+  imports: [MatCardModule, MatLabel, MatInputModule,
+    MatFormFieldModule, CommonModule, ReactiveFormsModule,
+    MatButtonModule, RouterLink, MatIconModule,
+    ProgressBar, MatDivider],
   selector: 'app-request-detail',
   styleUrls: ['./request-detail.scss'],
   templateUrl: './request-detail.html',
@@ -139,8 +143,8 @@ export class RequestDetail {
       return;
     }
     /////
-    
-    
+
+
     const updatedRequest: RefundRequest = {
 
       ...request,

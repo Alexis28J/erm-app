@@ -37,7 +37,6 @@ body {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 /* You can add global styles to this file, and also import other style files */
 
-
 // TABELLE MATERIAL DESIGN
 .mat-mdc-table {
   width: 100%;
@@ -314,7 +313,7 @@ body {
 }
 
 mat-mdc-snack-bar-label.panelClass-error {
-  --mat-sys-inverse-surface: rgba(255, 21, 21, 0.311) !important;
+  --mat-sys-inverse-surface: rgba(255, 21, 21, 0.311) !important;  
 }
 
 
@@ -325,4 +324,10 @@ mat-mdc-snack-bar-label.panelClass-error {
   color: #000 !important;
   font-size: 14px !important;
   font-weight: bold !important;
+}
+
+
+/* SELECT PANEL */
+.mat-mdc-select-panel {
+  background-color: #c6d9fc !important;
 }

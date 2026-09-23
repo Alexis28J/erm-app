@@ -100,6 +100,9 @@
 
                 @for (expense of request.expenses; track expense.id) {
 
+                <!-- Linea divisoria -->
+                <mat-divider></mat-divider>
+
                 <div class="expense-row">
 
                     <div>
@@ -129,6 +132,10 @@
                     </mat-form-field>
 
                 </div>
+
+                <app-progress-bar [category]="expense.category" [amount]="expense.requestedAmount">
+                </app-progress-bar>
+
 
                 }
 

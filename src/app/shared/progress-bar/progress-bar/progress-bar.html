@@ -1,0 +1,23 @@
+<div class="progress-header">
+
+    <span>{{ category() }}</span>
+
+    <span class="progress-amount">
+        {{ amount() }} € / {{ maxAmount() }} €
+    </span>
+
+    <span class="progress-percentage">
+
+        {{ percentage() | number:'2.0-2' }}%
+
+    </span>
+
+</div>
+
+
+<div class="progress-track">
+
+    <div class="progress-fill" [style.width.%]="percentage()" [ngClass]="progressClass()">
+    </div>
+
+</div>

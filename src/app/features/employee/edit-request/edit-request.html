@@ -104,7 +104,8 @@
                 <mat-label>Category</mat-label>
 
                 <mat-select formControlName="category">
-
+                  <!-- per evitare l'autofocus automatico sul primo elemento della select, aggiungo un'opzione vuota -->
+                  <mat-option value="" disabled>Select a category</mat-option>
                   <mat-option value="TAXI">Taxi</mat-option>
                   <mat-option value="TRAIN">Train</mat-option>
                   <mat-option value="MEAL">Meal</mat-option>
@@ -124,6 +125,9 @@
                 <input matInput type="number" formControlName="requestedAmount" min="0">
 
               </mat-form-field>
+
+                                      <app-progress-bar [category]="expenseProgressData()[$index]?.category"
+                            [amount]="expenseProgressData()[$index]?.amount || 0"></app-progress-bar>
 
             </div>
 

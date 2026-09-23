@@ -2,8 +2,8 @@
     padding: 8px;
 
     mat-card {
-        max-width: 1100px;
-        margin: 16px auto !important;  // per centrare la card orizzontalmente
+        max-width: 1100px !important;
+        margin: 12px auto !important;  // per centrare la card orizzontalmente
     }
 
 }
@@ -33,7 +33,7 @@ mat-card-content {
 }
 
 
-// ETICHETTE 
+// ETICHETTE
 .label {
     font-weight: 600;
 }
@@ -72,7 +72,7 @@ mat-card-content {
 }
 
 
-.partial_approved,  // Scrivo entrambe le versioni per gestire 
+.partial_approved,  // Scrivo entrambe le versioni per gestire
 .partial-approved {  // sia underscore che trattino
     color: rgb(30, 196, 30);
     font-weight: 600;
@@ -91,6 +91,14 @@ mat-card-content {
 }
 
 
+// CARDS DEI GRAFICI DELLE SPESE
+.expenses-overview-header {
+    // padding: 16px;
+    margin-bottom: 22px;
+}
+
+
+
 // SPINNER CENTRATO
 .centered-spinner {
    margin: 250px auto !important; // Centra verticalmente con margine superiore e inferiore
@@ -101,5 +109,6 @@ mat-card-content {
 .navigation-buttons {
     display: flex;
     justify-content: space-between;
-    margin: 3.5rem 4rem;
+    margin: 3rem 5.8rem;
 }
+
