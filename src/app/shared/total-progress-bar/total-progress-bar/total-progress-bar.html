@@ -1,0 +1,21 @@
+<div class="summary-values">
+
+    <span>
+        TOTAL
+    </span>
+
+    <span class="requested-amount">
+        {{requestedAmount()}} € / {{allowedAmount()}} €
+    </span>
+
+    <span class="percentage">
+        {{percentage() | number:'2.0-2'}}%
+    </span>
+
+</div>
+
+
+<div class="progress-track">
+    <div class="progress-fill" [style.width.%]="percentage()" [ngClass]="totalProgressClass()">
+    </div>
+</div>

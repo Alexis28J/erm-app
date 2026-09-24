@@ -93,6 +93,7 @@ body {
   margin: 16px !important;
   border-style: solid !important;
   border-width: 2px !important;
+  border-radius: 16px !important;
   border-color: rgba(22, 80, 195, 0.212) !important;
   background-color: rgba(21, 99, 255, 0.212) !important;
   box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.4),
@@ -331,3 +332,4 @@ mat-mdc-snack-bar-label.panelClass-error {
 .mat-mdc-select-panel {
   background-color: #c6d9fc !important;
 }
+

@@ -4,20 +4,29 @@
 <!-- CONTENITORE PRINCIPALE -->
 <div class="page-container">
 
-  <!-- HEADER DELLA SEZIONE DI MODIFICA DELLA RICHIESTA -->
+  <!-- TITOLO DELLA PAGINA -->
   <div class="edit-request-header">
-    <h1>Edit Request</h1>
+
+    <mat-card-title>Edit Request</mat-card-title>
     <mat-icon>edit_document</mat-icon>
 
     @if (formError) {
     <span class="error-message">{{ formError }}</span>
     }
+
   </div>
 
+
+  <!---------------------------- SEZIONE DI DETTAGLI DELLA RICHIESTA -------------------------->
   <form [formGroup]="requestForm">
 
     <!-- CARD DI EDIT REQUEST -->
     <mat-card>
+
+      <mat-card-subtitle>
+        Request Details
+        <mat-icon>info</mat-icon>
+      </mat-card-subtitle>
 
       <mat-card-content>
 
@@ -62,74 +71,66 @@
 
     </mat-card>
 
-    <div class="expenses-header">
 
-      <h2>Expenses
-        <mat-icon>receipt</mat-icon>
-      </h2>
-
-      <!-- Pulsante per aggiungere una nuova spesa -->
-      <button mat-raised-button color="primary" type="button" (click)="addExpense()">
-        Add Expense
-      </button>
-
-    </div>
-
+    <!--------------------------- SEZIONE DELLE SPESE ------------------------------------------->
+    <mat-card>
+      
     <div formArrayName="expenses" class="expenses-section">
 
-      <!-- CICLO SULLE SPESE DEL FORM -->
-      @for (expense of expenses.controls; track $index) {
 
-      <div [formGroupName]="$index" class="expense-card">
+        <div class="expenses-header">
+
+          <mat-card-subtitle>Expenses
+            <mat-icon>receipt</mat-icon>
+          </mat-card-subtitle>
+
+          <!-- Pulsante per aggiungere una nuova spesa -->
+          <button mat-raised-button color="primary" type="button" (click)="addExpense()">
+            Add Expense
+          </button>
+
+        </div>
+
+
+        <!-- CICLO SULLE SPESE DEL FORM -->
+        @for (expense of expenses.controls; track $index) {
+
 
         <!-- CARD DI OGNI SINGOLA SPESA -->
-        <mat-card>
+        <div [formGroupName]="$index" class="expense-grid">
 
-          <mat-card-content>
+          <app-progress-bar [category]="expenseProgressData()[$index]?.category"
+            [amount]="expenseProgressData()[$index]?.amount || 0"></app-progress-bar>
 
-            <div class="expense-grid">
+          <div class="expenses-input">
+            <!-- Data della spesa -->
+            <mat-form-field appearance="outline">
 
-              <!-- Data della spesa -->
-              <mat-form-field appearance="outline">
+              <mat-label>Date</mat-label>
 
-                <mat-label>Date</mat-label>
+              <input matInput type="date" formControlName="date">
 
-                <input matInput type="date" formControlName="date">
+            </mat-form-field>
 
-              </mat-form-field>
+            <!-- Categoria della spesa -->
+            <mat-form-field appearance="outline">
 
-              <!-- Categoria della spesa -->
-              <mat-form-field appearance="outline">
+              <mat-label>Category</mat-label>
 
-                <mat-label>Category</mat-label>
+              <mat-select formControlName="category">
+                <!-- per evitare l'autofocus automatico sul primo elemento della select, aggiungo un'opzione vuota -->
+                <mat-option value="" disabled>Select a category</mat-option>
+                <mat-option value="TAXI">Taxi</mat-option>
+                <mat-option value="TRAIN">Train</mat-option>
+                <mat-option value="MEAL">Meal</mat-option>
+                <mat-option value="HOTEL">Hotel</mat-option>
+                <mat-option value="FUEL">Fuel</mat-option>
+                <mat-option value="OTHER">Other</mat-option>
 
-                <mat-select formControlName="category">
-                  <!-- per evitare l'autofocus automatico sul primo elemento della select, aggiungo un'opzione vuota -->
-                  <mat-option value="" disabled>Select a category</mat-option>
-                  <mat-option value="TAXI">Taxi</mat-option>
-                  <mat-option value="TRAIN">Train</mat-option>
-                  <mat-option value="MEAL">Meal</mat-option>
-                  <mat-option value="HOTEL">Hotel</mat-option>
-                  <mat-option value="FUEL">Fuel</mat-option>
-                  <mat-option value="OTHER">Other</mat-option>
+              </mat-select>
 
-                </mat-select>
+            </mat-form-field>
 
-              </mat-form-field>
-
-              <mat-form-field appearance="outline">
-
-                <!-- Campo per l'importo richiesto -->
-                <mat-label>Requested Amount</mat-label>
-
-                <input matInput type="number" formControlName="requestedAmount" min="0">
-
-              </mat-form-field>
-
-                                      <app-progress-bar [category]="expenseProgressData()[$index]?.category"
-                            [amount]="expenseProgressData()[$index]?.amount || 0"></app-progress-bar>
-
-            </div>
 
             <!-- Campo per la descrizione della spesa -->
             <mat-form-field appearance="outline" class="full-width">
@@ -141,30 +142,47 @@
 
             </mat-form-field>
 
+            <mat-form-field appearance="outline">
+
+              <!-- Campo per l'importo richiesto -->
+              <mat-label>Requested Amount</mat-label>
+
+              <input matInput type="number" formControlName="requestedAmount" min="0">
+
+            </mat-form-field>
+
             <!-- Pulsante per rimuovere la spesa corrente -->
-            <button mat-stroked-button color="warn" type="button" (click)="removeExpense($index)" class="remove-btn">
-              Remove Expense
+            <button mat-icon-button color="warn" type="button" (click)="removeExpense($index)" class="remove-btn">
+              <mat-icon>delete</mat-icon>
             </button>
 
-          </mat-card-content>
+          </div>
+        </div>
 
-        </mat-card>
 
-      </div>
+        }
 
-      }
 
     </div>
+      </mat-card>
 
-    <!-- CARD DI RIEPILOGO DEL TOTALE RICHIESTO -->
+
+    <!----------------------------------------------- SEZIONE DI RIEPILOGO DEL TOTALE RICHIESTO --------------------------------->
     <mat-card class="summary-card">
+
+      <mat-card-subtitle>
+        Total Requested Amount
+      </mat-card-subtitle>
+
+      <span>
+        {{ totalRequestedAmount() | number:'1.2-2' }} €
+      </span>
+
 
       <mat-card-content>
 
-        <h2>
-          Total Requested Amount:
-          {{ totalAmount | number:'1.2-2' }} €
-        </h2>
+        <app-total-progress-bar [allowedAmount]="totalAllowedAmount()" [requestedAmount]="totalRequestedAmount()">
+        </app-total-progress-bar>
 
       </mat-card-content>
 

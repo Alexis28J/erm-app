@@ -19,13 +19,15 @@ import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-
 import { toSignal } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs';
 import { MatDivider } from '@angular/material/divider';
+import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
+import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
 
 
 @Component({
   imports: [ReactiveFormsModule, MatFormFieldModule, MatButtonModule,
     MatCardModule, MatSelectModule, MatIconModule,
     RouterLink, MatInputModule, MatOptionModule, CommonModule,
-    ProgressBar, MatDivider],
+    ProgressBar, MatDivider, TotalProgressBar],
   selector: 'app-new-request',
   styleUrls: ['./new-request.scss'],
   templateUrl: './new-request.html',
@@ -220,6 +222,45 @@ export class NewRequest {
     }));
   });
 
+
+  // COMPUTED PER OTTENERE IL TOTALE MASSIMO CONSENTITO DELLE SPESE
+  readonly totalAllowedAmount = computed(() => {
+
+    const request = this.expensesValue();
+
+    if (!request || request.length === 0) {
+      return 0;
+    }
+
+    return request.reduce((total: number, expense: Expense) => {
+      const category = EXPENSE_CATEGORIES.find(
+        c => c.name === expense.category
+      )
+      return total + (category?.maxAmount ?? 0);
+    }, 0
+    )
+  })
+
+
+  // COMPUTED PER OTTENERE IL TOTALE DELLE SPESE RICHIESTE
+  readonly totalRequestedAmount = computed(() => {
+
+    const request = this.expensesValue();
+
+    if (!request || request.length === 0) {
+      return 0;
+    }
+
+    return request.reduce(
+      (total: number, expense: Expense) => {
+        return total + (expense.requestedAmount ?? 0);
+      },
+      0
+    )
+
+  })
+
+  
 
 }
 

@@ -20,13 +20,15 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-bar';
 import { startWith } from 'rxjs';
+import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
+import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
 
 
 @Component({
   imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule,
     MatInputModule, MatButtonModule, MatProgressSpinnerModule,
     DatePipe, MatOption, MatSelectModule, MatIconModule, RouterLink,
-    CommonModule, ProgressBar],
+    CommonModule, ProgressBar, TotalProgressBar],
   selector: 'app-edit-request',
   styleUrls: ['./edit-request.scss'],
   templateUrl: './edit-request.html',
@@ -204,14 +206,14 @@ export class EditRequest {
 
 
   // VARIABILE PER IL MESSAGGIO DI ERRORE DEL FORM
-  formError = '';  
+  formError = '';
 
   // METODO PER INVIARE LA RICHIESTA
   submitRequest(): void {
 
     if (this.requestForm.invalid) {
       this.requestForm.markAllAsTouched();
-      this.formError = 'Please fill in all required fields';  
+      this.formError = 'Please fill in all required fields';
       return;
     }
 
@@ -252,6 +254,8 @@ export class EditRequest {
 
   }
 
+
+  // SIGNAL PER TENERE TRACCIA DEI VALORI DELLE SPESE
   expensesValue = toSignal(   // Converto l'Observable delle spese in un Signal in modo da poterlo utilizzare reattivamente nel template e nel codice TypeScript
     this.expenses.valueChanges.pipe(  // Il metodo valueChanges mi permette di osservare i cambiamenti nei valori delle spese in tempo reale mentre .pipe viene utilizzato per applicare operatori RxJS come startWith
       startWith(this.expenses.getRawValue()) // startWith viene utilizzato per emettere immediatamente il valore iniziale delle spese in modo che il Signal abbia un valore iniziale corretto
@@ -260,12 +264,49 @@ export class EditRequest {
   )
 
 
-expenseProgressData = computed(() => {
-  return this.expensesValue().map((expense: Expense) => ({
-    category: expense.category ?? '',
-    amount: Number(expense.requestedAmount ?? 0)
-  }) )
-})
+  // COMPUTED PER OTTENERE I DATI DI PROGRESSO DELLE SPESE
+  expenseProgressData = computed(() => {
+    return this.expensesValue().map((expense: Expense) => ({
+      category: expense.category ?? '',
+      amount: Number(expense.requestedAmount ?? 0)
+    }))
+  })
+
+
+  readonly totalAllowedAmount = computed(() => {
+
+    const request = this.expensesValue();
+
+    if (!request || request.length === 0) {
+      return 0;
+    }
+
+    return request.reduce((total: number, expense: Expense) => {
+
+      const category = EXPENSE_CATEGORIES.find(
+        c => c.name === expense.category
+      )
+
+      return total + (category?.maxAmount ?? 0);
+    }, 0
+    );
+  });
+
+
+  readonly totalRequestedAmount = computed(() => {
+
+    const request = this.expensesValue();
+
+    if (!request || request.length === 0) {
+      return 0;
+    }
+
+    return request.reduce(
+      (total: number, expense: Expense) => {
+        return total + (expense.requestedAmount ?? 0);
+      }, 0
+    );
+  });
 }
 
 

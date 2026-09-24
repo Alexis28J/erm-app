@@ -121,9 +121,9 @@
 
 @if (request(); as request ) {
 
-<mat-card style="margin-top: 2rem !important;">
+<mat-card class="space">
 
-    <mat-card-header class="expenses-overview-header">
+    <mat-card-header class="overview-header">
         <mat-card-title>
             Expenses Overview
             <mat-icon>bar_chart</mat-icon>
@@ -171,6 +171,25 @@
 </mat-card>
 
 }
+
+
+<!-- BARRA DI PROGRESSO TOTALE -->
+<mat-card class="space">
+
+    <mat-card-header  class="overview-header">
+        <mat-card-title>
+            Total Requested Amount
+            <mat-icon>paid</mat-icon>
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <app-total-progress-bar [requestedAmount]="totalRequestedAmount()" [allowedAmount]="totalAllowedAmount()">
+        </app-total-progress-bar>
+    </mat-card-content>
+
+</mat-card>
+
 
 
 <!-- PULSANTI DI NAVIGAZIONE -->

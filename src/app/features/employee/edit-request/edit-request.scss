@@ -1,9 +1,33 @@
 .page-container {
     padding: 24px;
-
     display: flex;
     flex-direction: column;
     gap: 4px;
+}
+
+
+// TITOLO DELLE CARDS 
+mat-card-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    padding-left: 1.2rem;
+}
+
+// SOTTOTITOLO DELLE CARDS 
+mat-card-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0.5rem 1.2rem 1rem 1rem;
+}
+
+
+// CAMPI DEL FORM
+mat-form-field {
+    width: 100%;
+    padding-top: 16px;
 }
 
 
@@ -15,13 +39,6 @@
 }
 
 
-// CARD PRINCIPALE
-mat-card {
-    border-radius: 16px;
-}
-
-
-
 // SEZIONE DEL FORM
 .form-section {
     display: flex;
@@ -30,71 +47,79 @@ mat-card {
 }
 
 
-// CAMPI DEL FORM
-mat-form-field {
-    width: 100%;
-    padding-top: 16px;
-}
-
-.request-info{
+.request-info {
     font-size: 1rem;
 
-    p{
+    p {
         display: flex;
         gap: 8px;
     }
 }
 
-
-// HEADER DELLA SEZIONE SPESE
-.expenses-header {
-    margin-top: 20px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 8px;
-
-    h2 {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-}
 
 
 // SEZIONE DELLE SPESE
 .expenses-section {
     display: flex;
     flex-direction: column;
+}
+
+
+// HEADER DELLA SEZIONE SPESE
+.expenses-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+}
+
+
+.expense-grid {
+    border: 2px outset rgba(22, 80, 195, 0.212);
+    border-radius: 8px;
+    padding: 30px 16px 16px 16px;
+    margin-bottom: 16px;
+    background-color: #f5f5f572;
+
+    &:hover {
+        border-color: rgba(60, 98, 250, 0.6);
+        transform: translateY(-0.5px);
+    }
+}
+
+.expenses-input {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr 1fr auto;
     gap: 16px;
 }
 
-
-// CARD DELLE SINGOLE SPESE
-.expense-card {
-    gap: 16px;
-}
-
-.expense-grid{
-    padding-top: 6px !important;
-}
-
+// PULSANTE DI RIMOZIONE DELLA SINGOLA SPESA
 .remove-btn {
-    margin-top: 8px;
-}
+    top: 6px;
 
+    &:hover {
+        background-color: rgba(255, 0, 0, 0.1);
+    }
+
+    mat-icon:hover {
+        color: red;
+    }
+
+}
 
 // SEZIONE DEL RIEPILOGO
-.summary-card{
+.summary-card {
     // per allontanare la card dalle altre sezioni
     padding: 0 16px 16px 16px !important;
+
+
 }
 
 
 // SPINNER CENTRATO
 .centered-spinner {
-   margin: 250px auto !important; /* Centra verticalmente con margine superiore e inferiore */
+    margin: 250px auto !important;
+    /* Centra verticalmente con margine superiore e inferiore */
 }
 
 
@@ -106,7 +131,6 @@ mat-form-field {
     display: flex;
     justify-content: flex-end;
 }
-
 
 // PULSANTE DI RITORNO 
 .back-btn {

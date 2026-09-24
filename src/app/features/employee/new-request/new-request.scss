@@ -1,14 +1,8 @@
 // CONTAINER PRINCIPALE
 .page-container {
-    padding: 24px;
+    padding: 12px 24px 24px 24px;
     max-width: 1200px;
     margin: 0 auto;
-}
-
-
-// CARD PRINCIPALE
-mat-card {
-    border-radius: 16px;
 }
 
 
@@ -16,10 +10,20 @@ mat-card {
 mat-card-title {
     display: flex;
     align-items: center;
-    font-weight: 600;
-    
+    font-weight: bold;
+    font-size: 1.8rem;
+
     gap: 8px;
-    padding-bottom: 24px;
+    padding-bottom: 2.5rem;
+}
+
+
+mat-card-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    font-size: 1.4rem;
 }
 
 
@@ -28,12 +32,15 @@ mat-card-title {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    margin-top: 2rem;
 }
 
 
-// CAMPI DEL FORM
-mat-form-field {
-    width: 100%;
+
+// SEZIONE DELLE SPESE
+.expenses-section {
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -42,46 +49,56 @@ mat-form-field {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
 
-    h3 {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: 600;
+
+.expense-grid {
+    border: 2px outset rgba(22, 80, 195, 0.212);
+    border-radius: 8px;
+    padding: 30px 16px 16px 16px;
+    margin-bottom: 16px;
+    background-color: #f5f5f572;
+
+    &:hover {
+        border-color: rgba(60, 98, 250, 0.6);
+        transform: translateY(-0.5px);
     }
 }
 
 
-// SEZIONE DELLE SPESE
-.expenses-section {
-    padding-top: 10px;
-    display: flex;
-    flex-direction: column;
-}
-
 
 // CARD DELLE SINGOLE SPESE
-.expenses-card {
+.expenses-input {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr auto;
-
+    grid-template-columns: 1fr 1fr 2fr 1fr auto;
     gap: 16px;
     margin-bottom: 16px;
 }
 
 .remove-btn {
     top: 6px;
+
+    &:hover{
+        background-color: rgba(255, 0, 0, 0.1);
+    }
+
+    mat-icon:hover {
+        color: red;
+    }
+    
 }
 
 
 // SEZIONE DEL TOTALE
 .total-section {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    font-size: 1.6rem;
+    margin-bottom: 1.6rem;
 
-    font-size: 20px;
-
-    gap: 12px;
+    strong {
+        color: rgba(0, 0, 0, 0.539);
+    }
 }
 
 
@@ -112,7 +129,7 @@ mat-form-field {
 
 // DIVISORE TRA LE SPESE
 mat-divider {
-    margin-bottom: 3.5rem;
+    margin-bottom: 1.5rem;
     margin-top: 1rem;
     border-color: #121316;
 }

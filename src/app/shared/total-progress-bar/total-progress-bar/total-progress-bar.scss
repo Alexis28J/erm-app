@@ -1,11 +1,12 @@
-.progress-summary {
+.summary-values {
     display: flex;
     justify-content: space-between;
     margin-bottom: 1rem;
     font-weight: bold;
 }
 
-.progress-amount {
+
+.requested-amount {
     text-align: left;
     margin-top: 4px;
     font-size: 18px;
@@ -13,7 +14,7 @@
     color: rgba(0, 0, 0, 0.539);
 }
 
-.progress-percentage {
+.percentage {
     text-align: right;
     margin-top: 4px;
     font-size: 18px;
@@ -35,18 +36,22 @@
     }
 }
 
+
 .progress-fill {
     height: 100%;
     transition: width .3s ease; // width indica la larghezza della barra di progresso e viene settata dinamicamente in base alla percentuale calcolata
 }
 
+
 .safe {
     background: #4caf50;
 }
 
+
 .warning {
     background: #ff9800;
 }
+
 
 .danger {
     background: #f44336;
