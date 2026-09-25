@@ -22,12 +22,12 @@
             <!-- Verifica se ci sono richieste di rimborso -->
             @if (requests().length > 0) {
 
-            <table mat-table [dataSource]="dataSource">
+            <table mat-table [dataSource]="dataSource" matSort>
 
                 <!-- Reference Month -->
                 <ng-container matColumnDef="referenceMonth">
 
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
 
                         Month
 
@@ -45,7 +45,7 @@
                 <!-- Creation Date -->
                 <ng-container matColumnDef="creationDate">
 
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
 
                         Creation Date
 
@@ -63,7 +63,7 @@
                 <!-- Status -->
                 <ng-container matColumnDef="status">
 
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
 
                         Status
 
@@ -103,7 +103,7 @@
                 <!-- Requested Amount -->
                 <ng-container matColumnDef="totalRequestedAmount">
 
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
 
                         Requested Amount
 
@@ -121,7 +121,7 @@
                 <!-- Approved Amount -->
                 <ng-container matColumnDef="totalApprovedAmount">
 
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
 
                         Approved Amount
 

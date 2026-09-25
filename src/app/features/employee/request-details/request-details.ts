@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-bar';
 import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
-import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar'; 
+import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
 
 
 @Component({
@@ -44,6 +44,7 @@ export class RequestDetails {
   );
 
 
+  // CALCOLO DELL'IMPORTO CONSENTITO TOTALE
   readonly totalAllowedAmount = computed(() => {
 
     const request = this.request();
@@ -60,9 +61,10 @@ export class RequestDetails {
       return total + (category?.maxAmount ?? 0);
     }, 0
     );
-  })
+  });
 
 
+  // CALCOLO DELL'IMPORTO RICHIESTO TOTALE
   readonly totalRequestedAmount = computed(() => {
 
     const request = this.request();
@@ -79,17 +81,4 @@ export class RequestDetails {
 
 }
 
-
-// La barra di progresso totale prende in input l'importo richiesto totale e l'importo consentito totale 
-// grazie ai segnali totalRequestedAmount e totalAllowedAmount che permettono di aggiornare dinamicamente la barra di progresso totale.
-
-// Ma come si comunica l'importo richiesto totale e l'importo consentito totale alla barra di progresso totale?
-// Si passa come input le proprietà totalRequestedAmount e totalAllowedAmount al componente TotalProgressBar nel template HTML grazie alla sintassi di binding di Angular.
-// Vedi questa riga:
-// <app-total-progress-bar 
-//     [totalRequestedAmount]="totalRequestedAmount()" 
-//     [totalAllowedAmount]="totalAllowedAmount()">
-// </app-total-progress-bar>
-
-//Quindi, in questo modo, posso usare il componente TotalProgressBar nel template HTML del componente RequestDetails o in qualsiasi altro componente che necessiti di visualizzare la barra di progresso totale.
 

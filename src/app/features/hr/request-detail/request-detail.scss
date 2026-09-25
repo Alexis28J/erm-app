@@ -1,11 +1,11 @@
 .page-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px 18px 10px 18px;
 
   display: flex;
   flex-direction: column;
-  gap: 16px;
+
 }
 
 mat-card-content {
@@ -20,9 +20,9 @@ mat-card-header {
 
 
 mat-card-title {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: 600;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 
   display: flex;
   align-items: center;
@@ -47,16 +47,17 @@ mat-card-title {
   display: flex;
   flex-direction: column;
   text-align: start;
+  gap: 4px;
 }
 
 .info-label {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #666;
   margin-bottom: 4px;
 }
 
 .info-value {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 600;
 }
 
@@ -64,7 +65,7 @@ mat-card-title {
   display: inline-block;
   padding: 6px 12px;
   border-radius: 20px;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   font-weight: 600;
 }
 
@@ -89,7 +90,7 @@ mat-card-title {
 
 
 .partial_approved,
-// Scrivo entrambe le versioni per gestire 
+// Scrivo entrambe le versioni per gestire
 .partial-approved {
   // sia underscore che trattino
   color: rgb(30, 196, 30);
@@ -110,41 +111,55 @@ mat-card-title {
 
 
 // SEZIONE SPESE
-.expenses-container {
+.expenses-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
+
+// CONTENITORE PER OGNI SINGOLA SPESA
+.expense-container {  
+  border: 2px solid rgba(22, 80, 195, 0.396);
+  padding: 2rem 1rem 1rem 1rem;
+  border-radius: 12px;
+  background-color: #f5f5f572;
+  margin-bottom: 1rem;
+
+  &:hover {
+    border-color: rgba(60, 98, 250, 0.6);
+    transform: translateY(-0.5px);
+    background-color: rgba(255, 255, 255, 0.688);
+  }
+}
+
+
+// RIGA DI DATI DELLA SINGOLA SPESA
 .expense-row {
-  // Ogni riga di spesa
+  // Ogni riga di dati della spesa
   display: grid;
   grid-template-columns:
-    120px // Category   
-    2fr // Description  // 2fr significa che questa colonna occuperà due frazioni dello spazio disponibile rispetto alle altre colonne.
+    120px // Category
+    2fr // Description  
     120px // Requested Amount
     180px; // Approved Amount (input "Amount")
   gap: 16px;
 
   align-items: center;
 
-  padding: 16px;
-
-  border: 2px solid rgba(22, 80, 195, 0.396);
-  border-radius: 12px;
-  background: rgb(255, 255, 255);
-
-  &:hover {
-    border-color: rgba(60, 98, 250, 0.6);
-    transform: translateY(-0.5px);
-    background-color: #dde5f4 !important;
-  }
-
   mat-form-field {
-    position: relative;
+    position: relative;  
     top: 8px;
   }
 
+}
+
+
+// CONTENITORE PER L'INPUT DELLA SINGOLA SPESA
+.expense-input {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 
@@ -159,10 +174,9 @@ mat-card-title {
 }
 
 .total-amount {
-  font-size: 2rem;
+  font-size: 4rem;
   font-weight: 700;
   color: #2e7d32;
-  padding-top: 16px;
 }
 
 
@@ -171,7 +185,7 @@ mat-card-title {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding: 0px 16px;
+  padding: 14px 16px;  
 }
 
 .back-btn {
@@ -182,10 +196,16 @@ mat-card-title {
 
 .approve-btn {
   min-width: 140px;
+  &:hover {
+    background-color: rgba(0, 255, 0, 0.1);
+  }
 }
 
 .reject-btn {
   min-width: 140px;
+  &:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+  }
 }
 
 
@@ -195,6 +215,7 @@ mat-card-title {
   font-size: 1.7rem;
   margin: 2rem 0 0 6rem;
 }
+
 
 // MEDIA QUERY PER SCHERMI PICCOLI (mobile responsive)
 // (Adatta il layout delle righe di spesa e dei pulsanti per schermi più piccoli)
@@ -215,6 +236,31 @@ mat-card-title {
 }
 
 mat-divider {
-  margin-bottom: 2.3rem;
+  margin-bottom: 1rem;
   border-color: #121316;
 }
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+/// 
+/// COMMENTI:
+/// 
+/// // RIGA DI DATI DELLA SINGOLA SPESA
+// .expense-row {
+//   // Ogni riga di dati della spesa
+//   display: grid;
+//   grid-template-columns:
+//     120px // Category
+//     2fr // Description  // 2fr significa che questa colonna occuperà due frazioni dello spazio disponibile rispetto alle altre colonne.
+//     120px // Requested Amount
+//     180px; // Approved Amount (input "Amount")
+//   gap: 16px;
+
+//   align-items: center;
+
+//   mat-form-field {
+//     position: relative;  // La posizione relativa e top servono per poter spostare l'input verso il basso rispetto alla sua posizione normale.
+//     top: 8px;
+//   }
+
+// }

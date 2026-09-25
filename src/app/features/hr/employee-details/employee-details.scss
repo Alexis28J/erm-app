@@ -1,11 +1,10 @@
 :host {
-    // :host rappresenta il componente stesso, permettendo di applicare stili al contenitore radice del componente.
     margin: 0 auto;
-    padding: 24px;
+    padding: 14px 24px;
 
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 8px;
 }
 
 
@@ -13,7 +12,6 @@
 .employee-card,
 .stats-card {
     margin-bottom: 1rem;
-    // rem è un'unità relativa alla dimensione del font radice (root) che normalmente corrisponde a 16px.
 }
 
 mat-card {
@@ -131,18 +129,15 @@ p {
     font-weight: 600;
 }
 
-
 .pending {
     color: orange;
     font-weight: 600;
 }
 
-
 .rejected {
     color: red;
     font-weight: 600;
 }
-
 
 .partial_approved,
 // Scrivo entrambe le versioni per gestire 
@@ -173,3 +168,12 @@ p {
     font-size: 1.8rem;
     font-weight: bold;
 }
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// COMMENTI:
+/// 
+/// :host rappresenta il componente stesso, permettendo di applicare stili al contenitore radice del componente.
+/// 
+/// rem è un'unità relativa alla dimensione del font radice (root) che normalmente corrisponde a 16px.

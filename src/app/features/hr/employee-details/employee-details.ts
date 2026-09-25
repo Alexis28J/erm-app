@@ -25,14 +25,16 @@ export class EmployeeDetails {
 
   constructor() {
 
+    // EFFECT PER AGGIORNARE I DATI DELLA TABELLA QUANDO LE RICHIESTE CAMBIANO
     effect(() => {
       this.dataSource.data = this.requests().filter(r => r.status !== 'DRAFT');
     });
 
   }
 
-  @ViewChild(MatSort)
 
+  // VIEW CHILD PER IL MAT SORT (ORDINAMENTO DELLA TABELLA)
+  @ViewChild(MatSort)
   set sort(sort: MatSort) {
 
     if (!sort) {
@@ -75,6 +77,7 @@ export class EmployeeDetails {
   }
 
 
+  // DATASOURCE PER LA TABELLA DELLE RICHIESTE
   dataSource = new MatTableDataSource<RefundRequest>();
 
 

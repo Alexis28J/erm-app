@@ -291,8 +291,65 @@ export class NewRequest {
           this.notificationService.success('Request submitted successfully');
           this.router.navigate(['/employee/dashboard']);
         }
-      });
+      });     
 
+  }
+
+    // SIGNAL PER TENERE TRACCIA DEI VALORI DELLE SPESE
+  expensesValue = toSignal(   // Converto l'Observable delle spese in un Signal in modo da poterlo utilizzare reattivamente nel template e nel codice TypeScript
+    this.expenses.valueChanges.pipe(  // Il metodo valueChanges mi permette di osservare i cambiamenti nei valori delle spese in tempo reale mentre .pipe viene utilizzato per applicare operatori RxJS come startWith
+      startWith(this.expenses.getRawValue()) // startWith viene utilizzato per emettere immediatamente il valore iniziale delle spese in modo che il Signal abbia un valore iniziale corretto
+    ),
+    { initialValue: [] }  // Valore iniziale del Signal, utilizzato prima che l'Observable emetta il primo valore (cioè quando il form è appena caricato)
+  )
+
+
+  // COMPUTED PER OTTENERE I DATI DI PROGRESSO DELLE SPESE
+  expenseProgressData = computed(() => {   // Dopo averlo convertito in Signal, posso calcolare i dati di progresso delle spese in modo reattivo
+    return this.expensesValue().map((expense: Expense) => ({ // Mappo ogni spesa in un oggetto con categoria e importo richiesto
+      category: expense.category ?? '',  // Categoria della spesa, se non presente utilizzo una stringa vuota
+      amount: Number(expense.requestedAmount ?? 0)  // Importo richiesto della spesa, se non presente utilizzo 0
+    }));
+  });
+
+
+  // COMPUTED PER OTTENERE IL TOTALE MASSIMO CONSENTITO DELLE SPESE
+  readonly totalAllowedAmount = computed(() => {   // Calcolo reattivo del totale massimo consentito delle spese basato sulle categorie e sui limiti definiti
+
+    const request = this.expensesValue();  // Ottengo il valore corrente delle spese come array di oggetti Expense
+
+    if (!request || request.length === 0) {  // Se non ci sono spese, il totale massimo consentito è 0
+      return 0;
+    }
+
+    return request.reduce((total: number, expense: Expense) => {  // Sommo l'importo massimo consentito per ogni categoria di spesa
+      const category = EXPENSE_CATEGORIES.find(  // Trovo la categoria corrispondente all'importo della spesa
+        c => c.name === expense.category // Confronto il nome della categoria con la categoria della spesa
+      )
+      return total + (category?.maxAmount ?? 0);  // Aggiungo l'importo massimo consentito della categoria al totale
+    }, 0   // Valore iniziale del totale
+    )
+  })
+
+
+  // COMPUTED PER OTTENERE IL TOTALE DELLE SPESE RICHIESTE
+  readonly totalRequestedAmount = computed(() => {   // Calcolo reattivo del totale delle spese richieste
+
+    const request = this.expensesValue();  // Ottengo il valore corrente delle spese come array di oggetti Expense
+
+    if (!request || request.length === 0) {  // Se non ci sono spese, il totale delle spese richieste è 0
+      return 0;
+    }
+
+    return request.reduce(
+      (total: number, expense: Expense) => {  // Sommo l'importo richiesto di ogni spesa
+        return total + (expense.requestedAmount ?? 0);  // Se l'importo richiesto non è presente utilizzo 0
+      },
+      0   // Valore iniziale del totale
+    )
+
+  })
+  
 }
 
 ```

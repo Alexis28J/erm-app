@@ -13,6 +13,7 @@ mat-card-title {
     padding-left: 1.2rem;
 }
 
+
 // SOTTOTITOLO DELLE CARDS 
 mat-card-subtitle {
     display: flex;
@@ -43,10 +44,11 @@ mat-form-field {
 .form-section {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
 }
 
 
+// INFORMAZIONI SULLA RICHIESTA
 .request-info {
     font-size: 1rem;
 
@@ -57,24 +59,22 @@ mat-form-field {
 }
 
 
-
-// SEZIONE DELLE SPESE
-.expenses-section {
-    display: flex;
-    flex-direction: column;
-}
-
-
 // HEADER DELLA SEZIONE SPESE
 .expenses-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 16px;
 }
 
 
-.expense-grid {
+// LISTA DELLE SPESE
+.expenses-list{
+    padding: 1rem;
+}
+
+
+// GRIGLIA DELLE SINGOLE SPESE
+.expense-grid , .total-expense-grid {
     border: 2px outset rgba(22, 80, 195, 0.212);
     border-radius: 8px;
     padding: 30px 16px 16px 16px;
@@ -84,18 +84,31 @@ mat-form-field {
     &:hover {
         border-color: rgba(60, 98, 250, 0.6);
         transform: translateY(-0.5px);
+        background-color: rgba(255, 255, 255, 0.688);
     }
+
 }
 
+
+// INPUT DELLE SINGOLE SPESE
 .expenses-input {
     display: grid;
     grid-template-columns: 1fr 1fr 2fr 1fr auto;
     gap: 16px;
+
+    mat-form-field {
+        height: 0%;
+    }
 }
+
+.total-expense-container {
+    padding: 0 1rem 1rem 1rem;
+}
+
 
 // PULSANTE DI RIMOZIONE DELLA SINGOLA SPESA
 .remove-btn {
-    top: 6px;
+    top: 1.3rem;
 
     &:hover {
         background-color: rgba(255, 0, 0, 0.1);
@@ -103,15 +116,29 @@ mat-form-field {
 
     mat-icon:hover {
         color: red;
+        transform: scale(1.2);
     }
-
 }
+
 
 // SEZIONE DEL RIEPILOGO
 .summary-card {
-    // per allontanare la card dalle altre sezioni
-    padding: 0 16px 16px 16px !important;
+    padding: 1rem;
+}
 
+
+// VALORE TOTALE RICHIESTO
+.total-amount {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0 1rem 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+
+    span {
+        color: rgb(23, 47, 140);
+    }
 
 }
 
@@ -125,17 +152,19 @@ mat-form-field {
 
 // SEZIONE DELLE AZIONI
 .actions {
-    margin: 2.5rem 1rem;
+    margin: 1.5rem 1rem;
     gap: 12px;
 
     display: flex;
     justify-content: flex-end;
 }
 
+
 // PULSANTE DI RITORNO 
 .back-btn {
     margin-right: auto;
 }
+
 
 // MESSAGGIO DI ERRORE DEL FORM
 .error-message {

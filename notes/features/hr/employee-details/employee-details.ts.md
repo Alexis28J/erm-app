@@ -5,6 +5,7 @@ export class EmployeeDetails {
 
     constructor() {
 
+    // EFFECT PER AGGIORNARE I DATI DELLA TABELLA QUANDO LE RICHIESTE CAMBIANO
     // EFFECT: aggiorna i dati della tabella ogni volta che le richieste cambiano
     effect(() => {
       this.dataSource.data = this.requests().filter(r => r.status !== 'DRAFT');
@@ -13,6 +14,8 @@ export class EmployeeDetails {
 
   }
 
+
+  // VIEW CHILD PER IL MAT SORT (ORDINAMENTO DELLA TABELLA)
   @ViewChild(MatSort)  // @ViewChild è un decoratore che permette di ottenere 
   // un riferimento a un elemento figlio del template, in questo caso il MatSort della tabella.
   // Questo permette di collegare il MatSort alla dataSource della tabella, abilitando l'ordinamento delle colonne.
@@ -67,6 +70,7 @@ export class EmployeeDetails {
   }
 
   
+  // DATASOURCE PER LA TABELLA DELLE RICHIESTE
   dataSource = new MatTableDataSource<RefundRequest>(); // Fonte dei dati per la tabella delle richieste di rimborso
 
 

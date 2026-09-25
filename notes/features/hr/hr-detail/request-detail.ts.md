@@ -52,6 +52,11 @@ export class RequestDetail {
   // A differenza della risorsa grezza, questa variabile contiene la richiesta di rimborso corrente aggiornata in base ai cambiamenti della risorsa.
 
 
+  // VARIABILE CHE INDICA SE LA RICHIESTA È GIÀ STATA REVISIONATA DALL'HR
+  private alreadyReviewed = false;  // Indica se la richiesta è già stata revisionata dall'HR 
+  // Viene inizializzata a false e aggiornata quando l'HR revisiona la richiesta
+
+
 
   // FORM PER LE NOTE DELLA RISORSA HR
   form = this.fb.group({
@@ -199,13 +204,43 @@ export class RequestDetail {
       .subscribe(); // subscribe serve per eseguire effettivamente la richiesta HTTP, anche se non facciamo nulla con la risposta
       // Non serve ripetere il metodo updateRequest poiché la richiesta HTTP è già stata inviata e subscribe la esegue.
   }
-  
-  
-  // VARIABILE CHE INDICA SE LA RICHIESTA È GIÀ STATA REVISIONATA DALL'HR
-  private alreadyReviewed = false;  // Indica se la richiesta è già stata revisionata dall'HR 
-  // Viene inizializzata a false e aggiornata quando l'HR revisiona la richiesta
 
+
+  // CALCOLO DELL'IMPORTO CONSENTITO TOTALE
+  readonly totalAllowedAmount = computed(() => {  // Questo compute calcola l'importo totale consentito per la richiesta corrente.
   
+      const request = this.request();   // Ottengo la richiesta corrente dallo stato reattivo.
+  
+      if (!request) {  // Se non c'è una richiesta corrente, restituisco 0.
+        return 0;
+      }
+  
+      return request.expenses.reduce((total, expense) => {  // Somma l'importo massimo consentito per ogni categoria di spesa.
+        const category = EXPENSE_CATEGORIES.find(  // Trova la categoria di spesa corrispondente all'expense corrente.
+          c => c.name === expense.category  // Confronta il nome della categoria con quella dell'expense corrente.
+        );
+  
+        return total + (category?.maxAmount ?? 0); // Aggiunge l'importo massimo consentito della categoria corrente al totale.
+        // Se la categoria non esiste, viene considerato 0.
+      }, 0 // Valore iniziale della somma.
+      );
+  });
+  
+  
+    // CALCOLO DELL'IMPORTO RICHIESTO TOTALE
+    readonly totalRequestedAmount = computed(() => {  // Calcola l'importo totale richiesto per la richiesta corrente.
+  
+      const request = this.request();   // Ottengo la richiesta corrente dallo stato reattivo.
+  
+      if (!request) {  // Se non c'è una richiesta corrente, restituisco 0.
+        return 0;
+      }
+  
+      return request.expenses.reduce(  // Somma l'importo richiesto per ogni spesa.
+        (sum, expense) => sum + expense.requestedAmount,  // Aggiunge l'importo richiesto della spesa corrente al totale.
+        0 // Valore iniziale della somma.
+      );
+    });
 
 }
 ```

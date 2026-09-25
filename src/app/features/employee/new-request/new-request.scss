@@ -18,6 +18,7 @@ mat-card-title {
 }
 
 
+// SOTTOTITOLO DELLA CARD
 mat-card-subtitle {
     display: flex;
     align-items: center;
@@ -52,6 +53,7 @@ mat-card-subtitle {
 }
 
 
+// GRIGLIA DELLE SPESE
 .expense-grid {
     border: 2px outset rgba(22, 80, 195, 0.212);
     border-radius: 8px;
@@ -62,6 +64,7 @@ mat-card-subtitle {
     &:hover {
         border-color: rgba(60, 98, 250, 0.6);
         transform: translateY(-0.5px);
+        background-color: rgba(255, 255, 255, 0.688);
     }
 }
 
@@ -84,6 +87,7 @@ mat-card-subtitle {
 
     mat-icon:hover {
         color: red;
+        transform: scale(1.2);
     }
     
 }
@@ -97,7 +101,7 @@ mat-card-subtitle {
     margin-bottom: 1.6rem;
 
     strong {
-        color: rgba(0, 0, 0, 0.539);
+        color: rgb(23, 47, 140);
     }
 }
 

@@ -119,6 +119,7 @@
 }
 
 
+<!-- PANORAMICA DELLE SPESE -->
 @if (request(); as request ) {
 
 <mat-card class="space">
@@ -132,32 +133,6 @@
 
 
     <mat-card-content>
-
-        <!-- @for (expense of request.expenses; track expense.id) {
-
-        <div class="expense-progress">
-
-            <div class="cat-perc-container">
-                <span class="category">
-                    {{expense.category}}
-                </span>
-
-                <span class="amount">
-                    {{expense.requestedAmount}} € /
-                    {{getMaxAmount(expense.category)}} €
-                </span>
-
-                <span class="percentage">
-                    {{ getPercentage(expense.category, expense.requestedAmount) | number: '2.0-2'}} %
-                </span>
-            </div>
-
-            <mat-progress-bar mode="determinate" [value]="getPercentage(expense.category, expense.requestedAmount)">
-            </mat-progress-bar>
-
-        </div>
-
-        } -->
 
         @for (expense of request.expenses; track expense.id) {
 
@@ -176,7 +151,7 @@
 <!-- BARRA DI PROGRESSO TOTALE -->
 <mat-card class="space">
 
-    <mat-card-header  class="overview-header">
+    <mat-card-header class="overview-header">
         <mat-card-title>
             Total Requested Amount
             <mat-icon>paid</mat-icon>

@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, ViewChild } from '@angular/core';
 import { User } from '../../../core/interfaces/user';
 import { RefundRequest } from '../../../core/interfaces/refund-request';
 import { AuthService } from '../../../core/services/auth.service';
@@ -16,10 +16,12 @@ import { MatMenuModule } from "@angular/material/menu";
 import { ConfirmAction } from '../../../shared/dialogs/confirm-action/confirm-action';
 import { Notification } from '../../../shared/notification-service/notification';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSort } from '@angular/material/sort';
+import { MatSortModule } from '@angular/material/sort';
 
 @Component({
   imports: [MatCardModule, MatTableModule, CommonModule, MatAnchor,
-    MatIconModule, MatButtonModule, RouterLink, MatDialogModule, MatMenuModule, MatProgressSpinnerModule],
+    MatIconModule, MatButtonModule, RouterLink, MatDialogModule, MatMenuModule, MatProgressSpinnerModule, MatSortModule],
   selector: 'app-request-list',
   styleUrls: ['./request-list.scss'],
   templateUrl: './request-list.html',
@@ -38,6 +40,37 @@ export class RequestList {
 
   }
 
+  @ViewChild(MatSort)
+  set sort(sort: MatSort) {
+
+    if (!sort) {
+      return;
+    }
+
+    this.dataSource.sort = sort;
+
+    this.dataSource.sortingDataAccessor = (item, property) => {
+
+      switch (property) {
+        case 'referenceMonth': return item.referenceMonth;
+        case 'creationDate': return new Date(item.creationDate).getTime();
+        case 'totalRequestedAmount': return item.totalRequestedAmount;
+        case 'totalApprovedAmount': return item.totalApprovedAmount ?? 0;
+        default: return item[property as keyof RefundRequest] as any;
+      }
+    }
+
+    //Ordinamento iniziale
+    this.dataSource.sort.active = 'creationDate';
+    this.dataSource.sort.direction = 'desc';
+    this.dataSource.sort.sortChange.emit({
+      active: 'creationDate',
+      direction: 'desc'
+    })
+  }
+
+  // FONTE DATI PER LA TABELLA DELLE RICHIESTE DI RIMBORSO
+  dataSource = new MatTableDataSource<RefundRequest>()
 
   // INIEZIONE DEI SERVIZI
   private authService = inject(AuthService);
@@ -61,21 +94,6 @@ export class RequestList {
   )
 
 
-  // COLONNE DELLA TABELLA
-  displayedColumns: string[] = [
-    'referenceMonth',
-    'creationDate',
-    'status',
-    'totalRequestedAmount',
-    'totalApprovedAmount',
-    'actions'
-  ];
-
-
-  // FONTE DATI PER LA TABELLA DELLE RICHIESTE DI RIMBORSO
-  dataSource = new MatTableDataSource<RefundRequest>()
-
-
   // METODO PER VISUALIZZARE I DETTAGLI DI UNA RICHIESTA DI RIMBORSO
   viewDetails(requestId: string): void {
     this.router.navigate([
@@ -89,7 +107,7 @@ export class RequestList {
   // METODO PER ELIMINARE UNA RICHIESTA DI RIMBORSO (BOZZA)
   deleteRequest(requestId: string): void {
 
-    const dialogRef = this.dialog.open(  
+    const dialogRef = this.dialog.open(
       ConfirmAction,
       {
         autoFocus: false,
@@ -150,6 +168,16 @@ export class RequestList {
       });
 
   }
+
+  // COLONNE DELLA TABELLA
+  displayedColumns: string[] = [
+    'referenceMonth',
+    'creationDate',
+    'status',
+    'totalRequestedAmount',
+    'totalApprovedAmount',
+    'actions'
+  ];
 
 }
 

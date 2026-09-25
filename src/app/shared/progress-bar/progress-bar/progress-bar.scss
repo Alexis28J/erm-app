@@ -26,18 +26,18 @@
     height: 12px;
     background: #e0e0e0;
     border-radius: 999px;
-    overflow: hidden; // impedisce al contenuto di fuoriuscire dai bordi arrotondati
-    margin-bottom: 2.5rem; // spazio tra la barra di progresso e il contenuto sottostante
+    overflow: hidden; 
+    margin-bottom: 2.5rem; 
     border: 1.5px solid rgba(22, 80, 195, 0.352);
 
     &:hover {
-        border: 1.5px solid rgba(60, 98, 250, 0.6); // cambia il colore di sfondo al passaggio del mouse
+        border: 1.5px solid rgba(60, 98, 250, 0.6); 
     }
 }
 
 .progress-fill {
     height: 100%;
-    transition: width .3s ease; // width indica la larghezza della barra di progresso e viene settata dinamicamente in base alla percentuale calcolata
+    transition: width .3s ease; 
 }
 
 .safe {
@@ -51,3 +51,18 @@
 .danger {
     background: #f44336;
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+/// 
+/// COMMENTI:
+/// 
+/// .progress-track{
+///   overflow: hidden; // impedisce al contenuto di fuoriuscire dai bordi arrotondati
+/// }
+/// 
+/// 
+/// .progress-fill {
+///     transition: width .3s ease; // width indica la larghezza della barra di progresso 
+///     e viene settata dinamicamente in base alla percentuale calcolata grazie al binding Angular.
+/// }

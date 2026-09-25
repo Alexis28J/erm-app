@@ -10,18 +10,9 @@ import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.c
 })
 export class ProgressBar {
 
-  // Con gli @Input() NORMALI non puoi usare direttamente computed() perché category e amount non sono signal.
-  // @Input({ required: true })
-  // category!: string;
-
-  // @Input({ required: true })
-  // amount!: number;
-
-  // Quindi uso dei signal con input.required():
-  category = input.required<string>();  // A differenza dell'Input normale che non è reattivo e che serve solo per il binding iniziale, 
-  // questo è un signal reattivo che ci permette di reagire ai cambiamenti del valore.
+  // SIGNALS PER GLI INPUT DELLA CATEGORIA E DELL'IMPORTO
+  category = input.required<string>();
   amount = input.required<number>();
-    // Quindi input.required<string>() crea un signal reattivo di tipo string per la categoria e input.required<number>() crea un signal reattivo di tipo number per l'importo.
 
 
   // COMPUTED PER L'IMPORTO MASSIMO DI UNA CATEGORIA DI SPESA
@@ -43,12 +34,12 @@ export class ProgressBar {
       return 0;
     }
 
-    return max ? Math.min(  // Math.min è un metodo che restituisce il valore minimo tra i numeri passati come argomenti. In questo caso, serve a garantire che la percentuale non superi il 100%.
-      (amount / max) * 100,  // Calcola la percentuale di utilizzo dell'importo massimo.
-      100   // Limita la percentuale massima al 100%
-    ) : 0;  // Se max è 0, restituisce 0 per evitare divisioni per zero.
+    return max ? Math.min(
+      (amount / max) * 100,
+      100
+    ) : 0;
   });
-
+  
 
   // COMPUTED PER LA CLASSE DI PROGRESSO IN BASE ALLA PERCENTUALE
   readonly progressClass = computed(() => {
@@ -64,4 +55,5 @@ export class ProgressBar {
 
     return 'danger';
   });
+
 }

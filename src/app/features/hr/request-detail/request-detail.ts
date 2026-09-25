@@ -15,12 +15,15 @@ import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-bar';
 import { MatDivider } from '@angular/material/divider';
+import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
+import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
+
 
 @Component({
   imports: [MatCardModule, MatLabel, MatInputModule,
     MatFormFieldModule, CommonModule, ReactiveFormsModule,
     MatButtonModule, RouterLink, MatIconModule,
-    ProgressBar, MatDivider],
+    ProgressBar, MatDivider, TotalProgressBar],
   selector: 'app-request-detail',
   styleUrls: ['./request-detail.scss'],
   templateUrl: './request-detail.html',
@@ -75,6 +78,10 @@ export class RequestDetail {
   request = signal<RefundRequest | null>(null);
 
 
+  // VARIABILE CHE INDICA SE LA RICHIESTA È GIÀ STATA REVISIONATA DALL'HR
+  private alreadyReviewed = false;
+
+
   // FORM PER LE NOTE DELLA RISORSA HR
   form = this.fb.group({
     noteHr: ['']
@@ -106,7 +113,6 @@ export class RequestDetail {
     if (!request) {
       return;
     }
-
 
     const updatedRequest: RefundRequest = {
 
@@ -226,7 +232,39 @@ export class RequestDetail {
   }
 
 
-  // VARIABILE CHE INDICA SE LA RICHIESTA È GIÀ STATA REVISIONATA DALL'HR
-  private alreadyReviewed = false;
+  // CALCOLO DELL'IMPORTO CONSENTITO TOTALE
+  readonly totalAllowedAmount = computed(() => {
+
+    const request = this.request();
+
+    if (!request) {
+      return 0;
+    }
+
+    return request.expenses.reduce((total, expense) => {
+      const category = EXPENSE_CATEGORIES.find(
+        c => c.name === expense.category
+      );
+
+      return total + (category?.maxAmount ?? 0);
+    }, 0
+    );
+  });
+
+
+  // CALCOLO DELL'IMPORTO RICHIESTO TOTALE
+  readonly totalRequestedAmount = computed(() => {
+
+    const request = this.request();
+
+    if (!request) {
+      return 0;
+    }
+
+    return request.expenses.reduce(
+      (sum, expense) => sum + expense.requestedAmount,
+      0
+    );
+  });
 
 }

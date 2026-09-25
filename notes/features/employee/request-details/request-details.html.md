@@ -104,5 +104,99 @@
 
 </mat-card>
 
+} @else {
+
+<div class="loading-spinner centered-spinner">
+    <mat-spinner></mat-spinner>
+</div>
+
 }
+
+
+<!-- PANORAMICA DELLE SPESE -->
+@if (request(); as request ) {
+
+<mat-card class="space">
+
+    <mat-card-header class="overview-header">
+        <mat-card-title>
+            Expenses Overview
+            <mat-icon>bar_chart</mat-icon>
+        </mat-card-title>
+    </mat-card-header>
+
+
+    <mat-card-content>
+
+        <!-- @for (expense of request.expenses; track expense.id) {
+
+        <div class="expense-progress">
+
+            <div class="cat-perc-container">
+                <span class="category">
+                    {{expense.category}}
+                </span>
+
+                <span class="amount">
+                    {{expense.requestedAmount}} € /
+                    {{getMaxAmount(expense.category)}} €
+                </span>
+
+                <span class="percentage">
+                    {{ getPercentage(expense.category, expense.requestedAmount) | number: '2.0-2'}} %
+                </span>
+            </div>
+
+            <mat-progress-bar mode="determinate" [value]="getPercentage(expense.category, expense.requestedAmount)">
+            </mat-progress-bar>
+
+        </div>
+
+        } -->
+
+        @for (expense of request.expenses; track expense.id) {
+
+        <app-progress-bar [category]="expense.category" [amount]="expense.requestedAmount">
+        </app-progress-bar>
+
+        }
+
+    </mat-card-content>
+
+</mat-card>
+
+}
+
+
+<!-- BARRA DI PROGRESSO TOTALE -->
+<mat-card class="space">
+
+    <mat-card-header  class="overview-header">
+        <mat-card-title>
+            Total Requested Amount
+            <mat-icon>paid</mat-icon>
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <app-total-progress-bar [requestedAmount]="totalRequestedAmount()" [allowedAmount]="totalAllowedAmount()">
+        </app-total-progress-bar>
+    </mat-card-content>
+
+</mat-card>
+
+
+
+<!-- PULSANTI DI NAVIGAZIONE -->
+<div class="navigation-buttons">
+    <button mat-raised-button color="primary" routerLink="/employee/request-list">
+        Back to Request List
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+
+    <button mat-raised-button color="accent" routerLink="/employee/dashboard">
+        Go to the Dashboard
+        <mat-icon>arrow_forward</mat-icon>
+    </button>
+</div>
 ```

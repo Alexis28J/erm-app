@@ -9,15 +9,18 @@ import { CommonModule } from '@angular/common';
 })
 export class TotalProgressBar {
 
-  requestedAmount = input.required<number>();  // Signal reattivo per l'importo richiesto
-  allowedAmount = input.required<number>();  // Signal reattivo per l'importo consentito
+  // SIGNALS PER GLI INPUT DELL'IMPORTO RICHIESTO E CONSENTITO
+  requestedAmount = input.required<number>();
+  allowedAmount = input.required<number>();
 
-  percentage = computed(() => { // Calcola la percentuale di utilizzo dell'importo consentito
 
-    const requested = this.requestedAmount();  // Ottiene il valore corrente dell'importo richiesto
-    const allowed = this.allowedAmount();  // Ottiene il valore corrente dell'importo consentito
+  // COMPUTED PER LA PERCENTUALE DI UTILIZZO DELL'IMPORTO CONSENTITO
+  percentage = computed(() => {
 
-    if (!allowed) {  // Se l'importo consentito è 0, restituisce 0 per evitare divisioni per zero.
+    const requested = this.requestedAmount();
+    const allowed = this.allowedAmount();
+
+    if (!allowed) {
       return 0;
     }
 
@@ -29,6 +32,7 @@ export class TotalProgressBar {
   });
 
 
+  // COMPUTED PER LA CLASSE DI PROGRESSO IN BASE ALLA PERCENTUALE
   totalProgressClass = computed(() => {
     const percent = this.percentage();
 
@@ -42,4 +46,5 @@ export class TotalProgressBar {
       return 'danger';
     }
   });
+
 }

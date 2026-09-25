@@ -96,46 +96,50 @@
         <!-- CONTENUTO -->
         <mat-card-content>
 
-            <div class="expenses-container">
+            <div class="expenses-list">
 
                 @for (expense of request.expenses; track expense.id) {
 
                 <!-- Linea divisoria -->
                 <mat-divider></mat-divider>
 
-                <div class="expense-row">
+                <div class="expense-container">
 
-                    <div>
-                        <strong>Category:</strong>
-                        <div>{{expense.category}}</div>
+                    <app-progress-bar [category]="expense.category" [amount]="expense.requestedAmount">
+                    </app-progress-bar>
+
+                    <div class="expense-row">
+
+                        <div class="expense-input">
+                            <strong>Category:</strong>
+                            <div>{{expense.category}}</div>
+                        </div>
+
+                        <div class="expense-input">
+                            <strong>Description:</strong>
+                            <div>{{expense.description || 'No Description'}}</div>
+                        </div>
+
+                        <div class="expense-input">
+                            <strong>Requested Amount:</strong>
+                            <div>{{expense.requestedAmount | number:'1.2-2'}} €</div>
+                        </div>
+
+                        <mat-form-field appearance="outline">
+
+                            <mat-label>
+                                Amount
+                            </mat-label>
+
+                            <input matInput type="number" min="0" required [value]="expense.approvedAmount"
+                                (input)="updatedApprovedAmount(expense.id!, +$any($event.target).value)">
+
+
+                        </mat-form-field>
+
                     </div>
-
-                    <div>
-                        <strong>Description:</strong>
-                        <div>{{expense.description || 'No Description'}}</div>
-                    </div>
-
-                    <div>
-                        <strong>Requested Amount:</strong>
-                        <div>{{expense.requestedAmount | number:'1.2-2'}} €</div>
-                    </div>
-
-                    <mat-form-field appearance="outline">
-
-                        <mat-label>
-                            Amount
-                        </mat-label>
-
-                        <input matInput type="number" min="0" required [value]="expense.approvedAmount"
-                            (input)="updatedApprovedAmount(expense.id!, +$any($event.target).value)">
-
-                    </mat-form-field>
 
                 </div>
-
-                <app-progress-bar [category]="expense.category" [amount]="expense.requestedAmount">
-                </app-progress-bar>
-
 
                 }
 
@@ -168,7 +172,6 @@
                     </textarea>
 
                 </mat-form-field>
-
             </form>
 
         </mat-card-content>
@@ -176,17 +179,42 @@
     </mat-card>
 
 
-    <!-- AREA DI APPROVED TOTAL -->
+    <!-- BARRA DI PROGRESSO TOTALE -->
+    <mat-card class="space">
 
-    <mat-card>
+        <mat-card-header class="overview-header">
+            <mat-card-title>
+                Total Requested Amount
+                <mat-icon>paid</mat-icon>
+            </mat-card-title>
+        </mat-card-header>
 
         <mat-card-content>
+            <div class="expense-container">
+                <app-total-progress-bar [requestedAmount]="totalRequestedAmount()"
+                    [allowedAmount]="totalAllowedAmount()">
+                </app-total-progress-bar>
+            </div>
+        </mat-card-content>
 
+    </mat-card>
+
+
+    <!-- AREA DI APPROVED TOTAL -->
+    <mat-card>
+
+        <mat-card-header class="overview-header">
+            <mat-card-title>
+                Total Approved Amount
+                <mat-icon>check_circle</mat-icon>
+            </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
             <div class="total-card">
-                <div class="total-label">Approved Total:</div>
+                <!-- <div class="total-label">Approved Total:</div> -->
                 <div class="total-amount">{{ approvedTotal() | number:'1.2-2' }} €</div>
             </div>
-
         </mat-card-content>
 
     </mat-card>
@@ -216,7 +244,6 @@
             [disabled]="request.status === 'APPROVED'">
             Approve
         </button>
-
 
     </div>
 

@@ -22,13 +22,13 @@ import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-
 import { startWith } from 'rxjs';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
 import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule,
     MatInputModule, MatButtonModule, MatProgressSpinnerModule,
     DatePipe, MatOption, MatSelectModule, MatIconModule, RouterLink,
-    CommonModule, ProgressBar, TotalProgressBar],
+    CommonModule, ProgressBar, TotalProgressBar, MatTooltipModule],
   selector: 'app-edit-request',
   styleUrls: ['./edit-request.scss'],
   templateUrl: './edit-request.html',
