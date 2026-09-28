@@ -119,8 +119,8 @@ mat-card-title {
 
 
 // CONTENITORE PER OGNI SINGOLA SPESA
-.expense-container {  
-  border: 2px solid rgba(22, 80, 195, 0.396);
+.expense-container {
+  border: 2px solid rgba(22, 80, 195, 0.223);
   padding: 2rem 1rem 1rem 1rem;
   border-radius: 12px;
   background-color: #f5f5f572;
@@ -140,7 +140,7 @@ mat-card-title {
   display: grid;
   grid-template-columns:
     120px // Category
-    2fr // Description  
+    2fr // Description
     120px // Requested Amount
     180px; // Approved Amount (input "Amount")
   gap: 16px;
@@ -148,7 +148,7 @@ mat-card-title {
   align-items: center;
 
   mat-form-field {
-    position: relative;  
+    position: relative;
     top: 8px;
   }
 
@@ -185,7 +185,7 @@ mat-card-title {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding: 14px 16px;  
+  padding: 14px 16px;
 }
 
 .back-btn {
@@ -196,6 +196,9 @@ mat-card-title {
 
 .approve-btn {
   min-width: 140px;
+  border-color: green !important;
+  color: green !important;
+
   &:hover {
     background-color: rgba(0, 255, 0, 0.1);
   }
@@ -203,6 +206,9 @@ mat-card-title {
 
 .reject-btn {
   min-width: 140px;
+  border-color: red !important;
+  color: red !important;
+
   &:hover {
     background-color: rgba(255, 0, 0, 0.1);
   }
@@ -214,6 +220,53 @@ mat-card-title {
   color: red;
   font-size: 1.7rem;
   margin: 2rem 0 0 6rem;
+}
+
+
+// LINEA DIVISORIA TRA LE SPESE
+mat-divider {
+  margin-bottom: 1rem;
+  border-color: #121316;
+}
+
+
+// BANNER DI REVISIONE (REVIEW MODE)
+.review-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  margin-bottom: 1rem;
+  padding: 1rem;
+
+  background: #e3f2fd;
+  color: #1565c0;
+
+  border-radius: 8px;
+  border: 2px solid rgba(22, 80, 195, 0.223);
+
+  &:hover {
+    background: #eaf5ff;
+    border-color: rgba(60, 98, 250, 0.6)
+  }
+
+  strong {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.5rem;
+  }
+
+
 }
 
 
@@ -233,18 +286,16 @@ mat-card-title {
   .reject-btn {
     width: 100%;
   }
+
 }
 
-mat-divider {
-  margin-bottom: 1rem;
-  border-color: #121316;
-}
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-/// 
+///
 /// COMMENTI:
-/// 
+///
 /// // RIGA DI DATI DELLA SINGOLA SPESA
 // .expense-row {
 //   // Ogni riga di dati della spesa

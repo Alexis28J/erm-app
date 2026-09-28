@@ -201,15 +201,15 @@
       <div class="actions">
 
         <!-- Pulsante per tornare indietro -->
-        <div class="back-btn">
+        <div class="cancel-btn">
           <button mat-stroked-button color="primary" type="button" routerLink="/employee/request-list">
-            Back to Request List
+            Cancel and Return
             <mat-icon>arrow_back</mat-icon>
           </button>
         </div>
 
         <!-- Pulsante per salvare la richiesta come bozza -->
-        <button mat-stroked-button color="primary" type="button" (click)="saveDraft()">
+        <button mat-stroked-button color="primary" type="button" (click)="saveDraft()" class="draft-btn">
           Save Draft
         </button>
 

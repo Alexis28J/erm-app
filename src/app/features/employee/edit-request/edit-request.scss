@@ -68,13 +68,14 @@ mat-form-field {
 
 
 // LISTA DELLE SPESE
-.expenses-list{
+.expenses-list {
     padding: 1rem;
 }
 
 
 // GRIGLIA DELLE SINGOLE SPESE
-.expense-grid , .total-expense-grid {
+.expense-grid,
+.total-expense-grid {
     border: 2px outset rgba(22, 80, 195, 0.212);
     border-radius: 8px;
     padding: 30px 16px 16px 16px;
@@ -161,8 +162,31 @@ mat-form-field {
 
 
 // PULSANTE DI RITORNO 
-.back-btn {
+.cancel-btn {
     margin-right: auto;
+
+    button {
+        color: red !important;
+        border-color: red !important;
+    }
+
+    button:hover {
+        background-color: rgb(249, 190, 190);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+}
+
+
+// PULSANTE DI SALVATAGGIO BOZZA
+.draft-btn {
+    background-color: rgb(234, 232, 232);
+    color: black !important;
+
+    &:hover {
+        background-color: rgb(236, 235, 235);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
 }
 
 

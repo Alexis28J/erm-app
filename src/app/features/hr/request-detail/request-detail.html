@@ -17,6 +17,32 @@
         <!-- CONTENUTO -->
         <mat-card-content>
 
+            @if (!reviewMode()) {
+
+            <div class="review-banner">
+
+                <strong>
+                    <mat-icon>
+                        visibility
+                    </mat-icon>
+                    VIEWING MODE</strong>
+
+                <span>
+                    <mat-icon>arrow_downward</mat-icon>
+                    Go below to:
+                </span>
+
+                <span>
+                    • Click "Verify Request" to start the review process <br>
+                    • Click "Edit Review" to modify an existing review.
+                </span>
+
+            </div>
+
+            }
+
+
+            <!-- AREA INFORMAZIONI RICHIESTA -->
             <div class="request-info">
 
                 <p class="info-item">
@@ -52,11 +78,12 @@
                     </span>
                 </p>
 
-            </div>
+            </div> <!-- fine request-info -->
 
         </mat-card-content>
 
     </mat-card>
+
 
     <mat-card>
 
@@ -72,7 +99,6 @@
         <mat-card-content>
             <p>{{ request.noteEmployee || 'No Employee Note.' }}</p>
         </mat-card-content>
-
 
     </mat-card>
 
@@ -131,19 +157,20 @@
                                 Amount
                             </mat-label>
 
-                            <input matInput type="number" min="0" required [value]="expense.approvedAmount"
+                            <input matInput type="number" min="0" required [disabled]="!reviewMode()"
+                                [value]="expense.approvedAmount"
                                 (input)="updatedApprovedAmount(expense.id!, +$any($event.target).value)">
-
 
                         </mat-form-field>
 
                     </div>
 
-                </div>
+                </div> <!-- fine di expense-container -->
 
                 }
 
-            </div>
+            </div> <!-- fine di expenses-list -->
+
         </mat-card-content>
 
     </mat-card>
@@ -158,6 +185,9 @@
                 <mat-icon>edit</mat-icon>
             </mat-card-title>
         </mat-card-header>
+
+
+        @if (reviewMode()) {
 
         <mat-card-content>
 
@@ -175,6 +205,30 @@
             </form>
 
         </mat-card-content>
+
+        } @else if (request.noteHr) {
+
+        <mat-card-content>
+            {{request.noteHr}}
+        </mat-card-content>
+
+        } @else if (request.status !== 'PENDING' && request.noteHr === '') {
+
+        <mat-card-content>
+            No HR Notes
+        </mat-card-content>
+
+        } @else {
+
+        <mat-card-content>
+            <div class="review-banner">
+                <span>
+                    Click on "Verify Request" to add HR Notes
+                </span>
+            </div>
+        </mat-card-content>
+
+        }
 
     </mat-card>
 
@@ -212,7 +266,6 @@
 
         <mat-card-content>
             <div class="total-card">
-                <!-- <div class="total-label">Approved Total:</div> -->
                 <div class="total-amount">{{ approvedTotal() | number:'1.2-2' }} €</div>
             </div>
         </mat-card-content>
@@ -235,15 +288,54 @@
             </button>
         </div>
 
-        <button mat-raised-button color="warn" (click)="rejectRequest()" class="reject-btn"
-            [disabled]="request.status === 'REJECTED'">
+
+        <!-- PULSANTI DI APPROVAZIONE E RIFIUTO VISIBILI SOLO IN MODALITÀ DI REVISIONE -->
+        @if (reviewMode()) {
+
+        <button mat-raised-button color="warn" (click)="rejectRequest()" class="reject-btn">
             Reject
         </button>
 
-        <button mat-raised-button color="warn" (click)="approveRequest()" class="approve-btn"
-            [disabled]="request.status === 'APPROVED'">
+        <button mat-raised-button color="warn" (click)="approveRequest()" class="approve-btn">
             Approve
         </button>
+
+        }
+
+
+        <!-- PULSANTE DI MODIFICA DELLA REVIEW -->
+        @if (
+        request.status === 'APPROVED' ||
+        request.status === 'PARTIAL_APPROVED' ||
+        request.status === 'REJECTED'
+        ) {
+
+        <button mat-raised-button color="accent" (click)="startReview()" [hidden]="reviewMode()">
+            Edit Review
+
+            <mat-icon>
+                edit
+            </mat-icon>
+
+        </button>
+
+        }
+
+
+        <!-- PULSANTE DI VERIFICA DELLA RICHIESTA -->
+        @if (!reviewMode()) {
+
+        <button mat-raised-button color="primary" (click)="startReview()"
+            [hidden]="request.status === 'APPROVED' || request.status === 'PARTIAL_APPROVED' || request.status === 'REJECTED'">
+            Verify Request
+
+            <mat-icon>
+                fact_check
+            </mat-icon>
+
+        </button>
+
+        }
 
     </div>
 

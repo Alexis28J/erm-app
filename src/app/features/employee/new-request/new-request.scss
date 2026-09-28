@@ -37,7 +37,6 @@ mat-card-subtitle {
 }
 
 
-
 // SEZIONE DELLE SPESE
 .expenses-section {
     display: flex;
@@ -69,7 +68,6 @@ mat-card-subtitle {
 }
 
 
-
 // CARD DELLE SINGOLE SPESE
 .expenses-input {
     display: grid;
@@ -81,7 +79,7 @@ mat-card-subtitle {
 .remove-btn {
     top: 6px;
 
-    &:hover{
+    &:hover {
         background-color: rgba(255, 0, 0, 0.1);
     }
 
@@ -89,7 +87,7 @@ mat-card-subtitle {
         color: red;
         transform: scale(1.2);
     }
-    
+
 }
 
 
@@ -119,6 +117,25 @@ mat-card-subtitle {
 // PULSANTE DI CANCELLAZIONE
 .cancel-btn {
     margin-right: auto;
+    color: red !important;
+    border-color: red !important;
+
+    &:hover {
+        background-color: rgb(249, 190, 190);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+}
+
+
+// PULSANTE DI SALVATAGGIO BOZZA
+.draft-btn {
+    background-color: rgb(234, 232, 232);
+    color: black !important;
+
+    &:hover {
+        background-color: rgb(236, 235, 235);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 }
 
 

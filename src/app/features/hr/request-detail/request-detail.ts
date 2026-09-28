@@ -31,7 +31,7 @@ import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progr
 export class RequestDetail {
 
   constructor() {
-
+    
     effect(() => {
 
       const request = this.requestResource();
@@ -42,13 +42,9 @@ export class RequestDetail {
 
       this.request.set(request);
 
-
-      // Controlla se la richiesta è in stato PENDING e non è già stata revisionata
-      if (request.status === RequestStatus.PENDING &&
-        !this.alreadyReviewed) {
-        this.alreadyReviewed = true;
-        this.markAsInProgress(request);
-      }
+      this.form.patchValue({    
+        noteHr: request.noteHr ?? '' 
+      });
 
     })
 
@@ -78,8 +74,8 @@ export class RequestDetail {
   request = signal<RefundRequest | null>(null);
 
 
-  // VARIABILE CHE INDICA SE LA RICHIESTA È GIÀ STATA REVISIONATA DALL'HR
-  private alreadyReviewed = false;
+  // VARIABILE CHE INDICA SE SI È IN MODALITÀ DI REVISIONE DELLA RICHIESTA
+  readonly reviewMode = signal(false);
 
 
   // FORM PER LE NOTE DELLA RISORSA HR
@@ -134,6 +130,7 @@ export class RequestDetail {
   // VARIABILE PER IL MESSAGGIO DI ERRORE DEL FORM
   formError = '';
 
+
   // METODO PER APPROVARE LA RICHIESTA DI RIMBORSO
   approveRequest(): void {
 
@@ -143,6 +140,10 @@ export class RequestDetail {
       return;
     }
 
+    // VARIABILE CHE CONTIENE L'IMPORTO TOTALE APPROVATO DELLE SPESE 
+    const approvedAmount = this.approvedTotal() ?? 0;  
+
+
     // Controllo se la richiesta ha spese approvate (caso provvisorio in fase di sviluppo)
     if (this.approvedTotal() === 0) {
       this.formError = 'No expenses have been approved for this request!';
@@ -151,14 +152,26 @@ export class RequestDetail {
     /////
 
 
+    // VARIABILE CHE CONTIENE LO STATO DELLA RICHIESTA IN BASE ALL'IMPORTO APPROVATO
+    let status: RequestStatus;  
+
+
+    // Controllo se l'importo approvato è inferiore all'importo totale richiesto per determinare lo stato della richiesta
+    if (approvedAmount < request.totalRequestedAmount) {
+      status = RequestStatus.PARTIAL_APPROVED;
+    } else {
+      status = RequestStatus.APPROVED;
+    }
+
     const updatedRequest: RefundRequest = {
 
       ...request,
 
-      status: RequestStatus.APPROVED,
-      noteHr: this.form.value.noteHr ?? '',
-      totalApprovedAmount: this.approvedTotal(),
+      status, 
+      noteHr: this.form.value.noteHr ?? '',  
+      totalApprovedAmount: approvedAmount,  
       lastUpdateDate: new Date().toISOString()
+
     };
 
 
@@ -190,7 +203,7 @@ export class RequestDetail {
       ...request,
 
       status: RequestStatus.REJECTED,
-      noteHr: this.form.value.noteHr ?? '',
+      noteHr: this.form.value.noteHr ?? 'No HR Notes',
       totalApprovedAmount: 0,
       lastUpdateDate: new Date().toISOString()
     };
@@ -266,5 +279,23 @@ export class RequestDetail {
       0
     );
   });
+
+
+  // METODO PER INIZIARE LA REVISIONE DI UNA RICHIESTA
+  startReview(): void {
+    const request = this.request();  
+
+    if (!request) {   
+      return;      
+    }
+
+    this.reviewMode.set(true);  
+
+    if (request.status === RequestStatus.PENDING) {  
+      this.markAsInProgress(request);  
+    }
+
+  }
+
 
 }
