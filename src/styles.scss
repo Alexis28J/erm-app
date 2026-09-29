@@ -278,12 +278,29 @@ body {
 
 
 /* MENU */
-.mat-mdc-menu-content,
+.mat-mdc-menu-content {
+  background-color: #d0dffd !important;
+
+  &:hover {
+    overflow: hidden !important;
+  }
+}
+
+
+/* SINGOLO ELEMENTO DEL MENU */
 .mat-mdc-menu-item {
   background-color: #d0dffd !important;
 
   &:hover {
     background-color: #c5d7fb !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    transform: scale(1.1) !important;
+    overflow: hidden !important;
+    color: #005cbb !important;
+
+    mat-icon {
+      color: #005cbb !important;
+    }
   }
 }
 
@@ -314,7 +331,7 @@ body {
 }
 
 mat-mdc-snack-bar-label.panelClass-error {
-  --mat-sys-inverse-surface: rgba(255, 21, 21, 0.311) !important;  
+  --mat-sys-inverse-surface: rgba(255, 21, 21, 0.311) !important;
 }
 
 

@@ -24,7 +24,7 @@ export class RequestList {
 
   constructor() {
 
-
+    // EFFECT PER AGGIORNARE LA TABELLA QUANDO LA RISORSA DELLE RICHIESTE DI RIMBORSO CAMBIA
     effect(() => {
 
       const requests = this.requestResource();

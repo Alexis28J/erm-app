@@ -1,32 +1,3 @@
-<!-- TOOLBAR DEL DASHBOARD DELL'IMPIEGATO (HEADER) -->
-<mat-toolbar color="primary" role="banner">
-
-    <!-- Logo dell'applicazione -->
-    <img src="https://techjobsfair.it/prod/wp-content/uploads/2022/10/DGS_logo.png" alt="ERM Logo" class="app-logo"
-        matTooltip="BUILDING THE FUTURE" matTooltipPosition="right">
-
-    <!-- Separatore -->
-    <span class="spacer"></span>
-
-    <!-- Informazioni dell'utente corrente -->
-    <span>
-        {{currentUser?.name}}
-        {{currentUser?.surname}}
-        ({{currentUser?.email}})
-    </span>
-
-    <!-- Separatore -->
-    <span class="spacer"></span>
-
-    <!-- Pulsante di logout -->
-    <button mat-button (click)="logout()">
-        Logout
-        <mat-icon>logout</mat-icon>
-    </button>
-
-</mat-toolbar>
-
-
 <!-- CONTENITORE DEL DASHBOARD DELL'IMPIEGATO -->
 <div class="dashboard-container">
 
@@ -53,7 +24,12 @@
             <p>
                 Here you can manage your expense reimbursement requests. <br>
                 Click the "New Request" button if you wish to make a new refund request, <br>
-                or the "Request List" button to view all previous requests.
+                or the "Request List" button to view all previous requests. <br>
+                <br>
+                Furthermore, if you prefer, you can navigate through the different sections <br>
+                using the menu above (▾). <br>
+                <br>
+                Thank you for using our system and have a productive day!
             </p>
         </mat-card-content>
 
@@ -65,10 +41,12 @@
 
         <button mat-raised-button color="primary" routerLink="/employee/new-request">
             New Request
+            <mat-icon>add</mat-icon>
         </button>
 
         <button mat-raised-button color="primary" routerLink="/employee/request-list">
-            Request List
+            My Requests
+            <mat-icon>list</mat-icon>
         </button>
 
     </div>

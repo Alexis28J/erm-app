@@ -148,6 +148,7 @@
                         <button mat-raised-button color="primary" (click)="viewDetails(request.id)"
                             [hidden]="request.status === 'DRAFT'">
                             View Details
+                            <mat-icon>visibility</mat-icon>
                         </button>
 
 
@@ -161,16 +162,19 @@
 
                             <!-- VEDERE DETTAGLI RICHIESTA (METODO VIEW DETAILS) -->
                             <button mat-menu-item (click)="viewDetails(request.id)">
-                                View Details
+                                View
+                                <mat-icon>visibility</mat-icon>
                             </button>
 
                             <!-- MODIFICA RICHIESTA (METODO ROUTER LINK) -->
                             <button mat-menu-item routerLink="/employee/edit-request/{{request.id}}">
                                 Edit
+                                <mat-icon>edit</mat-icon>
                             </button>
 
                             <button mat-menu-item color="warn" (click)="deleteRequest(request.id)">
                                 Delete
+                                <mat-icon>delete</mat-icon>
                             </button>
 
                         </mat-menu>
@@ -209,16 +213,16 @@
     </mat-card>
 
     <div class="navigation-buttons">
-    <button mat-raised-button color="accent" routerLink="/employee/dashboard" class="back-btn">
-        Back to the Dashboard
-        <mat-icon>arrow_back</mat-icon>
-    </button>
+        <button mat-raised-button color="accent" routerLink="/employee/dashboard" class="back-btn">
+            Back to the Dashboard
+            <mat-icon>arrow_back</mat-icon>
+        </button>
 
 
-    <button mat-raised-button color="primary" routerLink="/employee/new-request">
-        Make a new request
-        <mat-icon>add</mat-icon>
-    </button>
+        <button mat-raised-button color="primary" routerLink="/employee/new-request">
+            Make a new request
+            <mat-icon>add</mat-icon>
+        </button>
     </div>
 
 

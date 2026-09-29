@@ -16,34 +16,29 @@ mat-card-title {
 }
 
 
-
 // COLORI STATUS
 .approved {
     color: green;
     font-weight: 600;
 }
 
-
 .pending {
     color: orange;
     font-weight: 600;
 }
-
 
 .rejected {
     color: red;
     font-weight: 600;
 }
 
-
-
-
-.partial_approved,  // Scrivo entrambe le versioni per gestire 
-.partial-approved { // sia underscore che trattino
+.partial_approved,
+// Scrivo entrambe le versioni per gestire 
+.partial-approved {
+    // sia underscore che trattino
     color: rgb(30, 196, 30);
     font-weight: 600;
 }
-
 
 .draft {
     color: gray;
@@ -63,7 +58,7 @@ mat-card-title {
     justify-content: center;
     align-items: center;
 
-    color:rgb(17, 17, 18);
+    color: rgb(17, 17, 18);
     font-size: 2rem;
     font-weight: bold;
     margin-top: 20px;

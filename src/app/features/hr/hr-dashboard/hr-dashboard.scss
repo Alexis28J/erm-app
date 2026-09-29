@@ -1,17 +1,4 @@
-/* Stile della barra degli strumenti principale */
-mat-toolbar {
-    border-bottom: 1px solid #ccc;
-    background-color: #f4f3f6;
-}
-
-
-/* Stile del contenitore principale del dashboard */
-.spacer {
-    flex: 1 1 auto;
-}
-
-
-/* Stile del contenitore dei pulsanti di azione del dashboard */
+/* Contenitore dei pulsanti di azione del dashboard */
 .dashboard-container {
     max-width: 800px;
     margin: 30px auto;
@@ -21,6 +8,8 @@ mat-toolbar {
     flex-direction: column;
     gap: 40px;
 
+
+    /* Paragrafo all'interno del contenitore del dashboard */
     p {
         line-height: 1.6;
         color: #333;
@@ -48,18 +37,15 @@ mat-card-header {
 }
 
 
-/* Stile del contenitore dei pulsanti di azione del dashboard */
+/* Contenitore dei pulsanti di azione del dashboard */
 .actions-container {
     display: flex;
     justify-content: center;
     gap: 40px;
 }
 
-.app-logo {
-    height: 120px;
-    margin-right: 10px;
-}
 
+/* Titolo del dashboard */
 h1 {
     font-size: 32px;
     font-weight: bold;

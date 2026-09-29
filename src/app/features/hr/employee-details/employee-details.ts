@@ -130,7 +130,9 @@ export class EmployeeDetails {
 
   // COMPUTED PER IL NUMERO TOTALE DI RICHIESTE
   totalRequests = computed(
-    () => this.requests().length
+    () => this.requests().filter( 
+      r => r.status !== 'DRAFT' 
+    ).length
   );
 
 

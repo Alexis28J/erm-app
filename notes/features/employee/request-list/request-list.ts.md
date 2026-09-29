@@ -25,6 +25,38 @@ export class RequestList {
 
   }
 
+    // CONFIGURAZIONE DELL'ORDINAMENTO DELLA TABELLA
+  // Questo metodo viene chiamato automaticamente quando la vista del componente è inizializzata
+  // e permette di configurare l'ordinamento della tabella delle richieste di rimborso.
+  @ViewChild(MatSort)
+  set sort(sort: MatSort) {
+
+    if (!sort) {
+      return;
+    }
+
+    this.dataSource.sort = sort;
+
+    this.dataSource.sortingDataAccessor = (item, property) => {
+
+      switch (property) {
+        case 'referenceMonth': return item.referenceMonth;
+        case 'creationDate': return new Date(item.creationDate).getTime();
+        case 'totalRequestedAmount': return item.totalRequestedAmount;
+        case 'totalApprovedAmount': return item.totalApprovedAmount ?? 0;
+        default: return item[property as keyof RefundRequest] as any;
+      }
+    }
+
+    //Ordinamento iniziale
+    this.dataSource.sort.active = 'creationDate';
+    this.dataSource.sort.direction = 'desc';
+    this.dataSource.sort.sortChange.emit({
+      active: 'creationDate',
+      direction: 'desc'
+    })
+  }
+
   // INIEZIONE DEI SERVIZI
   private authService = inject(AuthService);
   private refundRequestService = inject(RefundRequestService);
@@ -143,5 +175,7 @@ export class RequestList {
       });
 
   }
+}
+
 }
 ```

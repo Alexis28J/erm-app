@@ -1,0 +1,57 @@
+.spacer {
+  flex: 1 1 auto; // Permette allo spacer di crescere e ridursi automaticamente 
+  // Il primo 1 indica la capacità di crescere
+  // Il secondo 1 indica la capacità di ridursi
+  // auto indica la dimensione base flessibile
+}
+
+
+.app-logo {
+  height: 120px;
+  margin-right: 10px;
+
+
+  &:hover {
+    // Aggiungo un effetto al passaggio del mouse
+    transform: scale(1.1) !important;
+    transition: transform 0.3s ease-in-out !important;
+  }
+}
+
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.arrow-btn,
+.mat-mdc-icon-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.arrow-btn,
+.mat-mdc-icon-button,
+.mat-icon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 24px !important;
+  margin-left: 6px !important;
+}
+
+
+.menu-item,
+.mat-menu-item,
+.mat-mdc-menu-item {
+  margin-right: 1rem !important;
+}
+
+
+button:hover {
+  color: #005cbb !important;
+}

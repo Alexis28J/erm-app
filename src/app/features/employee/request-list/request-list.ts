@@ -40,6 +40,8 @@ export class RequestList {
 
   }
 
+  
+  // CONFIGURAZIONE DELL'ORDINAMENTO DELLA TABELLA
   @ViewChild(MatSort)
   set sort(sort: MatSort) {
 
@@ -69,8 +71,10 @@ export class RequestList {
     })
   }
 
+
   // FONTE DATI PER LA TABELLA DELLE RICHIESTE DI RIMBORSO
   dataSource = new MatTableDataSource<RefundRequest>()
+
 
   // INIEZIONE DEI SERVIZI
   private authService = inject(AuthService);
@@ -168,6 +172,7 @@ export class RequestList {
       });
 
   }
+
 
   // COLONNE DELLA TABELLA
   displayedColumns: string[] = [
