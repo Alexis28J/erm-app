@@ -1,12 +1,50 @@
 // SPAZIATORE FLESSIBILE PER LAYOUT
 .spacer {
-    flex: auto;
+    flex: 1 1 auto; // Permette allo spacer di crescere e ridursi automaticamente 
+    // Il primo 1 indica la capacità di crescere
+    // Il secondo 1 indica la capacità di ridursi
+    // auto indica la dimensione base flessibile
 }
+
 
 // TOOLBAR DI ANGULAR MATERIAL
 mat-toolbar {
     border-bottom: 1px solid #ccc;
     background-color: #f4f3f6;
+}
+
+
+// LOGO DELL'APPLICAZIONE
+.app-logo {
+    height: 120px;
+    margin-right: 10px;
+
+    &:hover {
+        // Aggiungo un effetto al passaggio del mouse
+        transform: scale(1.1);
+        transition: transform 0.3s ease-in-out;
+    }
+}
+
+
+// TITOLO DELL'APPLICAZIONE CON FONT PERSONALIZZATO: ZEN DOTS
+h1 {
+    font-family: "Zen Dots", sans-serif !important;
+    font-size: 36px !important; // Imposta la dimensione del font del titolo
+
+    &:hover {
+        color: #005cbb;
+        scale: 1.03;
+        transition: transform 0.3s ease-in-out;
+    }
+}
+
+
+// PULSANTE "PERSONAL AREA"
+.personal-area:hover {
+    color: #005cbb;
+    transform: scale(1.1);
+    transition: transform 0.3s ease-in-out;
 }
 
 
@@ -22,13 +60,6 @@ mat-toolbar {
 mat-card {
     width: 600px;
     padding: 20px;
-}
-
-
-// LOGO DELL'APPLICAZIONE
-.app-logo {
-    height: 120px;
-    margin-right: 10px;
 }
 
 

@@ -60,6 +60,7 @@
                         </mat-card-subtitle>
                         <button mat-raised-button color="primary" type="button" (click)="addExpense()">
                             Add Expense
+                            <mat-icon>add</mat-icon>
                         </button>
 
                     </div>
@@ -127,7 +128,7 @@
 
                                 <!-- Pulsante per rimuovere la spesa corrente -->
                                 <button mat-icon-button color="warn" type="button" (click)="removeExpense($index)"
-                                    matTooltip="Remove Expense" matTooltipPosition="above" class="remove-btn">
+                                    matTooltip="Remove" matTooltipPosition="above" class="remove-btn">
                                     <mat-icon>delete</mat-icon>
                                 </button>
 
@@ -168,14 +169,17 @@
 
                         <button mat-stroked-button routerLink="/employee/dashboard" class="cancel-btn">
                             Cancel
+                            <mat-icon>cancel</mat-icon>
                         </button>
 
                         <button mat-stroked-button type="button" (click)="saveDraft()" class="draft-btn">
                             Save Draft
+                                <mat-icon>save</mat-icon>
                         </button>
 
                         <button mat-raised-button color="primary" (click)="submitRequest()">
                             Submit Request
+                            <mat-icon>send</mat-icon>
                         </button>
 
                     </div>

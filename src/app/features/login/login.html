@@ -10,9 +10,11 @@
                 Login to
             </mat-card-title>
 
-            <mat-card-subtitle>
-                E. R. M. Application
+            <mat-card-subtitle matTooltip="Service Mark" matTooltipPosition="above">
+                J - E. R. M.℠
             </mat-card-subtitle>
+
+            <span>Application</span>
 
         </mat-card-header>
 
@@ -57,7 +59,8 @@
                     }
 
                     <!-- Pulsante per mostrare/nascondere la password -->
-                    <button mat-icon-button type="button" (click)="togglePasswordVisibility()">
+                    <button mat-icon-button type="button" (click)="togglePasswordVisibility()" class="toggle-btn"
+                        matTooltip="{{ hidePassword ? 'Show Password' : 'Hide Password' }}" matTooltipPosition="below">
                         <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
 

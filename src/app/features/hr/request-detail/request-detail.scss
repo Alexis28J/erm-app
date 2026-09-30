@@ -183,16 +183,15 @@ mat-card-title {
 // PULSANTI AZIONE
 .actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
+  justify-content: space-between;
   padding: 14px 16px;
 }
 
-.back-btn {
-  margin-right: auto;
+.reject-approve {
   display: flex;
-  gap: 12px !important;
+  gap: 12px;
 }
+
 
 .approve-btn {
   min-width: 140px;
@@ -232,6 +231,7 @@ mat-divider {
 
 // BANNER DI REVISIONE (REVIEW MODE)
 .review-banner {
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -266,8 +266,15 @@ mat-divider {
     line-height: 1.5rem;
   }
 
-
 }
+
+
+// PULSANTE VERIFY (VERIFICA DELLA RICHIESTA)
+.verify-btn,
+.edit-btn {
+  width: 100%;
+}
+
 
 
 // MEDIA QUERY PER SCHERMI PICCOLI (mobile responsive)
@@ -288,7 +295,6 @@ mat-divider {
   }
 
 }
-
 
 
 

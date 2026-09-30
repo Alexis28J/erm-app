@@ -12,11 +12,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from "@angular/material/icon";
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   imports: [ReactiveFormsModule, CommonModule, MatCardModule,
-    MatInputModule, MatButtonModule, MatFormFieldModule, MatIconModule, RouterLink],
+    MatInputModule, MatButtonModule, MatFormFieldModule, MatIconModule, RouterLink, MatTooltipModule],
   selector: 'app-login',
   styleUrls: ['./login.scss'],
   templateUrl: './login.html',

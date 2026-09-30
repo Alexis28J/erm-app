@@ -88,6 +88,7 @@
             <!-- Pulsante per aggiungere una nuova spesa -->
             <button mat-raised-button color="primary" type="button" (click)="addExpense()">
               Add Expense
+              <mat-icon>add</mat-icon>
             </button>
 
           </div>
@@ -155,7 +156,7 @@
 
                 <!-- Pulsante per rimuovere la spesa corrente -->
                 <button mat-icon-button color="warn" type="button" (click)="removeExpense($index)" class="remove-btn"
-                  matTooltip="Remove Expense" matTooltipPosition="above">
+                  matTooltip="Remove" matTooltipPosition="above">
                   <mat-icon>delete</mat-icon>
                 </button>
 
@@ -203,19 +204,21 @@
         <!-- Pulsante per tornare indietro -->
         <div class="cancel-btn">
           <button mat-stroked-button color="primary" type="button" routerLink="/employee/request-list">
-            Cancel and Return
-            <mat-icon>arrow_back</mat-icon>
+            Cancel
+            <mat-icon>cancel</mat-icon>
           </button>
         </div>
 
         <!-- Pulsante per salvare la richiesta come bozza -->
         <button mat-stroked-button color="primary" type="button" (click)="saveDraft()" class="draft-btn">
           Save Draft
+          <mat-icon>save</mat-icon>
         </button>
 
         <!-- Pulsante per inviare la richiesta -->
         <button mat-raised-button color="accent" type="button" (click)="submitRequest()">
           Submit Request
+          <mat-icon>send</mat-icon>
         </button>
 
       </div>

@@ -5,7 +5,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class Notification {
     private snackBar = inject(MatSnackBar);
 
-
     // METODO PER MOSTRARE UNA NOTIFICA DI SUCCESSO
     success(message: string): void {
 

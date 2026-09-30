@@ -2,13 +2,25 @@
 <mat-toolbar color="primary">
 
     <!-- Logo dell'applicazione -->
-    <img src="https://techjobsfair.it/prod/wp-content/uploads/2022/10/DGS_logo.png" alt="ERM Logo" class="app-logo"
-        matTooltip="BUILDING THE FUTURE" matTooltipPosition="right">
+    <a routerLink="/login">
+        <img src="https://techjobsfair.it/prod/wp-content/uploads/2022/10/DGS_logo.png" alt="ERM Logo" class="app-logo"
+            matTooltip="BUILDING THE FUTURE" matTooltipPosition="right">
+    </a>
 
+    <!-- Separatore -->
     <span class="spacer"></span>
 
+
+    <!-- Titolo dell'applicazione -->
+    <h1 matTooltip="Service Mark" matTooltipPosition="right">J-E.R.M.℠</h1>
+    
+
+    <!-- Separatore -->
+    <span class="spacer"></span>
+
+
     <!---------- PULSANTE "PERSONAL AREA" ----------->
-    <button mat-button [matMenuTriggerFor]="loginMenu">
+    <button mat-button [matMenuTriggerFor]="loginMenu" class="personal-area">
 
         <mat-icon>arrow_drop_down</mat-icon>
         Personal Area
@@ -53,6 +65,9 @@
 
             <p>This section allows employees to manage their expense reimbursement requests efficiently.</p>
             <p>Employees can submit requests, while the HR department can review and approve them.</p>
+            <p>We hope this system will be beneficial for both employees and the HR department.</p>
+            <!-- <p>Please, don't hesitate to provide feedback for further improvements.</p> -->
+            <p>Thank you for using our system and have a great day!</p>
 
         </mat-card-content>
 
@@ -61,6 +76,7 @@
 
             <button mat-raised-button color="primary" routerLink="/login">
                 Login
+                <mat-icon>login</mat-icon>
             </button>
 
         </mat-card-actions>

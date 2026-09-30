@@ -24,6 +24,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  mat-card-title,
+  mat-card-subtitle {
+    font-family: "Zen Dots", sans-serif;
+  }
 }
 
 
@@ -52,6 +57,12 @@
 }
 
 
-button:hover {
-  color: #005cbb !important;
+mat-menu,
+button,
+.menu-item{
+  &:hover {
+    color: #005cbb !important;
+    transform: scale(1.1) !important;
+    transition: transform 0.3s ease-in-out !important;
+  }
 }

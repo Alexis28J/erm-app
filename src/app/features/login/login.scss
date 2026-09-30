@@ -11,25 +11,38 @@
 mat-card {
     width: 100%;
     max-width: 450px;
-
-    padding: 24px;
-    gap: 16px;
+    gap: 2rem;
 }
 
 
 mat-card-header {
-    margin-bottom: 22px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
 
-    mat-card-title {   
-        text-align: center;
+    mat-card-title {
+        text-align: start;
+        font-size: 1.5rem;
+        padding-bottom: 8px;
     }
 
     mat-card-subtitle {
-        font-size: 24px;
+        font-family: "Zen Dots", sans-serif;
+        font-size: 2rem;
+        text-align: center;
+        padding-bottom: 8px;
+        cursor: pointer;
+
+        &:hover {
+            color: #005cbb;
+            scale: 1.05;
+            transition: transform 0.3s ease-in-out;
+        }
     }
 
+    span {
+        font-size: 1.5rem;
+        text-align: end;
+    }
 }
 
 
@@ -68,6 +81,13 @@ mat-form-field {
 
 button {
     width: 100%;
+}
+
+
+.toggle-btn:hover {
+    color: #005cbb;
+    scale: 1.05;
+    transition: transform 0.3s ease-in-out;
 }
 
 

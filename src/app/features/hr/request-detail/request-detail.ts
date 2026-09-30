@@ -11,7 +11,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-bar';
 import { MatDivider } from '@angular/material/divider';
@@ -22,7 +21,7 @@ import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progr
 @Component({
   imports: [MatCardModule, MatLabel, MatInputModule,
     MatFormFieldModule, CommonModule, ReactiveFormsModule,
-    MatButtonModule, RouterLink, MatIconModule,
+    MatButtonModule, MatIconModule,
     ProgressBar, MatDivider, TotalProgressBar],
   selector: 'app-request-detail',
   styleUrls: ['./request-detail.scss'],
