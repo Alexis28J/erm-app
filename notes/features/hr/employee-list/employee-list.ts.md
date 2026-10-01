@@ -4,10 +4,66 @@
 export class EmployeeList {
 
   constructor() {
+
+      effect(() => {  // effect aggiona la tabella ogni volta che cambia la lista filtrata degli impiegati
+      
+      this.dataSource.data = this.filteredEmployees();  // Aggiorna il datasource della tabella con la lista filtrata degli impiegati
+
+    })
+
+    // searchControl serve per aggiornare il segnale di ricerca ogni volta che l'utente digita qualcosa
+    // valueChanges serve per rilevare ogni cambiamento nel campo di ricerca
+    // In sintesi, ogni volta che l'utente digita qualcosa nel campo di ricerca, il segnale di ricerca viene aggiornato e di conseguenza la tabella mostra solo gli impiegati che corrispondono al termine di ricerca.
+
+
     this.searchControl.valueChanges.subscribe(value => {  // Aggiorno il segnale di ricerca ogni volta che il valore del controllo di ricerca cambia.
-      this.search.set(value ?? '');  // Aggiorno il segnale di ricerca con il nuovo valore.
+      this.search.set(value ?? '');  // Aggiorna il segnale di ricerca con il valore corrente del controllo di ricerca
     });
   }
+
+
+  // ORDINA LA TABELLA IN BASE ALLA COLONNA SPECIFICATA
+  @ViewChild(MatSort)
+  set sort(sort: MatSort) {
+
+    if (!sort) {
+      return;
+    }
+
+    this.dataSource.sort = sort;
+
+    this.dataSource.sortingDataAccessor = (item, property) => {
+
+      switch (property) {
+        case "code": return item.employeeCode;
+        case "name": return item.name;
+        case "email": return item.email;
+        case "active": return item.active;
+        default: return item[property as keyof User] as any;
+      };
+
+    };
+
+    // Ordinamento iniziale
+    this.dataSource.sort.active = 'name';
+    this.dataSource.sort.direction = 'asc';
+    this.dataSource.sort.sortChange.emit({
+      active: 'name',
+      direction: 'asc'
+    });
+
+  }
+
+
+  // PAGINATORE DELLA TABELLA
+  @ViewChild(MatPaginator)
+  set paginator(paginator: MatPaginator) {  // Imposta il paginatore della tabella
+    if (!paginator) {  // Se il paginatore non è disponibile, esci dal metodo
+      return;
+    }
+    this.dataSource.paginator = paginator;  
+  }
+
 
   // INIEZIONE DEL SERVIZIO USER  
   private userService = inject(UserService);

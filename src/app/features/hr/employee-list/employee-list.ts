@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, ViewChild } from '@angular/core';
 import { UserService } from '../../../core/services/user.service';
 import { FormControl } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -6,16 +6,20 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatTableModule, MatColumnDef } from '@angular/material/table';
+import { MatTableModule, MatColumnDef, MatTableDataSource } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { User } from '../../../core/interfaces/user';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   imports: [MatCardModule, MatFormFieldModule, MatInputModule,
     ReactiveFormsModule, MatTableModule, MatColumnDef,
-    CommonModule, MatButtonModule, RouterLink, MatIconModule],
+    CommonModule, MatButtonModule, RouterLink,
+    MatIconModule, MatSortModule, MatPaginatorModule],
   selector: 'app-employee-list',
   styleUrls: ['./employee-list.scss'],
   templateUrl: './employee-list.html',
@@ -23,10 +27,64 @@ import { MatIconModule } from '@angular/material/icon';
 export class EmployeeList {
 
   constructor() {
-    this.searchControl.valueChanges.subscribe(value => {
-      this.search.set(value ?? '');
+
+    effect(() => {  
+      this.dataSource.data = this.filteredEmployees();  
+    })
+
+    // Sottoscrizione ai cambiamenti del controllo di ricerca
+    this.searchControl.valueChanges.subscribe(value => {  
+      this.search.set(value ?? '');  
     });
   }
+
+
+  // ORDINA LA TABELLA IN BASE ALLA COLONNA SPECIFICATA
+  @ViewChild(MatSort)
+  set sort(sort: MatSort) {
+
+    if (!sort) {
+      return;
+    }
+
+    this.dataSource.sort = sort;
+
+    this.dataSource.sortingDataAccessor = (item, property) => {
+
+      switch (property) {
+        case "code": return item.employeeCode;
+        case "name": return item.name;
+        case "email": return item.email;
+        case "active": return item.active;
+        default: return item[property as keyof User] as any;
+      };
+
+    };
+
+    // Ordinamento iniziale
+    this.dataSource.sort.active = 'name';
+    this.dataSource.sort.direction = 'asc';
+    this.dataSource.sort.sortChange.emit({
+      active: 'name',
+      direction: 'asc'
+    });
+
+  }
+
+
+  // PAGINATORE DELLA TABELLA
+  @ViewChild(MatPaginator)
+  set paginator(paginator: MatPaginator) {  // Imposta il paginatore della tabella
+    if (!paginator) {  // Se il paginatore non è disponibile, esci dal metodo
+      return;
+    }
+    this.dataSource.paginator = paginator;  
+  }
+
+
+  // DATASOURCE PER LA TABELLA
+  dataSource = new MatTableDataSource<User>();  
+
 
   // INIEZIONE DEL SERVIZIO USER  
   private userService = inject(UserService);
@@ -37,7 +95,7 @@ export class EmployeeList {
   searchControl = new FormControl('');
 
 
-  // SEGNALE CHE CONTIENE LA LISTA DEGLI IMPIEGATI
+  // SEGNALE CHE CONTIENE LA LISTA DEGLI IMPIEGATI 
   employees = toSignal(
     this.userService.getEmployees(),
     {

@@ -11,11 +11,13 @@ import { DatePipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 
 @Component({
-  imports: [MatIconModule, MatCardModule, MatTableModule, DatePipe,
-    CommonModule, MatButtonModule, RouterLink, MatSortModule],
+  imports: [MatIconModule, MatCardModule, MatTableModule,
+    DatePipe, CommonModule, MatButtonModule,
+    RouterLink, MatSortModule, MatPaginatorModule],
   selector: 'app-request-list',
   styleUrls: ['./request-list.scss'],
   templateUrl: './request-list.html',
@@ -27,10 +29,10 @@ export class RequestList {
     // EFFECT PER AGGIORNARE LA TABELLA QUANDO LA RISORSA DELLE RICHIESTE DI RIMBORSO CAMBIA
     effect(() => {
 
-      const requests = this.requestResource();
+      const req = this.requestResource();
 
       this.requests.set(
-        requests.filter(
+        req.filter(
           request => request.status !== 'DRAFT'
         ));
 
@@ -40,13 +42,14 @@ export class RequestList {
   }
 
   // COLLEGAMENTO DEL MATSORT ALLA DATASOURCE DELLA TABELLA
-  @ViewChild(MatSort)  
-  set sort(sort: MatSort) {  
-    if (!sort) {  
+  @ViewChild(MatSort)
+  set sort(sort: MatSort) {
+
+    if (!sort) {
       return;
     }
 
-    this.dataSource.sort = sort;  
+    this.dataSource.sort = sort;
 
     this.dataSource.sortingDataAccessor = (item, property) => {
 
@@ -56,6 +59,7 @@ export class RequestList {
         case 'amount': return item.totalRequestedAmount;
         default: return item[property as keyof RefundRequest] as any;
       }
+
     };
 
     // Ordinamento iniziale
@@ -68,8 +72,20 @@ export class RequestList {
   }
 
 
+  // COLLEGAMENTO DEL MATPAGINATOR ALLA DATASOURCE DELLA TABELLA
+  @ViewChild(MatPaginator)
+  set paginator(paginator: MatPaginator) {
+
+    if (!paginator) {
+      return;
+    }
+
+    this.dataSource.paginator = paginator;
+  }
+
+
   // FONTE DEI DATI PER LA TABELLA DELLE RICHIESTE DI RIMBORSO
-  dataSource = new MatTableDataSource<RefundRequest>();  
+  dataSource = new MatTableDataSource<RefundRequest>();
 
 
   // INIEZIONI DI SERVIZI

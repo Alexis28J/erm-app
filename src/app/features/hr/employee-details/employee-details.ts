@@ -12,11 +12,12 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { RefundRequest } from '../../../core/interfaces/refund-request';
 import { catchError, of } from 'rxjs';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   imports: [CommonModule, MatCardModule, RouterLink,
     MatButtonModule, MatIconModule, MatTableModule,
-    MatSortModule],
+    MatSortModule, MatPaginatorModule],
   selector: 'app-employee-details',
   styleUrls: ['./employee-details.scss'],
   templateUrl: './employee-details.html',
@@ -77,6 +78,18 @@ export class EmployeeDetails {
   }
 
 
+  // PAGINATOR
+  @ViewChild(MatPaginator)
+  set paginator(paginator: MatPaginator) {
+
+    if (!paginator) {  
+      return;
+    }
+
+    this.dataSource.paginator = paginator;
+  }
+
+
   // DATASOURCE PER LA TABELLA DELLE RICHIESTE
   dataSource = new MatTableDataSource<RefundRequest>();
 
@@ -130,8 +143,8 @@ export class EmployeeDetails {
 
   // COMPUTED PER IL NUMERO TOTALE DI RICHIESTE
   totalRequests = computed(
-    () => this.requests().filter( 
-      r => r.status !== 'DRAFT' 
+    () => this.requests().filter(
+      r => r.status !== 'DRAFT'
     ).length
   );
 

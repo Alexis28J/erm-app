@@ -18,10 +18,14 @@ import { Notification } from '../../../shared/notification-service/notification'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort } from '@angular/material/sort';
 import { MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
-  imports: [MatCardModule, MatTableModule, CommonModule, MatAnchor,
-    MatIconModule, MatButtonModule, RouterLink, MatDialogModule, MatMenuModule, MatProgressSpinnerModule, MatSortModule],
+  imports: [MatCardModule, MatTableModule, CommonModule,
+    MatAnchor, MatIconModule, MatButtonModule,
+    RouterLink, MatDialogModule, MatMenuModule,
+    MatProgressSpinnerModule, MatSortModule,
+    MatPaginatorModule],
   selector: 'app-request-list',
   styleUrls: ['./request-list.scss'],
   templateUrl: './request-list.html',
@@ -40,7 +44,7 @@ export class RequestList {
 
   }
 
-  
+
   // CONFIGURAZIONE DELL'ORDINAMENTO DELLA TABELLA
   @ViewChild(MatSort)
   set sort(sort: MatSort) {
@@ -72,6 +76,18 @@ export class RequestList {
   }
 
 
+  // CONFIGURAZIONE DEL PAGINATORE DELLA TABELLA
+  @ViewChild(MatPaginator)
+  set paginator(paginator: MatPaginator) {
+
+    if (!paginator) {
+      return;
+    }
+
+    this.dataSource.paginator = paginator;
+  }
+
+  
   // FONTE DATI PER LA TABELLA DELLE RICHIESTE DI RIMBORSO
   dataSource = new MatTableDataSource<RefundRequest>()
 

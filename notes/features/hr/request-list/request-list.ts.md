@@ -10,12 +10,13 @@ export class RequestList {
     // a causa di modifiche esterne o altre operazioni asincrone.
     effect(() => {
 
-      const requests = this.requestResource();  // La variabile 'requests' contiene il valore corrente del segnale 'requestResource'
+      const req = this.requestResource();  // La variabile 'req' contiene il valore corrente del segnale 'requestResource'
 
       this.requests.set(   // Aggiorna il segnale 'requests' con le richieste filtrate che non sono in stato 'DRAFT'
-        requests.filter(
+        req.filter(
           request => request.status !== 'DRAFT'
         ));
+        
       this.dataSource.data = this.requests();  // Aggiorna la dataSource della tabella con le richieste filtrate.
     }); // this.requests() contiene le richieste di rimborso filtrate, escluse quelle in stato 'DRAFT'.
 
@@ -54,9 +55,26 @@ export class RequestList {
   }
 
 
+  // COLLEGAMENTO DEL MATPAGINATOR ALLA DATASOURCE DELLA TABELLA
+  //MatPaginator è un componente che gestisce la paginazione della tabella
+  //Viene collegato alla datasource della tabella tramite il setter paginator
+  @ViewChild(MatPaginator)  
+  set paginator(paginator: MatPaginator) {   // uso il setter per collegare il MatPaginator alla datasource della tabella
+
+    if (!paginator) {   // Se il paginator non è ancora disponibile, esci dal setter
+      return;
+    }
+    //Cosa vuol dire "se non c'è paginator"? Risposta: significa che il componente MatPaginator non è ancora stato inizializzato o non è presente nel template. In tal caso, non possiamo assegnarlo al dataSource, quindi usciamo dal metodo.
+
+    this.dataSource.paginator = paginator;   // Collega il paginator alla datasource della tabella
+  }
+
+
+  // FONTE DEI DATI PER LA TABELLA DELLE RICHIESTE DI RIMBORSO
   dataSource = new MatTableDataSource<RefundRequest>();  // Fonte dei dati per la tabella delle richieste di rimborso
 
 
+  // INIEZIONI DI SERVIZI
   private refundRequestService = inject(RefundRequestService);
   private router = inject(Router);
 

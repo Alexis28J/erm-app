@@ -238,6 +238,8 @@
 
         </table>
 
+        <mat-paginator [pageSize]="5" [pageSizeOptions]="[10, 15]" showFirstLastButtons></mat-paginator>
+
         @if (requests().length === 0) {
 
         <div class="no-found">
