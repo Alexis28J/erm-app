@@ -37,115 +37,21 @@ body {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 /* You can add global styles to this file, and also import other style files */
 
-// TABELLE MATERIAL DESIGN
-.mat-mdc-table {
-  width: 100%;
-  margin-top: 20px;
-  border-radius: 12px !important;
-  overflow: hidden !important;
-  border-style: solid !important;
-  border-width: 2px !important;
-  border-color: rgba(22, 80, 195, 0.352) !important;
-
-  &:hover {
-    border-color: rgba(60, 98, 250, 0.6) !important;
-  }
-}
-
-
-// HEADER DELLE TABELLE MATERIAL DESIGN
-.mat-mdc-header-cell {
-  font-weight: bold !important;
-  text-align: center !important;
-  padding: 12px !important;
-  background-color: #c5d7fb !important;
-
-  // Se voglio modificare mat-sort-header-container, posso farlo qui.
-  .mat-sort-header-container {
-    justify-content: center !important;
-    align-items: center !important;
-  }
-
-  .mat-sort-header-arrow {
-    opacity: 0.38 !important;
-  }
-}
-
-
-// CELLE DELLE TABELLE MATERIAL DESIGN
-.mat-mdc-cell {
-  text-align: center !important;
-  padding: 12px !important;
-}
-
-
-// HOVER SULLE RIGHE DELLE TABELLE MATERIAL DESIGN
-.mat-mdc-row:hover {
-  background-color: #dde5f4 !important;
-  transform: translateY(-1px);
-  transition: transform 0.3s ease;
-}
-
-
-// CARD MATERIAL DESIGN
-.mat-mdc-card {
-  padding: 16px 16px 10px 16px !important;
-  margin: 16px !important;
-  border-style: solid !important;
-  border-width: 2px !important;
-  border-radius: 16px !important;
-  border-color: rgba(22, 80, 195, 0.212) !important;
-  background-color: rgba(21, 99, 255, 0.212) !important;
-  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.4),
-    0 0 6px 0 rgba(56, 189, 248, 0.08) !important;
-  transition: all 0.3s ease !important;
-
-  &:hover {
-    border-color: rgba(60, 98, 250, 0.6) !important;
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.4),
-      0 0 7px 0 rgba(56, 189, 248, 0.08) !important;
-    transform: translateY(-0.5px);
-  }
-
-}
-
-
-// PULSANTI MATERIAL DESIGN
-.mdc-button--raised {
-  border-style: solid !important;
-  border-width: 2px !important;
-  border-color: rgba(22, 80, 195, 0.35) !important;
-
-  &:hover {
-    border-color: rgba(60, 98, 250, 0.6) !important;
-  }
-}
-
-
-// TOOLBAR MATERIAL DESIGN
-.mat-toolbar {
-  border-style: solid !important;
-  border-width: 2px !important;
-  border-color: rgba(0, 0, 0, 0.12) !important;
-  background-color: rgba(22, 80, 195, 0.212) !important;
-  box-shadow: 0 3px 5px -2px rgba(0, 0, 0, 0.3);
-}
-
 
 /*//////////////////////////////////////////////////////////////////////////////////
   ANIMAZIONI DELLE SFERE
 //////////////////////////////////////////////////////////////////////////////////*/
 
 // TERZA E ULTIMA VERSIONE DELLO SFONDO ANIMATO
-
 .background-container {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4ecfa 100%);
+
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #ffffff;
-  z-index: -1;
+  z-index: -1; // Assicura che lo sfondo sia dietro tutti gli altri elementi
   overflow: hidden;
 }
 
@@ -272,9 +178,117 @@ body {
   }
 }
 
-
 //////////////////////////////////////////////////////////////////////////////////
 /* FINE ANIMAZIONI DELLE SFERE */
+
+
+//////////////////////////////////////////////////////////////////////////////////
+/* TABELLE MATERIAL DESIGN */
+.mat-mdc-table {
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  border-style: solid !important;
+  border-width: 2px !important;
+  border-color: rgba(22, 80, 195, 0.352) !important;
+
+  &:hover {
+    border-color: rgba(60, 98, 250, 0.6) !important;
+  }
+}
+
+
+// HEADER DELLE TABELLE MATERIAL DESIGN
+.mat-mdc-header-cell {
+  font-weight: bold !important;
+  text-align: center !important;
+  padding: 12px !important;
+  background-color: #c5d7fb !important;
+
+  // Se voglio modificare mat-sort-header-container, posso farlo qui.
+  .mat-sort-header-container {
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .mat-sort-header-arrow {
+    opacity: 0.38 !important;
+  }
+}
+
+
+// CELLE DELLE TABELLE MATERIAL DESIGN
+.mat-mdc-cell {
+  text-align: center !important;
+  padding: 12px !important;
+}
+
+
+// HOVER SULLE RIGHE DELLE TABELLE MATERIAL DESIGN
+.mat-mdc-row:hover {
+  background-color: #dde5f4 !important;
+  transform: translateY(-1px);
+  transition: transform 0.3s ease;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+//// FINE TABELLE MATERIAL DESIGN
+
+
+/* CARD MATERIAL DESIGN */
+.mat-mdc-card {
+  padding: 16px 16px 10px 16px !important;
+  margin: 16px !important;
+  border-style: solid !important;
+  border-width: 2px !important;
+  border-radius: 16px !important;
+  border-color: rgba(22, 80, 195, 0.212) !important;
+  background-color: rgba(21, 99, 255, 0.212) !important;
+  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.4),
+    0 0 6px 0 rgba(56, 189, 248, 0.08) !important;
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    border-color: rgba(60, 98, 250, 0.6) !important;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.4),
+      0 0 7px 0 rgba(56, 189, 248, 0.08) !important;
+    transform: translateY(-0.5px);
+  }
+
+}
+
+
+// PULSANTI MATERIAL DESIGN
+.mdc-button--raised {
+  border-style: solid !important;
+  border-width: 2px !important;
+  border-color: rgba(22, 80, 195, 0.35) !important;
+
+  &:hover {
+    border-color: rgba(60, 98, 250, 0.6) !important;
+  }
+}
+
+
+// TOOLBAR MATERIAL DESIGN
+.mat-toolbar {
+  border-style: solid !important;
+  border-width: 2px !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  background-color: rgba(22, 80, 195, 0.212) !important;
+  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.4),
+    0 0 6px 0 rgba(56, 189, 248, 0.08) !important;
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    border-top-color: rgba(60, 98, 250, 0.6) !important;
+    border-bottom-color: rgba(60, 98, 250, 0.6) !important;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.4),
+      0 0 7px 0 rgba(56, 189, 248, 0.08) !important;
+    transform: translateY(-0.2px);
+  }
+}
 
 
 /* MENU */
@@ -311,51 +325,9 @@ body {
 }
 
 
-/* SPINNER DI CARICAMENTO */
-.mat-mdc-progress-spinner {
-  stroke: rgba(60, 98, 250, 0.6) !important;
-}
-
-.loading-spinner {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-}
-
-
-/* SNACKBAR */
-.mdc-snackbar {
-  --mat-sys-inverse-surface: rgba(21, 99, 255, 0.311) !important;
-  /* Colore di sfondo */
-  text-align: center;
-}
-
-mat-mdc-snack-bar-label.panelClass-error {
-  --mat-sys-inverse-surface: rgba(255, 21, 21, 0.311) !important;
-}
-
-
-/* TOOLTIP */
-.mat-tooltip-panel,
-.mdc-tooltip__surface {
-  background-color: rgba(244, 245, 246, 0) !important;
-  color: #000 !important;
-  font-size: 14px !important;
-  font-weight: bold !important;
-}
-
-
 /* SELECT PANEL */
 .mat-mdc-select-panel {
   background-color: #c6d9fc !important;
-}
-
-
-/* FONT PERSONALIZZATO: ZEN DOTS */
-.zen-dots-regular {
-  font-family: "Zen Dots", sans-serif;
-  font-weight: 400;
-  font-style: normal;
 }
 
 
@@ -374,4 +346,46 @@ mat-mdc-snack-bar-label.panelClass-error {
     font-size: 1.5rem !important;
     color: #005cbb !important;
   }
+}
+
+
+/* SNACKBAR */
+.mdc-snackbar {
+  --mat-sys-inverse-surface: rgba(21, 99, 255, 0.311) !important;
+  /* Colore di sfondo */
+  text-align: center;
+}
+
+mat-mdc-snack-bar-label.panelClass-error {
+  --mat-sys-inverse-surface: rgba(255, 21, 21, 0.311) !important;
+}
+
+
+/* SPINNER DI CARICAMENTO */
+.mat-mdc-progress-spinner {
+  stroke: rgba(60, 98, 250, 0.6) !important;
+}
+
+.loading-spinner {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+
+/* TOOLTIP */
+.mat-tooltip-panel,
+.mdc-tooltip__surface {
+  background-color: rgba(244, 245, 246, 0) !important;
+  color: #000 !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+}
+
+
+/* FONT PERSONALIZZATO: ZEN DOTS */
+.zen-dots-regular {
+  font-family: "Zen Dots", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }

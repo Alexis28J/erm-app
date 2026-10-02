@@ -22,12 +22,13 @@ import { MatDivider } from '@angular/material/divider';
 import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list';
 
 @Component({
   imports: [ReactiveFormsModule, MatFormFieldModule, MatButtonModule,
     MatCardModule, MatSelectModule, MatIconModule,
     RouterLink, MatInputModule, MatOptionModule, CommonModule,
-    ProgressBar, MatDivider, TotalProgressBar, MatTooltipModule],
+    ProgressBar, MatDivider, TotalProgressBar, MatTooltipModule, AttachmentList],
   selector: 'app-new-request',
   styleUrls: ['./new-request.scss'],
   templateUrl: './new-request.html',
@@ -65,7 +66,8 @@ export class NewRequest {
       category: ['', Validators.required],
       description: [''],
       requestedAmount: [null, Validators.required],
-      approvedAmount: [0]
+      approvedAmount: [0],
+      attachments: [[]]
     });
 
     this.expenses.push(expense);
@@ -261,6 +263,84 @@ export class NewRequest {
   })
 
 
+  // GESTIONE DEI FILE ALLEGATI PER LE SPESE
+  onFilesSelected(event: Event, expenseIndex: number): void {
+
+    const files = (event.target as HTMLInputElement).files;
+
+    if (!files?.length) {
+      return;
+    }
+
+
+    Array.from(files).forEach(file => {
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+
+        const expense = this.expenses.at(expenseIndex);
+
+
+        // Log provvisorio per verificare gli allegati correnti
+        // console.log(
+        //   expense.get('attachments')?.value
+        // );
+        ////////////////////////
+
+        const attachments = expense.get('attachments')?.value ?? [];
+
+        const allowedTypes = [
+          'application/pdf',
+          'image/jpeg',
+          'image/jpg',
+          'image/png'
+        ];
+
+        if (!allowedTypes.includes(file.type)) {
+          this.notificationService.error('Only PDF and image files are allowed');
+          return;
+        }
+
+
+        attachments.push({
+          fileName: file.name,
+          fileType: file.type,
+          fileContent: reader.result as string
+        });
+
+        expense.patchValue({
+          attachments
+        });
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+  }
+
+
+  // METODO PER RIMUOVERE UN FILE ALLEGATO (PER OGNI SINGOLA SPESA)
+  removeAttachment(
+    expenseIndex: number,
+    attachmentIndex: number
+  ): void {
+
+    const expense = this.expenses.at(expenseIndex);
+
+    const attachments = [
+      ...(expense.value.attachments ?? [])
+    ];
+
+    attachments.splice(
+      attachmentIndex,
+      1
+    );
+
+    expense.patchValue({
+      attachments
+    });
+  }
 
 }
 

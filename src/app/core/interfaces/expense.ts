@@ -1,5 +1,13 @@
 import { ExpenseCategoryName } from './enum';
 
+
+export interface ExpenseAttachment {
+    // id: string;  
+    fileName: string;
+    fileContent: string;  
+    fileType: string;
+}
+
 export interface Expense {
     id: string;
     category: ExpenseCategoryName;
@@ -7,8 +15,11 @@ export interface Expense {
     description: string;
     requestedAmount: number;
     approvedAmount?: number;
-    receiptAttached?: boolean;
     noteHr?: string;
+
+    attachments?: ExpenseAttachment[];  
 }
+
+
 
 

@@ -136,8 +136,15 @@
 
         @for (expense of request.expenses; track expense.id) {
 
-        <app-progress-bar [category]="expense.category" [amount]="expense.requestedAmount">
-        </app-progress-bar>
+        <div class="expense-grid">
+            <app-progress-bar [category]="expense.category" [amount]="expense.requestedAmount">
+            </app-progress-bar>
+
+            <div class="attachment-container">
+                <app-attachment-list [attachments]="expense.attachments ?? []" [truncateLength]="20">
+                </app-attachment-list>
+            </div>
+        </div>
 
         }
 
@@ -159,8 +166,10 @@
     </mat-card-header>
 
     <mat-card-content>
+        <div class="expense-grid">
         <app-total-progress-bar [requestedAmount]="totalRequestedAmount()" [allowedAmount]="totalAllowedAmount()">
         </app-total-progress-bar>
+        </div>
     </mat-card-content>
 
 </mat-card>

@@ -16,13 +16,14 @@ import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-
 import { MatDivider } from '@angular/material/divider';
 import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
+import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list';
 
 
 @Component({
   imports: [MatCardModule, MatLabel, MatInputModule,
     MatFormFieldModule, CommonModule, ReactiveFormsModule,
     MatButtonModule, MatIconModule,
-    ProgressBar, MatDivider, TotalProgressBar],
+    ProgressBar, MatDivider, TotalProgressBar, AttachmentList],
   selector: 'app-request-detail',
   styleUrls: ['./request-detail.scss'],
   templateUrl: './request-detail.html',

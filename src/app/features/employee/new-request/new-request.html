@@ -68,7 +68,7 @@
                     <div formArrayName="expenses" class="expenses-section">
 
                         @for (expense of expenses.controls;
-                        track expense) {
+                        track $index; let expenseIndex = $index) {
 
 
                         <div class="expense-grid">
@@ -128,12 +128,62 @@
 
                                 <!-- Pulsante per rimuovere la spesa corrente -->
                                 <button mat-icon-button color="warn" type="button" (click)="removeExpense($index)"
-                                    matTooltip="Remove" matTooltipPosition="above" class="remove-btn">
+                                    matTooltip="Remove all" matTooltipPosition="above" class="remove-btn">
                                     <mat-icon>delete</mat-icon>
                                 </button>
 
                             </div>
 
+                            <!-- FILE ALLEGATO -->
+                            <div class="attachment-btn">
+                                <button mat-raised-button type="button" color="primary" (click)="fileInput.click()"
+                                    matTooltip="Attach the receipt corresponding to this expense"
+                                    matTooltipPosition="right">
+                                    Attach File
+                                    <mat-icon>attach_file</mat-icon>
+                                </button>
+
+                                <input hidden #fileInput type="file" multiple accept=".pdf,.jpg,.jpeg,.png"
+                                    (change)="onFilesSelected($event, $index)">
+
+                                <!-- <input hidden #fileInput type="file" multiple accept="application/pdf,image/*"
+                                    (change)="onFilesSelected($event, $index)"> -->
+                            </div>
+
+                            <!-- Elenco dei file allegati per la spesa corrente -->
+                            @for(
+                            attachment of expenses.at(expenseIndex).value.attachments ?? [];
+                            track attachment.fileName;
+                            let attachmentIndex = $index;
+                            ) {
+                            <!-- devo inizializzare attachmentIndex perché $index ora si riferisce agli allegati e non più alle spese.
+                 Se avesse usato $index direttamente, non potrebbe più accedere all'indice della spesa corrente. -->
+
+                            <div class="file-row">
+
+                                <!-- <mat-icon>
+                                    description
+                                </mat-icon> -->
+
+                                <!-- {{ attachment.fileName }} -->
+
+                                <app-attachment-list [attachments]="[attachment]"
+                                    matTooltip="Click in to view the attached file"
+                                    matTooltipPosition="right"></app-attachment-list>
+
+                                <!-- Pulsante per rimuovere il file allegato corrente -->
+                                <button mat-icon-button color="warn" type="button"
+                                    (click)="removeAttachment(expenseIndex, attachmentIndex)" matTooltip="Remove file"
+                                    matTooltipPosition="left" class="remove-btn">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+
+                            </div>
+
+                            <!-- Linea divisoria per gli allegati -->
+                            <div class="attachment-divider"></div>
+
+                            }
 
                         </div>
 
@@ -144,6 +194,7 @@
 
                     <!-- Linea divisoria -->
                     <mat-divider></mat-divider>
+
 
                     <!-- TOTAL -->
                     <div class="total-section">
@@ -174,7 +225,7 @@
 
                         <button mat-stroked-button type="button" (click)="saveDraft()" class="draft-btn">
                             Save Draft
-                                <mat-icon>save</mat-icon>
+                            <mat-icon>save</mat-icon>
                         </button>
 
                         <button mat-raised-button color="primary" (click)="submitRequest()">

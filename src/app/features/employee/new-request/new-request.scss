@@ -56,9 +56,13 @@ mat-card-subtitle {
 .expense-grid {
     border: 2px outset rgba(22, 80, 195, 0.212);
     border-radius: 8px;
-    padding: 30px 16px 16px 16px;
+    padding: 30px 20px 20px 20px;
     margin-bottom: 16px;
     background-color: #f5f5f572;
+    display: grid;
+    grid-template-rows: repeat(auto-fit, minmax(50px, auto));
+    // gap: 10px;
+
 
     &:hover {
         border-color: rgba(60, 98, 250, 0.6);
@@ -74,16 +78,16 @@ mat-card-subtitle {
     grid-template-columns: 1fr 1fr 2fr 1fr auto;
     gap: 16px;
     margin-bottom: 16px;
+    
 }
 
+
+// PULSANTE DI RIMOZIONE DELLA SINGOLA SPESA
 .remove-btn {
     top: 6px;
 
     &:hover {
         background-color: rgba(255, 0, 0, 0.1);
-    }
-
-    mat-icon:hover {
         color: red;
         transform: scale(1.2);
     }
@@ -153,4 +157,25 @@ mat-divider {
     margin-bottom: 1.5rem;
     margin-top: 1rem;
     border-color: #121316;
+}
+
+
+// PULSANTE DI ALLEGATO
+.attachment-btn {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+
+.file-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.attachment-divider {
+    height: 1px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    margin: 1rem 0;
 }

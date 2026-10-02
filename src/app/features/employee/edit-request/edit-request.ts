@@ -23,12 +23,13 @@ import { startWith } from 'rxjs';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
 import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list'; 
 
 @Component({
   imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule,
     MatInputModule, MatButtonModule, MatProgressSpinnerModule,
     DatePipe, MatOption, MatSelectModule, MatIconModule, RouterLink,
-    CommonModule, ProgressBar, TotalProgressBar, MatTooltipModule],
+    CommonModule, ProgressBar, TotalProgressBar, MatTooltipModule, AttachmentList],
   selector: 'app-edit-request',
   styleUrls: ['./edit-request.scss'],
   templateUrl: './edit-request.html',
@@ -133,7 +134,8 @@ export class EditRequest {
           date: [expense.date, Validators.required],
           category: [expense.category, Validators.required],
           description: [expense.description],
-          requestedAmount: [expense.requestedAmount, Validators.required]
+          requestedAmount: [expense.requestedAmount, Validators.required],
+          attachments: [expense.attachments ?? []]
         })
       );
     });
@@ -148,7 +150,8 @@ export class EditRequest {
         date: ['', Validators.required],
         category: ['', Validators.required],
         description: [''],
-        requestedAmount: ['', Validators.required]
+        requestedAmount: ['', Validators.required],
+        attachments: [[]]
       })
     );
   }
@@ -307,6 +310,63 @@ export class EditRequest {
       }, 0
     );
   });
-}
 
+
+  // GESTIONE DEI FILE ALLEGATI PER LE SPESE
+  onFilesSelected(event: Event, expenseIndex: number): void {
+
+    const files = (event.target as HTMLInputElement).files;
+
+    if (!files?.length) {
+      return;
+    }
+
+    Array.from(files).forEach(file => {
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+
+        const expense = this.expenses.at(expenseIndex);
+
+        const attachments = expense.get('attachments')?.value ?? [];
+
+        attachments.push({
+          fileName: file.name,
+          fileType: file.type,
+          fileContent: reader.result as string
+        });
+
+        expense.patchValue({
+          attachments
+        });
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+  
+
+  // METODO PER RIMUOVERE UN FILE ALLEGATO (PER OGNI SINGOLA SPESA)
+  removeAttachment(
+    expenseIndex: number,
+    attachmentIndex: number
+  ): void {
+
+    const expense = this.expenses.at(expenseIndex);
+
+    const attachments = [
+      ...expense.value.attachments ?? []
+    ];
+
+    attachments.splice(   
+      attachmentIndex, 
+      1   
+    );
+    
+    expense.patchValue({
+      attachments
+    });
+  }
+}
 

@@ -12,12 +12,14 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   imports: [MatIconModule, MatCardModule, MatTableModule,
     DatePipe, CommonModule, MatButtonModule,
-    RouterLink, MatSortModule, MatPaginatorModule],
+    RouterLink, MatSortModule, MatPaginatorModule,
+    MatFormFieldModule, MatInputModule],
   selector: 'app-request-list',
   styleUrls: ['./request-list.scss'],
   templateUrl: './request-list.html',
@@ -25,6 +27,21 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 export class RequestList {
 
   constructor() {
+
+
+    // DEFINIZIONE DEL FILTRO DI RICERCA PERSONALIZZATO PER LA TABELLA
+    this.dataSource.filterPredicate = (request, filter) => {
+      const searchableText = [
+        request.referenceMonth,
+        request.creationDate,
+        request.status,
+        request.totalRequestedAmount,
+        // request.totalApprovedAmount ?? 0,
+      ].join(' ').toLowerCase();
+
+      return searchableText.includes(filter);
+    };
+
 
     // EFFECT PER AGGIORNARE LA TABELLA QUANDO LA RISORSA DELLE RICHIESTE DI RIMBORSO CAMBIA
     effect(() => {
@@ -37,6 +54,9 @@ export class RequestList {
         ));
 
       this.dataSource.data = this.requests();
+
+      this.dataSource.filter = this.filterValue().trim().toLowerCase();
+
     });
 
   }
@@ -124,5 +144,20 @@ export class RequestList {
     'status',
     'actions'
   ];
+
+
+  // SEGNALE PER MEMORIZZARE IL VALORE DEL FILTRO DI RICERCA
+  // Segnale che memorizza il valore corrente del filtro di ricerca. Viene aggiornato ogni volta che l'utente digita nel campo di ricerca.
+  filterValue = signal('');
+
+
+  // METODO PER AGGIORNARE IL FILTRO DI RICERCA
+  updateFilter(event: Event): void {
+
+    this.filterValue.set(
+      (event.target as HTMLInputElement).value
+    )
+
+  }
 
 }

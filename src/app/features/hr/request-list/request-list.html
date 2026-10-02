@@ -2,16 +2,33 @@
 
     <mat-card>
 
-        <!--  HEADER DELLA CARD -->
-        <mat-card-header>
+        <div class="card-header">
+            <!--  HEADER DELLA CARD -->
+            <mat-card-header>
 
-            <!-- TITOLO DELLA CARD -->
-            <mat-card-title>
-                Refund Requests
-                <mat-icon>list</mat-icon>
-            </mat-card-title>
+                <!-- TITOLO DELLA CARD -->
+                <mat-card-title>
+                    Refund Requests
+                    <mat-icon>list</mat-icon>
+                </mat-card-title>
 
-        </mat-card-header>
+            </mat-card-header>
+
+
+            <mat-form-field appearance="outline">
+
+                <mat-label>Search requests</mat-label>
+
+                <input matInput [value]="filterValue()" (input)="updateFilter($event)"
+                    placeholder="Month, status, amount">
+
+                <mat-icon matSuffix>
+                    search
+                </mat-icon>
+
+            </mat-form-field>
+
+        </div>
 
 
         <mat-card-content>

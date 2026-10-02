@@ -349,6 +349,53 @@ export class NewRequest {
     )
 
   })
+
+
+
+  // GESTIONE DEI FILE ALLEGATI PER LE SPESE
+  onFilesSelected(event: Event, expenseIndex: number): void {
+
+    const files = (event.target as HTMLInputElement).files;  // Ottieni i file selezionati dall'input file
+
+    if (!files?.length) {  // Se non ci sono file selezionati, esci dalla funzione
+      return;   // il ? indica che files potrebbe essere null o undefined
+    }
+
+    Array.from(files).forEach(file => {  // Per ogni file selezionato, 
+
+      const reader = new FileReader();  // Crea un nuovo oggetto (JavaScript) FileReader per leggere il contenuto del file selezionato
+
+      reader.onload = () => {  // Quando il file è stato letto con successo, esegui questa funzione che aggiorna l'array degli allegati della spesa corrente
+
+        const expense = this.expenses.at(expenseIndex);  // Ottieni il FormGroup (expenses) corrispondente alla spesa corrente
+
+        const attachments = expense.get('attachments')?.value ?? [];  // Ottieni l'array degli allegati esistenti per la spesa corrente
+
+        attachments.push({  // Aggiungi il nuovo allegato all'array degli allegati esistenti
+          fileName: file.name,  // .name è la proprietà (di ) che contiene il nome del file selezionato
+          fileType: file.type,
+          fileContent: reader.result as string  // Contenuto del file letto come Data URL (base64)
+          // In questo modo, il contenuto del file è disponibile come stringa codificata in base64 per essere inviato al server o elaborato ulteriormente
+        });
+
+        expense.patchValue({   // Aggiorna il FormGroup della spesa corrente con il nuovo array di allegati
+          attachments   // .patchValue è un metodo di Angular Reactive Forms che permette di aggiornare i valori di un FormGroup o FormArray senza sovrascrivere gli altri controlli presenti.
+        });
+      };
+
+      reader.readAsDataURL(file);  // Legge il contenuto del file come Data URL (base64) e attiva l'evento onload quando la lettura è completata
+      // readAsDataURL è un metodo del FileReader che legge il contenuto del file come Data URL (base64)
+      // Il metodo onload serve per gestire il contenuto del file una volta che la lettura è completata
+    });
+
+    // Quindi il flusso è il seguente:
+    // 1. L'utente seleziona uno o più file tramite l'input file.
+    // 2. Per ogni file selezionato, viene creato un FileReader per leggerne il contenuto come Data URL (base64).
+    // 3. Quando la lettura del file è completata, l'evento onload aggiorna l'array degli allegati della spesa corrente.
+    // 4. Il FormGroup della spesa corrente viene aggiornato con il nuovo array di allegati tramite patchValue.
+    // 5. In questo modo, i file selezionati sono disponibili come allegati della spesa corrente.
+    
+  }
   
 }
 

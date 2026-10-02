@@ -5,6 +5,23 @@ export class RequestList {
 
   constructor() {
 
+    // DEFINIZIONE DEL FILTRO DI RICERCA PERSONALIZZATO PER LA TABELLA
+    this.dataSource.filterPredicate = (request, filter) => {  // filterPredicate è la funzione di Angular Material utilizzata per determinare se una riga della tabella corrisponde al filtro di ricerca
+
+      const searchableText = [
+        request.referenceMonth,
+        request.creationDate,
+        request.status,
+        request.totalRequestedAmount,
+        // request.totalApprovedAmount ?? 0,
+      ].join(' ').toLowerCase();  // Il metodo join concatena tutti gli elementi dell'array in una singola stringa, e toLowerCase converte tutto in minuscolo per facilitare la ricerca case-insensitive.
+
+      return searchableText.includes(filter);  // Verifica se il testo concatenato contiene il filtro di ricerca (case-insensitive)
+
+      // Perché non metto il filterPredicate dentro l'effect? Perché il filterPredicate deve essere definito una sola volta, non ogni volta che i dati cambiano.
+    };
+
+
     // effect si esegue automaticamente quando il segnale 'requestResource' cambia, 
     // per esempio quando i dati delle richieste di rimborso vengono aggiornati nel backend 
     // a causa di modifiche esterne o altre operazioni asincrone.
@@ -19,6 +36,10 @@ export class RequestList {
         
       this.dataSource.data = this.requests();  // Aggiorna la dataSource della tabella con le richieste filtrate.
     }); // this.requests() contiene le richieste di rimborso filtrate, escluse quelle in stato 'DRAFT'.
+
+
+    
+      this.dataSource.filter = this.filterValue().trim().toLowerCase(); // Applica il filtro di ricerca alla tabella
 
   }
 
@@ -120,5 +141,34 @@ export class RequestList {
     'status',
     'actions'
   ];
+
+
+  // SEGNALE PER MEMORIZZARE IL VALORE DEL FILTRO DI RICERCA
+  // Segnale che memorizza il valore corrente del filtro di ricerca. Viene aggiornato ogni volta che l'utente digita nel campo di ricerca.
+  filterValue = signal('');
+
+
+  // METODO PER AGGIORNARE IL FILTRO DI RICERCA
+  // Questo metodo viene chiamato quando l'utente digita nel campo di ricerca e aggiorna il filtro della tabella.
+  updateFilter(event: Event): void {  
+
+    this.filterValue.set(   // Aggiorna il segnale con il nuovo valore del filtro di ricerca
+      (event.target as HTMLInputElement).value  // Ottiene il valore digitato dall'utente nel campo di ricerca
+    )
+    // event contiene l'evento di input generato dall'utente.
+    // .target è l'elemento HTML che ha generato l'evento, in questo caso l'input di ricerca.
+    // as HTMLInputElement serve a TypeScript per sapere che l'elemento HTML è un input di testo.
+    // value è il valore digitato dall'utente nel campo di ricerca.
+
+    // In sintesi, questo metodo aggiorna il segnale `filterValue` con il nuovo valore del filtro di ricerca ogni volta che l'utente digita nel campo di ricerca.
+
+  }
+
+      // Quindi, se dobbiamo ripassare i passaggi per FILTRARE LA TABELLA, il flusso è il seguente:
+      // 1. L'utente digita nel campo di ricerca.
+      // 2. Il valore del campo di ricerca viene memorizzato nel segnale `filterValue`.
+      // 3. L'effetto viene eseguito e aggiorna `this.dataSource.filter` con il valore corrente di `filterValue`.
+      // 4. Angular Material utilizza `filterPredicate` per determinare quali righe della tabella corrispondono al filtro.
 }
 ```
+

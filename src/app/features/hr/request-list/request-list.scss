@@ -77,3 +77,20 @@ button {
     justify-content: space-between;
     margin: 1.4rem 1rem;
 }
+
+
+.card-header {
+    display: flex;
+    margin-top: 1.5rem;
+
+
+    mat-form-field{
+        flex: auto;
+        margin-right: 1rem;
+    }
+
+    mat-icon:hover {
+        color: #005cbb;
+        // scale: 1.2;
+    }
+}

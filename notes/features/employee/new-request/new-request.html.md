@@ -142,9 +142,33 @@
                                     <mat-icon>delete</mat-icon>
                                 </button>
                             </div>
+
+                                                        <!-- FILE ALLEGATO -->
+                            <div class="attachment-btn">
+                                <button mat-raised-button type="button" color="primary" (click)="fileInput.click()">
+                                    Attach File
+                                    <mat-icon>attach_file</mat-icon>
+                                </button>
+
+                            <!-- (click)="fileInput.click()" è utilizzato per aprire il file dialog quando l'utente clicca sul pulsante "Attach File" e grazie alla variabile di riferimento #fileInput possiamo accedere all'input file nascosto -->
+                             <!-- L'input file è un elemento nascosto che viene utilizzato per selezionare i file dal file dialog che si apre quando l'utente clicca sul pulsante "Attach File" -->
+
+
+
+                                <input hidden #fileInput type="file" multiple
+                                    (change)="onFilesSelected($event, $index)">
+                                <!-- hidden indica che l'input file non sarà visibile all'utente -->
+                                <!-- #fileInput è un template reference variable che permette di accedere all'input file dal codice HTML.
+                                       Questo mi serve per poter aprire il file dialog dal pulsante "Attach File".
+                                       Senza questa variabile di riferimento, dovrei trovare un altro modo per aprire il file dialog dal pulsante "Attach File". -->
+                                <!-- multiple indica che l'utente può selezionare più file contemporaneamente -->
+                                <!-- L'evento (change) viene utilizzato per gestire i file selezionati cioè quando l'utente sceglie i file dal file dialog -->
+                            </div>
+
                         </div>
 
                         }
+                        
                     </div>
 
 

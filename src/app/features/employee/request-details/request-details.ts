@@ -13,12 +13,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-bar';
 import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
-
+import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list'; 
 
 @Component({
   imports: [CommonModule, MatCardModule, MatIconModule,
     MatButtonModule, RouterLink, MatProgressSpinnerModule,
-    ProgressBar, TotalProgressBar],
+    ProgressBar, TotalProgressBar, AttachmentList],
   selector: 'app-request-details',
   styleUrls: ['./request-details.scss'],
   templateUrl: './request-details.html',
