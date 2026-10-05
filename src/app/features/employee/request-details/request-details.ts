@@ -14,11 +14,12 @@ import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-
 import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
 import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list'; 
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   imports: [CommonModule, MatCardModule, MatIconModule,
     MatButtonModule, RouterLink, MatProgressSpinnerModule,
-    ProgressBar, TotalProgressBar, AttachmentList],
+    ProgressBar, TotalProgressBar, AttachmentList, MatTooltipModule],
   selector: 'app-request-details',
   styleUrls: ['./request-details.scss'],
   templateUrl: './request-details.html',

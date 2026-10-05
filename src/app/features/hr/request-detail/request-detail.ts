@@ -17,13 +17,14 @@ import { MatDivider } from '@angular/material/divider';
 import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
 import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
   imports: [MatCardModule, MatLabel, MatInputModule,
     MatFormFieldModule, CommonModule, ReactiveFormsModule,
     MatButtonModule, MatIconModule,
-    ProgressBar, MatDivider, TotalProgressBar, AttachmentList],
+    ProgressBar, MatDivider, TotalProgressBar, AttachmentList, MatTooltipModule],
   selector: 'app-request-detail',
   styleUrls: ['./request-detail.scss'],
   templateUrl: './request-detail.html',
@@ -31,7 +32,8 @@ import { AttachmentList } from '../../../shared/attachment-list/attachment-list/
 export class RequestDetail {
 
   constructor() {
-    
+
+    // EFFECT PER SINCRONIZZARE LA RISORSA DELLA RICHIESTA CON IL FORM E IL SEGNALE DELLA RICHIESTA CORRENTE
     effect(() => {
 
       const request = this.requestResource();
@@ -42,8 +44,8 @@ export class RequestDetail {
 
       this.request.set(request);
 
-      this.form.patchValue({    
-        noteHr: request.noteHr ?? '' 
+      this.form.patchValue({
+        noteHr: request.noteHr ?? ''
       });
 
     })
@@ -141,7 +143,7 @@ export class RequestDetail {
     }
 
     // VARIABILE CHE CONTIENE L'IMPORTO TOTALE APPROVATO DELLE SPESE 
-    const approvedAmount = this.approvedTotal() ?? 0;  
+    const approvedAmount = this.approvedTotal() ?? 0;
 
 
     // Controllo se la richiesta ha spese approvate (caso provvisorio in fase di sviluppo)
@@ -153,7 +155,7 @@ export class RequestDetail {
 
 
     // VARIABILE CHE CONTIENE LO STATO DELLA RICHIESTA IN BASE ALL'IMPORTO APPROVATO
-    let status: RequestStatus;  
+    let status: RequestStatus;
 
 
     // Controllo se l'importo approvato è inferiore all'importo totale richiesto per determinare lo stato della richiesta
@@ -167,9 +169,9 @@ export class RequestDetail {
 
       ...request,
 
-      status, 
-      noteHr: this.form.value.noteHr ?? '',  
-      totalApprovedAmount: approvedAmount,  
+      status,
+      noteHr: this.form.value.noteHr ?? '',
+      totalApprovedAmount: approvedAmount,
       lastUpdateDate: new Date().toISOString()
 
     };
@@ -283,16 +285,16 @@ export class RequestDetail {
 
   // METODO PER INIZIARE LA REVISIONE DI UNA RICHIESTA
   startReview(): void {
-    const request = this.request();  
+    const request = this.request();
 
-    if (!request) {   
-      return;      
+    if (!request) {
+      return;
     }
 
-    this.reviewMode.set(true);  
+    this.reviewMode.set(true);
 
-    if (request.status === RequestStatus.PENDING) {  
-      this.markAsInProgress(request);  
+    if (request.status === RequestStatus.PENDING) {
+      this.markAsInProgress(request);
     }
 
   }

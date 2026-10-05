@@ -12,67 +12,82 @@ I dati vengono visualizzati in una tabella utilizzando il componente MatTable di
 ```TYPESCRIPT
 export class RequestList {
 
-  // COSTRUTTORE DEL COMPONENTE CHE INIZIALIZZA LA TABELLA DELLE RICHIESTE DI RIMBORSO
-  constructor() {  // Il costruttore permette di inizializzare la tabella delle richieste di rimborso
+  constructor() {
 
-    // EFFETTO CHE AGGIORNA LA TABELLA QUANDO LE RICHIESTE CAMBIANO
-    effect(() => {   // effect è una funzione reattiva che esegue il codice al suo interno ogni volta che i segnali utilizzati cambiano
+    // UNICO EFFETTO PER GESTIRE DATI E COLLEGAMENTI
+    effect(() => {
 
-      this.dataSource.data =  // quindi aggiorna i dati della tabella con le richieste correnti
-        this.requests();
+      const currentRequests = this.requests();
+      
+      // 1. Aggiorno i dati 
+      this.dataSource.data = currentRequests;
 
-    });  // Questo effetto si assicura che la tabella venga aggiornata ogni volta che le richieste cambiano ad esempio quando l'utente effettua una nuova richiesta o una richiesta esistente viene modificata
+      // 2. Se non ci sono i dati ci fermiamo
+      if (!currentRequests || currentRequests.length === 0) return;
 
-  }
+      // 3. Forzo Angular a renderizzare il DOM della tabella 
+      // (risolve il problema dell'@if che quando l'app parte, se requests() è inizialmente vuoto, 
+      // la tabella non esiste nel DOM a causa di @if.)
+      this.cdr.detectChanges();  // detectChanges è un metodo di ChangeDetectorRef che forza Angular a rilevare le modifiche e aggiornare il DOM immediatamente.
 
-  
-  // CONFIGURAZIONE DELL'ORDINAMENTO DELLA TABELLA
-  // Questo metodo viene chiamato automaticamente quando la vista del componente è inizializzata
-  // e permette di configurare l'ordinamento della tabella delle richieste di rimborso.
-  @ViewChild(MatSort)
-  set sort(sort: MatSort) {
-
-    if (!sort) {
-      return;
-    }
-
-    this.dataSource.sort = sort;
-
-    this.dataSource.sortingDataAccessor = (item, property) => {
-
-      switch (property) {
-        case 'referenceMonth': return item.referenceMonth;
-        case 'creationDate': return new Date(item.creationDate).getTime();
-        case 'totalRequestedAmount': return item.totalRequestedAmount;
-        case 'totalApprovedAmount': return item.totalApprovedAmount ?? 0;
-        default: return item[property as keyof RefundRequest] as any;
+      // 4. Configura il sortingDataAccessor se non è già stato fatto
+      if (!this.dataSource.sortingDataAccessor) {
+        this.dataSource.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case "referenceMonth": return item.referenceMonth;
+            case "creationDate": return new Date(item.creationDate).getTime();
+            case "totalRequestedAmount": return item.totalRequestedAmount;
+            case "totalApprovedAmount": return item.totalApprovedAmount ?? 0;
+            default: return item[property as keyof RefundRequest] as any;
+          }
+        };
       }
-    }
 
-    //Ordinamento iniziale
-    this.dataSource.sort.active = 'creationDate';
-    this.dataSource.sort.direction = 'desc';
-    this.dataSource.sort.sortChange.emit({
-      active: 'creationDate',
-      direction: 'desc'
-    })
+      // 5. Collego Sort e Paginator se presenti nel DOM (cioè se i componenti sono stati renderizzati)
+      if (this.sortComponent && !this.dataSource.sort) {  // Se il componente sort è presente nel DOM e non è ancora collegato al dataSource
+        this.dataSource.sort = this.sortComponent;  // Collego il componente sort al dataSource
+
+        // Imposta l'ordinamento iniziale sul componente visivo
+        this.sortComponent.active = 'creationDate';
+        this.sortComponent.direction = 'desc';
+      }
+
+      if (this.paginatorComponent && !this.dataSource.paginator) {  // Se il componente paginator è presente nel DOM e non è ancora collegato al dataSource
+        this.dataSource.paginator = this.paginatorComponent;  // Collego il componente paginator al dataSource
+      }
+
+      // 6. Forza l'ordinamento iniziale sui dati effettivi
+      // Perché Angular potrebbe non aver ancora applicato l'ordinamento iniziale al componente visivo (per esempio, se il DOM non è ancora completamente renderizzato), lo forziamo sui dati effettivi 
+      // In questo modo ci assicuriamo che i dati siano ordinati correttamente fin dall'inizio
+      if (this.dataSource.sort) {  // Se il componente sort è presente, forziamo l'ordinamento iniziale sui dati effettivi
+        this.dataSource.sort.sort({ id: 'creationDate', start: 'desc', disableClear: false });
+        // Perché ho applicato 2 ordinamenti?
+        // Il primo sort applicato ai dati effettivi garantisce che l'ordinamento iniziale sia rispettato anche se il componente visivo non ha ancora completato il rendering.
+        // Il secondo sort applicato al componente visivo garantisce che l'interfaccia utente rifletta correttamente l'ordinamento iniziale.
+        // In sintesi, il primo sort garantisce la correttezza dei dati, il secondo sort garantisce la correttezza dell'interfaccia utente.
+        // Questo approccio garantisce che l'ordinamento iniziale sia coerente sia nei dati che nell'interfaccia utente.
+        
+        // disableClear: false serve per evitare che l'utente possa rimuovere l'ordinamento iniziale cliccando sulla colonna, per mantenere sempre visibile l'ordinamento iniziale
+        // disableClear: true serve per permettere all'utente di rimuovere l'ordinamento iniziale cliccando sulla colonna
+      }
+
+    });
+
   }
 
-  
-  // COLLEGAMENTO DEL MATPAGINATOR ALLA DATASOURCE DELLA TABELLA
-  //MatPaginator è un componente che gestisce la paginazione della tabella
-  //Viene collegato alla datasource della tabella tramite il setter paginator
-  @ViewChild(MatPaginator)  
-  set paginator(paginator: MatPaginator) {   // uso il setter per collegare il MatPaginator alla datasource della tabella
 
-    if (!paginator) {   // Se il paginator non è ancora disponibile, esci dal setter
-      return;
-    }
-    //cosa vuol dire "se non c'è paginator"? Risposta: significa che il componente MatPaginator non è ancora stato inizializzato o non è presente nel template. In tal caso, non possiamo assegnarlo al dataSource, quindi usciamo dal metodo.
+  private cdr = inject(ChangeDetectorRef);  // Serve per forzare il controllo del DOM dopo il cambio dati
+  // In altre parole, il ChangeDetectorRef viene utilizzato per forzare il rilevamento dei cambiamenti nel DOM quando i dati della tabella vengono aggiornati.
 
-    this.dataSource.paginator = paginator;   // Collega il paginator alla datasource della tabella
-  }
+  // Riferimenti classici (non più setter complessi)
+  // Con questi riferimenti classici, possiamo collegare facilmente il sort e il paginator al dataSource senza dover usare setter complessi
+  @ViewChild(MatSort) sortComponent!: MatSort;   //  sortComponent è il riferimento al componente MatSort presente nel DOM
+  // sortComponent!: MatSort indica che questa proprietà sarà inizializzata con il riferimento al componente MatSort presente nel DOM
+  @ViewChild(MatPaginator) paginatorComponent!: MatPaginator;   //  paginatorComponent è il riferimento al componente MatPaginator presente nel DOM
+  // paginatorComponent!: MatPaginator indica che questa proprietà sarà inizializzata con il riferimento al componente MatPaginator presente nel DOM
 
+  // Ricorda che il DOM è l'elemento HTML che si crea quando Angular renderizza la pagina web e che i componenti Angular come MatSort e MatPaginator devono essere collegati al DOM per funzionare correttamente.
+  // Il DOM è quindi l'insieme degli elementi HTML che vengono creati e aggiornati da Angular durante il rendering della pagina web.
 
   // FONTE DEI DATI PER LA TABELLA DELLE RICHIESTE DI RIMBORSO
   dataSource = new MatTableDataSource<RefundRequest>();  // Fonte dei dati per la tabella delle richieste di rimborso
@@ -199,4 +214,87 @@ export class RequestList {
 }
 
 }
+```
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+```TYPESCRIPT
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// BLOCCO CODICE CHE VENNE SOSTITUITO
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // COSTRUTTORE DEL COMPONENTE CHE INIZIALIZZA LA TABELLA DELLE RICHIESTE DI RIMBORSO
+  constructor() {  // Il costruttore permette di inizializzare la tabella delle richieste di rimborso
+
+    // EFFETTO CHE AGGIORNA LA TABELLA QUANDO LE RICHIESTE CAMBIANO
+    effect(() => {   // effect è una funzione reattiva che esegue il codice al suo interno ogni volta che i segnali utilizzati cambiano
+
+      this.dataSource.data =  // quindi aggiorna i dati della tabella con le richieste correnti
+        this.requests();
+
+    });  // Questo effetto si assicura che la tabella venga aggiornata ogni volta che le richieste cambiano ad esempio quando l'utente effettua una nuova richiesta o una richiesta esistente viene modificata
+
+    // PROBLEMA: matSort smette di funzionare correttamente (soprattutto all'avvio o quando la lista cambia) quando si utilizza questo effetto separato cioè fuori dall'effetto principale che gestisce i dati e i collegamenti.
+  }
+
+    // Perché succede questo: 
+    // 1. Quando l'app parte, se requests() è inizialmente vuoto, la tabella non esiste nel DOM a causa di @if.
+    // 2. I setter @ViewChild(MatSort) e @ViewChild(MatPaginator) non vengono attivati (ricevono undefined o non scattano proprio).
+    // 3. Quando il Signal requests() riceve i dati, l'effect() aggiorna this.dataSource.data. Subito dopo, Angular crea la tabella nel DOM grazie ad @if.
+    // 4. A questo punto scattano i setter di sort e paginator. Tuttavia, l'ordinamento iniziale che ho programmato (sortChange.emit) 
+    // avviene PRIMA che la tabella sia pronta a renderizzare i dati ordinati, oppure il dataSource non recepisce correttamente la mutazione in quell'ordine di micro-task.
+
+    // Quindi, per risolvere questo problema, utilizzo un unico effetto che gestisce sia l'aggiornamento dei dati sia il collegamento di sort e paginator  
+
+  // 
+  // CONFIGURAZIONE DELL'ORDINAMENTO DELLA TABELLA
+  // Questo metodo viene chiamato automaticamente quando la vista del componente è inizializzata
+  // e permette di configurare l'ordinamento della tabella delle richieste di rimborso.
+  @ViewChild(MatSort)
+  set sort(sort: MatSort) {
+
+    if (!sort) {
+      return;
+    }
+
+    this.dataSource.sort = sort;
+
+    this.dataSource.sortingDataAccessor = (item, property) => {
+
+      switch (property) {
+        case 'referenceMonth': return item.referenceMonth;
+        case 'creationDate': return new Date(item.creationDate).getTime();
+        case 'totalRequestedAmount': return item.totalRequestedAmount;
+        case 'totalApprovedAmount': return item.totalApprovedAmount ?? 0;
+        default: return item[property as keyof RefundRequest] as any;
+      }
+    }
+
+    //Ordinamento iniziale
+    this.dataSource.sort.active = 'creationDate';
+    this.dataSource.sort.direction = 'desc';
+    this.dataSource.sort.sortChange.emit({
+      active: 'creationDate',
+      direction: 'desc'
+    })
+  }
+
+  
+  // COLLEGAMENTO DEL MATPAGINATOR ALLA DATASOURCE DELLA TABELLA
+  //MatPaginator è un componente che gestisce la paginazione della tabella
+  //Viene collegato alla datasource della tabella tramite il setter paginator
+  @ViewChild(MatPaginator)  
+  set paginator(paginator: MatPaginator) {   // uso il setter per collegare il MatPaginator alla datasource della tabella
+
+    if (!paginator) {   // Se il paginator non è ancora disponibile, esci dal setter
+      return;
+    }
+    //cosa vuol dire "se non c'è paginator"? Risposta: significa che il componente MatPaginator non è ancora stato inizializzato o non è presente nel template. In tal caso, non possiamo assegnarlo al dataSource, quindi usciamo dal metodo.
+
+    this.dataSource.paginator = paginator;   // Collega il paginator alla datasource della tabella
+  }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// FINE DEL BLOCCO CHE VENNE SOSTITUITO
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 ```

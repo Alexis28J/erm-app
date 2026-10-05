@@ -99,8 +99,7 @@ mat-card-content {
 
 // CARDS DEI GRAFICI DELLE SPESE
 .overview-header {
-    //padding: 16px;
-    margin-bottom: 1rem;
+    margin-bottom: 0.7rem;
 }
 
 
@@ -112,16 +111,23 @@ mat-card-content {
     background-color: #f5f5f572;
 
     &:hover {
-        border: 2px solid rgba(60, 98, 250, 0.6);
+        border-color: rgba(60, 98, 250, 0.6);
         transform: translateY(-0.5px);
         background-color: rgba(255, 255, 255, 0.688);
     }
 }
 
 
+// CONTENITORE DEGLI ALLEGATI
 .attachment-container {
     display: flex;
     justify-content: space-evenly;
+    margin-bottom: 8px;
+
+    app-attachment-list {
+        display: flex;
+        gap: 8px;
+    }
 }
 
 

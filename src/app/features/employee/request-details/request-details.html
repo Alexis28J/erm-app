@@ -141,7 +141,8 @@
             </app-progress-bar>
 
             <div class="attachment-container">
-                <app-attachment-list [attachments]="expense.attachments ?? []" [truncateLength]="20">
+                <app-attachment-list [attachments]="expense.attachments ?? []" [truncateLength]="20"
+                    matTooltip="Click in to view the file" matTooltipPosition="above">
                 </app-attachment-list>
             </div>
         </div>
@@ -167,8 +168,8 @@
 
     <mat-card-content>
         <div class="expense-grid">
-        <app-total-progress-bar [requestedAmount]="totalRequestedAmount()" [allowedAmount]="totalAllowedAmount()">
-        </app-total-progress-bar>
+            <app-total-progress-bar [requestedAmount]="totalRequestedAmount()" [allowedAmount]="totalAllowedAmount()">
+            </app-total-progress-bar>
         </div>
     </mat-card-content>
 

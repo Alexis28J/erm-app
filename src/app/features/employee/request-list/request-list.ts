@@ -1,4 +1,4 @@
-import { Component, effect, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, ViewChild } from '@angular/core';
 import { User } from '../../../core/interfaces/user';
 import { RefundRequest } from '../../../core/interfaces/refund-request';
 import { AuthService } from '../../../core/services/auth.service';
@@ -34,60 +34,61 @@ export class RequestList {
 
   constructor() {
 
-    // EFFETTO CHE AGGIORNA LA TABELLA QUANDO LE RICHIESTE CAMBIANO
+    // UNICO EFFETTO PER GESTIRE DATI E COLLEGAMENTI
     effect(() => {
 
-      this.dataSource.data =
-        this.requests();
+      const currentRequests = this.requests();
+
+      // 1. Aggiorno i dati 
+      this.dataSource.data = currentRequests;
+
+      // 2. Se non ci sono i dati ci fermiamo
+      if (!currentRequests || currentRequests.length === 0) return;
+
+      // 3. Forzo Angular a renderizzare il DOM della tabella 
+      this.cdr.detectChanges();
+
+      // 4. Configura il sortingDataAccessor se non è già stato fatto
+      if (!this.dataSource.sortingDataAccessor) {
+        this.dataSource.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case "referenceMonth": return item.referenceMonth;
+            case "creationDate": return new Date(item.creationDate).getTime();
+            case "totalRequestedAmount": return item.totalRequestedAmount;
+            case "totalApprovedAmount": return item.totalApprovedAmount ?? 0;
+            default: return item[property as keyof RefundRequest] as any;
+          }
+        };
+      }
+
+      // 5. Collego Sort e Paginator se presenti nel DOM (cioè se i componenti sono stati renderizzati)
+      if (this.sortComponent && !this.dataSource.sort) {
+        this.dataSource.sort = this.sortComponent;
+
+        // Imposta l'ordinamento iniziale sul componente visivo
+        this.sortComponent.active = 'creationDate';
+        this.sortComponent.direction = 'desc';
+      }
+
+      if (this.paginatorComponent && !this.dataSource.paginator) {
+        this.dataSource.paginator = this.paginatorComponent;
+      }
+
+      // 6. Forza l'ordinamento iniziale sui dati effettivi
+      if (this.dataSource.sort) {
+        this.dataSource.sort.sort({ id: 'creationDate', start: 'desc', disableClear: false });
+      }
 
     });
 
   }
 
 
-  // CONFIGURAZIONE DELL'ORDINAMENTO DELLA TABELLA
-  @ViewChild(MatSort)
-  set sort(sort: MatSort) {
-
-    if (!sort) {
-      return;
-    }
-
-    this.dataSource.sort = sort;
-
-    this.dataSource.sortingDataAccessor = (item, property) => {
-
-      switch (property) {
-        case 'referenceMonth': return item.referenceMonth;
-        case 'creationDate': return new Date(item.creationDate).getTime();
-        case 'totalRequestedAmount': return item.totalRequestedAmount;
-        case 'totalApprovedAmount': return item.totalApprovedAmount ?? 0;
-        default: return item[property as keyof RefundRequest] as any;
-      }
-    }
-
-    //Ordinamento iniziale
-    this.dataSource.sort.active = 'creationDate';
-    this.dataSource.sort.direction = 'desc';
-    this.dataSource.sort.sortChange.emit({
-      active: 'creationDate',
-      direction: 'desc'
-    })
-  }
+  // RIFERIMENTI AI COMPONENTI DI ORDINAMENTO E PAGINAZIONE DELLA TABELLA 
+  @ViewChild(MatSort) sortComponent!: MatSort;
+  @ViewChild(MatPaginator) paginatorComponent!: MatPaginator;
 
 
-  // CONFIGURAZIONE DEL PAGINATORE DELLA TABELLA
-  @ViewChild(MatPaginator)
-  set paginator(paginator: MatPaginator) {
-
-    if (!paginator) {
-      return;
-    }
-
-    this.dataSource.paginator = paginator;
-  }
-
-  
   // FONTE DATI PER LA TABELLA DELLE RICHIESTE DI RIMBORSO
   dataSource = new MatTableDataSource<RefundRequest>()
 
@@ -98,6 +99,7 @@ export class RequestList {
   private router = inject(Router);
   private dialog = inject(MatDialog);
   private notificationService = inject(Notification);
+  private cdr = inject(ChangeDetectorRef);
 
 
   // UTENTE CORRENTE E RICHIESTE DI RIMBORSO

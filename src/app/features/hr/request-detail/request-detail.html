@@ -163,9 +163,13 @@
 
                         </mat-form-field>
 
-                        <app-attachment-list [attachments]="expense.attachments ?? []">
-                        </app-attachment-list>
+                    </div>
 
+                    <div class="attachment-container">
+                        <strong>Attachments:</strong>
+                        <app-attachment-list [attachments]="expense.attachments ?? []" [truncateLength]="20"
+                            matTooltip="Click in to view the file" matTooltipPosition="above">
+                        </app-attachment-list>
                     </div>
 
                 </div> <!-- fine di expense-container -->

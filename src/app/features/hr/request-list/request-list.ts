@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, signal, ViewChild } from '@angular/core';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { RefundRequest } from '../../../core/interfaces/refund-request';
@@ -28,7 +28,6 @@ export class RequestList {
 
   constructor() {
 
-
     // DEFINIZIONE DEL FILTRO DI RICERCA PERSONALIZZATO PER LA TABELLA
     this.dataSource.filterPredicate = (request, filter) => {
       const searchableText = [
@@ -46,76 +45,83 @@ export class RequestList {
     // EFFECT PER AGGIORNARE LA TABELLA QUANDO LA RISORSA DELLE RICHIESTE DI RIMBORSO CAMBIA
     effect(() => {
 
-      const req = this.requestResource();
+      const currentRequests = this.requestResource();
 
       this.requests.set(
-        req.filter(
+        currentRequests.filter(
           request => request.status !== 'DRAFT'
         ));
 
+
+      // Aggiorno i dati del dataSource con le richieste filtrate
       this.dataSource.data = this.requests();
 
+      // Applico il filtro al dataSource
       this.dataSource.filter = this.filterValue().trim().toLowerCase();
 
-    });
 
-  }
+      // Se non ci sono richieste, esco dalla funzione
+      if (!this.requests() || this.requests().length === 0) return;
 
-  // COLLEGAMENTO DEL MATSORT ALLA DATASOURCE DELLA TABELLA
-  @ViewChild(MatSort)
-  set sort(sort: MatSort) {
 
-    if (!sort) {
-      return;
-    }
+      // Forzo il rilevamento (cioè il refresh) delle modifiche per aggiornare la vista della tabella
+      this.cdr.detectChanges();
 
-    this.dataSource.sort = sort;
 
-    this.dataSource.sortingDataAccessor = (item, property) => {
-
-      switch (property) {
-        case 'month': return item.referenceMonth;
-        case 'creationDate': return new Date(item.creationDate).getTime();
-        case 'amount': return item.totalRequestedAmount;
-        default: return item[property as keyof RefundRequest] as any;
+      // Imposto l'accessor per l'ordinamento dei dati nella tabella
+      if (!this.dataSource.sortingDataAccessor) {
+        this.dataSource.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case "referenceMonth": return item.referenceMonth;
+            case "creationDate": return new Date(item.creationDate).getTime();
+            case "totalRequestedAmount": return item.totalRequestedAmount;
+            default: return item[property as keyof RefundRequest] as any;
+          }
+        };
       }
 
-    };
+      // Controllo se il componente di ordinamento è presente 
+      // e se il dataSource non ha ancora un ordinamento assegnato
+      if (this.sortComponent && !this.dataSource.sort) {
+        this.dataSource.sort = this.sortComponent;
 
-    // Ordinamento iniziale
-    this.dataSource.sort.active = 'creationDate';
-    this.dataSource.sort.direction = 'desc';
-    this.dataSource.sort.sortChange.emit({
-      active: 'creationDate',
-      direction: 'desc'
+        this.sortComponent.active = "creationDate";
+        this.sortComponent.direction = "desc";
+      }
+
+
+      // Controllo se il componente di paginazione è presente 
+      // e se il dataSource non ha ancora un paginatore assegnato
+      if (this.paginatorComponent && !this.dataSource.paginator) {
+        this.dataSource.paginator = this.paginatorComponent;
+      }
+
+
+      // Controllo se il dataSource ha un ordinamento assegnato e, 
+      // in tal caso, applico l'ordinamento iniziale
+      if (this.dataSource.sort) {
+        this.dataSource.sort.sort({ id: "creationDate", start: "desc", disableClear: false });
+      }
+
     });
+
   }
 
-
-  // COLLEGAMENTO DEL MATPAGINATOR ALLA DATASOURCE DELLA TABELLA
-  @ViewChild(MatPaginator)
-  set paginator(paginator: MatPaginator) {
-
-    if (!paginator) {
-      return;
-    }
-
-    this.dataSource.paginator = paginator;
-  }
-
+  // Riferimenti classici (non più setter complessi)
+  @ViewChild(MatSort) sortComponent!: MatSort;
+  @ViewChild(MatPaginator) paginatorComponent!: MatPaginator;
 
   // FONTE DEI DATI PER LA TABELLA DELLE RICHIESTE DI RIMBORSO
   dataSource = new MatTableDataSource<RefundRequest>();
 
-
   // INIEZIONI DI SERVIZI
   private refundRequestService = inject(RefundRequestService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
 
   // SEGNALE PER MEMORIZZARE LE RICHIESTE DI RIMBORSO 
   requests = signal<RefundRequest[]>([]);
-
 
   // SEGNALE PER MEMORIZZARE LA RISORSA DELLE RICHIESTE DI RIMBORSO 
   requestResource = toSignal(
@@ -138,16 +144,15 @@ export class RequestList {
 
   // COLONNE DELLA TABELLA
   displayedColumns = [
-    'month',
+    'referenceMonth',
     'creationDate',
-    'amount',
+    'totalRequestedAmount',
     'status',
     'actions'
   ];
 
 
   // SEGNALE PER MEMORIZZARE IL VALORE DEL FILTRO DI RICERCA
-  // Segnale che memorizza il valore corrente del filtro di ricerca. Viene aggiornato ogni volta che l'utente digita nel campo di ricerca.
   filterValue = signal('');
 
 

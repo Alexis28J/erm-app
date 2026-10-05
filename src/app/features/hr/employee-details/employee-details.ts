@@ -1,4 +1,4 @@
-import { Component, computed, inject, ViewChild, effect } from '@angular/core';
+import { Component, computed, inject, ViewChild, effect, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UserService } from '../../../core/services/user.service';
 import { RefundRequestService } from '../../../core/services/refund-request.service';
@@ -28,66 +28,106 @@ export class EmployeeDetails {
 
     // EFFECT PER AGGIORNARE I DATI DELLA TABELLA QUANDO LE RICHIESTE CAMBIANO
     effect(() => {
-      this.dataSource.data = this.requests().filter(r => r.status !== 'DRAFT');
-    });
 
-  }
+      const currentRequests = this.requests();
 
+      this.dataSource.data = currentRequests.filter(r => r.status !== 'DRAFT');
 
-  // VIEW CHILD PER IL MAT SORT (ORDINAMENTO DELLA TABELLA)
-  @ViewChild(MatSort)
-  set sort(sort: MatSort) {
+      if(!currentRequests || currentRequests.length === 0) return;
 
-    if (!sort) {
-      return;
-    }
+      this.cdr.detectChanges();
 
-    this.dataSource.sort = sort;
+      if (!this.dataSource.sortingDataAccessor) {
+        this.dataSource.sortingDataAccessor = (item, property) => {
+          switch(property){
+            case "referenceMonth": return item.referenceMonth;
+            case "creationDate": return new Date(item.creationDate).getTime();
+            case "totalRequestedAmount": return item.totalRequestedAmount;
+            case "totalApprovedAmount": return item.totalApprovedAmount ?? 0;
+            default: return item[property as keyof RefundRequest] as any;
+          }
+        };
+      }
+      
+      if (this.sortComponent && !this.dataSource.sort) {
+        this.dataSource.sort = this.sortComponent
 
-    this.dataSource.sortingDataAccessor = (
-      item,
-      property
-    ) => {
-
-      switch (property) {
-
-        case 'creationDate':
-          return new Date(item.creationDate).getTime();
-
-        case 'requestedAmount':
-          return item.totalRequestedAmount;
-
-        case 'approvedAmount':
-          return item.totalApprovedAmount ?? 0;
-
-        default:
-          return item[property as keyof RefundRequest] as any;
-
+        this.sortComponent.active = 'referenceMonth';
+        this.sortComponent.direction = 'desc';
       }
 
-    };
+      if (this.paginatorComponent && !this.dataSource.paginator) {
+        this.dataSource.paginator = this.paginatorComponent;
+      }
 
-    // Ordinamento iniziale della tabella (dal più recente al meno recente)
-    this.dataSource.sort.active = 'creationDate';
-    this.dataSource.sort.direction = 'desc';
-    this.dataSource.sort.sortChange.emit({
-      active: 'creationDate',
-      direction: 'desc'
+      if (this.dataSource.sort) {
+        this.dataSource.sort.sort({id: "referenceMonth", start: "desc", disableClear: false })
+      }
+
     });
 
   }
 
 
-  // PAGINATOR
-  @ViewChild(MatPaginator)
-  set paginator(paginator: MatPaginator) {
+  // // VIEW CHILD PER IL MAT SORT (ORDINAMENTO DELLA TABELLA)
+  // @ViewChild(MatSort)
+  // set sort(sort: MatSort) {
 
-    if (!paginator) {  
-      return;
-    }
+  //   if (!sort) {
+  //     return;
+  //   }
 
-    this.dataSource.paginator = paginator;
-  }
+  //   this.dataSource.sort = sort;
+
+  //   this.dataSource.sortingDataAccessor = (
+  //     item,
+  //     property
+  //   ) => {
+
+  //     switch (property) {
+
+  //       case 'creationDate':
+  //         return new Date(item.creationDate).getTime();
+
+  //       case 'requestedAmount':
+  //         return item.totalRequestedAmount;
+
+  //       case 'approvedAmount':
+  //         return item.totalApprovedAmount ?? 0;
+
+  //       default:
+  //         return item[property as keyof RefundRequest] as any;
+
+  //     }
+
+  //   };
+
+  //   // Ordinamento iniziale della tabella (dal più recente al meno recente)
+  //   this.dataSource.sort.active = 'creationDate';
+  //   this.dataSource.sort.direction = 'desc';
+  //   this.dataSource.sort.sortChange.emit({
+  //     active: 'creationDate',
+  //     direction: 'desc'
+  //   });
+
+  // }
+
+
+  // // PAGINATOR
+  // @ViewChild(MatPaginator)
+  // set paginator(paginator: MatPaginator) {
+
+  //   if (!paginator) {  
+  //     return;
+  //   }
+
+  //   this.dataSource.paginator = paginator;
+  // }
+
+  private cdr = inject(ChangeDetectorRef);
+
+  @ViewChild(MatSort) sortComponent!: MatSort;
+  @ViewChild(MatPaginator) paginatorComponent!: MatPaginator;
 
 
   // DATASOURCE PER LA TABELLA DELLE RICHIESTE
@@ -197,8 +237,8 @@ export class EmployeeDetails {
     'referenceMonth',
     'creationDate',
     'status',
-    'requestedAmount',
-    'approvedAmount',
+    'totalRequestedAmount',
+    'totalApprovedAmount',
     'actions'
   ]
 

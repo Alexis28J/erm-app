@@ -21,74 +21,79 @@ export class RequestList {
       // Perché non metto il filterPredicate dentro l'effect? Perché il filterPredicate deve essere definito una sola volta, non ogni volta che i dati cambiano.
     };
 
-
-    // effect si esegue automaticamente quando il segnale 'requestResource' cambia, 
-    // per esempio quando i dati delle richieste di rimborso vengono aggiornati nel backend 
-    // a causa di modifiche esterne o altre operazioni asincrone.
+    // EFFECT PER AGGIORNARE LA TABELLA QUANDO LA RISORSA DELLE RICHIESTE DI RIMBORSO CAMBIA
     effect(() => {
 
-      const req = this.requestResource();  // La variabile 'req' contiene il valore corrente del segnale 'requestResource'
+      const currentRequests = this.requestResource();
 
-      this.requests.set(   // Aggiorna il segnale 'requests' con le richieste filtrate che non sono in stato 'DRAFT'
-        req.filter(
+      this.requests.set(   // Il metodo set non può essere utilizzato direttamente su un segnale derivato come requestResource perché è readonly, quindi utilizziamo una copia filtrata dei dati chiamata requests che invece è scrivibile.
+        currentRequests.filter(
           request => request.status !== 'DRAFT'
         ));
-        
-      this.dataSource.data = this.requests();  // Aggiorna la dataSource della tabella con le richieste filtrate.
-    }); // this.requests() contiene le richieste di rimborso filtrate, escluse quelle in stato 'DRAFT'.
 
 
-    
+      this.dataSource.data = this.requests();  // Aggiorna i dati della tabella con le richieste filtrate
+
       this.dataSource.filter = this.filterValue().trim().toLowerCase(); // Applica il filtro di ricerca alla tabella
 
-  }
 
-  
-  @ViewChild(MatSort)  // @ViewChild è un decoratore che permette di ottenere un riferimento a un elemento figlio del template, in questo caso il MatSort della tabella.
-  // Questo permette di collegare il MatSort alla dataSource della tabella, abilitando l'ordinamento delle colonne. 
-  set sort(sort: MatSort) {  // Imposta il MatSort per la tabella e definisce l'accessor (funzione di accesso) dei dati per l'ordinamento delle colonne.
-    if (!sort) {  // Se il MatSort non è disponibile, esci dalla funzione.
-      return;
-    }
+      // Se non ci sono richieste, esco dalla funzione
+      if (!this.requests() || this.requests().length === 0) return;
 
-    this.dataSource.sort = sort;  // Collega il MatSort alla dataSource della tabella per abilitare l'ordinamento delle colonne.
 
-    this.dataSource.sortingDataAccessor = (item, property) => {
+      // Forzo il rilevamento (cioè il refresh) delle modifiche per aggiornare la vista della tabella
+      this.cdr.detectChanges();
 
-      // Questo blocco definisce l'accessor (funzione di accesso) dei dati per l'ordinamento delle colonne.
-      // L'accessor dei dati viene utilizzato dalla tabella per determinare come ordinare i valori delle colonne.
-      switch (property) {
-        case 'month': return item.referenceMonth;
-        case 'creationDate': return new Date(item.creationDate).getTime();
-        case 'amount': return item.totalRequestedAmount;
-        default: return item[property as keyof RefundRequest] as any;
+
+      // Imposto l'accessor per l'ordinamento dei dati nella tabella
+      // Il sortingDataAccessor definisce come i dati devono essere ordinati in base alle colonne della tabella
+      if (!this.dataSource.sortingDataAccessor) {
+        this.dataSource.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case "referenceMonth": return item.referenceMonth;
+            case "creationDate": return new Date(item.creationDate).getTime();
+            case "totalRequestedAmount": return item.totalRequestedAmount;
+            default: return item[property as keyof RefundRequest] as any;
+          }
+        };
       }
-    };
 
-    // Ordinamento iniziale
+      // Controllo se il componente di ordinamento è presente 
+      // e se il dataSource non ha ancora un ordinamento assegnato
+      if (this.sortComponent && !this.dataSource.sort) {
+        this.dataSource.sort = this.sortComponent;
 
-    this.dataSource.sort.active = 'creationDate';
-    this.dataSource.sort.direction = 'desc';
-    this.dataSource.sort.sortChange.emit({
-      active: 'creationDate',
-      direction: 'desc'
+        this.sortComponent.active = "creationDate";
+        this.sortComponent.direction = "desc";
+      }
+
+      // Controllo se il componente di paginazione è presente 
+      // e se il dataSource non ha ancora un paginatore assegnato
+      if (this.paginatorComponent && !this.dataSource.paginator) {
+        this.dataSource.paginator = this.paginatorComponent;
+      }
+
+      // Controllo se il dataSource ha un ordinamento assegnato e, 
+      // in tal caso, applico l'ordinamento iniziale
+      if (this.dataSource.sort) {
+        this.dataSource.sort.sort({ id: "creationDate", start: "desc", disableClear: false });
+      }
+
     });
+
   }
 
+  // Riferimento (inject) al ChangeDetectorRef per forzare il rilevamento delle modifiche
+  private cdr = inject(ChangeDetectorRef);// Serve per forzare il controllo del DOM dopo il cambio dati
+  // In altre parole, il ChangeDetectorRef viene utilizzato per forzare il rilevamento dei cambiamenti nel DOM quando i dati della tabella vengono aggiornati.
 
-  // COLLEGAMENTO DEL MATPAGINATOR ALLA DATASOURCE DELLA TABELLA
-  //MatPaginator è un componente che gestisce la paginazione della tabella
-  //Viene collegato alla datasource della tabella tramite il setter paginator
-  @ViewChild(MatPaginator)  
-  set paginator(paginator: MatPaginator) {   // uso il setter per collegare il MatPaginator alla datasource della tabella
 
-    if (!paginator) {   // Se il paginator non è ancora disponibile, esci dal setter
-      return;
-    }
-    //Cosa vuol dire "se non c'è paginator"? Risposta: significa che il componente MatPaginator non è ancora stato inizializzato o non è presente nel template. In tal caso, non possiamo assegnarlo al dataSource, quindi usciamo dal metodo.
-
-    this.dataSource.paginator = paginator;   // Collega il paginator alla datasource della tabella
-  }
+  // Riferimenti classici (non più setter complessi)
+  // Con questi riferimenti classici, possiamo collegare facilmente il sort e il paginator al dataSource senza dover usare setter complessi
+  @ViewChild(MatSort) sortComponent!: MatSort;   //  sortComponent è il riferimento al componente MatSort presente nel DOM
+  // sortComponent!: MatSort indica che questa proprietà sarà inizializzata con il riferimento al componente MatSort presente nel DOM
+  @ViewChild(MatPaginator) paginatorComponent!: MatPaginator;   //  paginatorComponent è il riferimento al componente MatPaginator presente nel DOM
+  // paginatorComponent!: MatPaginator indica che questa proprietà sarà inizializzata con il riferimento al componente MatPaginator presente nel DOM
 
 
   // FONTE DEI DATI PER LA TABELLA DELLE RICHIESTE DI RIMBORSO
@@ -172,3 +177,81 @@ export class RequestList {
 }
 ```
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+```TYPESCRIPT
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+// BLOCCO DI CODICE CHE VENNE SOSTITUITO
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // effect si esegue automaticamente quando il segnale 'requestResource' cambia, 
+    // per esempio quando i dati delle richieste di rimborso vengono aggiornati nel backend 
+    // a causa di modifiche esterne o altre operazioni asincrone.
+    effect(() => {
+
+      const req = this.requestResource();  // La variabile 'req' contiene il valore corrente del segnale 'requestResource'
+
+      this.requests.set(   // Aggiorna il segnale 'requests' con le richieste filtrate che non sono in stato 'DRAFT'
+        req.filter(
+          request => request.status !== 'DRAFT'
+        ));
+        
+      this.dataSource.data = this.requests();  // Aggiorna la dataSource della tabella con le richieste filtrate.
+    }); // this.requests() contiene le richieste di rimborso filtrate, escluse quelle in stato 'DRAFT'.
+
+
+    
+      this.dataSource.filter = this.filterValue().trim().toLowerCase(); // Applica il filtro di ricerca alla tabella
+
+  }
+
+  
+  @ViewChild(MatSort)  // @ViewChild è un decoratore che permette di ottenere un riferimento a un elemento figlio del template, in questo caso il MatSort della tabella.
+  // Questo permette di collegare il MatSort alla dataSource della tabella, abilitando l'ordinamento delle colonne. 
+  set sort(sort: MatSort) {  // Imposta il MatSort per la tabella e definisce l'accessor (funzione di accesso) dei dati per l'ordinamento delle colonne.
+    if (!sort) {  // Se il MatSort non è disponibile, esci dalla funzione.
+      return;
+    }
+
+    this.dataSource.sort = sort;  // Collega il MatSort alla dataSource della tabella per abilitare l'ordinamento delle colonne.
+
+    this.dataSource.sortingDataAccessor = (item, property) => {
+
+      // Questo blocco definisce l'accessor (funzione di accesso) dei dati per l'ordinamento delle colonne.
+      // L'accessor dei dati viene utilizzato dalla tabella per determinare come ordinare i valori delle colonne.
+      switch (property) {
+        case 'month': return item.referenceMonth;
+        case 'creationDate': return new Date(item.creationDate).getTime();
+        case 'amount': return item.totalRequestedAmount;
+        default: return item[property as keyof RefundRequest] as any;
+      }
+    };
+
+    // Ordinamento iniziale
+
+    this.dataSource.sort.active = 'creationDate';
+    this.dataSource.sort.direction = 'desc';
+    this.dataSource.sort.sortChange.emit({
+      active: 'creationDate',
+      direction: 'desc'
+    });
+  }
+
+
+  // COLLEGAMENTO DEL MATPAGINATOR ALLA DATASOURCE DELLA TABELLA
+  //MatPaginator è un componente che gestisce la paginazione della tabella
+  //Viene collegato alla datasource della tabella tramite il setter paginator
+  @ViewChild(MatPaginator)  
+  set paginator(paginator: MatPaginator) {   // uso il setter per collegare il MatPaginator alla datasource della tabella
+
+    if (!paginator) {   // Se il paginator non è ancora disponibile, esci dal setter
+      return;
+    }
+    //Cosa vuol dire "se non c'è paginator"? Risposta: significa che il componente MatPaginator non è ancora stato inizializzato o non è presente nel template. In tal caso, non possiamo assegnarlo al dataSource, quindi usciamo dal metodo.
+
+    this.dataSource.paginator = paginator;   // Collega il paginator alla datasource della tabella
+  }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+// FINE DEL BLOCCO DI CODICE CHE VENNE SOSTITUITO
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+```

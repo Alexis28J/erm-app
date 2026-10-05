@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, effect, inject, signal, ViewChild } from '@angular/core';
 import { UserService } from '../../../core/services/user.service';
 import { FormControl } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -28,62 +28,96 @@ export class EmployeeList {
 
   constructor() {
 
-    effect(() => {  
-      this.dataSource.data = this.filteredEmployees();  
+    effect(() => {
+
+      this.dataSource.data = this.filteredEmployees();
+
+      if (!this.filteredEmployees() || this.filteredEmployees().length === 0) return;
+
+      this.cdr.detectChanges();
+
+      if (!this.dataSource.sortingDataAccessor) {
+        this.dataSource.sortingDataAccessor = (item, property) => {
+
+          switch (property) {
+            case "employeeCode": return item.employeeCode;
+            case "name": return item.name;
+            case "email": return item.email;
+            default: return item[property as keyof User] as any;
+          }
+        };
+      }
+
+      if (this.sortComponent && !this.dataSource.sort) {
+        this.dataSource.sort = this.sortComponent;
+      }
+
+      if (this.paginatorComponent && !this.dataSource.paginator) {
+        this.dataSource.paginator = this.paginatorComponent;
+      }
+
+      if (this.dataSource.sort) {
+        this.dataSource.sort.sort({ id: "employeeCode", start: "asc", disableClear: false });
+      }
     })
 
     // Sottoscrizione ai cambiamenti del controllo di ricerca
-    this.searchControl.valueChanges.subscribe(value => {  
-      this.search.set(value ?? '');  
+    this.searchControl.valueChanges.subscribe(value => {
+      this.search.set(value ?? '');
     });
   }
 
 
-  // ORDINA LA TABELLA IN BASE ALLA COLONNA SPECIFICATA
-  @ViewChild(MatSort)
-  set sort(sort: MatSort) {
+  // // ORDINA LA TABELLA IN BASE ALLA COLONNA SPECIFICATA
+  // @ViewChild(MatSort)
+  // set sort(sort: MatSort) {
 
-    if (!sort) {
-      return;
-    }
+  //   if (!sort) {
+  //     return;
+  //   }
 
-    this.dataSource.sort = sort;
+  //   this.dataSource.sort = sort;
 
-    this.dataSource.sortingDataAccessor = (item, property) => {
+  //   this.dataSource.sortingDataAccessor = (item, property) => {
 
-      switch (property) {
-        case "code": return item.employeeCode;
-        case "name": return item.name;
-        case "email": return item.email;
-        case "active": return item.active;
-        default: return item[property as keyof User] as any;
-      };
+  //     switch (property) {
+  //       case "code": return item.employeeCode;
+  //       case "name": return item.name;
+  //       case "email": return item.email;
+  //       case "active": return item.active;
+  //       default: return item[property as keyof User] as any;
+  //     };
 
-    };
+  //   };
 
-    // Ordinamento iniziale
-    this.dataSource.sort.active = 'name';
-    this.dataSource.sort.direction = 'asc';
-    this.dataSource.sort.sortChange.emit({
-      active: 'name',
-      direction: 'asc'
-    });
+  //   // Ordinamento iniziale
+  //   this.dataSource.sort.active = 'name';
+  //   this.dataSource.sort.direction = 'asc';
+  //   this.dataSource.sort.sortChange.emit({
+  //     active: 'name',
+  //     direction: 'asc'
+  //   });
 
-  }
+  // }
 
 
-  // PAGINATORE DELLA TABELLA
-  @ViewChild(MatPaginator)
-  set paginator(paginator: MatPaginator) {  // Imposta il paginatore della tabella
-    if (!paginator) {  // Se il paginatore non è disponibile, esci dal metodo
-      return;
-    }
-    this.dataSource.paginator = paginator;  
-  }
+  // // PAGINATORE DELLA TABELLA
+  // @ViewChild(MatPaginator)
+  // set paginator(paginator: MatPaginator) {  // Imposta il paginatore della tabella
+  //   if (!paginator) {  // Se il paginatore non è disponibile, esci dal metodo
+  //     return;
+  //   }
+  //   this.dataSource.paginator = paginator;  
+  // }
+
+  private cdr = inject(ChangeDetectorRef);
+
+  @ViewChild(MatSort) sortComponent!: MatSort;
+  @ViewChild(MatPaginator) paginatorComponent!: MatPaginator;
 
 
   // DATASOURCE PER LA TABELLA
-  dataSource = new MatTableDataSource<User>();  
+  dataSource = new MatTableDataSource<User>();
 
 
   // INIEZIONE DEL SERVIZIO USER  
