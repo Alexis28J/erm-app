@@ -143,20 +143,24 @@
                                 </button>
                             </div>
 
-                                                        <!-- FILE ALLEGATO -->
+
+                            <!---------------- FILE ALLEGATO ------------------>
                             <div class="attachment-btn">
                                 <button mat-raised-button type="button" color="primary" (click)="fileInput.click()">
                                     Attach File
                                     <mat-icon>attach_file</mat-icon>
                                 </button>
 
-                            <!-- (click)="fileInput.click()" è utilizzato per aprire il file dialog quando l'utente clicca sul pulsante "Attach File" e grazie alla variabile di riferimento #fileInput possiamo accedere all'input file nascosto -->
-                             <!-- L'input file è un elemento nascosto che viene utilizzato per selezionare i file dal file dialog che si apre quando l'utente clicca sul pulsante "Attach File" -->
-
+                               <!-- (click)="fileInput.click()" è utilizzato per aprire il file dialog quando l'utente clicca sul pulsante "Attach File" e grazie alla variabile di riferimento #fileInput possiamo accedere all'input file nascosto -->
+                               <!-- L'input file è un elemento nascosto che viene utilizzato per selezionare i file dal file dialog che si apre quando l'utente clicca sul pulsante "Attach File" -->
 
 
                                 <input hidden #fileInput type="file" multiple
                                     (change)="onFilesSelected($event, $index)">
+
+                                <!-- <input hidden #fileInput type="file" multiple accept="application/pdf,image/*"
+                                    (change)="onFilesSelected($event, $index)"> -->
+
                                 <!-- hidden indica che l'input file non sarà visibile all'utente -->
                                 <!-- #fileInput è un template reference variable che permette di accedere all'input file dal codice HTML.
                                        Questo mi serve per poter aprire il file dialog dal pulsante "Attach File".
@@ -165,10 +169,46 @@
                                 <!-- L'evento (change) viene utilizzato per gestire i file selezionati cioè quando l'utente sceglie i file dal file dialog -->
                             </div>
 
+
+                            <!-- Elenco dei file allegati per la spesa corrente -->
+                            @for(
+                            attachment of expenses.at(expenseIndex).value.attachments ?? [];
+                            track attachment.fileName;
+                            let attachmentIndex = $index;
+                            ) {
+                             <!-- devo inizializzare attachmentIndex perché $index ora si riferisce agli allegati e non più alle spese.
+                             Se avesse usato $index direttamente, non potrebbe più accedere all'indice della spesa corrente. -->
+
+                            <div class="file-row">
+
+                                <!-- <mat-icon>
+                                    description
+                                </mat-icon> -->
+
+                                <!-- {{ attachment.fileName }} -->
+
+                                <app-attachment-list [attachments]="[attachment]"
+                                    matTooltip="Click in to view the attached file"
+                                    matTooltipPosition="right"></app-attachment-list>
+
+                                <!-- Pulsante per rimuovere il file allegato corrente -->
+                                <button mat-icon-button color="warn" type="button"
+                                    (click)="removeAttachment(expenseIndex, attachmentIndex)" matTooltip="Remove file"
+                                    matTooltipPosition="left" class="remove-btn">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+
+                            </div>
+
+                            <!-- Linea divisoria per gli allegati -->
+                            <div class="attachment-divider"></div>
+
+                            }
+
                         </div>
 
                         }
-                        
+
                     </div>
 
 
@@ -202,7 +242,7 @@
                             Cancel
                         </button>
 
-                        <button mat-stroked-button type="button" (click)="saveDraft()">
+                        <button mat-stroked-button type="button" (click)="saveDraft()" class="draft-btn">
                             Save Draft
                         </button>
 
@@ -218,5 +258,6 @@
         </mat-card-content>
 
     </mat-card>
+    
 </div>
 ```

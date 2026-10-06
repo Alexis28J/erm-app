@@ -35,7 +35,10 @@ export class HrDashboard {
         this.notificationService.success('Successfully logged out');  // Mostra una notifica di successo dopo il logout. 
         // L'opzione "Cancel" viene gestita automaticamente dal dialogo ("ConfirmAction").
       } 
+      
     }); 
+
+}
 
 }
 ```

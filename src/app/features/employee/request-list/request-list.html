@@ -28,15 +28,11 @@
                 <ng-container matColumnDef="referenceMonth">
 
                     <th mat-header-cell *matHeaderCellDef mat-sort-header="referenceMonth">
-
                         Month
-
                     </th>
 
                     <td mat-cell *matCellDef="let request">
-
                         {{ request.referenceMonth }}
-
                     </td>
 
                 </ng-container>
@@ -46,15 +42,11 @@
                 <ng-container matColumnDef="creationDate">
 
                     <th mat-header-cell *matHeaderCellDef mat-sort-header="creationDate">
-
                         Creation Date
-
                     </th>
 
                     <td mat-cell *matCellDef="let request">
-
                         {{ request.creationDate | date: 'yyyy-MM-dd' }}
-
                     </td>
 
                 </ng-container>
@@ -64,9 +56,7 @@
                 <ng-container matColumnDef="status">
 
                     <th mat-header-cell *matHeaderCellDef mat-sort-header="status">
-
                         Status
-
                     </th>
 
                     <td mat-cell *matCellDef="let request">
@@ -76,7 +66,6 @@
                             @if (request.status === 'PARTIAL_APPROVED') {
                             Partial Approved
                             }
-
                             @if (request.status === 'APPROVED') {
                             Approved
                             }
@@ -104,15 +93,11 @@
                 <ng-container matColumnDef="totalRequestedAmount">
 
                     <th mat-header-cell *matHeaderCellDef mat-sort-header="totalRequestedAmount">
-
                         Requested Amount
-
                     </th>
 
                     <td mat-cell *matCellDef="let request">
-
                         {{ request.totalRequestedAmount }} €
-
                     </td>
 
                 </ng-container>
@@ -122,15 +107,11 @@
                 <ng-container matColumnDef="totalApprovedAmount">
 
                     <th mat-header-cell *matHeaderCellDef mat-sort-header="totalApprovedAmount">
-
                         Approved Amount
-
                     </th>
 
                     <td mat-cell *matCellDef="let request">
-
                         {{ request.totalApprovedAmount }} €
-
                     </td>
 
                 </ng-container>
@@ -152,6 +133,7 @@
                         </button>
 
 
+                        <!-- Controllo se lo stato della richiesta è DRAFT -->
                         @if (request.status === 'DRAFT') {
 
                         <button mat-raised-button [matMenuTriggerFor]="menu" color="primary">
@@ -208,6 +190,7 @@
                 <!-- Messaggio visualizzato quando non ci sono richieste -->
                 <span> No requests found❗</span>
             </div>
+
             }
 
         </mat-card-content>

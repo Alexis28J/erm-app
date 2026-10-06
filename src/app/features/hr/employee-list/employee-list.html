@@ -10,6 +10,7 @@
 
     <mat-card-content>
 
+        <!-- Campo di ricerca per filtrare gli impiegati -->
         <mat-form-field appearance="outline">
             <mat-label>Search Employee</mat-label>
             <input matInput [formControl]="searchControl">
@@ -90,8 +91,8 @@
 
         </table>
 
-            <mat-paginator [pageSize]="5" [pageSizeOptions]="[10, 15]" showFirstLastButtons></mat-paginator>
-            <!-- ShowFirstLastButtons significa che i pulsanti per andare alla prima e all'ultima pagina saranno visibili -->
+        <mat-paginator [pageSize]="5" [pageSizeOptions]="[10, 15]" showFirstLastButtons></mat-paginator>
+        <!-- ShowFirstLastButtons significa che i pulsanti per andare alla prima e all'ultima pagina saranno visibili -->
 
     </mat-card-content>
 

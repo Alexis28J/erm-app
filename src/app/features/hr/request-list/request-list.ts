@@ -56,6 +56,7 @@ export class RequestList {
       // Aggiorno i dati del dataSource con le richieste filtrate
       this.dataSource.data = this.requests();
 
+
       // Applico il filtro al dataSource
       this.dataSource.filter = this.filterValue().trim().toLowerCase();
 
@@ -111,8 +112,10 @@ export class RequestList {
   @ViewChild(MatSort) sortComponent!: MatSort;
   @ViewChild(MatPaginator) paginatorComponent!: MatPaginator;
 
+
   // FONTE DEI DATI PER LA TABELLA DELLE RICHIESTE DI RIMBORSO
   dataSource = new MatTableDataSource<RefundRequest>();
+
 
   // INIEZIONI DI SERVIZI
   private refundRequestService = inject(RefundRequestService);
@@ -122,6 +125,7 @@ export class RequestList {
 
   // SEGNALE PER MEMORIZZARE LE RICHIESTE DI RIMBORSO 
   requests = signal<RefundRequest[]>([]);
+
 
   // SEGNALE PER MEMORIZZARE LA RISORSA DELLE RICHIESTE DI RIMBORSO 
   requestResource = toSignal(

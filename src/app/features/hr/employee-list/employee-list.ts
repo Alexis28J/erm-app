@@ -28,14 +28,23 @@ export class EmployeeList {
 
   constructor() {
 
+
+    // EFFECT PER AGGIORNARE LA TABELLA QUANDO CAMBIANO I DATI O IL FILTRO DI RICERCA
     effect(() => {
 
+      // Aggiorna i dati della tabella in base al filtro di ricerca corrente
       this.dataSource.data = this.filteredEmployees();
 
+
+      // Se non ci sono risultati filtrati, esci dall'effetto
       if (!this.filteredEmployees() || this.filteredEmployees().length === 0) return;
 
+
+      // Forza l'aggiornamento della vista per riflettere i cambiamenti nei dati della tabella
       this.cdr.detectChanges();
 
+
+      // Se il sortingDataAccessor non è ancora stato impostato, impostalo ora
       if (!this.dataSource.sortingDataAccessor) {
         this.dataSource.sortingDataAccessor = (item, property) => {
 
@@ -48,14 +57,20 @@ export class EmployeeList {
         };
       }
 
+
+      // Imposta il sorting della tabella se non è già stato impostato
       if (this.sortComponent && !this.dataSource.sort) {
         this.dataSource.sort = this.sortComponent;
       }
 
+
+      // Imposta il paginatore della tabella se non è già stato impostato
       if (this.paginatorComponent && !this.dataSource.paginator) {
         this.dataSource.paginator = this.paginatorComponent;
       }
 
+
+      // Applica il sorting iniziale della tabella se il sorting è già stato impostato
       if (this.dataSource.sort) {
         this.dataSource.sort.sort({ id: "employeeCode", start: "asc", disableClear: false });
       }
@@ -68,50 +83,7 @@ export class EmployeeList {
   }
 
 
-  // // ORDINA LA TABELLA IN BASE ALLA COLONNA SPECIFICATA
-  // @ViewChild(MatSort)
-  // set sort(sort: MatSort) {
-
-  //   if (!sort) {
-  //     return;
-  //   }
-
-  //   this.dataSource.sort = sort;
-
-  //   this.dataSource.sortingDataAccessor = (item, property) => {
-
-  //     switch (property) {
-  //       case "code": return item.employeeCode;
-  //       case "name": return item.name;
-  //       case "email": return item.email;
-  //       case "active": return item.active;
-  //       default: return item[property as keyof User] as any;
-  //     };
-
-  //   };
-
-  //   // Ordinamento iniziale
-  //   this.dataSource.sort.active = 'name';
-  //   this.dataSource.sort.direction = 'asc';
-  //   this.dataSource.sort.sortChange.emit({
-  //     active: 'name',
-  //     direction: 'asc'
-  //   });
-
-  // }
-
-
-  // // PAGINATORE DELLA TABELLA
-  // @ViewChild(MatPaginator)
-  // set paginator(paginator: MatPaginator) {  // Imposta il paginatore della tabella
-  //   if (!paginator) {  // Se il paginatore non è disponibile, esci dal metodo
-  //     return;
-  //   }
-  //   this.dataSource.paginator = paginator;  
-  // }
-
-  private cdr = inject(ChangeDetectorRef);
-
+  // REFERENZE AI COMPONENTI DELLA TABELLA (SORT E PAGINATOR)
   @ViewChild(MatSort) sortComponent!: MatSort;
   @ViewChild(MatPaginator) paginatorComponent!: MatPaginator;
 
@@ -123,6 +95,7 @@ export class EmployeeList {
   // INIEZIONE DEL SERVIZIO USER  
   private userService = inject(UserService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
 
   // CONTROLLO DI RICERCA

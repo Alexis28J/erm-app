@@ -24,21 +24,17 @@
             <!-- Verifica se ci sono richieste di rimborso -->
             @if (requests().length > 0) {
 
-            <table mat-table [dataSource]="dataSource">
+            <table mat-table [dataSource]="dataSource" matSort>
 
                 <!-- Reference Month -->
                 <ng-container matColumnDef="referenceMonth">
 
-                    <th mat-header-cell *matHeaderCellDef>
-
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="referenceMonth">
                         Month
-
                     </th>
 
                     <td mat-cell *matCellDef="let request">
-
                         {{ request.referenceMonth }}
-
                     </td>
 
                 </ng-container>
@@ -47,16 +43,13 @@
                 <!-- Creation Date -->
                 <ng-container matColumnDef="creationDate">
 
-                    <th mat-header-cell *matHeaderCellDef>
-
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="creationDate">
                         Creation Date
-
                     </th>
 
                     <td mat-cell *matCellDef="let request">
-
-                        {{ request.creationDate }}
-
+                        {{ request.creationDate | date: 'yyyy-MM-dd' }}
+                    <!-- Devo importare il pipe DatePipe nel modulo corrispondente affinché la formattazione della data funzioni correttamente -->
                     </td>
 
                 </ng-container>
@@ -65,10 +58,8 @@
                 <!-- Status -->
                 <ng-container matColumnDef="status">
 
-                    <th mat-header-cell *matHeaderCellDef>
-
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="status">
                         Status
-
                     </th>
 
                     <td mat-cell *matCellDef="let request">
@@ -83,7 +74,6 @@
                             @if (request.status === 'PARTIAL_APPROVED') {
                             'Partial Approved'
                             }
-
                             @if (request.status === 'APPROVED') {
                             'Approved'
                             }
@@ -107,16 +97,12 @@
                 <!-- Requested Amount -->
                 <ng-container matColumnDef="totalRequestedAmount">
 
-                    <th mat-header-cell *matHeaderCellDef>
-
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="totalRequestedAmount">
                         Requested Amount
-
                     </th>
 
                     <td mat-cell *matCellDef="let request">
-
                         {{ request.totalRequestedAmount }} €
-
                     </td>
 
                 </ng-container>
@@ -125,16 +111,12 @@
                 <!-- Approved Amount -->
                 <ng-container matColumnDef="totalApprovedAmount">
 
-                    <th mat-header-cell *matHeaderCellDef>
-
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="totalApprovedAmount">
                         Approved Amount
-
                     </th>
 
                     <td mat-cell *matCellDef="let request">
-
                         {{ request.totalApprovedAmount }} €
-
                     </td>
 
                 </ng-container>
@@ -144,9 +126,7 @@
                 <ng-container matColumnDef="actions">
 
                     <th mat-header-cell *matHeaderCellDef>
-
                         Actions
-
                     </th>
 
                     <td mat-cell *matCellDef="let request">
@@ -156,13 +136,14 @@
                             <!-- <button mat-menu-item routerLink="/employee/request-details/{{request.id}}"> -->
 
                             <!-- O CON IL METODO VIEW DETAILS --> 
-                            <button mat-menu-item (click)="viewDetails(request.id)">
-
+                        <button mat-raised-button color="primary" (click)="viewDetails(request.id)"
+                            [hidden]="request.status === 'DRAFT'">
                             View Details
-
+                            <mat-icon>visibility</mat-icon>
                         </button>
 
-                        
+
+                        <!-- Controllo se lo stato della richiesta è DRAFT -->
                         @if (request.status === 'DRAFT') {
                             
                         <button mat-raised-button [matMenuTriggerFor]="menu" color="primary">
@@ -171,8 +152,9 @@
 
                         <mat-menu #menu="matMenu">
 
-                            <button mat-menu-item>
-                                View Details
+                            <button mat-menu-item (click)="viewDetails(request.id)">
+                                View
+                                <mat-icon>visibility</mat-icon>
                             </button>
 
                             <button mat-menu-item
@@ -183,13 +165,17 @@
                                   Entrambe le soluzioni sono valide a seconda del contesto. Ad esempio, l'interpolazione è più semplice e diretta, mentre l'uso di /:id con queryParams può essere utile in scenari più complessi. -->
                                   
                                 Edit
+                                <mat-icon>edit</mat-icon>
                             </button>
+
 
                             <button mat-menu-item
                                     color="warn"
-                                    (click)="deleteRequest(request.id)">
+                                    (click)="deleteRequest(request.id)"
+                                    class="delete">
 
                                 Delete
+                                <mat-icon>delete</mat-icon>
                             </button>
 
                         </mat-menu>
@@ -216,17 +202,33 @@
 
             </table>
 
+            <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
+
             } @else {
 
-            <p>
-                No reimbursement requests found.
-            </p>
-
+            <div class="no-found">
+                <!-- Messaggio visualizzato quando non ci sono richieste -->
+                <span> No requests found❗</span>
+            </div>
             }
 
         </mat-card-content>
 
     </mat-card>
+
+
+    <div class="navigation-buttons">
+        <button mat-raised-button color="accent" routerLink="/employee/dashboard" class="back-btn">
+            Back to the Dashboard
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+
+
+        <button mat-raised-button color="primary" routerLink="/employee/new-request">
+            Make a new request
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
 
 </div>
 ```

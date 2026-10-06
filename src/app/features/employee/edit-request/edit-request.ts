@@ -23,7 +23,7 @@ import { startWith } from 'rxjs';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
 import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list'; 
+import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list';
 
 @Component({
   imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule,
@@ -258,16 +258,16 @@ export class EditRequest {
   }
 
 
-  // SIGNAL PER TENERE TRACCIA DEI VALORI DELLE SPESE
-  expensesValue = toSignal(   // Converto l'Observable delle spese in un Signal in modo da poterlo utilizzare reattivamente nel template e nel codice TypeScript
-    this.expenses.valueChanges.pipe(  // Il metodo valueChanges mi permette di osservare i cambiamenti nei valori delle spese in tempo reale mentre .pipe viene utilizzato per applicare operatori RxJS come startWith
-      startWith(this.expenses.getRawValue()) // startWith viene utilizzato per emettere immediatamente il valore iniziale delle spese in modo che il Signal abbia un valore iniziale corretto
+  // SIGNAL PER TENERE TRACCIA DEI VALORI DELLE SPESE (IMPORTO RICHIESTO, CATEGORIA, ETC.)
+  expensesValue = toSignal(
+    this.expenses.valueChanges.pipe(
+      startWith(this.expenses.getRawValue())
     ),
-    { initialValue: [] }  // Valore iniziale del Signal, utilizzato prima che l'Observable emetta il primo valore (cioè quando il form è appena caricato)
+    { initialValue: [] }
   )
 
 
-  // COMPUTED PER OTTENERE I DATI DI PROGRESSO DELLE SPESE
+  // COMPUTED PER OTTENERE I DATI DI PROGRESSO DELLE SPESE (CATEGORIA E IMPORTO RICHIESTO)
   expenseProgressData = computed(() => {
     return this.expensesValue().map((expense: Expense) => ({
       category: expense.category ?? '',
@@ -276,6 +276,7 @@ export class EditRequest {
   })
 
 
+  // COMPUTED PER OTTENERE L'IMPORTO MASSIMO CONSENTITO PER LE SPESE (SOMMA DEI MASSIMI PER CATEGORIA O TOTALE MASSIMO CONSENTITO)
   readonly totalAllowedAmount = computed(() => {
 
     const request = this.expensesValue();
@@ -285,7 +286,6 @@ export class EditRequest {
     }
 
     return request.reduce((total: number, expense: Expense) => {
-
       const category = EXPENSE_CATEGORIES.find(
         c => c.name === expense.category
       )
@@ -296,6 +296,7 @@ export class EditRequest {
   });
 
 
+  // COMPUTED PER OTTENERE L'IMPORTO TOTALE RICHIESTO PER LE SPESE
   readonly totalRequestedAmount = computed(() => {
 
     const request = this.expensesValue();
@@ -345,7 +346,7 @@ export class EditRequest {
       reader.readAsDataURL(file);
     });
   }
-  
+
 
   // METODO PER RIMUOVERE UN FILE ALLEGATO (PER OGNI SINGOLA SPESA)
   removeAttachment(
@@ -359,14 +360,15 @@ export class EditRequest {
       ...expense.value.attachments ?? []
     ];
 
-    attachments.splice(   
-      attachmentIndex, 
-      1   
+    attachments.splice(
+      attachmentIndex,
+      1
     );
-    
+
     expense.patchValue({
       attachments
     });
+
   }
 }
 

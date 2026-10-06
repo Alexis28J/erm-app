@@ -281,13 +281,6 @@ export class NewRequest {
 
         const expense = this.expenses.at(expenseIndex);
 
-
-        // Log provvisorio per verificare gli allegati correnti
-        // console.log(
-        //   expense.get('attachments')?.value
-        // );
-        ////////////////////////
-
         const attachments = expense.get('attachments')?.value ?? [];
 
         const allowedTypes = [
@@ -301,7 +294,6 @@ export class NewRequest {
           this.notificationService.error('Only PDF and image files are allowed');
           return;
         }
-
 
         attachments.push({
           fileName: file.name,

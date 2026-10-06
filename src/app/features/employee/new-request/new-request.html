@@ -134,7 +134,7 @@
 
                             </div>
 
-                            <!-- FILE ALLEGATO -->
+                            <!------------------ FILE ALLEGATO --------------------->
                             <div class="attachment-btn">
                                 <button mat-raised-button type="button" color="primary" (click)="fileInput.click()"
                                     matTooltip="Attach the receipt corresponding to this expense"
@@ -145,10 +145,8 @@
 
                                 <input hidden #fileInput type="file" multiple accept=".pdf,.jpg,.jpeg,.png"
                                     (change)="onFilesSelected($event, $index)">
-
-                                <!-- <input hidden #fileInput type="file" multiple accept="application/pdf,image/*"
-                                    (change)="onFilesSelected($event, $index)"> -->
                             </div>
+
 
                             <!-- Elenco dei file allegati per la spesa corrente -->
                             @for(
@@ -156,8 +154,6 @@
                             track attachment.fileName;
                             let attachmentIndex = $index;
                             ) {
-                            <!-- devo inizializzare attachmentIndex perché $index ora si riferisce agli allegati e non più alle spese.
-                 Se avesse usato $index direttamente, non potrebbe più accedere all'indice della spesa corrente. -->
 
                             <div class="file-row">
 

@@ -97,8 +97,6 @@
           <div class="expenses-list">
 
             <!-- CICLO SULLE SPESE DEL FORM -->
-            <!-- Attenzione però. Nel ciclo interno $index diventa quello degli allegati. 
-              Quindi $index non deve essere usato per gli allegati, ma solo per le spese. -->
             @for (expense of expenses.controls; track $index; let expenseIndex = $index) {
 
             <!-- CARD DI OGNI SINGOLA SPESA -->
@@ -124,7 +122,6 @@
                   <mat-label>Category</mat-label>
 
                   <mat-select formControlName="category">
-                    <!-- per evitare l'autofocus automatico sul primo elemento della select, aggiungo un'opzione vuota -->
                     <mat-option value="" disabled>Select a category</mat-option>
                     <mat-option value="TAXI">Taxi</mat-option>
                     <mat-option value="TRAIN">Train</mat-option>
@@ -143,7 +140,6 @@
 
                   <mat-label>Description</mat-label>
                   <textarea matInput formControlName="description" rows="1">
-                    <!-- Posso usare input type="text" al posto del textarea se voglio che la descrizione sia su una sola riga -->
                   </textarea>
 
                 </mat-form-field>
@@ -175,8 +171,6 @@
 
                 <input hidden #fileInput type="file" multiple (change)="onFilesSelected($event, $index)"
                   accept=".pdf,.jpg,.jpeg,.png">
-                <!-- <input hidden #fileInput type="file" multiple accept="application/pdf,image/*"
-                                    (change)="onFilesSelected($event, $index)"> -->
 
               </div>
 
@@ -187,16 +181,8 @@
               track attachment.fileName;
               let attachmentIndex = $index;
               ) {
-              <!-- devo inizializzare attachmentIndex perché $index ora si riferisce agli allegati e non più alle spese.
-                 Se avesse usato $index direttamente, non potrebbe più accedere all'indice della spesa corrente. -->
 
               <div class="file-row">
-
-                <!-- <mat-icon>
-                  description
-                </mat-icon>
-
-                {{ attachment.fileName }} -->
 
                 <app-attachment-list [attachments]="[attachment]" matTooltip="Click in to view the attached file"
                   matTooltipPosition="right"></app-attachment-list>
@@ -251,6 +237,7 @@
         </div>
 
       </mat-card>
+
 
       <div class="actions">
 

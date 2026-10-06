@@ -12,6 +12,7 @@
 
 }
 
+
 // TITOLO DELLA CARD
 mat-card-title {
     font-size: 28px;
@@ -26,7 +27,9 @@ mat-card-title {
 mat-card-content {
     font-size: 18px;
     line-height: 1.5;
+    margin-bottom: 1rem;
 }
+
 
 // GRIGLIA DEI DETTAGLI
 .details-grid {
@@ -63,18 +66,15 @@ mat-card-content {
     font-weight: 600;
 }
 
-
 .pending {
     color: orange;
     font-weight: 600;
 }
 
-
 .rejected {
     color: red;
     font-weight: 600;
 }
-
 
 .partial_approved,
 // Scrivo entrambe le versioni per gestire
@@ -83,7 +83,6 @@ mat-card-content {
     color: rgb(30, 196, 30);
     font-weight: 600;
 }
-
 
 .draft {
     color: gray;
@@ -103,6 +102,7 @@ mat-card-content {
 }
 
 
+// CARDS DELLE SPESE
 .expense-grid {
     border: 2px solid rgba(22, 80, 195, 0.212);
     border-radius: 8px;
@@ -133,7 +133,7 @@ mat-card-content {
 
 // SPINNER CENTRATO
 .centered-spinner {
-    margin: 250px auto !important; // Centra verticalmente con margine superiore e inferiore
+    margin: 250px auto !important; 
 }
 
 

@@ -22,7 +22,6 @@
 
 
   <!---------------------------- SEZIONE DI DETTAGLI DELLA RICHIESTA -------------------------->
-  <!---------------------------- SEZIONE DI DETTAGLI DELLA RICHIESTA -------------------------->
   <form [formGroup]="requestForm">
 
     <div class="form-section">
@@ -104,9 +103,11 @@
             <!-- Per ogni spesa nel form, viene generata una card con i dettagli della spesa. 
              track $index indica l'indice corrente della spesa nel ciclo. Ad esempio, 
              $index può essere utilizzato per identificare univocamente ogni spesa all'interno del form array. -->
+            <!-- @for (expense of expenses.controls; track $index) { -->
 
-            <!-- CICLO SULLE SPESE DEL FORM -->
-            @for (expense of expenses.controls; track $index) {
+            <!-- Attenzione però. Nel ciclo interno $index diventa quello degli allegati. 
+              Quindi $index non deve essere usato per gli allegati, ma solo per le spese. -->
+            @for (expense of expenses.controls; track $index; let expenseIndex = $index) {
 
             <!-- CARD DI OGNI SINGOLA SPESA -->
             <div class="expense-grid">
@@ -171,6 +172,62 @@
 
               </div>
 
+
+              <!-- PULSANTE ALLEGA FILE -->
+              <div class="attachment-btn">
+
+                <button mat-raised-button type="button" color="primary" (click)="fileInput.click()">
+                  Attach File
+                  <mat-icon>attach_file</mat-icon>
+                </button>
+
+                <input hidden #fileInput type="file" multiple (change)="onFilesSelected($event, $index)"
+                  accept=".pdf,.jpg,.jpeg,.png">
+                <!-- <input hidden #fileInput type="file" multiple accept="application/pdf,image/*"
+                                    (change)="onFilesSelected($event, $index)"> -->
+
+              </div>
+
+
+              <!-- Elenco dei file allegati per la spesa corrente -->
+              @for(
+              attachment of expenses.at(expenseIndex).value.attachments ?? [];
+              track attachment.fileName;
+              let attachmentIndex = $index;
+              ) {
+                <!-- .at() è utilizzato per ottenere il FormGroup della spesa corrente all'interno del FormArray delle spese. 
+                 Quindi, per accedere agli allegati della spesa corrente, utilizziamo .at(expenseIndex).value.attachments. 
+                 [] se non ci sono allegati -->
+                 <!-- track attachment.fileName serve per ottimizzare il rendering degli allegati nel template 
+                  cioè per evitare che Angular ricrei inutilmente gli elementi della lista quando cambiano altri dati -->
+              <!-- devo inizializzare attachmentIndex perché $index ora si riferisce agli allegati e non più alle spese.
+                 Se avesse usato $index direttamente, non potrebbe più accedere all'indice della spesa corrente. -->
+
+              <div class="file-row">
+
+                <!-- <mat-icon>
+                  description
+                </mat-icon>
+
+                {{ attachment.fileName }} -->
+
+                <app-attachment-list [attachments]="[attachment]" matTooltip="Click in to view the attached file"
+                  matTooltipPosition="right"></app-attachment-list>
+
+                <!-- Pulsante per rimuovere il file allegato corrente -->
+                <button mat-icon-button color="warn" type="button"
+                  (click)="removeAttachment(expenseIndex, attachmentIndex)" matTooltip="Remove file"
+                  matTooltipPosition="left" class="remove-btn">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+
+              </div>
+
+              <!-- Linea divisoria per gli allegati -->
+              <div class="attachment-divider"></div>
+
+              }
+
             </div>
 
             }
@@ -209,6 +266,7 @@
 
       </mat-card>
 
+
       <div class="actions">
 
         <!-- Pulsante per tornare indietro -->
@@ -221,19 +279,15 @@
 
         <!-- Pulsante per salvare la richiesta come bozza -->
         <!-- Il tipo mat-stroked-button indica che il pulsante avrà uno stile con bordo tratteggiato -->
-        <button mat-stroked-button color="primary" type="button" (click)="saveDraft()">
-
+        <button mat-stroked-button color="primary" type="button" (click)="saveDraft()" class="draft-btn">
           Save Draft
-
         </button>
 
         <!-- Pulsante per inviare la richiesta -->
         <!-- Il tipo mat-raised-button indica che il pulsante avrà uno stile con bordo pieno -->
         <!-- Questo dettaglio è utile per distinguere visivamente i pulsanti di invio dalle altre azioni -->
         <button mat-raised-button color="accent" type="button" (click)="submitRequest()">
-
           Submit Request
-
         </button>
 
       </div>

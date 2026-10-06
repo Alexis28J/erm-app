@@ -5,7 +5,6 @@ export class EmployeeDashboard {
 
   // INIEZIONI DELLE DIPENDENZE
   private authService = inject(AuthService);
-  private router = inject(Router);
 
 
   // UTENTE CORRENTE
@@ -14,6 +13,23 @@ export class EmployeeDashboard {
   // Perché null? Perché l'utente potrebbe non essere loggato, e pertanto la pagina deve essere protetta o reindirizzare al login.
   // Perché non mettiamo solo User senza null? Perché l'utente potrebbe non essere loggato e quindi currentUser sarebbe undefined.
   // Deve essere gestito correttamente per evitare errori quando l'utente non è loggato.
+
+}
+  ```
+
+# CODICE SCARTATO 
+Ho trasferito la logica del toolbar in un componente separato per mantenere il codice più pulito e modulare.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+```TYPESCRIPT
+  // INIEZIONI DELLE DIPENDENZE
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+
+  // UTENTE CORRENTE
+  currentUser: User | null = this.authService.getCurrentUser();  
 
 
   // LOGOUT DELL'UTENTE
@@ -37,4 +53,4 @@ export class EmployeeDashboard {
     });
 
 }
-  ```
+```

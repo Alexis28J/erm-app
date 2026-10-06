@@ -367,7 +367,19 @@ export class NewRequest {
 
       reader.onload = () => {  // Quando il file è stato letto con successo, esegui questa funzione che aggiorna l'array degli allegati della spesa corrente
 
-        const expense = this.expenses.at(expenseIndex);  // Ottieni il FormGroup (expenses) corrispondente alla spesa corrente
+        const expense = this.expenses.at(expenseIndex);  // Ottieni il FormGroup (expenses) corrispondente alla spesa corrente. In parole semplici, expense rappresenta la spesa corrente selezionata dall'utente.
+
+        // Il metodo .at() è un metodo sicuro per ottenere l'elemento all'indice specificato, evitando errori se l'indice è fuori dai limiti di validità.
+        // Per esempio, se per qualche motivo l'indice fornito è maggiore del numero di spese presenti (quando non esiste una spesa a quell'indice), .at() restituirà undefined invece di generare un errore.
+        // Questo aiuta a prevenire crash dell'applicazione dovuti a indici non validi.
+
+
+        // Log provvisorio per verificare gli allegati correnti
+        // console.log(
+        //   expense.get('attachments')?.value
+        // );
+        ////////////////////////
+
 
         const attachments = expense.get('attachments')?.value ?? [];  // Ottieni l'array degli allegati esistenti per la spesa corrente
 
@@ -396,6 +408,34 @@ export class NewRequest {
     // 5. In questo modo, i file selezionati sono disponibili come allegati della spesa corrente.
     
   }
+
+
+  // METODO PER RIMUOVERE UN FILE ALLEGATO (PER OGNI SINGOLA SPESA)
+  // Rimuove un allegato dall'elenco degli allegati di una spesa specifica.
+  removeAttachment( 
+    expenseIndex: number,   // Indice della spesa dalla quale rimuovere l'allegato.
+    attachmentIndex: number   // Indice dell'allegato da rimuovere all'interno dell'elenco degli allegati della spesa specifica.
+  ): void {
+
+    const expense = this.expenses.at(expenseIndex);  // Ottiene il controllo del modulo (FormGroup "expense") della spesa specifica in base all'indice fornito. In parole semplici, expense rappresenta la spesa corrente selezionata dall'utente.
+
+    // Il metodo .at() è un metodo sicuro per ottenere l'elemento all'indice specificato, evitando errori se l'indice è fuori dai limiti.
+    // Per esempio, se per qualche motivo l'indice fornito è maggiore del numero di spese presenti (quando non esiste una spesa a quell'indice), .at() restituirà undefined invece di generare un errore.
+    // Questo aiuta a prevenire crash dell'applicazione dovuti a indici non validi.
+
+
+    const attachments = [    // Crea una copia dell'elenco degli allegati della spesa specifica. Se non ci sono allegati, utilizza un array vuoto come fallback.
+      ...expense.value.attachments ?? []  // ... metodo spread per creare una copia dell'array degli allegati esistente, oppure un array vuoto se non ci sono allegati.
+    ];
+
+    attachments.splice(   // Rimuove l'allegato specificato dall'elenco degli allegati.
+      attachmentIndex,  // Indice dell'allegato da rimuovere.
+      1   // Numero di elementi da rimuovere (in questo caso, solo l'allegato specificato).
+    );
+    
+    expense.patchValue({   // Aggiorna il valore del controllo del modulo della spesa corrente con il nuovo elenco degli allegati.
+      attachments  // Nuovo elenco degli allegati aggiornato.
+    }); // Il metodo patchValue si occupa di aggiornare solo i campi specificati del controllo del modulo, senza sovrascrivere l'intero valore.
   
 }
 

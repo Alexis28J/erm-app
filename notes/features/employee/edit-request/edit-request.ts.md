@@ -289,6 +289,150 @@ export class EditRequest {
       });
 
   }
+ 
+ 
+  // SIGNAL PER TENERE TRACCIA DEI VALORI DELLE SPESE (IMPORTO RICHIESTO, CATEGORIA, ETC.)
+  // Quando l'utente modifica le spese, questo signal tiene traccia dei valori aggiornati in tempo reale.
+  expensesValue = toSignal(   // Converto l'Observable delle spese in un Signal in modo da poterlo utilizzare reattivamente nel template e nel codice TypeScript
+    this.expenses.valueChanges.pipe(  // Il metodo valueChanges mi permette di osservare i cambiamenti nei valori delle spese in tempo reale mentre .pipe viene utilizzato per applicare operatori RxJS come startWith
+      startWith(this.expenses.getRawValue()) // startWith viene utilizzato per emettere immediatamente il valore iniziale delle spese in modo che il Signal abbia un valore iniziale corretto
+    ),
+    { initialValue: [] }  // Valore iniziale del Signal, utilizzato prima che l'Observable emetta il primo valore (cioè quando il form è appena caricato)
+  )
+
+
+  // COMPUTED PER OTTENERE I DATI DI PROGRESSO DELLE SPESE (CATEGORIA E IMPORTO RICHIESTO)
+  // Quando l'utente modifica le spese, questo computed aggiorna automaticamente i dati di progresso delle spese.
+  // Nel template, il selettore della barra di progresso delle spese utilizzerà questo computed per mostrare i dati aggiornati in tempo reale.
+  // Le proprietà category e amount sono utilizzate per rappresentare la categoria della spesa e l'importo richiesto rispettivamente.
+  expenseProgressData = computed(() => {
+    return this.expensesValue().map((expense: Expense) => ({ // Mappa ogni spesa in un oggetto contenente la categoria e l'importo richiesto
+      category: expense.category ?? '',  // Metto '' come valore di default se la categoria è undefined, in modo da evitare errori nel template
+      amount: Number(expense.requestedAmount ?? 0) // Metto 0 come valore di default se  l'importo richiesto è undefined (cioè non è stato ancora inserito dall'utente)
+    }))  // Il metodo map crea, per ogni spesa, un oggetto contenente la categoria e l'importo richiesto
+  })
+
+
+  // COMPUTED PER OTTENERE L'IMPORTO MASSIMO CONSENTITO PER LE SPESE (SOMMA DEI MASSIMI PER CATEGORIA O TOTALE MASSIMO CONSENTITO)
+  // Quando l'utente modifica le spese, questo computed aggiorna automaticamente l'importo massimo consentito per ogni categoria 
+  // e quindi il totale massimo consentito. 
+  // Il selettore della barra di progresso totale delle spese utilizzerà questo computed per mostrare l'importo massimo consentito aggiornato in tempo reale.
+  readonly totalAllowedAmount = computed(() => {
+
+    const request = this.expensesValue();  // Ottiene i valori correnti delle spese dal signal
+
+    if (!request || request.length === 0) {  // Se non ci sono spese, l'importo massimo consentito è 0
+      return 0;
+    }
+
+    return request.reduce((total: number, expense: Expense) => {  // Somma l'importo massimo consentito per ogni categoria
+      // Il metodo reduce itera su ogni spesa e somma l'importo massimo consentito per la categoria corrispondente
+      const category = EXPENSE_CATEGORIES.find(  // Trova la categoria corrispondente alla spesa corrente
+        c => c.name === expense.category    // Confronta il nome della categoria con la categoria della spesa corrente
+      ) // Il metodo reduce è un metodo di array che accumula un valore (in questo caso il totale) iterando su ogni elemento dell'array (in questo caso le spese)
+
+      return total + (category?.maxAmount ?? 0);  // Aggiunge l'importo massimo consentito della categoria corrente al totale, oppure 0 se la categoria non ha un importo massimo definito
+    }, 0  // Valore iniziale del totale, cioè parte da 0 prima di sommare gli importi massimi delle categorie
+    );
+  });
+
+
+  // COMPUTED PER OTTENERE L'IMPORTO TOTALE RICHIESTO PER LE SPESE
+  // Questo computed calcola l'importo totale richiesto per tutte le spese, sommando gli importi richiesti di ciascuna spesa.
+  readonly totalRequestedAmount = computed(() => { 
+
+    const request = this.expensesValue();  // Ottiene i valori correnti delle spese dal signal
+
+    if (!request || request.length === 0) {  // Se non ci sono spese, l'importo totale richiesto è 0
+      return 0;
+    }
+
+    return request.reduce(  // Somma l'importo richiesto di ciascuna spesa per ottenere il totale richiesto con il metodo reduce che accumula il totale passo dopo passo
+      (total: number, expense: Expense) => {  // total è il totale accumulato fino a questo punto, expense è la spesa corrente. In altre parole, total rappresenta il totale parziale mentre iteriamo sulle spese.
+        return total + (expense.requestedAmount ?? 0);  // Aggiunge l'importo richiesto della spesa corrente al totale, oppure 0 se l'importo richiesto non è definito
+      }, 0  // Valore iniziale del totale, cioè parte da 0 prima di sommare gli importi richiesti delle spese
+    );
+  });
+
+
+  // GESTIONE DEI FILE ALLEGATI PER LE SPESE
+  // Gestisce la selezione dei file allegati per una specifica spesa. 
+  // Quando l'utente seleziona dei file, questi vengono letti come Data URL e aggiunti all'elenco degli allegati della spesa corrente.
+  onFilesSelected(event: Event, expenseIndex: number): void {  // I parametri sono l'evento di selezione dei file e l'indice della spesa corrente.
+
+    const files = (event.target as HTMLInputElement).files; // Ottiene la lista dei file selezionati dall'input file HTML.
+    // as HTMLInputElement è un cast per indicare che l'evento proviene da un input HTML di tipo file. In questo modo TypeScript sa che l'oggetto event.target ha la proprietà files.
+    // Perché è necessario?
+    // È necessario fare il cast a HTMLInputElement perché event.target è di tipo EventTarget, che non ha la proprietà files. 
+    // Solo HTMLInputElement ha la proprietà files, quindi dobbiamo dire a TypeScript che event.target è effettivamente un HTMLInputElement.
+
+    if (!files?.length) {  // Se non ci sono file selezionati, esce dalla funzione.
+      return;
+    }
+
+    Array.from(files).forEach(file => {   // Per ogni file selezionato, crea un FileReader per leggerne il contenuto come Data URL.
+
+      const reader = new FileReader();  // Crea un nuovo FileReader per leggere il contenuto del file come Data URL. 
+      // In questo modo possiamo ottenere una rappresentazione del file che può essere facilmente memorizzata o inviata al server.
+      // FileReader è un oggetto JavaScript che permette di leggere il contenuto dei file selezionati dall'utente.
+
+      reader.onload = () => {  // Quando il file è stato letto con successo, esegue questa funzione.
+        // Il metodo onload viene chiamato quando il file è stato letto con successo. Qui possiamo accedere al contenuto del file tramite reader.result.
+
+        const expense = this.expenses.at(expenseIndex);  // Ottiene la spesa corrente in base all'indice fornito.
+
+        const attachments = expense.get('attachments')?.value ?? [];  // Ottiene l'elenco degli allegati della spesa corrente, oppure un array vuoto se non ci sono allegati.
+        // get('attachments')? serve per ottenere il controllo del modulo che contiene gli allegati. 
+        // Il punto interrogativo indica che il controllo potrebbe non esistere, quindi TypeScript non genererà un errore se è undefined.
+        // Se il controllo esiste, otteniamo il suo valore tramite .value (cioè l'array degli allegati), altrimenti utilizziamo un array vuoto come fallback.
+
+        attachments.push({  // Aggiunge un nuovo allegato all'elenco degli allegati.
+          fileName: file.name,  // Nome del file.
+          fileType: file.type,  // Tipo MIME (Multipurpose Internet Mail Extensions) del file. Il tipo MIME indica il formato del file e come deve essere interpretato.
+          fileContent: reader.result as string  // Contenuto del file come Data URL che viene "castato" a stringa per garantire il tipo corretto in TypeScript.
+        });
+
+        expense.patchValue({  // Aggiorna il valore del controllo del modulo della spesa corrente con il nuovo elenco degli allegati.
+          // Il controllo del modulo è rappresentato dall'oggetto expense, che contiene i campi della spesa corrente. Qui stiamo aggiornando solo il campo 'attachments' con il nuovo elenco degli allegati.
+          attachments  // Nuovo elenco degli allegati aggiornato.
+        });  // Il metodo patchValue si occupa di aggiornare solo i campi specificati del controllo del modulo, senza sovrascrivere l'intero valore.
+      };
+
+      reader.readAsDataURL(file);  // Avvia la lettura del file come Data URL. Quando la lettura sarà completata, verrà chiamato il metodo onload definito sopra.
+      // In parole semplici, questo codice legge il file selezionato dall'utente, lo converte in un Data URL e lo aggiunge all'elenco degli allegati della spesa corrente.
+      // readAsDataURL è il metodo che avvia la lettura del file come Data URL. Quando la lettura sarà completata, il risultato sarà disponibile in reader.result. 
+      // In questo caso, reader.result conterrà il contenuto del file codificato come Data URL.
+    });
+  }
+  
+
+  // METODO PER RIMUOVERE UN FILE ALLEGATO (PER OGNI SINGOLA SPESA)
+  // Rimuove un allegato dall'elenco degli allegati di una spesa specifica.
+  removeAttachment( 
+    expenseIndex: number,   // Indice della spesa dalla quale rimuovere l'allegato.
+    attachmentIndex: number   // Indice dell'allegato da rimuovere all'interno dell'elenco degli allegati della spesa specifica.
+  ): void {
+
+    const expense = this.expenses.at(expenseIndex);  // Ottiene il controllo del modulo (FormGroup "expense") della spesa specifica in base all'indice fornito. In parole semplici, expense rappresenta la spesa corrente selezionata dall'utente.
+
+    // Il metodo .at() è un metodo sicuro per ottenere l'elemento all'indice specificato, evitando errori se l'indice è fuori dai limiti.
+    // Per esempio, se per qualche motivo l'indice fornito è maggiore del numero di spese presenti (quando non esiste una spesa a quell'indice), .at() restituirà undefined invece di generare un errore.
+    // Questo aiuta a prevenire crash dell'applicazione dovuti a indici non validi.
+
+
+    const attachments = [    // Crea una copia dell'elenco degli allegati della spesa specifica. Se non ci sono allegati, utilizza un array vuoto come fallback.
+      ...expense.value.attachments ?? []  // ... metodo spread per creare una copia dell'array degli allegati esistente, oppure un array vuoto se non ci sono allegati.
+    ];
+
+    attachments.splice(   // Rimuove l'allegato specificato dall'elenco degli allegati.
+      attachmentIndex,  // Indice dell'allegato da rimuovere.
+      1   // Numero di elementi da rimuovere (in questo caso, solo l'allegato specificato).
+    );
+    
+    expense.patchValue({   // Aggiorna il valore del controllo del modulo della spesa corrente con il nuovo elenco degli allegati.
+      attachments  // Nuovo elenco degli allegati aggiornato.
+    }); // Il metodo patchValue si occupa di aggiornare solo i campi specificati del controllo del modulo, senza sovrascrivere l'intero valore.
+
 
 }
 

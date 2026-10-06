@@ -78,7 +78,7 @@ mat-card-subtitle {
     grid-template-columns: 1fr 1fr 2fr 1fr auto;
     gap: 16px;
     margin-bottom: 16px;
-    
+
 }
 
 
@@ -168,12 +168,15 @@ mat-divider {
 }
 
 
+// RIGA DEI FILE ALLEGATI
 .file-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
+
+// LINEA DIVISORIA TRA GLI ALLEGATI
 .attachment-divider {
     height: 1px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
