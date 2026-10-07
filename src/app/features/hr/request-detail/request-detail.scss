@@ -8,6 +8,7 @@
 
 }
 
+
 mat-card-content {
   font-size: 1.1rem !important;
 }
@@ -33,7 +34,6 @@ mat-card-title {
 .full-width {
   width: 100%;
 }
-
 
 
 // CARD INFORMAZIONE DELLA RICHIESTA
@@ -76,18 +76,15 @@ mat-card-title {
   font-weight: 600;
 }
 
-
 .pending {
   color: orange;
   font-weight: 600;
 }
 
-
 .rejected {
   color: red;
   font-weight: 600;
 }
-
 
 .partial_approved,
 // Scrivo entrambe le versioni per gestire
@@ -96,7 +93,6 @@ mat-card-title {
   color: rgb(30, 196, 30);
   font-weight: 600;
 }
-
 
 .draft {
   color: gray;
@@ -187,11 +183,15 @@ mat-card-title {
   padding: 14px 16px;
 }
 
+.verify-btn,
+.edit-btn {
+  width: 100%;
+}
+
 .reject-approve {
   display: flex;
   gap: 12px;
 }
-
 
 .approve-btn {
   min-width: 140px;
@@ -249,7 +249,6 @@ mat-divider {
 
 // BANNER DI REVISIONE (REVIEW MODE)
 .review-banner {
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -283,16 +282,7 @@ mat-divider {
     gap: 4px;
     line-height: 1.5rem;
   }
-
 }
-
-
-// PULSANTE VERIFY (VERIFICA DELLA RICHIESTA)
-.verify-btn,
-.edit-btn {
-  width: 100%;
-}
-
 
 
 // MEDIA QUERY PER SCHERMI PICCOLI (mobile responsive)

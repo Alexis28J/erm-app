@@ -5,8 +5,10 @@
 
     <mat-card>
 
+        <!-- HEADER DEL LOGIN CARD -->
         <mat-card-header>
 
+            <!-- TITOLO E SOTTOTITOLO DEL LOGIN CARD -->
             <mat-card-title>
                 Login
             </mat-card-title>
@@ -18,10 +20,13 @@
         </mat-card-header>
 
 
+        <!----------- CONTENUTO DEL LOGIN CARD ------------>
         <mat-card-content>
 
+            <!----------------- FORM PER IL LOGIN --------------->
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
+                <!------------- CAMPO EMAIL --------------->
                 <mat-form-field appearance="outline">
 
                     <mat-label>Email</mat-label>
@@ -46,7 +51,8 @@
                 </mat-form-field>
 
 
-                <mat-form-field appearance="outline">
+                <!------------- CAMPO PASSWORD ------------------>
+                <mat-form-field appearance="outline" class="password-field">
 
                     <mat-label>Password</mat-label>
 
@@ -65,19 +71,21 @@
 
                 </mat-form-field>
 
+                <!-- MESSAGGIO DI ERRORE GENERALE -->
                 @if (errorMessage) {
                 <p class="error-messagge">
                     {{errorMessage}}
                 </p>
                 }
 
+                <!-- PULSANTE DI LOGIN -->
                 <button mat-raised-button color="primary" type="submit">
                     Login
                 </button>
 
             </form>
 
-                        <!-- AZIONI DEL LOGIN CARD -->
+            <!-- AZIONI DEL LOGIN CARD -->
             <mat-card-actions>
 
                 <!-- PULSANTE PER TORNARE ALLA HOME -->

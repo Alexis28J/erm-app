@@ -17,14 +17,12 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class HrDashboard {
 
-
   // INIEZIONI DI DIPENDENZE
   private authService = inject(AuthService);
 
 
   // VARIABILE CHE CONTIENE L'UTENTE CORRENTE (OTTENUTO DAL SERVIZIO DI AUTENTICAZIONE) 
   currentUser: User | null = this.authService.getCurrentUser();
-
 
 }
 

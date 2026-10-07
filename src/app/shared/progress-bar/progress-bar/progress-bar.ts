@@ -39,7 +39,7 @@ export class ProgressBar {
       100
     ) : 0;
   });
-  
+
 
   // COMPUTED PER LA CLASSE DI PROGRESSO IN BASE ALLA PERCENTUALE
   readonly progressClass = computed(() => {

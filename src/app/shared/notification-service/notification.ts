@@ -10,14 +10,15 @@ export class Notification {
 
         this.snackBar.open(
             message,
-            '',  
-            {   
+            '',
+            {
                 duration: 3000,
                 panelClass: ['success-snackbar'] // NON USATO AL MOMENTO
             }
         );
 
     }
+
 
     // METODO PER MOSTRARE UNA NOTIFICA DI ERRORE
     error(message: string): void {

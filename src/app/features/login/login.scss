@@ -1,3 +1,4 @@
+// CONTENITORE PRINCIPALE DEL LOGIN
 .login-container {
     display: flex;
     justify-content: center;
@@ -65,6 +66,7 @@ mat-form-field {
 }
 
 
+// CAMPO PASSWORD E DEL PULSANTE DI TOGGLE
 .password-field {
     position: relative;
     display: flex;
@@ -84,6 +86,7 @@ button {
 }
 
 
+// PULSANTE DI TOGGLE AL PASSAGGIO DEL MOUSE
 .toggle-btn:hover {
     color: #005cbb;
     scale: 1.05;
@@ -91,6 +94,7 @@ button {
 }
 
 
+// MESSAGGIO DI ERRORE DEL LOGIN
 .error-message {
     color: #d32f2f;
     font-size: 20px;

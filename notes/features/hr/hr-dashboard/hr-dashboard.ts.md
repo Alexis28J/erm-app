@@ -3,6 +3,23 @@
 ```TYPESCRIPT
 export class HrDashboard {
 
+  // INIEZIONI DI DIPENDENZE
+  private authService = inject(AuthService);
+
+
+  // VARIABILE CHE CONTIENE L'UTENTE CORRENTE (OTTENUTO DAL SERVIZIO DI AUTENTICAZIONE) 
+  currentUser: User | null = this.authService.getCurrentUser();
+
+}
+```
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# CODICE SCARTATO 
+Ho trasferito la logica del toolbar in un componente separato per mantenere il codice più pulito e modulare.
+
+```TYPESCRIPT
+export class HrDashboard {
 
   // INIEZIONI DI DIPENDENZE
   private authService = inject(AuthService);  // Servizio per l'autenticazione e gestione dell'utente corrente

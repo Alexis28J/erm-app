@@ -14,7 +14,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [MatToolbarModule, MatButtonModule, MatTooltipModule, 
+  imports: [MatToolbarModule, MatButtonModule, MatTooltipModule,
     MatIconModule, MatCardModule, MatMenuModule, RouterLink],
   selector: 'app-employee-navbar',
   styleUrls: ['./employee-navbar.scss'],
@@ -28,7 +28,8 @@ export class EmployeeNavbar {
   private dialog = inject(MatDialog);
   private notificationService = inject(Notification);
 
-  // UTENTE CORRENTE
+
+  // UTENTE CORRENTE: VARIABILE CHE CONTIENE LE INFORMAZIONI DELL'UTENTE LOGGATO
   currentUser: User | null = this.authService.getCurrentUser();
 
 
@@ -50,13 +51,15 @@ export class EmployeeNavbar {
         this.authService.logout();
         this.router.navigate(['/login']);
         this.notificationService.success('Successfully logged out');
-
       }
+
     });
+
   }
 }
 
 
+///////////////////////////////////////////////////////////////////////////
 
 // COMMENTI:
 // QUESTO COMPONENTE DEFINISCE LA NAVBAR PER LE PAGINE DELL'EMPLOYEE, 

@@ -5,18 +5,35 @@
 
     <mat-card>
 
-        <!--  HEADER DELLA CARD -->
-        <mat-card-header>
+        <div class="card-header">
+          <!--  HEADER DELLA CARD -->
+          <mat-card-header>
 
-            <!-- TITOLO DELLA CARD -->
-            <mat-card-title>
-                Refund Requests
-                <mat-icon>list</mat-icon>
-            </mat-card-title>
+              <!-- TITOLO DELLA CARD -->
+              <mat-card-title>
+                  Refund Requests
+                  <mat-icon>list</mat-icon>
+              </mat-card-title>
 
-        </mat-card-header>
+          </mat-card-header>
+
+          <!-- CAMPO DI RICERCA DELLE RICHIESTE -->
+          <mat-form-field appearance="outline">
+
+                <mat-label>Search requests</mat-label>
+
+                <input matInput [value]="filterValue()" (input)="updateFilter($event)"
+                    placeholder="Month, status, amount">
+
+                <mat-icon matSuffix>
+                    search
+                </mat-icon>
+
+          </mat-form-field>
+        </div>
 
 
+        <!-- CONTENUTO DELLA TABELLA DI RICHIESTE -->
         <mat-card-content>
 
             @if(requests().length === 0) {
@@ -120,12 +137,16 @@
 
             </table>
 
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+            <!-- ShowFirstLastButtons significa che i pulsanti per andare alla prima e all'ultima pagina saranno visibili -->
             }
 
         </mat-card-content>
 
     </mat-card>
 
+
+    <!-- NAVIGAZIONE TRA LE PAGINE -->
     <div class="navigation-buttons">
         <button mat-raised-button color="accent" routerLink="/hr/dashboard">
             Back to the Dashboard

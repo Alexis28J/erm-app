@@ -290,19 +290,6 @@ Questo è necessario perché l'input HTML restituisce sempre una stringa. -->
     <!-- PULSANTI ACTIONS -->
     <div class="actions">
 
-        <div class="back-btn">
-            <button mat-stroked-button routerLink="/hr/request-list">
-                Request List
-                <mat-icon>arrow_back</mat-icon>
-            </button>
-
-            <button mat-stroked-button [routerLink]="['/hr/employee-details', request.userId]">
-                Employee Details
-                <mat-icon>arrow_back</mat-icon>
-            </button>
-        </div>
-
-
         <!-- PULSANTI DI APPROVAZIONE E RIFIUTO VISIBILI SOLO IN MODALITÀ DI REVISIONE -->
         @if (reviewMode()) {
 
@@ -316,13 +303,24 @@ Questo è necessario perché l'input HTML restituisce sempre una stringa. -->
             Approve
         </button> -->
 
-        <button mat-raised-button color="warn" (click)="rejectRequest()" class="reject-btn">
-            Reject
+        <!-- Per tornare al modo di visualizzazione normale, il pulsante "Return to View Mode" deve impostare reviewMode() a false -->
+        <button mat-stroked-button (click)="reviewMode.set(false)">
+            Return to View Mode
+            <mat-icon>cancel</mat-icon>
         </button>
 
-        <button mat-raised-button color="warn" (click)="approveRequest()" class="approve-btn">
-            Approve
-        </button>
+        <div class="reject-approve">
+            <button mat-raised-button color="warn" (click)="rejectRequest()" class="reject-btn"
+                [disabled]="request.status === 'REJECTED'">
+                Reject
+                <mat-icon>thumb_down</mat-icon>
+            </button>
+
+            <button mat-raised-button color="warn" (click)="approveRequest()" class="approve-btn"
+                [disabled]="request.status === 'APPROVED'">
+                Approve
+                <mat-icon>thumb_up</mat-icon>
+            </button>
 
         }
 
@@ -334,7 +332,7 @@ Questo è necessario perché l'input HTML restituisce sempre una stringa. -->
         request.status === 'REJECTED'
         ) {
 
-        <button mat-raised-button color="accent" (click)="startReview()" [hidden]="reviewMode()">
+        <button mat-raised-button color="accent" (click)="startReview()" [hidden]="reviewMode()" class="edit-btn">
 
             Edit Review
 
@@ -351,7 +349,7 @@ Questo è necessario perché l'input HTML restituisce sempre una stringa. -->
         @if (!reviewMode()) {
 
         <button mat-raised-button color="primary" (click)="startReview()"
-            [hidden]="request.status === 'APPROVED' || request.status === 'PARTIAL_APPROVED' || request.status === 'REJECTED'">
+            [hidden]="request.status === 'APPROVED' || request.status === 'PARTIAL_APPROVED' || request.status === 'REJECTED'" class="verify-btn">
             Verify Request
 
             <mat-icon>

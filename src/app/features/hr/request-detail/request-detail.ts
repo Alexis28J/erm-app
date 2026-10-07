@@ -142,7 +142,7 @@ export class RequestDetail {
       return;
     }
 
-    // VARIABILE CHE CONTIENE L'IMPORTO TOTALE APPROVATO DELLE SPESE 
+    // Variabile che contiene l'importo totale approvato delle spese
     const approvedAmount = this.approvedTotal() ?? 0;
 
 
@@ -154,17 +154,19 @@ export class RequestDetail {
     /////
 
 
-    // VARIABILE CHE CONTIENE LO STATO DELLA RICHIESTA IN BASE ALL'IMPORTO APPROVATO
+    // Variabile che conterrà lo stato della richiesta in base all'importo approvato
     let status: RequestStatus;
 
 
-    // Controllo se l'importo approvato è inferiore all'importo totale richiesto per determinare lo stato della richiesta
+    // Controllo se l'importo approvato è inferiore all'importo totale richiesto 
     if (approvedAmount < request.totalRequestedAmount) {
       status = RequestStatus.PARTIAL_APPROVED;
     } else {
       status = RequestStatus.APPROVED;
     }
 
+
+    // Aggiorno la richiesta con lo stato calcolato (parziale o approvato) e l'importo approvato
     const updatedRequest: RefundRequest = {
 
       ...request,
@@ -176,9 +178,12 @@ export class RequestDetail {
 
     };
 
-
+    
+    // Aggiorno lo stato della richiesta nell'interfaccia utente
     this.request.set(updatedRequest);
 
+
+    // Invio la richiesta aggiornata al server per salvare le modifiche
     this.refundRequestService
       .updateRequest(updatedRequest.id!, updatedRequest)
       .subscribe({
@@ -187,19 +192,23 @@ export class RequestDetail {
         }
       });
 
-
   }
 
 
   // METODO PER RIFIUTARE LA RICHIESTA DI RIMBORSO
   rejectRequest(): void {
 
+    // Ottengo la richiesta corrente dal contesto locale (interfaccia utente)
     const request = this.request();
 
+
+    // Controllo se la richiesta esiste, altrimenti esco dal metodo
     if (!request) {
       return;
     }
 
+
+    // Creo un nuovo oggetto RefundRequest aggiornato con lo stato rifiutato e le info dal form
     const updatedRequest: RefundRequest = {
 
       ...request,
@@ -211,8 +220,11 @@ export class RequestDetail {
     };
 
 
+    // Aggiorno lo stato della richiesta nell'interfaccia utente prima di inviarla al server
     this.request.set(updatedRequest);
 
+
+    // Invio la richiesta aggiornata al server per salvare le modifiche
     this.refundRequestService
       .updateRequest(updatedRequest.id!, updatedRequest)
       .subscribe({
@@ -237,9 +249,10 @@ export class RequestDetail {
       lastUpdateDate: new Date().toISOString()
     };
 
+    // Aggiornamento nell'interfaccia utente
     this.request.set(updatedRequest);
 
-
+    // Aggiornamento della richiesta sul server
     this.refundRequestService
       .updateRequest(request.id!, updatedRequest)
       .subscribe();

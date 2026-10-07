@@ -2,7 +2,6 @@
 
 <button mat-stroked-button (click)="openAttachment(attachment)" class="attachment-btn">
 
-
     <mat-icon>
         @if (attachment.fileType.includes('pdf')) {
         picture_as_pdf
@@ -11,20 +10,12 @@
         }
     </mat-icon>
 
-    <!-- {{ attachment.fileName | slice:0:25 }}{{ attachment.fileName.length > 25 ? '...' : '' }} -->
-    <!-- {{ attachment.fileName }} -->
 
-
-    <!-- Logica di troncamento dinamica -->
     @if (truncateLength() > 0 && attachment.fileName.length > truncateLength()) {
-        {{ attachment.fileName | slice:0:truncateLength() }}...
+    {{ attachment.fileName | slice:0:truncateLength() }}...
     } @else {
-        {{ attachment.fileName }}
+    {{ attachment.fileName }}
     }
-
-    <!-- Il metodo slice viene utilizzato per troncare il nome del file se supera la lunghezza specificata da truncateLength.
-     0 e truncateLength sono gli indici utilizzati per il metodo slice e indicano l'inizio e la fine del taglio del nome del file. -->
-    <!-- "..." indica che il nome del file è stato troncato. Se non lo scrivo, il nome del file sarà mostrato per intero. -->
 
 </button>
 

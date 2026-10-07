@@ -1,6 +1,25 @@
+// CONTAINER PRINCIPALE 
 .container {
     margin: 1.5rem;
     padding-bottom: 0.2rem;
+}
+
+
+// HEADER DELLA CARD
+.card-header {
+    display: flex;
+    margin-top: 1.5rem;
+
+
+    mat-form-field{
+        flex: auto;
+        margin-right: 1rem;
+    }
+
+    mat-icon:hover {
+        color: #005cbb;
+        // scale: 1.2;
+    }
 }
 
 
@@ -79,18 +98,3 @@ button {
 }
 
 
-.card-header {
-    display: flex;
-    margin-top: 1.5rem;
-
-
-    mat-form-field{
-        flex: auto;
-        margin-right: 1rem;
-    }
-
-    mat-icon:hover {
-        color: #005cbb;
-        // scale: 1.2;
-    }
-}

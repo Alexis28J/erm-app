@@ -27,8 +27,9 @@ export class Login {
   // INIEZIONE DELLE DIPENDENZE
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
-  private router = inject(Router);  
-  private cdr = inject(ChangeDetectorRef);  
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
+
 
   // MESSAGGIO DI ERRORE (INIZIALMENTE VUOTO)
   errorMessage = '';
@@ -48,7 +49,7 @@ export class Login {
       return;
     }
 
-    const { email, password } = this.loginForm.getRawValue();  
+    const { email, password } = this.loginForm.getRawValue();
 
     this.authService.login(
       email!,
@@ -58,12 +59,12 @@ export class Login {
 
         if (!user) {
           this.errorMessage = "Invalid email or password";
-          this.cdr.detectChanges(); 
+          this.cdr.detectChanges();
           return;
         }
 
-        this.errorMessage = '';  
-        
+        this.errorMessage = '';
+
         if (user.role === UserRole.HR) {
           this.router.navigate(
             ['/hr/dashboard']
@@ -84,7 +85,7 @@ export class Login {
   hidePassword = true;
 
   togglePasswordVisibility(): void {
-    this.hidePassword = !this.hidePassword;   
+    this.hidePassword = !this.hidePassword;
   }
 
 }

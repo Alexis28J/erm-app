@@ -142,8 +142,10 @@ export class RequestDetail {
 
 
     // VARIABILE CHE CONTIENE L'IMPORTO TOTALE APPROVATO DELLE SPESE (utile per determinare lo stato della richiesta)
-    const approvedAmount = this.approvedTotal() ?? 0;  // this.approvedTotal() restituisce l'importo totale approvato delle spese
+    const approvedAmount = this.approvedTotal() ?? 0;  
+    // this.approvedTotal() restituisce l'importo totale approvato delle spese
     // mentre che ?? 0 significa che se this.approvedTotal() restituisce null o undefined, allora viene considerato 0
+
     // Quando può essere utile questo fallback? Ad esempio, se non ci sono spese approvate, this.approvedTotal() potrebbe restituire null o undefined, 
     // quindi ?? 0 garantisce che approvedAmount sia sempre un numero.
     // Quando si dice che non ci sono spese approvate, significa che l'HR non ha ancora approvato nessuna delle spese della richiesta. La richiesta può essere in stato PENDING o IN_PROGRESS.
@@ -161,6 +163,8 @@ export class RequestDetail {
     }
 
 
+    // Aggiorno la richiesta con lo stato calcolato (parziale o approvato) e l'importo approvato
+    // In questo modo aggiorniamo lo stato della richiesta e l'importo approvato in un'unica operazione
     const updatedRequest: RefundRequest = {   // Crea un nuovo oggetto RefundRequest aggiornato con lo stato approvato e le informazioni dal form
 
       ...request,  // uso il metodo spread per copiare tutte le proprietà esistenti della richiesta corrente
@@ -176,8 +180,14 @@ export class RequestDetail {
     };  // Chiudi l'oggetto aggiornato con le nuove informazioni della richiesta
 
 
+    // Aggiorno lo stato della richiesta nel contesto locale (cioè nell'interfaccia utente) prima di inviarla al server
+    // Questo passaggio è utile per aggiornare immediatamente l'interfaccia utente con lo stato più recente della richiesta, 
+    // anche prima che la risposta del server arrivi.
     this.request.set(updatedRequest);
 
+
+    // Invio la richiesta aggiornata al server per salvare le modifiche
+    // Quindi, prima aggiorno lo stato nell'interfaccia utente e poi invio la richiesta al server
     this.refundRequestService
       .updateRequest(updatedRequest.id!, updatedRequest)  // Invia la richiesta aggiornata al servizio per salvarla nel backend
       .subscribe({
@@ -197,7 +207,9 @@ export class RequestDetail {
       return;
     }
 
-    const updatedRequest: RefundRequest = {   // Crea un nuovo oggetto RefundRequest aggiornato con lo stato rifiutato e le informazioni dal form
+
+  // Creo l'oggetto aggiornato della richiesta con lo stato rifiutato e l'importo approvato a 0
+  const updatedRequest: RefundRequest = {   
 
       ...request,
 
@@ -208,8 +220,11 @@ export class RequestDetail {
     };  // Chiudi l'oggetto aggiornato con le nuove informazioni della richiesta
 
 
+    // Aggiorno lo stato della richiesta nell'interfaccia utente prima di inviarla al server
     this.request.set(updatedRequest);
 
+
+    // Invio la richiesta aggiornata al server per salvare le modifiche
     this.refundRequestService
       .updateRequest(updatedRequest.id!, updatedRequest)  // Invia la richiesta aggiornata al servizio per salvarla nel backend
       .subscribe({
@@ -234,13 +249,15 @@ export class RequestDetail {
       lastUpdateDate: new Date().toISOString()
     };
 
-    this.request.set(updatedRequest);   // Aggiorna la richiesta corrente con l'oggetto aggiornato
+    this.request.set(updatedRequest);   // Aggiorna la richiesta corrente con l'oggetto aggiornato mell'interfaccia utente
 
 
+    // Aggiornamento della richiesta sul server
     this.refundRequestService  // Chiama il servizio per aggiornare la richiesta nel backend
       .updateRequest(request.id!, updatedRequest)  // Invia la richiesta aggiornata al servizio per salvarla nel backend
       .subscribe(); // subscribe serve per eseguire effettivamente la richiesta HTTP, anche se non facciamo nulla con la risposta
       // Non serve ripetere il metodo updateRequest poiché la richiesta HTTP è già stata inviata e subscribe la esegue.
+      
   }
 
 

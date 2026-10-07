@@ -286,7 +286,6 @@
         <!-- PULSANTI DI APPROVAZIONE E RIFIUTO VISIBILI SOLO IN MODALITÀ DI REVISIONE -->
         @if (reviewMode()) {
 
-        <!-- Per tornare al modo di visualizzazione normale, il pulsante "Return to View Mode" deve impostare reviewMode() a false -->
         <button mat-stroked-button (click)="reviewMode.set(false)">
             Return to View Mode
             <mat-icon>cancel</mat-icon>

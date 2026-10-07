@@ -12,15 +12,16 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class AttachmentList {
 
+  // Input per memorizzare la lista degli allegati da visualizzare
   attachments =
     input<ExpenseAttachment[]>([]);
 
-    // Nuovo input per gestire la lunghezza del taglio (0 significa nessun taglio)
-    // Con questo input posso controllare la lunghezza massima del nome del file visualizzato. 
-    // In ogni componente che utilizza questa lista di allegati, 
-    // posso specificare la lunghezza massima del nome del file tramite questo input.
-    truncateLength = input<number>(0);
-    
+
+  // Input per gestire la lunghezza del taglio (0 significa nessun taglio)
+  truncateLength = input<number>(0);
+
+
+  // Metodo per aprire un allegato in una nuova finestra del browser (scheda separata)
   openAttachment(attachment: ExpenseAttachment): void {
     window.open(attachment.fileContent, '_blank');
   }
