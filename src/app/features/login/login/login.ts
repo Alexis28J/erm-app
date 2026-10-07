@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../core/services/auth.service';
-import { UserRole } from '../../core/interfaces/enum';
+import { AuthService } from '../../../core/services/auth.service';
+import { UserRole } from '../../../core/interfaces/enum';
 
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -17,7 +17,8 @@ import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   imports: [ReactiveFormsModule, CommonModule, MatCardModule,
-    MatInputModule, MatButtonModule, MatFormFieldModule, MatIconModule, RouterLink, MatTooltipModule],
+    MatInputModule, MatButtonModule, MatFormFieldModule,
+    MatIconModule, RouterLink, MatTooltipModule],
   selector: 'app-login',
   styleUrls: ['./login.scss'],
   templateUrl: './login.html',
