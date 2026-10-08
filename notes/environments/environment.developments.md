@@ -2,17 +2,33 @@
 
 ```typescript
 export const environment = {
-  production: false,  
+  production: false,   // Indica che l'ambiente corrente è di sviluppo, non di produzione
+  // La differenza principale tra questo ambiente e quello di produzione è che alcune funzionalità potrebbero essere abilitate solo in sviluppo, 
+  // e le configurazioni potrebbero puntare a servizi di test.
+
 
   maxUploadSizeMb: 5,  //5 Mb è il limite massimo di upload consentito per i file
+  // In teoria, dovrebbe rappresentare la dimensione massima del file in megabyte ma non viene applicata automaticamente dal browser
+  // Inoltre, anche se lo metto qui, il browser non impedirà automaticamente il caricamento di file più grandi di questa dimensione
+  // Senza contare che i servizi come mockapi.io hanno le proprie limitazioni sulla dimensione dei file
+
 
   allowedFileTypes: [  // Tipi di file consentiti per l'upload
     'image/jpeg',
     'image/png',
     'application/pdf'
+    // Questa lista rappresenta i tipi di file consentiti per il caricamento dei documenti
+    // Tuttavia, il browser non impedirà automaticamente il caricamento di file di tipi diversi da questi
+    // Oltre a questo, è necessario implementare controlli lato server per garantire che solo i file consentiti vengano effettivamente caricati
+    // In sintesi, queste configurazioni servono come linee guida per il caricamento dei file, ma non sostituiscono i controlli lato server necessari per garantire la sicurezza e la conformità dei file caricati
   ],
 
+
   apiUrl: 'https://6a95877afa33b37f821ac0c9.mockapi.io/' 
+  // URL dell'API di sviluppo (mock)
+  // Il vantaggio di scrivere qui l'URL dell'API di sviluppo è che possiamo facilmente cambiare l'ambiente senza modificare il codice dell'applicazione (ad esempio passando da sviluppo a produzione).
+  // In produzione, questo URL sarà diverso e punterà all'API reale.
+  // In sintesi, questo approccio ci permette di gestire facilmente diversi ambienti senza dover modificare il codice dell'applicazione.
 };
 ```
 

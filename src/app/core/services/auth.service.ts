@@ -15,7 +15,6 @@ export class AuthService {
 
     constructor(private userService: UserService) { }
 
-
     // METODO PER LOGGARSI
     login(email: string, password: string): Observable<User | undefined> {
 
@@ -74,17 +73,21 @@ export class AuthService {
 
     // METODO PER CONTROLLARE SE L'UTENTE CORRENTE È HR
     isHr(): boolean {
+
         const user = this.getCurrentUser();
 
         return user?.role === UserRole.HR;
+
     }
 
 
     // METODO PER CONTROLLARE SE L'UTENTE CORRENTE È DIPENDENTE NORMALE (EMPLOYEE)
     isEmployee(): boolean {
+
         const user = this.getCurrentUser();
 
         return user?.role === UserRole.EMPLOYEE;
+
     }
 
 }

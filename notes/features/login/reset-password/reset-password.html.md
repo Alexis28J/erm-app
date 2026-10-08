@@ -1,3 +1,6 @@
+# COMMENTI
+
+```HTML
 <div class="container">
 
     <mat-card>
@@ -23,6 +26,8 @@
 
                     <!-- Controllo degli errori per il campo email -->
                     @if (form.controls.email.hasError('required')) {
+                        <!-- .hasError è un metodo di FormControl che verifica se il controllo ha un determinato errore -->
+                        <!-- In questo caso, verifica se il campo email è vuoto -->
                     <mat-error>
                         Email is required!
                     </mat-error>
@@ -87,11 +92,11 @@
                         <mat-icon>arrow_back</mat-icon>
                         Back</button>
 
-                    <button mat-flat-button color="primary" type="submit" [disabled]="loading() || form.invalid"
-                        class="reset-btn">
+                    <button mat-flat-button color="primary" type="submit" [disabled]="loading() || form.invalid" class="reset-btn">
                         <mat-icon iconPositionEnd>password</mat-icon>
                         Reset
                     </button>
+                    <!-- Il pulsante Reset è disabilitato se il form non è valido o se è in corso il caricamento -->
                 </div>
 
             </form>
@@ -101,3 +106,4 @@
     </mat-card>
 
 </div>
+```

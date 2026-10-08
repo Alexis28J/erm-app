@@ -10,24 +10,28 @@ Se l'utente non ha il ruolo corretto o non è autenticato, la guardia restituisc
 ```TYPESCRIPT
 export const roleGuard: CanActivateFn = (route) => {  
 // Si usa il parametro route per ottenere le informazioni sulla route attuale, inclusi i parametri e i dati associati.
-// ActivateRouteSnapshot rappresenta lo snapshot della route attuale, utile per ottenere i dati della route e i parametri.
 // route: ActivatedRouteSnapshot rappresenta lo snapshot della route attuale, utile per ottenere i dati della route e i parametri.
 // Da dove viene il parametro route? Viene passato automaticamente dal framework Angular quando la guardia viene invocata durante la navigazione verso una route.
 
-  
-const authService = inject(AuthService);
 
+// INIEZIONE DELLE DIPENDENZE
+const authService = inject(AuthService);
 const router = inject(Router);
 
+
+// VARIABILE CHE CONTIENE LE INFORMAZIONI DELL'UTENTE LOGGATO
 const currentUser = authService.getCurrentUser();
 
-const expectedRole = route.data?.['role'];  // .data contiene i dati associati alla route, come il ruolo atteso.
+
+// VARIABILE CHE CONTIENE IL RUOLO ATTESO PER LA ROUTE
+const expectedRole = route.data?.['role'];  
+//.data contiene i dati associati alla route, come il ruolo atteso.
 //.data? significa che i dati della route potrebbero essere undefined, quindi si usa l'operatore opzionale ?. per evitare errori.
-//.[<key>] permette di accedere a un valore specifico nei dati della route, dove <key> è il nome della proprietà desiderata.
-// In questo caso, si sta cercando di ottenere il ruolo atteso per la route corrente.
+//.[<key>] permette di accedere a un valore specifico nei dati della route, dove <key> è il nome della proprietà desiderata. In questo caso, si sta cercando di ottenere il ruolo atteso per la route corrente.
 
 if (currentUser && currentUser.role === expectedRole) {
-  return true;
+  // Se l'utente corrente è valido e ha il ruolo atteso
+  return true;  // Allora l'utente può accedere alla route
 }
 
 return router.createUrlTree(['/login']);
@@ -38,6 +42,5 @@ return router.createUrlTree(['/login']);
 // Questo approccio è utile nelle guardie di route, dove si vuole determinare se l'utente può accedere a una determinata route senza effettuare una navigazione immediata.
 // Se usassimo router.navigate invece di router.createUrlTree, la navigazione verso la route di login avverrebbe immediatamente, interrompendo il flusso della guardia.
 // Si può quindi utilizzare router.createUrlTree nelle guardie di route per gestire i casi in cui l'accesso non è consentito, senza interrompere immediatamente il flusso della navigazione.
-
 };
 ```

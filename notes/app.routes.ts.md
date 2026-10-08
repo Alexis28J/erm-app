@@ -26,43 +26,262 @@ export const routes: Routes = [
 
         //m sta per "module", carica il componente Login in modo lazy. Posso usare un'altra lettera se voglio.
     },
+
     {
-        path: 'employee/dashboard',
-        canActivate: [ authGuard, roleGuard ],
-        data: {
-            role: UserRole.EMPLOYYE
-        },
+        // A differenza di altre aree, le rotte di login e reset-password non sono raggruppate sotto un layout comune e quindi vengono definite separatamente.
+        path: 'reset-password',
         loadComponent: () =>
-            import(
-                './features/employee/employee-dashboard/employee-dashboard'
-            ).then(   // .then significa che una volta importato il modulo, esegue la funzione passata come argomento
-                m => m.EmployeeDashboard  // restituisce il componente EmployeeDashboard una volta importato il modulo
-            )
+            import('./features/login/reset-password/reset-password/reset-password')
+                .then(c => c.ResetPassword)
+
     },
+
+    // AREA EMPLOYEE
+    // {
+    //     path: 'employee/dashboard',
+    //     canActivate: [authGuard, roleGuard],
+    //     data: {
+    //         role: UserRole.EMPLOYEE
+    //     },
+    //     loadComponent: () =>
+    //         import(
+    //             './features/employee/employee-dashboard/employee-dashboard'
+    //         ).then(
+    //             m => m.EmployeeDashboard
+    //         )
+    // },
+    // {
+    //     path: 'employee/request-list',
+    //     loadComponent: () =>
+    //         import(
+    //             './features/employee/request-list/request-list'
+    //         ).then(m => m.RequestList)
+    // },
+    // {
+    //     path: 'employee/request-details/:id',
+    //     canActivate: [
+    //         authGuard,
+    //         roleGuard
+    //     ],
+    //     data: {
+    //         role: UserRole.EMPLOYEE
+    //     },
+    //     loadComponent: () =>
+    //         import(
+    //             './features/employee/request-details/request-details'
+    //         ).then(m => m.RequestDetails)
+    // },
+    // {
+    //     path: 'employee/edit-request/:id',
+    //     canActivate: [authGuard, roleGuard],
+    //     data: {
+    //         role: UserRole.EMPLOYEE
+    //     },
+    //     loadComponent: () =>
+    //         import(
+    //             './features/employee/edit-request/edit-request'
+    //         ).then(m => m.EditRequest)
+    // },
+    // {
+    //     path: 'employee/new-request',
+    //     canActivate: [authGuard, roleGuard],
+    //     data: {
+    //         role: UserRole.EMPLOYEE
+    //     },
+    //     loadComponent: () =>
+    //         import(
+    //             './features/employee/new-request/new-request'
+    //         ).then(m => m.NewRequest)
+    // },
+
+
+    // REFACTORING AREA EMPLOYEE
+    // Si può notare che tutte le rotte dell'area employee sono state raggruppate sotto un unico layout con path 'employee'
+    // Questo è grazie al fatto che tutte le rotte figlie condividono lo stesso layout e le stesse regole di accesso.
     {
-        path: 'hr/dashboard',
-        canActivate: [authGuard, roleGuard],
+        path: 'employee',
+        component: EmployeeLayout,
+        canActivate: [authGuard, roleGuard],  // Protegge tutte le rotte figlie dell'area employee
+        data: {
+            role: UserRole.EMPLOYEE
+        },
+        children: [
+
+            {
+                path: 'dashboard',
+                loadComponent: () =>
+                    import(
+                        './features/employee/employee-dashboard/employee-dashboard'
+                    ).then(m => m.EmployeeDashboard)
+            },
+
+            {
+                path: 'request-list',
+                loadComponent: () =>
+                    import(
+                        './features/employee/request-list/request-list'
+                    ).then(m => m.RequestList)
+            },
+
+            {
+                path: 'request-details/:id',
+                loadComponent: () =>
+                    import(
+                        './features/employee/request-details/request-details'
+                    ).then(m => m.RequestDetails)
+            },
+
+            {
+                path: 'edit-request/:id',
+                loadComponent: () =>
+                    import(
+                        './features/employee/edit-request/edit-request'
+                    ).then(m => m.EditRequest)
+            },
+
+            {
+                path: 'new-request',
+                loadComponent: () =>
+                    import(
+                        './features/employee/new-request/new-request'
+                    ).then(m => m.NewRequest)
+            }
+
+        ]
+    },
+
+    // AREA HR
+    // {
+    //     path: 'hr/dashboard',
+    //     canActivate: [authGuard, roleGuard],
+    //     data: {
+    //         role: UserRole.HR
+    //     },
+    //     loadComponent: () =>
+    //         import(
+    //             './features/hr/hr-dashboard/hr-dashboard'
+    //         ).then(
+    //             m => m.HrDashboard
+    //         )
+    // },
+    // {
+    //     path: 'hr/request-list',
+    //     canActivate: [authGuard, roleGuard],
+    //     data: {
+    //         role: UserRole.HR
+    //     },
+    //     loadComponent: () =>
+    //         import(
+    //             './features/hr/request-list/request-list'
+    //         ).then(m => m.RequestList)
+    // },
+    // {
+    //     path: 'hr/request-details/:id',
+    //     canActivate: [authGuard, roleGuard],
+    //     data: {
+    //         role: UserRole.HR
+    //     },
+    //     loadComponent: () =>
+    //         import(
+    //             './features/hr/request-detail/request-detail'
+    //         ).then(m => m.RequestDetail)
+    // },
+    // {
+    //     path: 'hr/employee-list',
+    //     canActivate: [authGuard, roleGuard],
+    //     data: {
+    //         role: UserRole.HR
+    //     },
+    //     loadComponent: () =>
+    //         import(
+    //             './features/hr/employee-list/employee-list'
+    //         ).then(m => m.EmployeeList)
+    // },
+    // {
+    //     path: 'hr/employee-details/:id',
+    //     canActivate: [authGuard, roleGuard],
+    //     data: {
+    //         role: UserRole.HR
+    //     },
+    //     loadComponent: () =>
+    //         import(
+    //             './features/hr/employee-details/employee-details'
+    //         ).then(m => m.EmployeeDetails)
+    // },
+
+
+    // REFACTORING AREA HR
+    // Come con l'area employee, tutte le rotte dell'area HR sono state raggruppate sotto un unico layout con path 'hr'
+    // Questo permette di applicare facilmente le stesse regole di accesso e lo stesso layout a tutte le pagine dell'area HR.
+    {
+        path: 'hr',
+        component: HrLayout,
+        canActivate: [authGuard, roleGuard],  // Applica le regole di accesso definite per l'area HR a tutte le rotte figlie
         data: {
             role: UserRole.HR
         },
-        loadComponent: () =>
-            import(
-                './features/hr/hr-dashboard/hr-dashboard'
-            ).then(
-                m => m.HrDashboard
-            )
+        children: [
+
+            {
+                path: 'dashboard',
+                loadComponent: () =>
+                    import(
+                        './features/hr/hr-dashboard/hr-dashboard'
+                    ).then(m => m.HrDashboard)
+            },
+
+            {
+                path: 'request-list',
+                loadComponent: () =>
+                    import(
+                        './features/hr/request-list/request-list'
+                    ).then(m => m.RequestList)
+            },
+
+            {
+                path: 'request-details/:id',
+                loadComponent: () =>
+                    import(
+                        './features/hr/request-detail/request-detail'
+                    ).then(m => m.RequestDetail)
+            },
+
+            {
+                path: 'employee-list',
+                loadComponent: () =>
+                    import(
+                        './features/hr/employee-list/employee-list'
+                    ).then(m => m.EmployeeList)
+            },
+
+            {
+                path: 'employee-details/:id',
+                loadComponent: () =>
+                    import(
+                        './features/hr/employee-details/employee-details'
+                    ).then(m => m.EmployeeDetails)
+            }
+
+        ]
     },
     {
+        // Questa route cattura tutti i percorsi non definiti e reindirizza alla home.
+        // Deve essere impostata come fallback per tutte le rotte non definite quindi deve essere l'ultima definita.
         path: '**',
         redirectTo: ''
-    
-        // Questa route cattura tutti i percorsi non definiti e reindirizza alla home
     }
     
 ];
 ```
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 # Cos'è il Lazy loading in Angular?
+
 Il lazy loading in Angular è una tecnica di ottimizzazione che carica i moduli o i componenti solo quando l'utente li richiede e naviga verso una determinata rotta.
+
+Questo migliora le prestazioni iniziali dell'applicazione riducendo il tempo di caricamento iniziale e il consumo di risorse.
+
+Quindi nel mio codice, sto utilizzando il lazy loading per caricare i componenti delle diverse aree (employee, hr, ecc.) solo quando l'utente naviga verso le rispettive rotte.
 
 

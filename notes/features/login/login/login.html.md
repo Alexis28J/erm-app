@@ -10,12 +10,14 @@
 
             <!-- TITOLO E SOTTOTITOLO DEL LOGIN CARD -->
             <mat-card-title>
-                Login
+                Login to
             </mat-card-title>
 
-            <mat-card-subtitle>
-                Expense Reimbursement Management
+            <mat-card-subtitle matTooltip="Service Mark" matTooltipPosition="above">
+                J - E. R. M.℠
             </mat-card-subtitle>
+
+            <span>Application</span>
 
         </mat-card-header>
 
@@ -56,16 +58,19 @@
 
                     <mat-label>Password</mat-label>
 
-                    <input matInput type="password" formControlName="password">
+                    <!-- <input matInput type="password" formControlName="password"> -->
+                    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+
                     <!-- formControlName, in parole semplici, collega l'input al controllo del form corrispondente nel FormGroup. 
                      "password" è il nome del controllo del form corrispondente. -->
+
 
                     @if (loginForm.get('password')?.hasError('required')) {
                     <mat-error>Password is required</mat-error>
                     }
 
                     <!-- Pulsante per mostrare/nascondere la password -->
-                    <button mat-icon-button type="button" (click)="togglePasswordVisibility()">
+                    <button mat-icon-button type="button" (click)="togglePasswordVisibility()" matTooltip="{{ hidePassword ? 'Show Password' : 'Hide Password' }}" matTooltipPosition="below">
                         <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
 
@@ -79,7 +84,7 @@
                 }
 
                 <!-- PULSANTE DI LOGIN -->
-                <button mat-raised-button color="primary" type="submit">
+                <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
                     Login
                 </button>
 
@@ -95,7 +100,7 @@
                 </button>
 
                 <!-- PULSANTE PER RIPRISTINARE LA PASSWORD -->
-                <button mat-raised-button routerLink="">
+                <button mat-raised-button routerLink="/reset-password">
                     <mat-icon>lock_reset</mat-icon>
                     Reset Password
                 </button>

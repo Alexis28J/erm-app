@@ -28,11 +28,52 @@ export class UserService {
 
     // METODO PER OTTENERE UN UTENTE SPECIFICO IN BASE ALL'EMAIL
     // NOTA: Anche se l'email dovrebbe essere unica, MockAPI restituisce comunque una lista.
-    getUserByEmail(email: string): Observable<User[]>{  // (5)
-      return this.http.get<User[]>(`${this.apiUrl}?email=${email}`); 
-    }
+    // getUserByEmail(email: string): Observable<User[]>{  // (5)
+    //   return this.http.get<User[]>(`${this.apiUrl}?email=${email}`); 
+    // }
+
+      getUserByEmail(email: string): Observable<User | undefined> {
+    // Perché User[] causa errore? Risposta: perché sto usando map per restituire solo il primo elemento della lista, 
+    // quindi il tipo risultante è User | undefined, non User[] che è un array.
+    return this.http
+      .get<User[]>(`${this.apiUrl}?email=${email}`)  // Restituisce un array di utenti che corrispondono all'email (anche se dovrebbe esserci solo uno)
+      .pipe(map(users => users[0]))  // Il pipe serve per trasformare l'array di utenti in un singolo utente (il primo elemento)
+    // users[0] è il primo elemento dell'array, che corrisponde all'utente con l'email specificata (se esiste perché potrebbe non esserci nessun utente con quell'email)
+    // Quindi map(users => users[0]) serve per ottenere il primo utente dell'array, che è quello con l'email specificata.
+  }  // Questo metodo mi sarà utile per implementare la funzionalità di reset della password basata sull'email dell'utente.
+
+
+  // METODO PER OTTENERE I DIPENDENTI (EMPLOYEES)
+  getEmployees(): Observable<User[]> {
+    return this.getUsers().pipe(   // Il pipe serve per trasformare l'array di tutti gli utenti in un array contenente solo i dipendenti (employees)
+      map(users =>  // Uso map per trasformare l'array di tutti gli utenti in un array contenente solo i dipendenti (employees)
+        users.filter(user => user.role === UserRole.EMPLOYEE)  // Filtra gli utenti per ottenere solo quelli con il ruolo di dipendente (employee)
+      )
+    );
+  }
+
+
+  // METODO PER AGGIORNARE UN UTENTE
+  // Questo metodo aggiorna un utente esistente in base all'ID fornito.
+  updateUser(id: string, user: User): Observable<User> {  // I parametri sono l'ID dell'utente da aggiornare e l'oggetto User con i nuovi dati da aggiornare
+    // Il valore di ritorno è l'utente aggiornato.
+    return this.http.put<User>(  // Effettua una richiesta HTTP PUT per aggiornare l'utente con l'ID specificato
+      `${this.apiUrl}/${id}`,  // URL dell'endpoint per aggiornare l'utente con l'ID specificato
+      user   // user indica l'oggetto User con i nuovi dati da aggiornare
+    );
+  }
+
+  // Ricorda: il metodo pipe viene utilizzato per trasformare i dati restituiti da un Observable in un formato desiderato, come ad esempio filtrare o mappare i dati.
+  // Il metodo map viene utilizzato all'interno del pipe per trasformare i dati emessi dall'Observable. Ad esempio, nel metodo getUserByEmail, viene utilizzato per prendere il primo utente dall'array restituito dall'API.
+  // Sia il metodo map che filter possono essere utilizzati all'interno del pipe per trasformare e filtrare i dati emessi dagli Observable. 
+  // Il metodo pipe, invece, viene utilizzato per concatenare più operatori di trasformazione e filtraggio sugli Observable. 
+  // Può essere utilizzato all'interno di map o filter? Risposta: No, il metodo pipe viene utilizzato sugli Observable, mentre map e filter sono operatori che vengono utilizzati all'interno del pipe per trasformare 
+  // e filtrare i dati emessi dagli Observable.
+  // Può essere utilizzato all'interno di un pipe INSIEME ad altri operatori come map e filter per creare catene di trasformazioni e filtri sugli Observable.
+
 }
 ```
+
 
 ## (1)
 - URL dell'API per gli utenti, ottenuta dall'environment di sviluppo.

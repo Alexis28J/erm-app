@@ -78,19 +78,17 @@ mat-form-field {
         top: 50%;
         transform: translateY(-50%);
     }
+
+    button:hover {
+        color: #005cbb;
+        scale: 1.05;
+        transition: transform 0.3s ease-in-out;
+    }
 }
 
 
 button {
     width: 100%;
-}
-
-
-// PULSANTE DI TOGGLE AL PASSAGGIO DEL MOUSE
-.toggle-btn:hover {
-    color: #005cbb;
-    scale: 1.05;
-    transition: transform 0.3s ease-in-out;
 }
 
 

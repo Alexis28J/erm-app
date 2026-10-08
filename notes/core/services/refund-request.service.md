@@ -13,6 +13,10 @@ export class RefundRequestService {
 
   constructor(private http: HttpClient) { }  // Iniezione del servizio HttpClient per effettuare le richieste HTTP
 
+  // Perché non usare injection tramite inject() invece del costruttore?
+  // Risposta: Si potrebbe usare inject() per ottenere HttpClient, ma l'iniezione tramite costruttore è più comune e leggibile in Angular.
+  // Non cambia il comportamento, è solo una questione di stile e leggibilità.
+
 
   // METODO PER OTTENERE TUTTE LE RICHIESTE DI RIMBORSO
   getRequests(): Observable<RefundRequest[]> {

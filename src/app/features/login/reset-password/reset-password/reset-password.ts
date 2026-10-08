@@ -10,12 +10,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/input';
 import { MatInputModule } from '@angular/material/input';
 import { MatAnchor } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   imports: [MatCard, MatCardHeader, MatCardTitle,
     MatIconModule, MatCardContent, CommonModule,
     ReactiveFormsModule, MatFormField, MatLabel,
-    MatInputModule, MatAnchor, RouterLink],
+    MatInputModule, MatAnchor, RouterLink,
+    MatTooltipModule, MatButtonModule],
   selector: 'app-reset-password',
   styleUrls: ['./reset-password.scss'],
   templateUrl: './reset-password.html',
@@ -30,32 +33,30 @@ export class ResetPassword {
 
 
   // STATI REATTIVI
-  readonly loading = signal(false);  // Stato reattivo per indicare se l'operazione di reset della password è in corso
-  // Lo stato loading è utile quando si vuole mostrare un indicatore di caricamento all'utente durante l'operazione di reset della password
-
-  readonly errorMessage = signal('');  // Stato reattivo per memorizzare eventuali messaggi di errore durante il reset della password
+  readonly loading = signal(false);
+  readonly errorMessage = signal('');
 
 
   // FORM REATTIVO PER IL RESET DELLA PASSWORD
-  readonly form = this.fb.nonNullable.group({  // La proprietà nonNullable garantisce che i valori del form non possano essere nulli
+  readonly form = this.fb.nonNullable.group({
     email: [
       '',
       [
-        Validators.required,  // L'email è obbligatoria
-        Validators.email   // L'email deve avere un formato valido (ad es. esempio@dominio.com)
+        Validators.required,
+        Validators.email
       ]
     ],
     password: [
       '',
       [
-        Validators.required,  // La password è obbligatoria
-        Validators.minLength(6)  // La password deve avere almeno 6 caratteri
+        Validators.required,
+        Validators.minLength(6)
       ]
     ],
     confirmPassword: [
       '',
       [
-        Validators.required,  // La conferma della password è obbligatoria
+        Validators.required,
       ]
     ]
   });
@@ -64,89 +65,81 @@ export class ResetPassword {
   // METODO PER IL RESET DELLA PASSWORD
   onSubmit(): void {
 
-    if (this.form.invalid) {  // Se il form non è valido, segnala tutti i campi come toccati e interrompi l'esecuzione
-      this.form.markAllAsTouched();  // Evidenzia tutti i campi come toccati (li mostra in rosso) per mostrare eventuali errori di validazione
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
       return;
     }
 
-    const {      // Estrai i valori del form (email, password e conferma della password)
+    const {
       email,
       password,
       confirmPassword
     } = this.form.getRawValue();
 
-    // Il metodo getRawValue() viene utilizzato per ottenere i valori correnti del form, anche se non sono stati modificati. 
-    // Questo include tutti i campi del form, non solo quelli che sono stati toccati o modificati.
 
-    // Perché si scrive in questo modo - const {email, password, confirmPassword}? 
-    // Questo è un esempio di destructuring assignment in JavaScript/TypeScript.
-    // Invece di accedere ai valori del form con this.form.getRawValue().email, this.form.getRawValue().password, ecc.,
-    // possiamo estrarli direttamente in variabili separate con una sola riga di codice.
-    // Quindi scriverlo così è più conciso e leggibile di 
-    // const email = this.form.getRawValue().email;
-    // const password = this.form.getRawValue().password;
-    // const confirmPassword = this.form.getRawValue().confirmPassword;
-
-    if (password !== confirmPassword) {  // Se la password e la conferma della password non corrispondono, mostra un messaggio di errore
-      this.errorMessage.set('Passwords do not match');  // Imposta il messaggio di errore nello stato reattivo
-      return;  // Interrompi l'esecuzione del metodo onSubmit se le password non corrispondono
+    if (password !== confirmPassword) {
+      this.errorMessage.set('Passwords do not match!');
+      return;
     }
 
-    this.loading.set(true);  // Imposta lo stato di caricamento su true per indicare che l'operazione è in corso
+    this.loading.set(true);
 
-    this.errorMessage.set('');  // Resetta il messaggio di errore prima di iniziare l'operazione di reset della password
+    this.errorMessage.set('');
 
     this.userService
-      .getUserByEmail(email)  // Recupera l'utente dal server utilizzando l'email fornita
-      .subscribe({   // Gestisce la risposta del server dopo aver tentato di recuperare l'utente per email
-        // Questo passaggio si fa per gestire la risposta del server dopo aver tentato di recuperare l'utente per email
-        // Se non lo facciamo, potremmo non gestire correttamente il caso in cui l'utente non esiste nel server
+      .getUserByEmail(email)
+      .subscribe({
 
-        next: user => {  // Gestisce il caso in cui l'utente viene trovato o meno
+        next: user => {
 
-          if (!user) {   // Se l'utente non viene trovato, mostra un messaggio di errore
-            this.loading.set(false);  // Imposta lo stato di caricamento su false poiché l'operazione non può continuare senza un utente valido
+          if (!user) {
+            this.loading.set(false);
 
-            this.errorMessage.set(   // Imposta il messaggio di errore indicando che l'utente non è stato trovato
+            this.errorMessage.set(
               'User not found'
             );
 
-            return;  // Interrompi l'esecuzione del metodo onSubmit se l'utente non viene trovato
+            return;
 
           }
 
-          this.userService  // Invece, se l'utente viene trovato, aggiorna la sua password
-            .updateUser(  // Chiama il servizio per aggiornare l'utente con la nuova password
-              user.id,  // ID dell'utente da aggiornare
+          this.userService
+            .updateUser(
+              user.id,
               {
-                ...user,  // Mantieni tutte le proprietà esistenti dell'utente
-                password  // Aggiorna la password dell'utente con il nuovo valore fornito
+                ...user,
+                password
               }
             )
-            .subscribe({  // Gestisce la risposta del server dopo aver tentato di aggiornare l'utente
-              // Questo passaggio si fa per gestire la risposta del server dopo aver tentato di aggiornare l'utente
-              // Se non lo facciamo, potremmo non gestire correttamente il caso in cui l'aggiornamento della password fallisce
+            .subscribe({
 
-              next: () => {  // Gestisce il caso in cui l'aggiornamento della password ha successo
-                this.loading.set(false);  // Imposta lo stato di caricamento su false poiché l'operazione è completata
-                this.notification.success('Password updated sucessfully');  // Mostra una notifica di successo
-                this.router.navigate(['/login']);  // Reindirizza l'utente alla pagina di login
+              next: () => {
+                this.loading.set(false);
+                this.notification.success('Password updated sucessfully');
+                this.router.navigate(['/login']);
               },
 
-              error: () => {  // Gestisce il caso in cui si verifica un errore durante l'aggiornamento della password
+              error: () => {
 
-                this.loading.set(false);  // Imposta lo stato di caricamento su false poiché l'operazione è terminata con un errore
+                this.loading.set(false);
 
                 this.errorMessage.set(
-                  'Unexpected error'  // Mostra un messaggio di errore generico
+                  'Unexpected error'
                 );
               }
 
-              // Ricorda che subscribe è necessario per eseguire effettivamente la richiesta HTTP
             });
         }
       })
 
+  }
+
+
+  // METODO PER MOSTRARE/NASCONDERE LA PASSWORD
+  hidePassword = true;
+
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
   }
 
 

@@ -4,13 +4,17 @@ import { inject } from '@angular/core';
 import { UserRole } from '../interfaces/enum';
 
 export const roleGuard: CanActivateFn = (route) => {   
-  
-const authService = inject(AuthService);
 
+// INIEZIONE DELLE DIPENDENZE
+const authService = inject(AuthService);
 const router = inject(Router);
 
+
+// VARIABILE CHE CONTIENE LE INFORMAZIONI DELL'UTENTE LOGGATO
 const currentUser = authService.getCurrentUser();
 
+
+// VARIABILE CHE CONTIENE IL RUOLO ATTESO PER LA ROUTE
 const expectedRole = route.data?.['role'];  
 
 
@@ -21,7 +25,7 @@ if (!currentUser) {
 
 
 // CONTROLO SE L'UTENTE CORRENTE HA IL RUOLO ATTESO PER ACCEDERE ALLA ROUTE
-if (currentUser && currentUser.role === expectedRole) {
+if (currentUser && currentUser.role === expectedRole) {  
   return true;
 }
 
@@ -34,7 +38,6 @@ if (currentUser.role === UserRole.HR) {
 
 // ALTRIMENTI REDIREZIONO ALLA DASHBOARD DELL'EMPLOYEE
 return router.createUrlTree(['/employee/dashboard']);
-
 
 };
 

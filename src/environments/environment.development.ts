@@ -1,13 +1,13 @@
 export const environment = {
-  production: false,  
+  production: false,
 
-  maxUploadSizeMb: 5, 
+  maxUploadSizeMb: 5,
 
-  allowedFileTypes: [  
+  allowedFileTypes: [
     'image/jpeg',
     'image/png',
     'application/pdf'
   ],
 
-  apiUrl: 'https://6a95877afa33b37f821ac0c9.mockapi.io/' 
+  apiUrl: 'https://6a95877afa33b37f821ac0c9.mockapi.io/'
 };
