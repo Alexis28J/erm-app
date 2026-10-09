@@ -25,3 +25,6 @@ export class EmployeeDashboard {
 
 }
 
+
+
+// VS Code counter: 19 code lines (08/10/2026)

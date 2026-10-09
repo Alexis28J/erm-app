@@ -27,3 +27,5 @@ export class HrDashboard {
 }
 
 
+
+// VS Code Counter: 20 code lines (08/10/2026)

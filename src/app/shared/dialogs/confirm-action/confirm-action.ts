@@ -24,5 +24,7 @@ export class ConfirmAction {
     this.dialogRef.close(true);
   }
 
-
 }
+
+
+// VS Code Counter: 20 code lines (08/10/2026)

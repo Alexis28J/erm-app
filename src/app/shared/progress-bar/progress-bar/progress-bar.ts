@@ -57,3 +57,6 @@ export class ProgressBar {
   });
 
 }
+
+
+// VS Code Counter: 41 code lines (08/10/2026)

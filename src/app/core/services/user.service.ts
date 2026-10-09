@@ -57,3 +57,5 @@ export class UserService {
 
 }
 
+
+// VS Code counter: 37 code lines (08/10/2026)

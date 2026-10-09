@@ -178,7 +178,7 @@ export class RequestDetail {
 
     };
 
-    
+
     // Aggiorno lo stato della richiesta nell'interfaccia utente
     this.request.set(updatedRequest);
 
@@ -314,3 +314,7 @@ export class RequestDetail {
 
 
 }
+
+
+
+// VS Code Counter: 188 code lines (08/10/2026)

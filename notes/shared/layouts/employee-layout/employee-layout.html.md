@@ -1,0 +1,15 @@
+# COMMENTI
+
+```HTML
+<app-employee-navbar></app-employee-navbar>
+
+<router-outlet></router-outlet>
+
+<!-- router outlet contiene le rotte figlie dell'area employee. 
+ Ma come differisce dalle rotte non raggruppate sotto un layout comune? 
+ Risposta: le rotte figlie sotto un layout comune ereditano automaticamente il layout 
+ e le regole di accesso definite nel genitore, mentre le rotte non raggruppate devono specificare queste informazioni individualmente. -->
+
+ <!-- Quindi anche se in hr-layout c'è un router-outlet, le rotte figlie dell'area HR erediteranno automaticamente il layout e le regole di accesso definite nel genitore.
+  Perciò non c'è pericolo di conflitti con altre rotte se uso router-outlet nei layout. -->
+```

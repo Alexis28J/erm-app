@@ -1,3 +1,4 @@
+// CONTAINER PRINCIPALE DEL COMPONENTE
 :host {
     padding: 8px;
 
@@ -24,6 +25,8 @@ mat-card-title {
     gap: 8px; // spazio tra il titolo e l'icona
 }
 
+
+// CONTENUTO DELLA CARD
 mat-card-content {
     font-size: 18px;
     line-height: 1.5;
@@ -133,7 +136,7 @@ mat-card-content {
 
 // SPINNER CENTRATO
 .centered-spinner {
-    margin: 250px auto !important; 
+    margin: 250px auto !important;
 }
 
 
@@ -143,3 +146,7 @@ mat-card-content {
     justify-content: space-between;
     margin: 2rem 5.8rem 0 5.8rem;
 }
+
+
+
+// VS Code counter: 130 code lines (08/10/2026)

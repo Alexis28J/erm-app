@@ -15,3 +15,6 @@ export const authGuard: CanActivateFn = () => {
   return router.createUrlTree(['/login']);
 
 };
+
+
+// VS Code counter: 11 code lines (08/10/2026)

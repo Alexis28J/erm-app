@@ -11,7 +11,6 @@ import { Observable } from 'rxjs';
 //Responsabile delle richieste di rimborso
 export class RefundRequestService {
 
-
   private readonly apiUrl = `${environment.apiUrl}/refundRequests`;
 
 
@@ -41,8 +40,8 @@ export class RefundRequestService {
 
 
   // METODO PER CREARE UNA NUOVA RICHIESTA DI RIMBORSO
-  createRequest(request: RefundRequest): Observable<RefundRequest> {  
-    return this.http.post<RefundRequest>(  
+  createRequest(request: RefundRequest): Observable<RefundRequest> {
+    return this.http.post<RefundRequest>(
       this.apiUrl,
       request
     );
@@ -65,18 +64,18 @@ export class RefundRequestService {
   deleteRequest(
     id: string
   ): Observable<void> {
-    return this.http.delete<void>(  
+    return this.http.delete<void>(
       `${this.apiUrl}/${id}`
     );
   }
 
 
   // METODO PER OTTENERE TUTTE LE RICHIESTE DI RIMBORSO (PER L'HR)
-  getAllRequests(): Observable<RefundRequest[]>{  
+  getAllRequests(): Observable<RefundRequest[]> {
     return this.http.get<RefundRequest[]>(this.apiUrl);
   }
 
-
-
 }
 
+
+// VS Code counter: 47 code lines (08/10/2026)

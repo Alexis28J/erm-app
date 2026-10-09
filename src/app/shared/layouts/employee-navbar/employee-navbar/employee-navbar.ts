@@ -64,3 +64,8 @@ export class EmployeeNavbar {
 // COMMENTI:
 // QUESTO COMPONENTE DEFINISCE LA NAVBAR PER LE PAGINE DELL'EMPLOYEE, 
 // INCLUDENDO LE FUNZIONALITÀ DI LOGOUT E NOTIFICHE.
+
+//////////////////////////////////////////////////////////////////////////
+
+
+// VS Code Counter: 45 code lines (08/10/2026)

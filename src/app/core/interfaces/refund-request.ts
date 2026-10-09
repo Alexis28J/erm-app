@@ -14,3 +14,6 @@ export interface RefundRequest {
     noteHr?: string;
     expenses: Expense[];  
 }
+
+
+// VS Code counter: 15 code lines (08/10/2026)

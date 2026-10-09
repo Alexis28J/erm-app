@@ -59,10 +59,14 @@
 
 mat-menu,
 button,
-.menu-item{
+.menu-item {
   &:hover {
     color: #005cbb !important;
     transform: scale(1.1) !important;
     transition: transform 0.3s ease-in-out !important;
   }
 }
+
+
+
+// VS Code Counter: 50 code lines (08/10/2026)

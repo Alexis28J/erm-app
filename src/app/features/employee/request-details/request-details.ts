@@ -13,7 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-bar';
 import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
-import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list'; 
+import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
@@ -62,6 +62,7 @@ export class RequestDetails {
       return total + (category?.maxAmount ?? 0);
     }, 0
     );
+
   });
 
 
@@ -78,8 +79,12 @@ export class RequestDetails {
       (sum, expense) => sum + expense.requestedAmount,
       0
     );
+
   });
 
 }
+
+
+// VS Code counter: 60 code lines (08/10/2026)
 
 

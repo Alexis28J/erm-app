@@ -60,7 +60,13 @@ export class HrNavbar {
 }
 
 
+/////////////////////////////////////////////////////////////////////
 
 // COMMENTI:
 // QUESTO COMPONENTE DEFINISCE LA NAVBAR PER LE PAGINE DELL'HR, 
 // INCLUDENDO LE FUNZIONALITÀ DI LOGOUT E NOTIFICHE.
+
+/////////////////////////////////////////////////////////////////////
+
+
+// VS Code Counter: 46 code lines (08/10/2026)

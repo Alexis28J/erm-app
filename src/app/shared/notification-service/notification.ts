@@ -3,7 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Service()
 export class Notification {
-    
+
     private snackBar = inject(MatSnackBar);
 
     // METODO PER MOSTRARE UNA NOTIFICA DI SUCCESSO
@@ -34,3 +34,7 @@ export class Notification {
         )
     }
 }
+
+
+
+// VS Code Counter: 26 code lines (08/10/2026)

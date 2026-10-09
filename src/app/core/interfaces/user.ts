@@ -12,4 +12,4 @@ export interface User {
 }
 
 
-
+// VS Code counter: 11 code lines (08/10/2026)

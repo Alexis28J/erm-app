@@ -21,5 +21,4 @@ export interface Expense {
 }
 
 
-
-
+// VS Code counter: 16 code lines (08/10/2026)

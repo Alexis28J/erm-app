@@ -27,3 +27,7 @@ export class AttachmentList {
   }
 
 }
+
+
+
+// VS Code Counter: 19 code lines (08/10/2026)

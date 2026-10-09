@@ -24,7 +24,7 @@ export const routes: Routes = [
             import('./features/login/reset-password/reset-password/reset-password')
                 .then(c => c.ResetPassword)
     },
-    {
+    {  // AREA DIPENDENTE
         path: 'employee',
         component: EmployeeLayout,
         canActivate: [authGuard, roleGuard],
@@ -75,7 +75,7 @@ export const routes: Routes = [
 
         ]
     },
-    {
+    {   // AREA HR
         path: 'hr',
         component: HrLayout,
         canActivate: [authGuard, roleGuard],
@@ -133,3 +133,6 @@ export const routes: Routes = [
 
 ];
 
+
+
+// VS Code Counter: 119 code lines (08/10/2026)

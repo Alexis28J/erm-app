@@ -42,3 +42,4 @@ export const EXPENSE_CATEGORIES: ExpenseCategory[] = [
 ];
 
 
+// VS Code counter: 40 code lines (08/10/2026)

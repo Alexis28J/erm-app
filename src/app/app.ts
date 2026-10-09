@@ -11,3 +11,7 @@ import { RouterOutlet } from '@angular/router';
 export class App {
   protected readonly title = signal('erm-app');
 }
+
+
+
+// VS Code Counter: 12 code lines (08/10/2026)

@@ -51,8 +51,8 @@ export class EditRequest {
 
     })
 
-
   }
+
 
   // INIEZIONE DELLE DIPENDENZE 
   private fb = inject(FormBuilder);
@@ -372,3 +372,5 @@ export class EditRequest {
   }
 }
 
+
+// VS Code counter: 249 code lines (08/10/2026)

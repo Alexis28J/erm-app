@@ -6,3 +6,6 @@ export interface ExpenseCategory {
     maxAmount: number;
     receiptRequired: boolean;
 }
+
+
+// VS Code counter: 7 code lines (08/10/2026)
