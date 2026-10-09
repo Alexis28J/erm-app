@@ -13,23 +13,21 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { RefundRequest } from '../../../core/interfaces/refund-request';
 import { Expense } from '../../../core/interfaces/expense';
 import { RequestStatus } from '../../../core/interfaces/enum';
-import { MatOption } from "@angular/material/select";
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-bar';
 import { startWith } from 'rxjs';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
 import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list';
+import { ExpenseEditor } from '../../../shared/expense-editor/expense-editor/expense-editor';
 
 @Component({
   imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule,
     MatInputModule, MatButtonModule, MatProgressSpinnerModule,
-    DatePipe, MatOption, MatSelectModule, MatIconModule, RouterLink,
-    CommonModule, ProgressBar, TotalProgressBar, MatTooltipModule, AttachmentList],
+    DatePipe, MatSelectModule, MatIconModule, RouterLink,
+    CommonModule, TotalProgressBar, MatTooltipModule, ExpenseEditor],
   selector: 'app-edit-request',
   styleUrls: ['./edit-request.scss'],
   templateUrl: './edit-request.html',

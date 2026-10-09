@@ -1,0 +1,146 @@
+/*//////////////////////////////////////////////////////////////////////////////////
+  ANIMAZIONI DELLE SFERE
+//////////////////////////////////////////////////////////////////////////////////*/
+
+// TERZA E ULTIMA VERSIONE DELLO SFONDO ANIMATO
+.background-container {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4ecfa 100%);
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+}
+
+
+/* WRAPPER SFERE BLUR */
+.blur-wrapper {
+    width: 25%;
+    height: 25%;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    filter: blur(20px);
+
+    transform-origin: top left;
+    transform: scale(4) translateZ(0);
+
+    backface-visibility: hidden;
+}
+
+
+/* STILE BASE PER LE SFERE */
+.sphere {
+    position: absolute;
+    border-radius: 50%;
+    will-change: transform;
+}
+
+.sphere-1 {
+    width: 70px;
+    height: 70px;
+    background-color: #cad5f0;
+    top: -5%;
+    left: -5%;
+    opacity: 0.6;
+    animation: slow-motion-1 40s infinite ease-in-out alternate;
+}
+
+.sphere-2 {
+    width: 80px;
+    height: 80px;
+    background-color: #b8c8eb;
+    bottom: -5%;
+    right: -5%;
+    opacity: 0.5;
+    animation: slow-motion-2 45s infinite ease-in-out alternate;
+}
+
+.sphere-3 {
+    width: 60px;
+    height: 60px;
+    background-color: #9bb5e8;
+    top: 30%;
+    right: 20%;
+    opacity: 0.5;
+    animation: slow-motion-3 38s infinite ease-in-out alternate;
+}
+
+.sphere-4 {
+    width: 75px;
+    height: 75px;
+    background-color: #8aa9e6;
+    bottom: 15%;
+    left: 15%;
+    opacity: 0.5;
+    animation: slow-motion-4 50s infinite ease-in-out alternate;
+}
+
+
+/* ANIMAZIONI DELLE SFERE */
+@keyframes slow-motion-1 {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(15vw, 10vh);
+    }
+
+    100% {
+        transform: translate(5vw, 25vh);
+    }
+}
+
+@keyframes slow-motion-2 {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(-20vw, -15vh);
+    }
+
+    100% {
+        transform: translate(-10vw, 5vh);
+    }
+}
+
+@keyframes slow-motion-3 {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(-10vw, 20vh);
+    }
+
+    100% {
+        transform: translate(-25vw, -5vh);
+    }
+}
+
+@keyframes slow-motion-4 {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(20vw, -20vh);
+    }
+
+    100% {
+        transform: translate(10vw, -10vh);
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+/* FINE ANIMAZIONI DELLE SFERE */
+
+
+
+// VS Code Counter: 106 code lines (09/10/2026)

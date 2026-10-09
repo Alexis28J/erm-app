@@ -1,0 +1,33 @@
+@use './variables' as *; 
+
+
+// MENU 
+.mat-mdc-menu-content {
+    background-color: #d0dffd !important;
+
+    &:hover {
+        overflow: hidden !important;
+    }
+}
+
+
+// SINGOLO ELEMENTO DEL MENU 
+.mat-mdc-menu-item {
+    background-color: #d0dffd !important;
+
+    &:hover {
+        background-color: #c5d7fb !important;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+        transform: scale(1.1) !important;
+        overflow: hidden !important;
+        color: #005cbb !important;
+
+        mat-icon {
+            color: #005cbb !important;
+        }
+    }
+}
+
+
+
+// VS Code Counter: 20 code lines (09/10/2026)

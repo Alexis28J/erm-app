@@ -1,0 +1,26 @@
+```SCSS
+@use './variables' as *; // Importa tutte le variabili definite in _variables.scss per poterle utilizzare in questo file SCSS
+
+
+// @use è una direttiva SCSS che permette di importare moduli SCSS, come variabili, mixin e funzioni, in un altro file SCSS. In questo caso, stiamo importando tutte le variabili definite in _variables.scss.
+
+
+// TOOLBAR MATERIAL DESIGN
+.mat-toolbar {
+    border-style: solid !important;
+    border-width: 2px !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+    background-color: rgba(22, 80, 195, 0.212) !important;
+    box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.4),
+        0 0 6px 0 rgba(56, 189, 248, 0.08) !important;
+    transition: all 0.3s ease !important;
+
+    &:hover {
+        border-top-color: rgba(60, 98, 250, 0.6) !important;
+        border-bottom-color: rgba(60, 98, 250, 0.6) !important;
+        box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.4),
+            0 0 7px 0 rgba(56, 189, 248, 0.08) !important;
+        transform: translateY(-0.2px);
+    }
+}
+```
