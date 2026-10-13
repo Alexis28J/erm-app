@@ -1,4 +1,4 @@
-import { Component, effect, inject, computed } from '@angular/core';
+import { Component, effect, inject, computed, signal } from '@angular/core';
 import { Notification } from '../../../shared/notification-service/notification';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -19,9 +19,9 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { startWith } from 'rxjs';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
-import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExpenseEditor } from '../../../shared/expense-editor/expense-editor/expense-editor';
+import { AppConfig } from '../../../core/interfaces/app-config';
 
 @Component({
   imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule,
@@ -209,6 +209,7 @@ export class EditRequest {
   // VARIABILE PER IL MESSAGGIO DI ERRORE DEL FORM
   formError = '';
 
+
   // METODO PER INVIARE LA RICHIESTA
   submitRequest(): void {
 
@@ -274,6 +275,18 @@ export class EditRequest {
   })
 
 
+  // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
+  config = signal<AppConfig>(
+    this.route.snapshot.data['config']
+  );
+
+
+  // COMPUTED DELLE CATEGORIE DI SPESA
+  expenseCategories = computed(
+    () => this.config().expenseLimits
+  );
+
+
   // COMPUTED PER OTTENERE L'IMPORTO MASSIMO CONSENTITO PER LE SPESE (SOMMA DEI MASSIMI PER CATEGORIA O TOTALE MASSIMO CONSENTITO)
   readonly totalAllowedAmount = computed(() => {
 
@@ -284,9 +297,10 @@ export class EditRequest {
     }
 
     return request.reduce((total: number, expense: Expense) => {
-      const category = EXPENSE_CATEGORIES.find(
+
+      const category = this.expenseCategories().find(
         c => c.name === expense.category
-      )
+      );
 
       return total + (category?.maxAmount ?? 0);
     }, 0
@@ -371,4 +385,5 @@ export class EditRequest {
 }
 
 
-// VS Code counter: 249 code lines (08/10/2026)
+
+// VS Code Counter: 253 code lines (13/10/2026)

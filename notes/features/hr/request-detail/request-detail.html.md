@@ -136,7 +136,7 @@
 
             <div class="expense-container">
 
-                <app-progress-bar [category]="expense.category" [amount]="expense.requestedAmount">
+                <app-progress-bar [category]="expense.category" [amount]="expense.requestedAmount" [maxAmount]="getMaxAmount(expense.category)">
                 </app-progress-bar>
 
 

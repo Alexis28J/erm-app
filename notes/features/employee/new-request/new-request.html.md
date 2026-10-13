@@ -83,7 +83,7 @@
                         <div class="expense-grid">
 
                             <app-progress-bar [category]="expenseProgressData()[$index]?.category"
-                                [amount]="expenseProgressData()[$index]?.amount || 0"></app-progress-bar>
+                                [amount]="expenseProgressData()[$index]?.amount || 0" [maxAmount]="getMaxAmount(expenseProgressData()[$index]?.category ?? '')"></app-progress-bar>
 
 
                             <div [formGroupName]="$index" class="expenses-card">
@@ -104,12 +104,28 @@
 
                                     <mat-select formControlName="category">
 
-                                        <mat-option value="TAXI">Taxi</mat-option>
+                                        <mat-option value="" disabled>Select a category</mat-option>
+
+                                        <!-- <mat-option value="TAXI">Taxi</mat-option>
                                         <mat-option value="TRAIN">Train</mat-option>
                                         <mat-option value="MEAL">Meal</mat-option>
                                         <mat-option value="HOTEL">Hotel</mat-option>
                                         <mat-option value="FUEL">Fuel</mat-option>
-                                        <mat-option value="OTHER">Other</mat-option>
+                                        <mat-option value="OTHER">Other</mat-option> -->
+
+                                        @for (
+                                        category of expenseCategories();
+                                        track category.id
+                                        ) {
+
+                                        <mat-option [value]="category.name">
+
+                                            {{ category.name }}
+
+                                        </mat-option>
+
+                                        }
+
 
                                     </mat-select>
 

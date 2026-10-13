@@ -42,5 +42,6 @@ return router.createUrlTree(['/employee/dashboard']);
 };
 
 
+
 // VS Code counter: 20 code lines (08/10/2026)
 

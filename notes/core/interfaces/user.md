@@ -13,6 +13,8 @@ export interface User {
     role: UserRole;
     active?: boolean; 
       // La differenza tra 'id' e 'employeeCode' è che 'id' è l'identificativo univoco dell'utente nel sistema, mentre 'employeeCode' è il codice identificativo dell'impiegato.
+
+    systemConfig?: boolean;  // Indica se l'utente ha accesso alla configurazione di sistema
 }
 ```
 

@@ -1,4 +1,4 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, signal } from '@angular/core';
 import { Notification } from '../../../shared/notification-service/notification';
 import { FormBuilder, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -19,10 +19,11 @@ import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-
 import { toSignal } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs';
 import { MatDivider } from '@angular/material/divider';
-import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list';
+import { ActivatedRoute } from '@angular/router';
+import { AppConfig } from '../../../core/interfaces/app-config';
 
 @Component({
   imports: [ReactiveFormsModule, MatFormFieldModule, MatButtonModule,
@@ -41,6 +42,7 @@ export class NewRequest {
   private refundRequestService = inject(RefundRequestService);
   private router = inject(Router);
   private notificationService = inject(Notification);
+  private route = inject(ActivatedRoute);
 
 
   // FORM
@@ -207,6 +209,7 @@ export class NewRequest {
 
   }
 
+
   // SIGNAL PER TENERE TRACCIA DEI VALORI DELLE SPESE
   expensesValue = toSignal(
     this.expenses.valueChanges.pipe(
@@ -225,6 +228,25 @@ export class NewRequest {
   });
 
 
+  // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
+  config = signal<AppConfig>(this.route.snapshot.data['config']);
+
+
+  // COMPUTED PER LE CATEGORIE DI SPESE
+  expenseCategories = computed(
+    () => this.config().expenseLimits
+  );
+
+
+  // METODO PER OTTENERE L'IMPORTO MASSIMO CONSENTITO PER UNA CATEGORIA DI SPESA SPECIFICA
+  getMaxAmount(categoryName: string): number {
+
+    return this.expenseCategories()
+      .find(c => c.name === categoryName)?.maxAmount ?? 0;
+
+  }
+
+
   // COMPUTED PER OTTENERE IL TOTALE MASSIMO CONSENTITO DELLE SPESE
   readonly totalAllowedAmount = computed(() => {
 
@@ -235,13 +257,13 @@ export class NewRequest {
     }
 
     return request.reduce((total: number, expense: Expense) => {
-      const category = EXPENSE_CATEGORIES.find(
+      const category = this.expenseCategories().find(
         c => c.name === expense.category
-      )
+      );
       return total + (category?.maxAmount ?? 0);
     }, 0
-    )
-  })
+    );
+  });
 
 
   // COMPUTED PER OTTENERE IL TOTALE DELLE SPESE RICHIESTE
@@ -337,4 +359,5 @@ export class NewRequest {
 }
 
 
-// VS Code counter: 220 code lines (08/10/2026)
+
+// VS Code Counter: 230 code lines (13/10/2026)

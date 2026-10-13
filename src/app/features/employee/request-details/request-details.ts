@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -11,10 +11,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-bar';
-import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
 import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AppConfig } from '../../../core/interfaces/app-config';
 
 @Component({
   imports: [CommonModule, MatCardModule, MatIconModule,
@@ -31,6 +31,16 @@ export class RequestDetails {
   private refundRequestService = inject(RefundRequestService);
 
 
+  config = signal<AppConfig>(
+    this.route.snapshot.data['config']
+  )
+
+
+  expenseCategories = computed(() =>
+    this.config().expenseLimits
+  )
+
+
   // RECUPERO DELL'ID DELLA RICHIESTA DI RIMBORSO
   private requestId = this.route.snapshot.paramMap.get('id');
 
@@ -45,6 +55,12 @@ export class RequestDetails {
   );
 
 
+  getMaxAmount(categoryName: string): number {
+    return this.expenseCategories()
+           .find(c => c.name === categoryName)?.maxAmount ?? 0;
+  }
+
+  
   // CALCOLO DELL'IMPORTO CONSENTITO TOTALE
   readonly totalAllowedAmount = computed(() => {
 
@@ -55,7 +71,11 @@ export class RequestDetails {
     }
 
     return request.expenses.reduce((total, expense) => {
-      const category = EXPENSE_CATEGORIES.find(
+      // const category = EXPENSE_CATEGORIES.find(
+      //   c => c.name === expense.category
+      // );
+
+      const category = this.expenseCategories().find(
         c => c.name === expense.category
       );
 
@@ -85,6 +105,9 @@ export class RequestDetails {
 }
 
 
-// VS Code counter: 60 code lines (08/10/2026)
+
+// VS Code Counter: 70 code lines (13/10/2026)
+
+
 
 

@@ -79,7 +79,7 @@
 
 
       <!---------------------------------- SEZIONE DELLE SPESE ------------------------------------->
-      <mat-card>
+      <!-- <mat-card>
 
         <div formArrayName="expenses">
 
@@ -87,17 +87,17 @@
 
             <mat-card-subtitle>Expenses
               <mat-icon>receipt</mat-icon>
-            </mat-card-subtitle>
+            </mat-card-subtitle> -->
 
             <!-- Pulsante per aggiungere una nuova spesa -->
-            <button mat-raised-button color="primary" type="button" (click)="addExpense()">
+            <!-- <button mat-raised-button color="primary" type="button" (click)="addExpense()">
               Add Expense
             </button>
 
           </div>
 
 
-          <div class="expenses-list">
+          <div class="expenses-list"> -->
 
             <!-- CICLO SULLE SPESE DEL FORM -->
             <!-- Per ogni spesa nel form, viene generata una card con i dettagli della spesa. 
@@ -107,33 +107,33 @@
 
             <!-- Attenzione però. Nel ciclo interno $index diventa quello degli allegati. 
               Quindi $index non deve essere usato per gli allegati, ma solo per le spese. -->
-            @for (expense of expenses.controls; track $index; let expenseIndex = $index) {
+            <!-- @for (expense of expenses.controls; track $index; let expenseIndex = $index) { -->
 
             <!-- CARD DI OGNI SINGOLA SPESA -->
-            <div class="expense-grid">
+            <!-- <div class="expense-grid">
 
               <app-progress-bar [category]="expenseProgressData()[$index]?.category"
                 [amount]="expenseProgressData()[$index]?.amount || 0"></app-progress-bar>
 
-              <div [formGroupName]="$index" class="expenses-input">
+              <div [formGroupName]="$index" class="expenses-input"> -->
 
                 <!-- Data della spesa -->
-                <mat-form-field appearance="outline">
+                <!-- <mat-form-field appearance="outline">
 
                   <mat-label>Date</mat-label>
 
                   <input matInput type="date" formControlName="date">
 
-                </mat-form-field>
+                </mat-form-field> -->
 
                 <!-- Categoria della spesa -->
-                <mat-form-field appearance="outline">
+                <!-- <mat-form-field appearance="outline">
 
                   <mat-label>Category</mat-label>
 
-                  <mat-select formControlName="category">
+                  <mat-select formControlName="category"> -->
                     <!-- per evitare l'autofocus automatico sul primo elemento della select, aggiungo un'opzione vuota -->
-                    <mat-option value="" disabled>Select a category</mat-option>
+                    <!-- <mat-option value="" disabled>Select a category</mat-option>
                     <mat-option value="TAXI">Taxi</mat-option>
                     <mat-option value="TRAIN">Train</mat-option>
                     <mat-option value="MEAL">Meal</mat-option>
@@ -143,38 +143,38 @@
 
                   </mat-select>
 
-                </mat-form-field>
+                </mat-form-field> -->
 
 
                 <!-- Campo per la descrizione della spesa -->
-                <mat-form-field appearance="outline">
+                <!-- <mat-form-field appearance="outline">
 
                   <mat-label>Description</mat-label>
-                  <textarea matInput formControlName="description" rows="1">
+                  <textarea matInput formControlName="description" rows="1"> -->
                     <!-- Posso usare input type="text" al posto del textarea se voglio che la descrizione sia su una sola riga -->
-                  </textarea>
+                  <!-- </textarea>
 
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline"> -->
 
                   <!-- Campo per l'importo richiesto -->
-                  <mat-label>Amount</mat-label>
+                  <!-- <mat-label>Amount</mat-label>
                   <input matInput type="number" formControlName="requestedAmount" min="0">
 
-                </mat-form-field>
+                </mat-form-field> -->
 
                 <!-- Pulsante per rimuovere la spesa corrente -->
-                <button mat-icon-button color="warn" type="button" (click)="removeExpense($index)" class="remove-btn"
+                <!-- <button mat-icon-button color="warn" type="button" (click)="removeExpense($index)" class="remove-btn"
                   matTooltip="Remove Expense" matTooltipPosition="above">
                   <mat-icon>delete</mat-icon>
                 </button>
 
-              </div>
+              </div> -->
 
 
               <!-- PULSANTE ALLEGA FILE -->
-              <div class="attachment-btn">
+              <!-- <div class="attachment-btn">
 
                 <button mat-raised-button type="button" color="primary" (click)="fileInput.click()">
                   Attach File
@@ -182,19 +182,20 @@
                 </button>
 
                 <input hidden #fileInput type="file" multiple (change)="onFilesSelected($event, $index)"
-                  accept=".pdf,.jpg,.jpeg,.png">
+                  accept=".pdf,.jpg,.jpeg,.png"> -->
                 <!-- <input hidden #fileInput type="file" multiple accept="application/pdf,image/*"
                                     (change)="onFilesSelected($event, $index)"> -->
 
-              </div>
+              <!-- </div> -->
 
 
               <!-- Elenco dei file allegati per la spesa corrente -->
-              @for(
+              <!-- @for(
               attachment of expenses.at(expenseIndex).value.attachments ?? [];
               track attachment.fileName;
               let attachmentIndex = $index;
-              ) {
+              ) { -->
+
                 <!-- .at() è utilizzato per ottenere il FormGroup della spesa corrente all'interno del FormArray delle spese. 
                  Quindi, per accedere agli allegati della spesa corrente, utilizziamo .at(expenseIndex).value.attachments. 
                  [] se non ci sono allegati -->
@@ -203,7 +204,7 @@
               <!-- devo inizializzare attachmentIndex perché $index ora si riferisce agli allegati e non più alle spese.
                  Se avesse usato $index direttamente, non potrebbe più accedere all'indice della spesa corrente. -->
 
-              <div class="file-row">
+              <!-- <div class="file-row"> -->
 
                 <!-- <mat-icon>
                   description
@@ -211,20 +212,20 @@
 
                 {{ attachment.fileName }} -->
 
-                <app-attachment-list [attachments]="[attachment]" matTooltip="Click in to view the attached file"
-                  matTooltipPosition="right"></app-attachment-list>
+                <!-- <app-attachment-list [attachments]="[attachment]" matTooltip="Click in to view the attached file"
+                  matTooltipPosition="right"></app-attachment-list> -->
 
                 <!-- Pulsante per rimuovere il file allegato corrente -->
-                <button mat-icon-button color="warn" type="button"
+                <!-- <button mat-icon-button color="warn" type="button"
                   (click)="removeAttachment(expenseIndex, attachmentIndex)" matTooltip="Remove file"
                   matTooltipPosition="left" class="remove-btn">
                   <mat-icon>cancel</mat-icon>
                 </button>
 
-              </div>
+              </div> -->
 
               <!-- Linea divisoria per gli allegati -->
-              <div class="attachment-divider"></div>
+              <!-- <div class="attachment-divider"></div>
 
               }
 
@@ -236,7 +237,25 @@
 
         </div>
 
-      </mat-card>
+      </mat-card> -->
+
+
+      <!-- REFACTORING DELLA SEZIONE SPESE -->
+
+      <!-- Ho trasformato la sezione delle spese in un componente separato chiamato app-expense-editor. 
+       In questo modo, il codice HTML relativo alla gestione delle spese è stato spostato nel componente dedicato, semplificando il template principale.
+       Sto seguendo il principio di separazione delle responsabilità, mantenendo il template principale più pulito e leggibile. -->
+
+
+      <app-expense-editor [form]="requestForm" [expenses]="expenses" [expenseProgressData]="expenseProgressData()" [expenseCategories]="expenseCategories()"
+        (addExpense)="addExpense()" (removeExpense)="removeExpense($event)" (filesSelected)="onFilesSelected(
+        $event.event,
+        $event.index
+        )" (removeAttachment)="removeAttachment(
+        $event.expenseIndex,
+        $event.attachmentIndex
+        )">
+      </app-expense-editor>
 
 
       <!-------------------------------- SEZIONE DI RIEPILOGO DEL TOTALE RICHIESTO --------------------------------->

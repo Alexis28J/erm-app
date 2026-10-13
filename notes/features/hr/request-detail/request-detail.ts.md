@@ -261,6 +261,37 @@ export class RequestDetail {
   }
 
 
+  // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
+  // Questo segnale contiene la configurazione dell'applicazione, risolta tramite il configResolver prima che la rotta venga attivata.
+  // Utile per accedere ai limiti di spesa e altre impostazioni globali.
+  config = signal<AppConfig>(  // <AppConfig> indica il tipo della configurazione dell'applicazione, cioè che this.config() restituirà un oggetto conforme all'interfaccia AppConfig.
+    this.route.snapshot.data['config']
+    // route: indica che stiamo prendendo i dati dalla route corrente (in questo caso, la route dell'edit request).
+    // snapshot: rappresenta lo stato istantaneo della route in questo momento (utile per ottenere i parametri e i dati correnti della route).
+    // data: contiene i dati risolti (forniti dai resolver) associati alla route, in questo caso la configurazione dell'applicazione.
+    // ['config']: accede alla configurazione dell'applicazione risolta dal resolver.
+  );
+
+
+  // COMPUTED DELLE CATEGORIE DI SPESA
+  // Questo computed restituisce le categorie di spesa definite nella configurazione dell'applicazione.
+  expenseCategories = computed(
+    () => this.config().expenseLimits
+    // this.config(): otteniamo il valore corrente del segnale della configurazione dell'applicazione.
+    // .expenseLimits: accediamo ai limiti di spesa definiti nella configurazione dell'applicazione.
+  );
+
+
+  // METODO PER OTTENERE L'IMPORTO MASSIMO CONSENTITO PER UNA CATEGORIA DI SPESA SPECIFICA
+  // Questo metodo restituisce l'importo massimo consentito per una determinata categoria di spesa.
+  getMaxAmount(categoryName: string): number {
+
+    return this.expenseCategories()  // Ottiene le categorie di spesa dalla configurazione dell'applicazione
+      .find(c => c.name === categoryName)?.maxAmount ?? 0; // Restituisce l'importo massimo consentito per la categoria specificata
+    // Se la categoria non viene trovata, restituisce 0 come importo massimo consentito.
+  }
+
+
   // CALCOLO DELL'IMPORTO CONSENTITO TOTALE
   readonly totalAllowedAmount = computed(() => {  // Questo compute calcola l'importo totale consentito per la richiesta corrente.
   

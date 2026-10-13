@@ -1,10 +1,9 @@
 import { ExpenseCategoryName } from './enum';
 
-
 export interface ExpenseAttachment {
     // id: string;  
     fileName: string;
-    fileContent: string;  
+    fileContent: string;
     fileType: string;
 }
 
@@ -17,8 +16,9 @@ export interface Expense {
     approvedAmount?: number;
     noteHr?: string;
 
-    attachments?: ExpenseAttachment[];  
+    attachments?: ExpenseAttachment[];
 }
+
 
 
 // VS Code counter: 16 code lines (08/10/2026)

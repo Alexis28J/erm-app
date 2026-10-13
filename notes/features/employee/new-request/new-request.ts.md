@@ -16,32 +16,6 @@ Ho usato `Angular Reactive Forms` per gestire la validazione e l'invio dei dati 
 
 
 ```TYPESCRIPT
-import { Component, inject } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatButtonModule } from "@angular/material/button";
-import { AuthService } from '../../../core/services/auth.service';
-import { RefundRequestService } from '../../../core/services/refund-request.service';
-import { Router, RouterLink } from '@angular/router';
-import { RefundRequest } from '../../../core/interfaces/refund-request';
-import { RequestStatus } from '../../../core/interfaces/enum';
-import { Expense } from '../../../core/interfaces/expense';
-import { MatCardModule } from '@angular/material/card';
-import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from "@angular/material/icon";
-import { MatInputModule } from "@angular/material/input";
-import { MatOptionModule } from "@angular/material/core";
-
-
-
-@Component({
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatButtonModule,
-    MatCardModule, MatSelectModule, MatIconModule,
-    RouterLink, MatInputModule, MatOptionModule],
-  selector: 'app-new-request',
-  styleUrls: ['./new-request.scss'],
-  templateUrl: './new-request.html',
-})
 export class NewRequest {
 
   // INIEZIONE DEI SERVIZI NECESSARI
@@ -305,12 +279,44 @@ export class NewRequest {
 
 
   // COMPUTED PER OTTENERE I DATI DI PROGRESSO DELLE SPESE
+  // Questo computed restituisce i dati di progresso delle spese (cioè i dati necessari per la barra di progresso), inclusa la categoria e l'importo richiesto per ciascuna spesa. Quando l'utente modifica le spese, questo computed aggiorna automaticamente i dati di progresso delle spese.
   expenseProgressData = computed(() => {   // Dopo averlo convertito in Signal, posso calcolare i dati di progresso delle spese in modo reattivo
     return this.expensesValue().map((expense: Expense) => ({ // Mappo ogni spesa in un oggetto con categoria e importo richiesto
       category: expense.category ?? '',  // Categoria della spesa, se non presente utilizzo una stringa vuota
       amount: Number(expense.requestedAmount ?? 0)  // Importo richiesto della spesa, se non presente utilizzo 0
     }));
   });
+
+
+  // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
+  // Questo segnale contiene la configurazione dell'applicazione, risolta tramite il configResolver prima che la rotta venga attivata.
+  // Utile per accedere ai limiti di spesa e altre impostazioni globali.
+  config = signal<AppConfig>(  // <AppConfig> indica il tipo della configurazione dell'applicazione, cioè che this.config() restituirà un oggetto conforme all'interfaccia AppConfig.
+    this.route.snapshot.data['config']
+    // route: indica che stiamo prendendo i dati dalla route corrente (in questo caso, la route dell'edit request).
+    // snapshot: rappresenta lo stato istantaneo della route in questo momento (utile per ottenere i parametri e i dati correnti della route).
+    // data: contiene i dati risolti (forniti dai resolver) associati alla route, in questo caso la configurazione dell'applicazione.
+    // ['config']: accede alla configurazione dell'applicazione risolta dal resolver.
+  );
+
+
+  // COMPUTED DELLE CATEGORIE DI SPESA
+  // Questo computed restituisce le categorie di spesa definite nella configurazione dell'applicazione.
+  expenseCategories = computed(
+    () => this.config().expenseLimits
+    // this.config(): otteniamo il valore corrente del segnale della configurazione dell'applicazione.
+    // .expenseLimits: accediamo ai limiti di spesa definiti nella configurazione dell'applicazione.
+  );
+
+
+  // METODO PER OTTENERE L'IMPORTO MASSIMO CONSENTITO PER UNA CATEGORIA DI SPESA SPECIFICA
+  // Questo metodo restituisce l'importo massimo consentito per una determinata categoria di spesa.
+  getMaxAmount(categoryName: string): number {
+
+    return this.expenseCategories()  // Ottiene le categorie di spesa dalla configurazione dell'applicazione
+      .find(c => c.name === categoryName)?.maxAmount ?? 0; // Restituisce l'importo massimo consentito per la categoria specificata
+    // Se la categoria non viene trovata, restituisce 0 come importo massimo consentito.
+  }
 
 
   // COMPUTED PER OTTENERE IL TOTALE MASSIMO CONSENTITO DELLE SPESE
@@ -323,9 +329,12 @@ export class NewRequest {
     }
 
     return request.reduce((total: number, expense: Expense) => {  // Sommo l'importo massimo consentito per ogni categoria di spesa
-      const category = EXPENSE_CATEGORIES.find(  // Trovo la categoria corrispondente all'importo della spesa
-        c => c.name === expense.category // Confronto il nome della categoria con la categoria della spesa
-      )
+      // const category = EXPENSE_CATEGORIES.find(  // Trovo la categoria corrispondente all'importo della spesa
+      //   c => c.name === expense.category // Confronto il nome della categoria con la categoria della spesa
+      // )
+        const category = this.expenseCategories().find(  // Trova la categoria corrispondente all'expense corrente dentro le categorie definite nella configurazione dell'applicazione.
+        c => c.name === expense.category  // Confronta il nome della categoria dell'expense corrente con il nome della categoria nella configurazione.
+      );
       return total + (category?.maxAmount ?? 0);  // Aggiungo l'importo massimo consentito della categoria al totale
     }, 0   // Valore iniziale del totale
     )
@@ -439,4 +448,5 @@ export class NewRequest {
   
 }
 
+}
 ```

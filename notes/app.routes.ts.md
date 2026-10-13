@@ -128,7 +128,10 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import(
                         './features/employee/request-details/request-details'
-                    ).then(m => m.RequestDetails)
+                    ).then(m => m.RequestDetails),
+                resolve: {  // "resolve" indica che prima di attivare questa rotta, Angular deve risolvere i dati specificati qui.
+                    config: configResolver  // la proprietà "config" sarà risolta utilizzando il configResolver prima che la rotta venga attivata.
+                }
             },
 
             {
@@ -136,7 +139,10 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import(
                         './features/employee/edit-request/edit-request'
-                    ).then(m => m.EditRequest)
+                    ).then(m => m.EditRequest),
+                resolve: {  // "resolve" indica che prima di attivare questa rotta, Angular deve risolvere i dati specificati qui.
+                    config: configResolver // la proprietà "config" sarà risolta utilizzando il configResolver prima che la rotta venga attivata.
+                }
             },
 
             {
@@ -144,7 +150,10 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import(
                         './features/employee/new-request/new-request'
-                    ).then(m => m.NewRequest)
+                    ).then(m => m.NewRequest),
+                resolve: {  // "resolve" indica che prima di attivare questa rotta, Angular deve risolvere i dati specificati qui.
+                    config: configResolver // la proprietà "config" sarà risolta utilizzando il configResolver prima che la rotta venga attivata.
+                }
             }
 
         ]
@@ -223,6 +232,13 @@ export const routes: Routes = [
         children: [
 
             {
+                path: 'settings',
+                component: HrSettings,
+                resolve: {  // "resolve" indica che prima di attivare questa rotta, Angular deve risolvere i dati specificati qui.
+                    config: configResolver  // la proprietà "config" sarà risolta utilizzando il configResolver prima che la rotta venga attivata.
+                }
+            },
+            {
                 path: 'dashboard',
                 loadComponent: () =>
                     import(
@@ -243,7 +259,10 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import(
                         './features/hr/request-detail/request-detail'
-                    ).then(m => m.RequestDetail)
+                    ).then(m => m.RequestDetail),
+                resolve: {  // "resolve" indica che prima di attivare questa rotta, Angular deve risolvere i dati specificati qui.
+                    config: configResolver  // la proprietà "config" sarà risolta utilizzando il configResolver prima che la rotta venga attivata.
+                }
             },
 
             {

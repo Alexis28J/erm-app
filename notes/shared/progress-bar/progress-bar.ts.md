@@ -32,14 +32,17 @@ export class ProgressBar {
   // Quindi input.required<string>() crea un signal reattivo di tipo string per la categoria e input.required<number>() crea un signal reattivo di tipo number per l'importo.
 
 
+  // Ho commentato il calcolo automatico del maxAmount basato sulle categorie di spesa, 
+  // ora viene passato come input direttamente.
   // COMPUTED PER L'IMPORTO MASSIMO DI UNA CATEGORIA DI SPESA
-  readonly maxAmount = computed(() => {
-    return (
-      EXPENSE_CATEGORIES.find(
-        c => c.name === this.category()
-      )?.maxAmount ?? 0
-    );
-  });
+  // readonly maxAmount = computed(() => {
+  //   return (
+  //     EXPENSE_CATEGORIES.find(
+  //       c => c.name === this.category()
+  //     )?.maxAmount ?? 0
+  //   );
+  // });
+  maxAmount = input.required<number>();
 
 
   // COMPUTED PER LA PERCENTUALE DI UTILIZZO DELL'IMPORTO MASSIMO DI UNA CATEGORIA DI SPESA

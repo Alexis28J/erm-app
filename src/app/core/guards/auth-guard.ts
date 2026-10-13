@@ -17,4 +17,5 @@ export const authGuard: CanActivateFn = () => {
 };
 
 
+
 // VS Code counter: 11 code lines (08/10/2026)

@@ -19,7 +19,9 @@ export class UserService {
 
   // METODO PER OTTENERE TUTTI GLI UTENTI
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiUrl)
+    return this.http.get<User[]>(this.apiUrl).pipe(
+      map(users => users.filter(user => !user.systemConfig))
+    );
   }
 
 
@@ -41,7 +43,7 @@ export class UserService {
   getEmployees(): Observable<User[]> {
     return this.getUsers().pipe(
       map(users =>
-        users.filter(user => user.role === UserRole.EMPLOYEE)
+        users.filter(user => user.role === UserRole.EMPLOYEE && !user.systemConfig)
       )
     );
   }
@@ -58,4 +60,5 @@ export class UserService {
 }
 
 
-// VS Code counter: 37 code lines (08/10/2026)
+
+// VS Code counter: 39 code lines (13/10/2026)

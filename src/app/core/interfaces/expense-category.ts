@@ -8,4 +8,5 @@ export interface ExpenseCategory {
 }
 
 
+
 // VS Code counter: 7 code lines (08/10/2026)

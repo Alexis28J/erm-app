@@ -9,7 +9,10 @@ export interface User {
     employeeCode: string;   
     role: UserRole;  
     active?: boolean; 
+
+    systemConfig?: boolean;  
 }
 
 
-// VS Code counter: 11 code lines (08/10/2026)
+
+// VS Code counter: 12 code lines (13/10/2026)

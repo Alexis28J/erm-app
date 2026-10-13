@@ -16,7 +16,10 @@ export class UserService {
 
     // METODO PER OTTENERE TUTTI GLI UTENTI
     getUsers(): Observable<User[]>{   // (3)
-      return this.http.get<User[]>(this.apiUrl)  
+      return this.http.get<User[]>(this.apiUrl).pipe(
+      map(users => users.filter(user => !user.systemConfig))
+    ); // Se voglio escludere gli utenti con accesso alla configurazione di sistema, devo filtrare
+      // .pipe(map(users => users.filter(user => !user.systemConfig)))
     }
 
 
@@ -47,7 +50,8 @@ export class UserService {
   getEmployees(): Observable<User[]> {
     return this.getUsers().pipe(   // Il pipe serve per trasformare l'array di tutti gli utenti in un array contenente solo i dipendenti (employees)
       map(users =>  // Uso map per trasformare l'array di tutti gli utenti in un array contenente solo i dipendenti (employees)
-        users.filter(user => user.role === UserRole.EMPLOYEE)  // Filtra gli utenti per ottenere solo quelli con il ruolo di dipendente (employee)
+        users.filter(user => user.role === UserRole.EMPLOYEE && !user.systemConfig)  // Filtra gli utenti per ottenere solo quelli con il ruolo di dipendente (employee)
+        // && !user.systemConfig - Escludo anche gli utenti con accesso alla configurazione di sistema
       )
     );
   }

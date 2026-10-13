@@ -14,10 +14,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-bar';
 import { MatDivider } from '@angular/material/divider';
-import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
 import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AppConfig } from '../../../core/interfaces/app-config';
 
 
 @Component({
@@ -260,6 +260,25 @@ export class RequestDetail {
   }
 
 
+  // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
+  config = signal<AppConfig>(
+    this.route.snapshot.data['config']
+  )
+
+
+  // COMPUTED DELLE CATEGORIE DI SPESA
+  expenseCategories = computed(
+    () => this.config().expenseLimits
+  )
+
+
+  // METODO PER OTTENERE L'IMPORTO MASSIMO CONSENTITO PER UNA CATEGORIA DI SPESA
+  getMaxAmount(categoryName: string): number {
+    return this.expenseCategories()
+      .find(c => c.name === categoryName)?.maxAmount ?? 0;
+  }
+
+
   // CALCOLO DELL'IMPORTO CONSENTITO TOTALE
   readonly totalAllowedAmount = computed(() => {
 
@@ -270,10 +289,9 @@ export class RequestDetail {
     }
 
     return request.expenses.reduce((total, expense) => {
-      const category = EXPENSE_CATEGORIES.find(
+      const category = this.expenseCategories().find(
         c => c.name === expense.category
-      );
-
+      )
       return total + (category?.maxAmount ?? 0);
     }, 0
     );
@@ -317,4 +335,5 @@ export class RequestDetail {
 
 
 
-// VS Code Counter: 188 code lines (08/10/2026)
+// VS Code Counter: 198 code lines (13/10/2026)
+

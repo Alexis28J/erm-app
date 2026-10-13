@@ -74,7 +74,9 @@
                         <div class="expense-grid">
 
                             <app-progress-bar [category]="expenseProgressData()[$index]?.category"
-                                [amount]="expenseProgressData()[$index]?.amount || 0"></app-progress-bar>
+                                [amount]="expenseProgressData()[$index]?.amount || 0" [maxAmount]="getMaxAmount(
+                                    expenseProgressData()[$index]?.category ?? ''
+                                )"></app-progress-bar>
 
 
                             <div [formGroupName]="$index" class="expenses-input">
@@ -96,12 +98,19 @@
                                     <mat-select formControlName="category">
 
                                         <mat-option value="" disabled>Select a category</mat-option>
-                                        <mat-option value="TAXI">Taxi</mat-option>
-                                        <mat-option value="TRAIN">Train</mat-option>
-                                        <mat-option value="MEAL">Meal</mat-option>
-                                        <mat-option value="HOTEL">Hotel</mat-option>
-                                        <mat-option value="FUEL">Fuel</mat-option>
-                                        <mat-option value="OTHER">Other</mat-option>
+
+                                        @for (
+                                        category of expenseCategories();
+                                        track category.id
+                                        ) {
+
+                                        <mat-option [value]="category.name">
+
+                                            {{ category.name }}
+
+                                        </mat-option>
+
+                                        }
 
                                     </mat-select>
 
@@ -156,12 +165,6 @@
                             ) {
 
                             <div class="file-row">
-
-                                <!-- <mat-icon>
-                                    description
-                                </mat-icon> -->
-
-                                <!-- {{ attachment.fileName }} -->
 
                                 <app-attachment-list [attachments]="[attachment]"
                                     matTooltip="Click in to view the attached file"
@@ -243,4 +246,4 @@
 
 
 
-<!-- VS Code Counter: 138 code lines (08/10/2026) -->
+<!-- VS Code Counter: 142 code lines (13/10/2026) -->

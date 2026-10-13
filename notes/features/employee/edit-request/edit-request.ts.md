@@ -16,31 +16,6 @@ Inoltre, entrambi i metodi aggiornano automaticamente la data di ultimo aggiorna
 
 
 ```TYPESCRIPT
-import { Component, effect, inject } from '@angular/core';
-import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { CurrencyPipe, DatePipe } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RefundRequestService } from '../../../core/services/refund-request.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { RefundRequest } from '../../../core/interfaces/refund-request';
-import { Expense } from '../../../core/interfaces/expense';
-import { RequestStatus } from '../../../core/interfaces/enum';
-import { MatOption } from "@angular/material/select";
-import { MatSelectModule } from '@angular/material/select';
-
-@Component({
-  imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule,
-    MatInputModule, MatButtonModule, MatProgressSpinnerModule, 
-    DatePipe, CurrencyPipe, MatOption, MatSelectModule],
-  selector: 'app-edit-request',
-  styleUrls: ['./edit-request.scss'],
-  templateUrl: './edit-request.html',
-})
 export class EditRequest {
 
   // Il constructor deve essere il punto in cui vengono inizializzate le dipendenze e gli effetti reattivi del componente. 
@@ -302,7 +277,7 @@ export class EditRequest {
 
 
   // COMPUTED PER OTTENERE I DATI DI PROGRESSO DELLE SPESE (CATEGORIA E IMPORTO RICHIESTO)
-  // Quando l'utente modifica le spese, questo computed aggiorna automaticamente i dati di progresso delle spese.
+  // Questo computed restituisce i dati di progresso delle spese (cioè i dati necessari per la barra di progresso), inclusa la categoria e l'importo richiesto per ciascuna spesa. Quando l'utente modifica le spese, questo computed aggiorna automaticamente i dati di progresso delle spese.
   // Nel template, il selettore della barra di progresso delle spese utilizzerà questo computed per mostrare i dati aggiornati in tempo reale.
   // Le proprietà category e amount sono utilizzate per rappresentare la categoria della spesa e l'importo richiesto rispettivamente.
   expenseProgressData = computed(() => {
@@ -311,6 +286,27 @@ export class EditRequest {
       amount: Number(expense.requestedAmount ?? 0) // Metto 0 come valore di default se  l'importo richiesto è undefined (cioè non è stato ancora inserito dall'utente)
     }))  // Il metodo map crea, per ogni spesa, un oggetto contenente la categoria e l'importo richiesto
   })
+
+
+  // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
+  // Questo segnale contiene la configurazione dell'applicazione, risolta tramite il configResolver prima che la rotta venga attivata.
+  // Utile per accedere ai limiti di spesa e altre impostazioni globali.
+  config = signal<AppConfig>(  // <AppConfig> indica il tipo della configurazione dell'applicazione, cioè che this.config() restituirà un oggetto conforme all'interfaccia AppConfig.
+    this.route.snapshot.data['config']
+    // route: indica che stiamo prendendo i dati dalla route corrente (in questo caso, la route dell'edit request).
+    // snapshot: rappresenta lo stato istantaneo della route in questo momento (utile per ottenere i parametri e i dati correnti della route).
+    // data: contiene i dati risolti (forniti dai resolver) associati alla route, in questo caso la configurazione dell'applicazione.
+    // ['config']: accede alla configurazione dell'applicazione risolta dal resolver.
+  );
+
+
+  // COMPUTED DELLE CATEGORIE DI SPESA
+  // Questo computed restituisce le categorie di spesa definite nella configurazione dell'applicazione.
+  expenseCategories = computed(
+    () => this.config().expenseLimits
+    // this.config(): otteniamo il valore corrente del segnale della configurazione dell'applicazione.
+    // .expenseLimits: accediamo ai limiti di spesa definiti nella configurazione dell'applicazione.
+  );
 
 
   // COMPUTED PER OTTENERE L'IMPORTO MASSIMO CONSENTITO PER LE SPESE (SOMMA DEI MASSIMI PER CATEGORIA O TOTALE MASSIMO CONSENTITO)
@@ -327,9 +323,15 @@ export class EditRequest {
 
     return request.reduce((total: number, expense: Expense) => {  // Somma l'importo massimo consentito per ogni categoria
       // Il metodo reduce itera su ogni spesa e somma l'importo massimo consentito per la categoria corrispondente
-      const category = EXPENSE_CATEGORIES.find(  // Trova la categoria corrispondente alla spesa corrente
-        c => c.name === expense.category    // Confronta il nome della categoria con la categoria della spesa corrente
-      ) // Il metodo reduce è un metodo di array che accumula un valore (in questo caso il totale) iterando su ogni elemento dell'array (in questo caso le spese)
+      // Il metodo reduce è un metodo di array che accumula un valore (in questo caso il totale) iterando su ogni elemento dell'array (in questo caso le spese)
+
+      // const category = EXPENSE_CATEGORIES.find(  // Trova la categoria corrispondente alla spesa corrente
+      //   c => c.name === expense.category    // Confronta il nome della categoria con la categoria della spesa corrente
+      // ) 
+
+        const category = this.expenseCategories().find(  // Trova la categoria corrispondente all'expense corrente dentro le categorie definite nella configurazione dell'applicazione.
+        c => c.name === expense.category  // Confronta il nome della categoria dell'expense corrente con il nome della categoria nella configurazione.
+      );
 
       return total + (category?.maxAmount ?? 0);  // Aggiunge l'importo massimo consentito della categoria corrente al totale, oppure 0 se la categoria non ha un importo massimo definito
     }, 0  // Valore iniziale del totale, cioè parte da 0 prima di sommare gli importi massimi delle categorie
@@ -437,5 +439,5 @@ export class EditRequest {
 }
 
 
-
+}
 ```

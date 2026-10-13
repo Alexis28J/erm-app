@@ -1,0 +1,57 @@
+mat-card {
+  margin: 2rem !important;
+}
+
+
+mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.7rem;
+  font-weight: bold;
+  margin-bottom: 0.6rem;
+}
+
+
+.equal-width-table {
+  table-layout: fixed; // Forza tutte le colonne ad avere la stessa larghezza
+
+  th {
+    font-size: 1rem;
+  }
+
+  td {
+    font-weight: bold;
+    color: rgba(22, 80, 195, 0.85);
+  }
+}
+
+
+/* Distribuisce lo spazio equamente (es. 3 colonne = 33.33% ciascuna) */
+.equal-width-table th {
+  width: calc(100% / 3); // Imposta la larghezza di ciascuna colonna al 33.33% (per 3 colonne)
+  overflow: hidden; // Opzionale: evita che testi troppo lunghi rompano il layout
+  text-overflow: ellipsis; // Mostra "..." per testi troppo lunghi
+  white-space: nowrap; // Impedisce al testo di andare a capo
+}
+
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 2.1rem 1rem 2.1rem;
+}
+
+
+.cancel-btn {
+  color: red;
+  border: 2px solid red !important;
+
+  &:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+  }
+}
+
+
+
+// VS Code Counter: 39 code lines (13/10/2026)

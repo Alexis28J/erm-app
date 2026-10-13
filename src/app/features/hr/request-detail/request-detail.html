@@ -131,7 +131,8 @@
 
                 <div class="expense-container">
 
-                    <app-progress-bar [category]="expense.category" [amount]="expense.requestedAmount">
+                    <app-progress-bar [category]="expense.category" [amount]="expense.requestedAmount"
+                        [maxAmount]="getMaxAmount(expense.category)">
                     </app-progress-bar>
 
                     <div class="expense-row">
@@ -352,4 +353,4 @@
 
 
 
-<!-- VS Code Counter: 229 code lines (08/10/2026) -->
+<!-- VS Code Counter: 230 code lines (13/10/2026) -->

@@ -1,6 +1,5 @@
 import { Component, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EXPENSE_CATEGORIES } from '../../../core/constants/expense-categories.constant';
 
 @Component({
   imports: [CommonModule],
@@ -13,20 +12,11 @@ export class ProgressBar {
   // SIGNALS PER GLI INPUT DELLA CATEGORIA E DELL'IMPORTO
   category = input.required<string>();
   amount = input.required<number>();
-
-
-  // COMPUTED PER L'IMPORTO MASSIMO DI UNA CATEGORIA DI SPESA
-  readonly maxAmount = computed(() => {
-    return (
-      EXPENSE_CATEGORIES.find(
-        c => c.name === this.category()
-      )?.maxAmount ?? 0
-    );
-  });
-
+  maxAmount = input.required<number>();
 
   // COMPUTED PER LA PERCENTUALE DI UTILIZZO DELL'IMPORTO MASSIMO DI UNA CATEGORIA DI SPESA
   readonly percentage = computed(() => {
+
     const max = this.maxAmount();
     const amount = Number(this.amount() || 0);
 
@@ -37,7 +27,7 @@ export class ProgressBar {
     return max ? Math.min(
       (amount / max) * 100,
       100
-    ) : 0;
+    ) : 0;  // Restituisce 0 se max non è definito
   });
 
 
@@ -59,4 +49,5 @@ export class ProgressBar {
 }
 
 
-// VS Code Counter: 41 code lines (08/10/2026)
+
+// VS Code Counter: 34 code lines (13/10/2026)

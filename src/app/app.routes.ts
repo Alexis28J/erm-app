@@ -5,6 +5,8 @@ import { roleGuard } from './core/guards/role-guard';
 import { UserRole } from './core/interfaces/enum';
 import { EmployeeLayout } from './shared/layouts/employee-layout/employee-layout/employee-layout';
 import { HrLayout } from './shared/layouts/hr-layout/hr-layout/hr-layout';
+import { configResolver } from './config-resolver';
+import { HrSettings } from './features/hr/hr-settings/hr-settings/hr-settings';
 
 export const routes: Routes = [
 
@@ -54,7 +56,10 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import(
                         './features/employee/request-details/request-details'
-                    ).then(m => m.RequestDetails)
+                    ).then(m => m.RequestDetails),
+                resolve: {
+                    config: configResolver
+                }
             },
 
             {
@@ -62,7 +67,10 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import(
                         './features/employee/edit-request/edit-request'
-                    ).then(m => m.EditRequest)
+                    ).then(m => m.EditRequest),
+                resolve: {
+                    config: configResolver
+                }
             },
 
             {
@@ -70,7 +78,10 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import(
                         './features/employee/new-request/new-request'
-                    ).then(m => m.NewRequest)
+                    ).then(m => m.NewRequest),
+                resolve: {
+                    config: configResolver
+                }
             }
 
         ]
@@ -83,6 +94,14 @@ export const routes: Routes = [
             role: UserRole.HR
         },
         children: [
+
+            {
+                path: 'settings',
+                component: HrSettings,
+                resolve: {
+                    config: configResolver
+                }
+            },
 
             {
                 path: 'dashboard',
@@ -105,7 +124,10 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import(
                         './features/hr/request-detail/request-detail'
-                    ).then(m => m.RequestDetail)
+                    ).then(m => m.RequestDetail),
+                resolve: {
+                    config: configResolver
+                }
             },
 
             {
@@ -135,4 +157,5 @@ export const routes: Routes = [
 
 
 
-// VS Code Counter: 119 code lines (08/10/2026)
+// VS Code Counter: 140 code lines (13/10/2026)
+

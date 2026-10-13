@@ -1,6 +1,5 @@
 # COMMENTI
 
-
 ```HTML
 <!-- CONTROLLO SE LA VARIABILE "request" È DEFINITA PRIMA DI VISUALIZZARE I DETTAGLI -->
 <!-- request() è il signal che contiene i dettagli della richiesta; as request indica che il valore del signal sarà assegnato alla variabile "request" -->
@@ -156,7 +155,8 @@
 
         @for (expense of request.expenses; track expense.id) {
 
-        <app-progress-bar [category]="expense.category" [amount]="expense.requestedAmount">
+        <app-progress-bar [category]="expense.category" [amount]="expense.requestedAmount"
+            [maxAmount]="getMaxAmount(expense.category)">
         </app-progress-bar>
 
         }

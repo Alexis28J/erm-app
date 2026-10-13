@@ -23,4 +23,5 @@ export enum RequestStatus {
 }
 
 
+
 // VS Code counter: 20 code lines (08/10/2026)
