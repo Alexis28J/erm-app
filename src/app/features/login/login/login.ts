@@ -58,19 +58,29 @@ export class Login {
     )
       .subscribe(user => {
 
+        // Controllo se l'utente esiste
         if (!user) {
           this.errorMessage = "Invalid email or password";
           this.cdr.detectChanges();
           return;
         }
 
+        // Controllo se l'utente è attivo
+        if (user.active === false) {
+          this.errorMessage = 'Your account has been disabled.';
+          this.cdr.detectChanges();
+          return;
+        }
+
+
         this.errorMessage = '';
 
+
+        // Reindirizzamento in base al ruolo dell'utente
         if (user.role === UserRole.HR) {
           this.router.navigate(
             ['/hr/dashboard']
           );
-
         } else {
           this.router.navigate(
             ['/employee/dashboard']
@@ -93,4 +103,4 @@ export class Login {
 
 
 
-// VS Code Counter: 64 code lines (08/10/2026)
+// VS Code Counter: 69 code lines (14/10/2026)

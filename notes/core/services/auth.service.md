@@ -32,9 +32,9 @@ export class AuthService {
                     users.find(
                         user =>
                             user.email.toLowerCase() === email.toLowerCase() &&  // Login case sensitive
-                            user.password === password && // Nota: la password non dovrebbe essere memorizzata in chiaro cioè in plain text
+                            user.password === password // Nota: la password non dovrebbe essere memorizzata in chiaro cioè in plain text
                                 // In un progetto reale, la password dovrebbe essere confrontata in modo sicuro, ad esempio tramite hashing. Di quello si occupa il backend.
-                            user.active !== false // Verifica che l'utente sia attivo
+                            // && user.active !== false // Verifica che l'utente sia attivo
                     )
                 ),
                 tap(user => {  // Se l'utente è stato trovato, memorizzalo nel localStorage.

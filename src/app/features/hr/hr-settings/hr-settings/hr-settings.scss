@@ -1,57 +1,96 @@
-mat-card {
-  margin: 2rem !important;
+.settings-container {
+    margin: 2rem !important;
+}
+
+.page-header {
+    margin-bottom: 0.5rem;
+
+    h1 {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0.8rem;
+        font-size: 2rem;
+        font-weight: 600;
+    }
+
+    p {
+        margin-top: 1.2rem;
+        margin-left: 1rem;
+        color: #666;
+        font-size: 1rem;
+    }
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 0.5rem;
+}
+
+.settings-card {
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border-radius: 16px;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    mat-card-content {
+        padding: 24px;
+    }
+
+    h2 {
+        margin: 16px 0 8px;
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    p {
+        margin: 0;
+        color: #666;
+        line-height: 1.5;
+    }
+}
+
+.card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #e3f2fd;
+    border: 2px solid #1976d2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+        font-size: 32px;
+        height: 32px;
+        width: 32px;
+        color: #1976d2;
+    }
+}
+
+.disabled {
+    opacity: 0.6;
+    cursor: default;
+    box-shadow: none !important;
+
+    &:hover {
+        transform: none !important;
+        box-shadow: none !important;
+        border-color: transparent !important;
+    }
+}
+
+.back-button {
+    margin-left: 2rem;
 }
 
 
-mat-card-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.7rem;
-  font-weight: bold;
-  margin-bottom: 0.6rem;
-}
 
-
-.equal-width-table {
-  table-layout: fixed; // Forza tutte le colonne ad avere la stessa larghezza
-
-  th {
-    font-size: 1rem;
-  }
-
-  td {
-    font-weight: bold;
-    color: rgba(22, 80, 195, 0.85);
-  }
-}
-
-
-/* Distribuisce lo spazio equamente (es. 3 colonne = 33.33% ciascuna) */
-.equal-width-table th {
-  width: calc(100% / 3); // Imposta la larghezza di ciascuna colonna al 33.33% (per 3 colonne)
-  overflow: hidden; // Opzionale: evita che testi troppo lunghi rompano il layout
-  text-overflow: ellipsis; // Mostra "..." per testi troppo lunghi
-  white-space: nowrap; // Impedisce al testo di andare a capo
-}
-
-
-.actions {
-  display: flex;
-  justify-content: space-between;
-  margin: 1rem 2.1rem 1rem 2.1rem;
-}
-
-
-.cancel-btn {
-  color: red;
-  border: 2px solid red !important;
-
-  &:hover {
-    background-color: rgba(255, 0, 0, 0.1);
-  }
-}
-
-
-
-// VS Code Counter: 39 code lines (13/10/2026)
+// VS Code Counter:  77 code lines (14/10/2026)

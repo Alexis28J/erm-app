@@ -236,30 +236,6 @@ export class RequestDetail {
   }
 
 
-  // METODO PRIVATO PER MARCARE UNA RICHIESTA COME IN CORSO
-  private markAsInProgress(request: RefundRequest): void {
-
-    if (request.status !== RequestStatus.PENDING) {
-      return;
-    }
-
-    const updatedRequest: RefundRequest = {
-      ...request,
-      status: RequestStatus.IN_PROGRESS,
-      lastUpdateDate: new Date().toISOString()
-    };
-
-    // Aggiornamento nell'interfaccia utente
-    this.request.set(updatedRequest);
-
-    // Aggiornamento della richiesta sul server
-    this.refundRequestService
-      .updateRequest(request.id!, updatedRequest)
-      .subscribe();
-
-  }
-
-
   // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
   config = signal<AppConfig>(
     this.route.snapshot.data['config']
@@ -316,6 +292,7 @@ export class RequestDetail {
 
   // METODO PER INIZIARE LA REVISIONE DI UNA RICHIESTA
   startReview(): void {
+
     const request = this.request();
 
     if (!request) {
@@ -324,16 +301,34 @@ export class RequestDetail {
 
     this.reviewMode.set(true);
 
+
+    // Auto-compilazione degli importi approvati e cambio stato
     if (request.status === RequestStatus.PENDING) {
-      this.markAsInProgress(request);
+
+      const updatedRequest: RefundRequest = {
+        ...request,
+        status: RequestStatus.IN_PROGRESS,
+        lastUpdateDate: new Date().toISOString(),
+        expenses: request.expenses.map(expense => ({
+          ...expense,
+          approvedAmount: Math.min(
+            expense.requestedAmount,
+            this.getMaxAmount(expense.category)
+          )
+        }))
+      };
+
+      this.request.set(updatedRequest);
+
+      this.refundRequestService
+        .updateRequest(updatedRequest.id!, updatedRequest)
+        .subscribe();
     }
 
   }
-
 
 }
 
 
 
-// VS Code Counter: 198 code lines (13/10/2026)
-
+// VS Code Counter: 199 code lines (14/10/2026)

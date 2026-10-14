@@ -96,6 +96,19 @@ export class ResetPassword {
 
           }
 
+
+          if (user.active === false) {  // Se l'utente non è attivo, mostra un messaggio di errore
+
+            this.loading.set(false);  // Interrompe il caricamento poiché l'utente non è attivo
+
+            this.errorMessage.set(  // Mostra un messaggio di errore poiché l'account utente è disabilitato
+              'User account is disabled'
+            );
+
+            return;
+          }
+
+
           this.userService  // Invece, se l'utente viene trovato, aggiorna la sua password
             .updateUser(  // Chiama il servizio per aggiornare l'utente con la nuova password
               user.id,  // ID dell'utente da aggiornare

@@ -24,8 +24,7 @@ export class AuthService {
                     users.find(
                         user => {
                             return user.email.toLowerCase() === email.toLowerCase() &&
-                                user.password === password &&
-                                user.active !== false
+                                user.password === password
                         }
                     )
                 ),
@@ -94,4 +93,4 @@ export class AuthService {
 
 
 
-// VS Code counter: 60 code lines (08/10/2026)
+// VS Code counter:  59 code lines (14/10/2026)

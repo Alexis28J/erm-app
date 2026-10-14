@@ -233,10 +233,18 @@ export const routes: Routes = [
 
             {
                 path: 'settings',
-                component: HrSettings,
+                component: HrSettings
+            },
+            {
+                path: 'settings/expense-limits',
+                component: ExpenseLimitsSettings,
                 resolve: {  // "resolve" indica che prima di attivare questa rotta, Angular deve risolvere i dati specificati qui.
                     config: configResolver  // la proprietà "config" sarà risolta utilizzando il configResolver prima che la rotta venga attivata.
                 }
+            },
+            {
+                path: 'settings/user-management',
+                component: UserManagement
             },
             {
                 path: 'dashboard',

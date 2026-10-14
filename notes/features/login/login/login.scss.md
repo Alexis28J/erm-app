@@ -109,7 +109,8 @@ button {
 // MESSAGGIO DI ERRORE DEL LOGIN
 .error-message {
     color: #d32f2f;
-    font-size: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
     text-align: center;
     margin-top: 0px;
 }

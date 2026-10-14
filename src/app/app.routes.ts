@@ -7,6 +7,8 @@ import { EmployeeLayout } from './shared/layouts/employee-layout/employee-layout
 import { HrLayout } from './shared/layouts/hr-layout/hr-layout/hr-layout';
 import { configResolver } from './config-resolver';
 import { HrSettings } from './features/hr/hr-settings/hr-settings/hr-settings';
+import { ExpenseLimitsSettings } from './features/hr/expense-limits-settings/expense-limits-settings';
+import { UserManagement } from './features/hr/user-management/user-management';
 
 export const routes: Routes = [
 
@@ -97,12 +99,19 @@ export const routes: Routes = [
 
             {
                 path: 'settings',
-                component: HrSettings,
+                component: HrSettings
+            },
+            {
+                path: 'settings/expense-limits',
+                component: ExpenseLimitsSettings,
                 resolve: {
                     config: configResolver
                 }
             },
-
+            {
+                path: 'settings/user-management',
+                component: UserManagement
+            },
             {
                 path: 'dashboard',
                 loadComponent: () =>
@@ -157,5 +166,5 @@ export const routes: Routes = [
 
 
 
-// VS Code Counter: 140 code lines (13/10/2026)
+// VS Code Counter: 150 code lines (14/10/2026)
 

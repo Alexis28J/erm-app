@@ -49,6 +49,7 @@ export class Login {
       // ma può essere da Reactive Forms per ascoltare cosa digita l'utente nei campi del form e reagire di conseguenza (ad esempio, per abilitare/disabilitare pulsanti o mostrare messaggi di errore in tempo reale)
 
         if (!user) {
+          // console.log('Invalid email or password');
           this.errorMessage =   // Imposto il messaggio di errore se l'autenticazione fallisce
             "Invalid email or password";
             
@@ -57,6 +58,15 @@ export class Login {
 
           return;
         }
+        
+
+        if (user.active === false) {  // Se l'utente non è attivo, mostra un messaggio di errore
+          // console.log('User account is disabled');
+          this.errorMessage = 'Your account has been disabled.';
+          this.cdr.detectChanges();
+          return;
+        }
+
 
         this.errorMessage = '';  // Serve per resettare eventuali messaggi di errore precedenti
         // Quando il login va a buon fine, conviene pulire eventuali errori precedenti.

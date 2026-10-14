@@ -92,6 +92,7 @@ export class ResetPassword {
 
         next: user => {
 
+          // Controllo se l'utente esiste
           if (!user) {
             this.loading.set(false);
 
@@ -103,6 +104,21 @@ export class ResetPassword {
 
           }
 
+
+          // Controllo se l'utente è attivo
+          if (user.active === false) {
+
+            this.loading.set(false);
+
+            this.errorMessage.set(
+              'User account is disabled'
+            );
+
+            return;
+          }
+
+
+          // Aggiorno la password dell'utente
           this.userService
             .updateUser(
               user.id,
@@ -147,4 +163,4 @@ export class ResetPassword {
 
 
 
-// VS Code Counter: 109 code lines (08/10/2026)
+// VS Code Counter: 116 code lines (14/10/2026)

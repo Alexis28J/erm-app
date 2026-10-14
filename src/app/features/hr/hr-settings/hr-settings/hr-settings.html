@@ -1,81 +1,111 @@
-<mat-card>
+<mat-card class="settings-container">
 
-    <mat-card-header>
-        <mat-card-title matTooltip="Manage expense limits and receipt requirements for each category"
-            matTooltipPosition="right">
-            Expense Limits
-            <mat-icon>price_change</mat-icon>
-        </mat-card-title>
-    </mat-card-header>
+    <div class="page-header">
+
+        <h1>
+            <mat-icon>settings</mat-icon>
+            HR Settings
+        </h1>
+
+        <p>
+            Manage application settings and reimbursement policies.
+        </p>
+
+    </div>
+
+    <div class="settings-grid">
+
+        <!-- Expense Limits Card -->
+        <mat-card class="settings-card" routerLink="/hr/settings/expense-limits">
+
+            <mat-card-content>
+
+                <div class="card-icon">
+                    <mat-icon>price_change</mat-icon>
+                </div>
+
+                <h2>Expense Limits</h2>
+
+                <p>
+                    Configure maximum reimbursement amounts and receipt requirements.
+                </p>
+
+            </mat-card-content>
+
+        </mat-card>
 
 
-    <mat-card-content>
+        <!-- User Management Card -->
+        <mat-card class="settings-card" routerLink="/hr/settings/user-management">
 
-        <form [formGroup]="form">
+            <mat-card-content>
 
-            <table mat-table [dataSource]="expenseLimits.controls" class="equal-width-table">
+                <div class="card-icon">
+                    <mat-icon>group</mat-icon>
+                </div>
 
-                <ng-container matColumnDef="category">
+                <h2>User Management</h2>
 
-                    <th mat-header-cell *matHeaderCellDef>
-                        Category
-                    </th>
+                <p>
+                    Manage active and inactive users.
+                </p>
 
-                    <td mat-cell *matCellDef="let row">
-                        {{ row.get('name')?.value }}
-                    </td>
+            </mat-card-content>
 
-                </ng-container>
+        </mat-card>
+
+        <!-- Future cards -->
 
 
-                <ng-container matColumnDef="maxAmount">
+        <mat-card class="settings-card disabled">
 
-                    <th mat-header-cell *matHeaderCellDef matTooltip="Set the maximum amount for this category"
-                        matTooltipPosition="above">
-                        Max Amount
-                    </th>
+            <mat-card-content>
 
-                    <td mat-cell *matCellDef="let row">
-                        <input matInput type="number" [formControl]="row.get('maxAmount')">
-                    </td>
+                <div class="card-icon">
+                    <mat-icon>rule</mat-icon>
+                </div>
 
-                </ng-container>
+                <h2>Approval Rules</h2>
 
-                <ng-container matColumnDef="receiptRequired">
+                <p>
+                    Configure reimbursement approval policies.
+                </p>
 
-                    <th mat-header-cell *matHeaderCellDef
-                        matTooltip="Indicates if a receipt is required for this category" matTooltipPosition="above">
-                        Receipt Required
-                    </th>
+            </mat-card-content>
 
-                    <td mat-cell *matCellDef="let row">
-                        <mat-checkbox [formControl]="row.get('receiptRequired')"></mat-checkbox>
-                    </td>
+        </mat-card>
 
-                </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns">
-                </tr>
+        <mat-card class="settings-card disabled">
 
-            </table>
+            <mat-card-content>
 
-        </form>
+                <div class="card-icon">
+                    <mat-icon>notifications</mat-icon>
+                </div>
 
-    </mat-card-content>
+                <h2>Notifications</h2>
+
+                <p>
+                    Configure notification preferences.
+                </p>
+
+            </mat-card-content>
+
+        </mat-card>
+
+    </div>
 
 </mat-card>
 
 
-<div class="actions">
-    <button mat-raised-button color="warn" routerLink="/hr/dashboard" class="cancel-btn">
-        <mat-icon>cancel</mat-icon> Cancel
+<div>
+    <button mat-raised-button color="primary" class="back-button" routerLink="/hr/dashboard">
+        <mat-icon>arrow_back</mat-icon>
+        Back to Dashboard
     </button>
-
-    <button mat-raised-button color="primary" (click)="save()">
-        <mat-icon>save</mat-icon> Save</button>
 </div>
 
 
 
-<!-- VS Code Counter: 51 code lines (13/10/2026) -->
+<!-- VS Code counter: 63 code lines (14/10/2026) -->

@@ -235,30 +235,36 @@ export class RequestDetail {
 
   }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // Ho commentato questo metodo, poiché non è più necessario nel flusso attuale dell'applicazione
+  // Questa funzionalità è stata fusionata con il metodo startReview come parte del flusso di revisione delle richieste.
 
   // METODO PRIVATO PER MARCARE UNA RICHIESTA COME IN CORSO
-  private markAsInProgress(request: RefundRequest): void {
+  // private markAsInProgress(request: RefundRequest): void {
 
-    if (request.status !== RequestStatus.PENDING) {  // Se lo stato della richiesta non è "PENDING", esci dal metodo
-      return;
-    }
+  //   if (request.status !== RequestStatus.PENDING) {  // Se lo stato della richiesta non è "PENDING", esci dal metodo
+  //     return;
+  //   }
 
-    const updatedRequest: RefundRequest = { // Crea un nuovo oggetto RefundRequest aggiornato con lo stato "IN_PROGRESS" e le informazioni esistenti della richiesta
-      ...request,
-      status: RequestStatus.IN_PROGRESS,
-      lastUpdateDate: new Date().toISOString()
-    };
+  //   const updatedRequest: RefundRequest = { // Crea un nuovo oggetto RefundRequest aggiornato con lo stato "IN_PROGRESS" e le informazioni esistenti della richiesta
+  //     ...request,
+  //     status: RequestStatus.IN_PROGRESS,
+  //     lastUpdateDate: new Date().toISOString()
+  //   };
 
-    this.request.set(updatedRequest);   // Aggiorna la richiesta corrente con l'oggetto aggiornato mell'interfaccia utente
+  //   this.request.set(updatedRequest);   // Aggiorna la richiesta corrente con l'oggetto aggiornato mell'interfaccia utente
 
 
-    // Aggiornamento della richiesta sul server
-    this.refundRequestService  // Chiama il servizio per aggiornare la richiesta nel backend
-      .updateRequest(request.id!, updatedRequest)  // Invia la richiesta aggiornata al servizio per salvarla nel backend
-      .subscribe(); // subscribe serve per eseguire effettivamente la richiesta HTTP, anche se non facciamo nulla con la risposta
-      // Non serve ripetere il metodo updateRequest poiché la richiesta HTTP è già stata inviata e subscribe la esegue.
+  //   // Aggiornamento della richiesta sul server
+  //   this.refundRequestService  // Chiama il servizio per aggiornare la richiesta nel backend
+  //     .updateRequest(request.id!, updatedRequest)  // Invia la richiesta aggiornata al servizio per salvarla nel backend
+  //     .subscribe(); // subscribe serve per eseguire effettivamente la richiesta HTTP, anche se non facciamo nulla con la risposta
+  //     // Non serve ripetere il metodo updateRequest poiché la richiesta HTTP è già stata inviata e subscribe la esegue.
       
-  }
+  // }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
   // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
@@ -339,8 +345,31 @@ export class RequestDetail {
 
     this.reviewMode.set(true);  // Imposta la modalità di revisione su true
 
-    if (request.status === RequestStatus.PENDING) {  // Se la richiesta è in stato PENDING, 
-      this.markAsInProgress(request);  // viene marcata come IN_PROGRESS
+    // if (request.status === RequestStatus.PENDING) {  // Se la richiesta è in stato PENDING, 
+    //   this.markAsInProgress(request);  // viene marcata come IN_PROGRESS
+    // }
+
+    // Auto-compilazione degli importi approvati e cambio stato
+    if (request.status === RequestStatus.PENDING) {
+
+      const updatedRequest: RefundRequest = {  // Creo un nuovo oggetto richiesta aggiornato con gli importi approvati e lo stato modificato
+        ...request,  // Usando il metodo spread copio tutte le proprietà della richiesta originale
+        status: RequestStatus.IN_PROGRESS, // Imposto lo stato della richiesta come "IN_PROGRESS"
+        lastUpdateDate: new Date().toISOString(), // Aggiorno la data dell'ultima modifica
+        expenses: request.expenses.map(expense => ({  // Con il metodo map creo un nuovo array di voci di spesa aggiornate
+          ...expense,  // Copio tutte le proprietà della voce di spesa originale
+          approvedAmount: Math.min(  // Calcolo l'importo approvato come il minimo tra l'importo richiesto e il massimo consentito per la categoria
+            expense.requestedAmount,
+            this.getMaxAmount(expense.category)
+          )
+        }))
+      };
+
+      this.request.set(updatedRequest);  // Aggiorno il segnale della richiesta con il nuovo oggetto contenente gli importi approvati e lo stato modificato
+
+      this.refundRequestService  // Invio la richiesta aggiornata al servizio per la persistenza cioè per salvarla nel backend
+      .updateRequest(updatedRequest.id!, updatedRequest) // Uso il metodo updateRequest del servizio per aggiornare la richiesta nel backend
+      .subscribe();  // Sottoscrivo l'osservabile per eseguire effettivamente l'aggiornamento della richiesta nel backend
     }
 
   }

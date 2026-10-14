@@ -1,7 +1,7 @@
 # COMMENTI
 
 ```TYPESCRIPT
-export class HrSettings {
+export class ExpenseLimitsSettings {
 
   constructor() {
     this.initializeForm();  // Inizializza il form reattivo con i dati della configurazione HR.
