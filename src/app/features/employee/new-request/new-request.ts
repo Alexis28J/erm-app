@@ -18,7 +18,6 @@ import { CommonModule } from '@angular/common';
 import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-bar';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs';
-import { MatDivider } from '@angular/material/divider';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list';
@@ -29,7 +28,7 @@ import { AppConfig } from '../../../core/interfaces/app-config';
   imports: [ReactiveFormsModule, MatFormFieldModule, MatButtonModule,
     MatCardModule, MatSelectModule, MatIconModule,
     RouterLink, MatInputModule, MatOptionModule, CommonModule,
-    ProgressBar, MatDivider, TotalProgressBar, MatTooltipModule, AttachmentList],
+    ProgressBar, TotalProgressBar, MatTooltipModule, AttachmentList],
   selector: 'app-new-request',
   styleUrls: ['./new-request.scss'],
   templateUrl: './new-request.html',
@@ -148,12 +147,12 @@ export class NewRequest {
     const currentUser = this.authService.getCurrentUser();
 
     // Controllo se l'utente corrente esiste
-    if (!currentUser) {
+    if (!currentUser) {  
       return;
     }
 
-    // Controllo se il form è valido e se ci sono spese aggiunte
-    if (this.requestForm.invalid && this.expenses.length === 0) {
+    // Controllo se il form è valido
+    if (this.requestForm.invalid) {
       this.requestForm.markAllAsTouched();
       this.formError = 'Please fill in all required fields';
       return;
@@ -360,4 +359,4 @@ export class NewRequest {
 
 
 
-// VS Code Counter: 230 code lines (13/10/2026)
+// VS Code Counter: 229 code lines (15/10/2026)

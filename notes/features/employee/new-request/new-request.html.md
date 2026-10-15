@@ -39,7 +39,8 @@
                     <mat-form-field appearance="outline">
 
                         <mat-label>Reference Month</mat-label>
-                        <input matInput type="month" formControlName="referenceMonth">
+                        <!-- pattern="\d{4}-\d{2}" per il formato YYYY-MM -->
+                        <input matInput type="month" formControlName="referenceMonth" pattern="\d{4}-\d{2}">
                         <!-- formControlName è utilizzato per collegare il campo del form al FormGroup corrispondente. 
                          In questo caso, collega l'input "referenceMonth" al FormGroup "requestForm". -->
 

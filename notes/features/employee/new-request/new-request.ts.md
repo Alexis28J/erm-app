@@ -204,14 +204,16 @@ export class NewRequest {
     const currentUser = this.authService.getCurrentUser();
 
     // Controllo se l'utente corrente esiste
-    if (!currentUser) {
+    // può succedere che l'utente non sia loggato, in tal caso si interrompe l'esecuzione
+    if (!currentUser) {  // è un fallback nel caso l'utente non sia loggato
       return;
     }
 
+
     // NB: Sia .valid che .invalid sono proprietà dei FormGroup e dei FormArray che indicano se il gruppo o l'array è valido o meno
     
-    // Controllo se il form è valido e se ci sono spese aggiunte
-    if (this.requestForm.invalid && this.expenses.length === 0) {
+    // Controllo se il form è valido
+    if (this.requestForm.invalid) {
       this.requestForm.markAllAsTouched();
       //this.notificationService.error('Please fill in all required fields');  // Non riesco a personalizzare lo snackbar custom per l'errore!
       this.formError = 'Please fill in all required fields';

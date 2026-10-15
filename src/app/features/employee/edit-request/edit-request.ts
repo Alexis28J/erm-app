@@ -22,6 +22,7 @@ import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progr
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExpenseEditor } from '../../../shared/expense-editor/expense-editor/expense-editor';
 import { AppConfig } from '../../../core/interfaces/app-config';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule,
@@ -58,6 +59,7 @@ export class EditRequest {
   private router = inject(Router);
   private refundRequestService = inject(RefundRequestService);
   private notificationService = inject(Notification);
+  private authService = inject(AuthService);
 
 
   // INIZIALIZZAZIONE DELLE VARIABILI
@@ -213,14 +215,35 @@ export class EditRequest {
   // METODO PER INVIARE LA RICHIESTA
   submitRequest(): void {
 
+    const currentUser = this.authService.getCurrentUser();
+
+    // Controllo se l'utente corrente esiste
+    if (!currentUser) {
+      return;
+    }
+
+    // Controllo se il form è valido
     if (this.requestForm.invalid) {
       this.requestForm.markAllAsTouched();
       this.formError = 'Please fill in all required fields';
       return;
     }
 
+    // Controllo se ci sono spese aggiunte
+    if (this.requestForm.valid && this.expenses.length === 0) {
+      this.formError = 'Please add at least one expense';
+      return;
+    }
+
+    // Controllo se tutte le spese sono valide
+    if (this.expenses.controls.some(expense => !expense.valid)) {
+      this.formError = 'Please fill in all required fields for each expense';
+      return;
+    }
+
     const currentRequest = this.request();
 
+    // Controllo se la richiesta corrente esiste
     if (!currentRequest) {
       return;
     }
@@ -386,4 +409,4 @@ export class EditRequest {
 
 
 
-// VS Code Counter: 253 code lines (13/10/2026)
+// VS Code Counter: 267 code lines (15/10/2026)

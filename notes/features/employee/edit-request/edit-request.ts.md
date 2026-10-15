@@ -216,6 +216,15 @@ export class EditRequest {
   // METODO PER INVIARE LA RICHIESTA
   submitRequest(): void {  // Metodo per inviare la richiesta compilata dal form.
  
+     const currentUser = this.authService.getCurrentUser();
+
+    // Controllo se l'utente corrente esiste
+    // può succedere che l'utente non sia loggato, in tal caso si interrompe l'esecuzione
+    if (!currentUser) {  // è un fallback nel caso l'utente non sia loggato
+      return;
+    }
+
+    // Controllo se il form è valido
     if (this.requestForm.invalid) {    // Se il form non è valido, interrompiamo l'invio della richiesta.
       this.requestForm.markAllAsTouched();  // Evidenziamo tutti i campi del form come "toccati" (normalmente visualizzati con un bordo rosso o un messaggio di errore) per mostrare eventuali errori di validazione.
 
@@ -223,6 +232,19 @@ export class EditRequest {
 
       return;  // Interrompiamo l'invio della richiesta se il form non è valido.
     }
+
+    // Controllo se ci sono spese aggiunte
+    if (this.requestForm.valid && this.expenses.length === 0) {
+      this.formError = 'Please add at least one expense';
+      return;
+    }
+
+    // Controllo se tutte le spese sono valide
+    if (this.expenses.controls.some(expense => !expense.valid)) {
+      this.formError = 'Please fill in all required fields for each expense';
+      return;
+    }
+
 
     const currentRequest = this.request();  // currentRequest contiene la richiesta attuale ottenuta dal signal request()
 

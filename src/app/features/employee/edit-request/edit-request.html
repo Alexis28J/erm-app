@@ -36,7 +36,7 @@
           <mat-form-field appearance="outline">
 
             <mat-label>Reference Month</mat-label>
-            <input matInput type="month" formControlName="referenceMonth">
+            <input matInput type="month" formControlName="referenceMonth" pattern="\d{4}-\d{2}">
 
           </mat-form-field>
 
@@ -91,20 +91,20 @@
       <!-------------------------------- SEZIONE DI RIEPILOGO DEL TOTALE RICHIESTO --------------------------------->
       <mat-card>
 
-        <div class="total-amount">
+        <div class="total-section">
           <mat-card-subtitle>
             Total Requested Amount
             <mat-icon>payments</mat-icon>
           </mat-card-subtitle>
 
-          <span>
+          <strong>
             {{ totalRequestedAmount() | number:'1.2-2' }} €
-          </span>
+          </strong>
         </div>
 
         <div class="total-expense-container">
 
-          <div class="total-expense-grid">
+          <div class="expense-grid">
 
             <app-total-progress-bar [allowedAmount]="totalAllowedAmount()" [requestedAmount]="totalRequestedAmount()">
             </app-total-progress-bar>
@@ -156,4 +156,4 @@
 
 
 
-<!-- VS Code Counter: 93 code lines (13/10/2026) -->
+<!-- VS Code Counter: 93 code lines (15/10/2026) -->

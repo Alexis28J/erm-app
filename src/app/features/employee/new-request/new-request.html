@@ -1,40 +1,38 @@
 <!-- CONTAINER PRINCIPALE -->
 <div class="page-container">
 
-    <!-- CARD PRINCIPALE -->
-    <mat-card>
 
-        <!-- HEADER DELLA CARD -->
-        <mat-card-header>
-            <mat-card-title>
-                New Refund Request
-                <mat-icon>request_page</mat-icon>
-            </mat-card-title>
+    <!-- HEADER DELLA CARD -->
+    <div class="new-request-header">
+        <mat-card-title>
+            New Refund Request
+            <mat-icon>request_page</mat-icon>
+        </mat-card-title>
 
-            @if (formError) {
-            <span class="error-message">{{ formError }}</span>
-            }
-        </mat-card-header>
+        @if (formError) {
+        <span class="error-message">{{ formError }}</span>
+        }
+    </div>
 
+    <!---------------------------------------- SEZIONE DI DETTAGLI DELLA RICHIESTA ---------------------------------------->
 
-        <!-- CONTENUTO DELLA CARD -->
-        <mat-card-content>
+    <form [formGroup]="requestForm">
 
-            <mat-card-subtitle>
-                Request Details
-                <mat-icon>info</mat-icon>
-            </mat-card-subtitle>
+        <!-- DATI DELLA RICHIESTA -->
+        <div class="form-section">
 
-            <form [formGroup]="requestForm">
+            <mat-card>
+                <mat-card-subtitle>
+                    Request Details
+                    <mat-icon>info</mat-icon>
+                </mat-card-subtitle>
 
-                <!-- DATI DELLA RICHIESTA -->
-                <div class="form-section">
-
+                <mat-card-content>
                     <!-- Mese di riferimento -->
                     <mat-form-field appearance="outline">
 
                         <mat-label>Reference Month</mat-label>
-                        <input matInput type="month" formControlName="referenceMonth">
+                        <input matInput type="month" formControlName="referenceMonth" pattern="\d{4}-\d{2}">
 
                     </mat-form-field>
 
@@ -46,26 +44,32 @@
                         </textarea>
 
                     </mat-form-field>
+                </mat-card-content>
+            </mat-card>
 
 
-                    <!-- Linea divisoria -->
-                    <mat-divider></mat-divider>
+            <!---------------------------------------- SEZIONE DELLE SPESE ---------------------------------------->
+            <mat-card>
 
-                    <!-- SPESE -->
+                <div formArrayName="expenses">
+
                     <div class="expenses-header">
 
                         <mat-card-subtitle>
                             Expenses
                             <mat-icon>receipt</mat-icon>
                         </mat-card-subtitle>
-                        <button mat-raised-button color="primary" type="button" (click)="addExpense()">
+
+                        <!-- Pulsante per aggiungere una nuova spesa -->
+                        <button mat-raised-button color="primary" type="button" (click)="addExpense()"
+                            style="margin-right: 1rem;">
                             Add Expense
                             <mat-icon>add</mat-icon>
                         </button>
 
                     </div>
 
-                    <div formArrayName="expenses" class="expenses-section">
+                    <div class="expenses-list">
 
                         @for (expense of expenses.controls;
                         track $index; let expenseIndex = $index) {
@@ -187,63 +191,64 @@
                         </div>
 
                         }
+                    </div> <!-- Chiusura della lista delle spese -->
 
-                    </div>
+                </div>
+
+            </mat-card>
 
 
-                    <!-- Linea divisoria -->
-                    <mat-divider></mat-divider>
+            <!-------------------------------- SEZIONE DI RIEPILOGO DEL TOTALE RICHIESTO --------------------------------->
+            <mat-card>
+                <div class="total-section">
 
+                    <mat-card-subtitle>
+                        Total Requested
+                        <mat-icon>payments</mat-icon>
+                    </mat-card-subtitle>
 
-                    <!-- TOTAL -->
-                    <div class="total-section">
+                    <strong>
+                        {{ totalAmount | number: '1.2-2' }} €
+                    </strong>
+                </div>
 
-                        <mat-card-subtitle>
-                            Total Requested
-                            <mat-icon>payments</mat-icon>
-                        </mat-card-subtitle>
-
-                        <strong>
-                            {{ totalAmount | number: '1.2-2' }} €
-                        </strong>
-                    </div>
+                <div class="total-expense-container">
 
                     <div class="expense-grid">
                         <app-total-progress-bar [allowedAmount]="totalAllowedAmount()"
                             [requestedAmount]="totalRequestedAmount()"></app-total-progress-bar>
                     </div>
-
-
-                    <!-- ACTIONS -->
-                    <div class="actions">
-
-                        <button mat-stroked-button routerLink="/employee/dashboard" class="cancel-btn">
-                            Cancel
-                            <mat-icon>cancel</mat-icon>
-                        </button>
-
-                        <button mat-stroked-button type="button" (click)="saveDraft()" class="draft-btn">
-                            Save Draft
-                            <mat-icon>save</mat-icon>
-                        </button>
-
-                        <button mat-raised-button color="primary" (click)="submitRequest()">
-                            Submit Request
-                            <mat-icon>send</mat-icon>
-                        </button>
-
-                    </div>
-
                 </div>
 
-            </form>
+            </mat-card>
 
-        </mat-card-content>
+            <!-- ACTIONS -->
+            <div class="actions">
 
-    </mat-card>
+                <button mat-stroked-button routerLink="/employee/dashboard" class="cancel-btn">
+                    Cancel
+                    <mat-icon>cancel</mat-icon>
+                </button>
+
+                <button mat-stroked-button type="button" (click)="saveDraft()" class="draft-btn">
+                    Save Draft
+                    <mat-icon>save</mat-icon>
+                </button>
+
+                <button mat-raised-button color="primary" (click)="submitRequest()">
+                    Submit Request
+                    <mat-icon>send</mat-icon>
+                </button>
+
+            </div>
+
+        </div>
+
+
+    </form>
 
 </div>
 
 
 
-<!-- VS Code Counter: 142 code lines (13/10/2026) -->
+<!-- VS Code Counter: 149 code lines (15/10/2026) -->

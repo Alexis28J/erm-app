@@ -22,7 +22,7 @@
             <!-- Verifica se ci sono richieste di rimborso -->
             @if (requests().length > 0) {
 
-            <table mat-table [dataSource]="dataSource" matSort>
+            <table mat-table [dataSource]="dataSource" matSort class="equal-width-table">
 
                 <!-- Reference Month -->
                 <ng-container matColumnDef="referenceMonth">
@@ -128,7 +128,7 @@
 
                         <button mat-raised-button color="primary" (click)="viewDetails(request.id)"
                             [hidden]="request.status === 'DRAFT'">
-                            View Details
+                            Details
                             <mat-icon>visibility</mat-icon>
                         </button>
 

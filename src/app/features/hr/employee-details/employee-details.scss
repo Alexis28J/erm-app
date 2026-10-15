@@ -170,6 +170,24 @@ p {
 }
 
 
+.equal-width-table {
+  table-layout: fixed; // Forza tutte le colonne ad avere la stessa larghezza
+
+  th {
+    font-size: 1rem;
+  }
+
+}
+
+
+/* Distribuisce lo spazio equamente (es. 3 colonne = 33.33% ciascuna) */
+.equal-width-table th {
+  width: calc(100% / 6); // Imposta la larghezza di ciascuna colonna al 16.66% (per 6 colonne)
+  overflow: hidden; // Opzionale: evita che testi troppo lunghi rompano il layout
+  text-overflow: ellipsis; // Mostra "..." per testi troppo lunghi
+  white-space: nowrap; // Impedisce al testo di andare a capo
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// COMMENTI:
@@ -182,4 +200,4 @@ p {
 /// 
 
 
-//  VS Code Counter: 124 code lines (08/10/2026)
+//  VS Code Counter: 136 code lines (14/10/2026)
