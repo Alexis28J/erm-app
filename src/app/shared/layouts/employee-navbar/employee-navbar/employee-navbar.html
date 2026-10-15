@@ -3,7 +3,7 @@
     <!-- Logo dell'applicazione -->
     <a routerLink="/employee/dashboard">
         <img src="https://techjobsfair.it/prod/wp-content/uploads/2022/10/DGS_logo.png" alt="ERM Logo" class="app-logo"
-            matTooltip="BUILDING THE FUTURE" matTooltipPosition="right">
+            matTooltip="BUILDING THE FUTURE" matTooltipPosition="right" aria-label="Link to dashboard">
     </a>
 
 
@@ -32,19 +32,21 @@
 
     <mat-menu #userMenu="matMenu">
 
-        <button mat-menu-item routerLink="/employee/dashboard" class="menu-item">
+        <button mat-menu-item routerLink="/employee/dashboard" class="menu-item" aria-label="Navigate to dashboard">
             Dashboard
             <mat-icon>dashboard</mat-icon>
         </button>
 
 
-        <button mat-menu-item routerLink="/employee/request-list" class="menu-item">
+        <button mat-menu-item routerLink="/employee/request-list" class="menu-item"
+            aria-label="Navigate to my requests">
             My Requests
             <mat-icon>list</mat-icon>
         </button>
 
 
-        <button mat-menu-item routerLink="/employee/new-request" class="menu-item">
+        <button mat-menu-item routerLink="/employee/new-request" class="menu-item"
+            aria-label="Navigate to new request form">
             New Request
             <mat-icon>add</mat-icon>
         </button>
@@ -57,7 +59,8 @@
 
 
     <!-- PULSANTE DI LOGOUT -->
-    <button mat-button (click)="logout()" matTooltip="Logout" matTooltipPosition="left">
+    <button mat-button (click)="logout()" matTooltip="Logout" matTooltipPosition="left"
+        aria-label="Logout (Close session)">
         <mat-icon>logout</mat-icon>
         Exit
     </button>
@@ -66,4 +69,4 @@
 
 
 
-<!-- VS Code Counter: 39 code lines (08/10/2026) -->
+<!-- VS Code Counter: 42 code lines (15/10/2026) -->

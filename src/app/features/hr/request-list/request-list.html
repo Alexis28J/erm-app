@@ -21,7 +21,7 @@
                 <mat-label>Search requests</mat-label>
 
                 <input matInput [value]="filterValue()" (input)="updateFilter($event)"
-                    placeholder="Month, status, amount">
+                    placeholder="Month, status, amount" aria-label="Search requests by month, status, or amount">
 
                 <mat-icon matSuffix>
                     search
@@ -91,7 +91,6 @@
                             @if (request.status === 'PARTIAL_APPROVED') {
                             Partial Approved
                             }
-
                             @if (request.status === 'APPROVED') {
                             Approved
                             }
@@ -119,7 +118,8 @@
                     </th>
 
                     <td mat-cell *matCellDef="let request">
-                        <button mat-raised-button color="primary" (click)="viewDetails(request.id)">
+                        <button mat-raised-button color="primary" (click)="viewDetails(request.id)"
+                            aria-label="View Request Details">
                             Details
                             <mat-icon>visibility</mat-icon>
                         </button>
@@ -133,7 +133,8 @@
 
             </table>
 
-            <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20, 30]" showFirstLastButtons>
+            <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20, 30]" showFirstLastButtons
+                aria-label="Select the page number of the request list">
             </mat-paginator>
             }
 
@@ -144,12 +145,12 @@
 
     <!-- NAVIGAZIONE TRA LE PAGINE -->
     <div class="navigation-buttons">
-        <button mat-raised-button color="accent" routerLink="/hr/dashboard">
+        <button mat-raised-button color="accent" routerLink="/hr/dashboard" aria-label="Back to the Dashboard">
             Back to the Dashboard
             <mat-icon>arrow_back</mat-icon>
         </button>
 
-        <button mat-raised-button color="accent" routerLink="/hr/employee-list">
+        <button mat-raised-button color="accent" routerLink="/hr/employee-list" aria-label="See the Employee List">
             See the Employee List
             <mat-icon>people</mat-icon>
         </button>
@@ -159,4 +160,4 @@
 
 
 
-<!-- VS Code Counter: 107 code lines (08/10/2026) -->
+<!-- VS Code Counter: 109 code lines (15/10/2026) -->

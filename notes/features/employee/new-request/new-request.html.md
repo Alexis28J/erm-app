@@ -255,7 +255,8 @@
                     <!-- ACTIONS -->
                     <div class="actions">
 
-                        <button mat-stroked-button routerLink="/employee/dashboard" class="cancel-btn">
+                        <button mat-stroked-button routerLink="/employee/dashboard" class="cancel-btn" aria-label="Cancel and go back to dashboard">
+                        <!-- aria-label è un attributo che fornisce una descrizione testuale per gli screen reader (tema di accessibilità)-->
                             Cancel
                         </button>
 

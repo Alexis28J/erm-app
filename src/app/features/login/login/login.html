@@ -32,7 +32,7 @@
 
                     <mat-label>Email</mat-label>
 
-                    <input matInput type="email" formControlName="email">
+                    <input matInput type="email" formControlName="email" aria-label="Input your email (Required)">
 
                     <!-- Controllo errori per il campo email con @if -->
                     @if (loginForm.get('email')?.hasError('required')) {
@@ -50,7 +50,8 @@
 
                     <mat-label>Password</mat-label>
 
-                    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+                    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+                        aria-label="Input your password (Required)">
 
                     @if (loginForm.get('password')?.hasError('required')) {
                     <mat-error>Password is required</mat-error>
@@ -58,7 +59,8 @@
 
                     <!-- Pulsante per mostrare/nascondere la password -->
                     <button mat-icon-button type="button" (click)="togglePasswordVisibility()"
-                        matTooltip="{{ hidePassword ? 'Show Password' : 'Hide Password' }}" matTooltipPosition="below">
+                        matTooltip="{{ hidePassword ? 'Show Password' : 'Hide Password' }}" matTooltipPosition="below"
+                        aria-label="{{ hidePassword ? 'Click to show password' : 'Click to hide password' }}">
                         <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
 
@@ -72,7 +74,8 @@
                 }
 
                 <!-- PULSANTE DI LOGIN -->
-                <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
+                <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid"
+                    aria-label="Login (Initiate session)">
                     Login
                 </button>
 
@@ -83,13 +86,13 @@
             <mat-card-actions>
 
                 <!-- PULSANTE PER TORNARE ALLA HOME -->
-                <button mat-raised-button routerLink="">
+                <button mat-raised-button routerLink="" aria-label="Back to Home">
                     <mat-icon>home</mat-icon>
                     Back to Home
                 </button>
 
                 <!-- PULSANTE PER RIPRISTINARE LA PASSWORD -->
-                <button mat-raised-button routerLink="/reset-password">
+                <button mat-raised-button routerLink="/reset-password" aria-label="Reset Password">
                     <mat-icon>lock_reset</mat-icon>
                     Reset Password
                 </button>
@@ -104,4 +107,4 @@
 
 
 
-<!-- VS Code Counter: 55 code lines (08/10/2026) -->
+<!-- VS Code Counter: 58 code lines (15/10/2026) -->

@@ -31,8 +31,9 @@ mat-card-title {
 
 .back-button {
     margin-left: 2rem;
+    width: calc(100% - 4rem); // Occupa tutta la larghezza disponibile meno il margine sinistro e destro
 }
 
 
 
-// VS Code Counter: 26 code lines (14/10/2026)
+// VS Code Counter: 27 code lines (15/10/2026)

@@ -57,7 +57,8 @@
 }
 
 
-button:hover {
+// se voglio aggiungere effetto quando si naviga con i tasti, uso :focus
+button:hover, button:focus {
   color: #005cbb !important;
   transform: scale(1.1) !important;
   transition: transform 0.3s ease-in-out !important;

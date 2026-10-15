@@ -2,7 +2,7 @@
 @if (request(); as request) {
 
 <!-- CARD PRINCIPALE CHE MOSTRA I DETTAGLI DELLA RICHIESTA -->
-<mat-card>
+<mat-card class="space">
 
     <!-- HEADER DELLA CARD -->
     <mat-card-header>
@@ -179,12 +179,12 @@
 
 <!-- PULSANTI DI NAVIGAZIONE -->
 <div class="navigation-buttons">
-    <button mat-raised-button color="primary" routerLink="/employee/request-list">
+    <button mat-raised-button color="primary" routerLink="/employee/request-list" aria-label="Back to Request List">
         Back to Request List
         <mat-icon>arrow_back</mat-icon>
     </button>
 
-    <button mat-raised-button color="accent" routerLink="/employee/dashboard">
+    <button mat-raised-button color="accent" routerLink="/employee/dashboard" aria-label="Go to the Dashboard">
         Go to the Dashboard
         <mat-icon>arrow_forward</mat-icon>
     </button>

@@ -12,8 +12,9 @@
 
         <!-- Campo di ricerca per filtrare gli impiegati -->
         <mat-form-field appearance="outline">
-            <mat-label>Search Employee</mat-label>
-            <input matInput [formControl]="searchControl">
+            <mat-label>Search Employee (by name or email)</mat-label>
+            <input matInput [formControl]="searchControl"
+                aria-label="Write the name or email of the employee to search">
         </mat-form-field>
 
 
@@ -78,7 +79,8 @@
                 </th>
 
                 <td mat-cell *matCellDef="let employee">
-                    <button mat-raised-button color="primary" (click)="viewDetails(employee.id)">
+                    <button mat-raised-button color="primary" (click)="viewDetails(employee.id)"
+                        aria-label="View details of the employee">
                         Details
                         <mat-icon>visibility</mat-icon>
                     </button>
@@ -91,7 +93,8 @@
 
         </table>
 
-        <mat-paginator [pageSize]="5" [pageSizeOptions]="[10, 15]" showFirstLastButtons></mat-paginator>
+        <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons
+            aria-label="Select page of employee list"></mat-paginator>
         <!-- ShowFirstLastButtons significa che i pulsanti per andare alla prima e all'ultima pagina saranno visibili -->
 
     </mat-card-content>
@@ -101,12 +104,12 @@
 
 <!-- PULSANTI DI NAVIGAZIONE -->
 <div class="navigation-buttons">
-    <button mat-raised-button color="accent" routerLink="/hr/dashboard">
+    <button mat-raised-button color="accent" routerLink="/hr/dashboard" aria-label="Back to the Dashboard">
         Back to the Dashboard
         <mat-icon>arrow_back</mat-icon>
     </button>
 
-    <button mat-raised-button color="accent" routerLink="/hr/request-list">
+    <button mat-raised-button color="accent" routerLink="/hr/request-list" aria-label="See the Request List">
         See the Request List
         <mat-icon>list</mat-icon>
     </button>
@@ -114,4 +117,4 @@
 
 
 
-<!-- VS Code Counter: 75 code lines (08/10/2026) -->
+<!-- VS Code Counter: 78 code lines (15/10/2026) -->

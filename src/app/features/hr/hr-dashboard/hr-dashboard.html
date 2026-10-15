@@ -15,7 +15,6 @@
                 Welcome, dear {{currentUser?.name}}
             </mat-card-title>
 
-
         </mat-card-header>
 
 
@@ -41,12 +40,12 @@
 
     <!-- CONTENITORE DEI PULSANTI DI AZIONE DEL DASHBOARD -->
     <div class="actions-container">
-        <button mat-raised-button color="primary" routerLink="/hr/request-list">
+        <button mat-raised-button color="primary" routerLink="/hr/request-list" aria-label="Request List">
             Request List
             <mat-icon>list</mat-icon>
         </button>
 
-        <button mat-raised-button color="primary" routerLink="/hr/employee-list">
+        <button mat-raised-button color="primary" routerLink="/hr/employee-list" aria-label="Employee List">
             Employee List
             <mat-icon>people</mat-icon>
         </button>

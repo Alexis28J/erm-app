@@ -127,7 +127,7 @@
                     <td mat-cell *matCellDef="let request">
 
                         <button mat-raised-button color="primary" (click)="viewDetails(request.id)"
-                            [hidden]="request.status === 'DRAFT'">
+                            [hidden]="request.status === 'DRAFT'" aria-label="View request details">
                             Details
                             <mat-icon>visibility</mat-icon>
                         </button>
@@ -136,25 +136,28 @@
                         <!-- Controllo se lo stato della richiesta è DRAFT -->
                         @if (request.status === 'DRAFT') {
 
-                        <button mat-raised-button [matMenuTriggerFor]="menu" color="primary">
+                        <button mat-raised-button [matMenuTriggerFor]="menu" color="primary"
+                            aria-label="See request options">
                             Options <mat-icon>arrow_drop_down</mat-icon>
                         </button>
 
                         <mat-menu #menu="matMenu">
 
                             <!-- VEDERE DETTAGLI RICHIESTA (METODO VIEW DETAILS) -->
-                            <button mat-menu-item (click)="viewDetails(request.id)">
+                            <button mat-menu-item (click)="viewDetails(request.id)" aria-label="View request details">
                                 View
                                 <mat-icon>visibility</mat-icon>
                             </button>
 
                             <!-- MODIFICA RICHIESTA (METODO ROUTER LINK) -->
-                            <button mat-menu-item routerLink="/employee/edit-request/{{request.id}}">
+                            <button mat-menu-item routerLink="/employee/edit-request/{{request.id}}"
+                                aria-label="Edit request">
                                 Edit
                                 <mat-icon>edit</mat-icon>
                             </button>
 
-                            <button mat-menu-item color="warn" (click)="deleteRequest(request.id)" class="delete">
+                            <button mat-menu-item color="warn" (click)="deleteRequest(request.id)" class="delete"
+                                aria-label="Delete request">
                                 Delete
                                 <mat-icon>delete</mat-icon>
                             </button>
@@ -182,7 +185,8 @@
 
             </table>
 
-            <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
+            <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons
+                aria-label="Select page of request list"></mat-paginator>
 
             } @else {
 
@@ -198,13 +202,14 @@
     </mat-card>
 
     <div class="navigation-buttons">
-        <button mat-raised-button color="accent" routerLink="/employee/dashboard" class="back-btn">
+        <button mat-raised-button color="accent" routerLink="/employee/dashboard" class="back-btn"
+            aria-label="Back to the Dashboard">
             Back to the Dashboard
             <mat-icon>arrow_back</mat-icon>
         </button>
 
 
-        <button mat-raised-button color="primary" routerLink="/employee/new-request">
+        <button mat-raised-button color="primary" routerLink="/employee/new-request" aria-label="Make a new request">
             Make a new request
             <mat-icon>add</mat-icon>
         </button>
@@ -215,4 +220,4 @@
 
 
 
-<!-- VS Code Counter: 128 code lines (08/10/2026) -->
+<!-- VS Code Counter: 133 code lines (15/10/2026) -->

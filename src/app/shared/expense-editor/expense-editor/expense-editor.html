@@ -13,7 +13,7 @@
 
                 <!-- Pulsante per aggiungere una nuova spesa -->
                 <button mat-raised-button color="primary" type="button" (click)="addExpense.emit()"
-                    style="margin-right: 1rem;">
+                    style="margin-right: 1rem;" aria-label="Add a new expense">
                     Add Expense
                     <mat-icon>add</mat-icon>
                 </button>
@@ -40,7 +40,8 @@
 
                             <mat-label>Date</mat-label>
 
-                            <input matInput type="date" formControlName="date">
+                            <input matInput type="date" formControlName="date"
+                                aria-label="Select the date of the expense (Required)">
 
                         </mat-form-field>
 
@@ -49,7 +50,8 @@
 
                             <mat-label>Category</mat-label>
 
-                            <mat-select formControlName="category">
+                            <mat-select formControlName="category"
+                                aria-label="Select the category of the expense (Required)">
                                 <mat-option value="" disabled>Select a category</mat-option>
 
                                 @for (
@@ -71,7 +73,8 @@
                         <mat-form-field appearance="outline">
 
                             <mat-label>Description</mat-label>
-                            <textarea matInput formControlName="description" rows="1">
+                            <textarea matInput formControlName="description" rows="1"
+                                aria-label="Enter the description of the expense (Optional)">
                   </textarea>
 
                         </mat-form-field>
@@ -80,13 +83,15 @@
 
                             <!-- Campo per l'importo richiesto -->
                             <mat-label>Amount</mat-label>
-                            <input matInput type="number" formControlName="requestedAmount" min="0">
+                            <input matInput type="number" formControlName="requestedAmount" min="0"
+                                aria-label="Enter the requested amount (Required)">
 
                         </mat-form-field>
 
                         <!-- Pulsante per rimuovere la spesa corrente -->
                         <button mat-icon-button color="warn" type="button" (click)="removeExpense.emit($index)"
-                            class="remove-btn" matTooltip="Remove all" matTooltipPosition="above">
+                            class="remove-btn" matTooltip="Remove all" matTooltipPosition="above"
+                            aria-label="Remove this expense">
                             <mat-icon>delete</mat-icon>
                         </button>
 
@@ -96,7 +101,8 @@
                     <!-- PULSANTE ALLEGA FILE -->
                     <div class="attachment-btn">
 
-                        <button mat-raised-button type="button" color="primary" (click)="fileInput.click()">
+                        <button mat-raised-button type="button" color="primary" (click)="fileInput.click()"
+                            aria-label="Attach files (PDF, JPG, JPEG, PNG) (optional)">
                             Attach File
                             <mat-icon>attach_file</mat-icon>
                         </button>
@@ -152,4 +158,4 @@
 
 
 
-<!-- VS Code Counter: 87 code lines (14/10/2016) -->
+<!-- VS Code Counter: 93 code lines (15/10/2016) -->

@@ -36,7 +36,8 @@
                     </th>
 
                     <td mat-cell *matCellDef="let row">
-                        <input matInput type="number" [formControl]="row.get('maxAmount')">
+                        <input matInput type="number" [formControl]="row.get('maxAmount')"
+                            aria-label="Set the maximum amount for this category">
                     </td>
 
                 </ng-container>
@@ -49,7 +50,8 @@
                     </th>
 
                     <td mat-cell *matCellDef="let row">
-                        <mat-checkbox [formControl]="row.get('receiptRequired')"></mat-checkbox>
+                        <mat-checkbox [formControl]="row.get('receiptRequired')"
+                            aria-label="Check if a receipt is required for this category"></mat-checkbox>
                     </td>
 
                 </ng-container>
@@ -68,14 +70,15 @@
 
 
 <div class="actions">
-    <button mat-raised-button color="warn" routerLink="/hr/settings" class="cancel-btn">
+    <button mat-raised-button color="warn" routerLink="/hr/settings" class="cancel-btn"
+        aria-label="Cancel and go back to settings">
         <mat-icon>cancel</mat-icon> Cancel
     </button>
 
-    <button mat-raised-button color="primary" (click)="save()">
+    <button mat-raised-button color="primary" (click)="save()" aria-label="Save the expense limits settings">
         <mat-icon>save</mat-icon> Save</button>
 </div>
 
 
 
-<!-- VS Code counter:  51 code lines (14/10/2026) -->
+<!-- VS Code Counter:  54 code lines (15/10/2026) -->

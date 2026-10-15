@@ -36,7 +36,8 @@
           <mat-form-field appearance="outline">
 
             <mat-label>Reference Month</mat-label>
-            <input matInput type="month" formControlName="referenceMonth" pattern="\d{4}-\d{2}">
+            <input matInput type="month" formControlName="referenceMonth" pattern="\d{4}-\d{2}"
+              aria-label="Write the reference month in YYYY-MM format (Required)">
 
           </mat-form-field>
 
@@ -44,7 +45,7 @@
           <mat-form-field appearance="outline">
 
             <mat-label>Employee Notes</mat-label>
-            <textarea matInput rows="4" formControlName="noteEmployee">
+            <textarea matInput rows="4" formControlName="noteEmployee" aria-label="Write employee notes (Optional)">
             </textarea>
 
           </mat-form-field>
@@ -87,7 +88,6 @@
       </app-expense-editor>
 
 
-
       <!-------------------------------- SEZIONE DI RIEPILOGO DEL TOTALE RICHIESTO --------------------------------->
       <mat-card>
 
@@ -120,20 +120,23 @@
 
         <!-- Pulsante per tornare indietro -->
         <div class="cancel-btn">
-          <button mat-stroked-button color="primary" type="button" routerLink="/employee/request-list">
+          <button mat-stroked-button color="primary" type="button" routerLink="/employee/request-list"
+            aria-label="Cancel and go back to request list">
             Cancel
             <mat-icon>cancel</mat-icon>
           </button>
         </div>
 
         <!-- Pulsante per salvare la richiesta come bozza -->
-        <button mat-stroked-button color="primary" type="button" (click)="saveDraft()" class="draft-btn">
+        <button mat-stroked-button color="primary" type="button" (click)="saveDraft()" class="draft-btn"
+          aria-label="Save draft of the request">
           Save Draft
           <mat-icon>save</mat-icon>
         </button>
 
         <!-- Pulsante per inviare la richiesta -->
-        <button mat-raised-button color="accent" type="button" (click)="submitRequest()">
+        <button mat-raised-button color="accent" type="button" (click)="submitRequest()"
+          aria-label="Submit the request">
           Submit Request
           <mat-icon>send</mat-icon>
         </button>
@@ -156,4 +159,4 @@
 
 
 
-<!-- VS Code Counter: 93 code lines (15/10/2026) -->
+<!-- VS Code Counter: 97 code lines (15/10/2026) -->

@@ -1,7 +1,7 @@
 <mat-card>
 
     <mat-card-header>
-        <mat-card-title matTooltip="Manages whether a user is active or inactive." matTooltipPosition="right">
+        <mat-card-title matTooltip="Manages whether a user is active or inactive" matTooltipPosition="right">
             User Management
             <mat-icon>group</mat-icon>
         </mat-card-title>
@@ -39,13 +39,15 @@
 
             <ng-container matColumnDef="active">
 
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef matTooltip="Indicates whether the user is active or inactive"
+                    matTooltipPosition="above">
                     Active
                 </th>
 
                 <td mat-cell *matCellDef="let user">
 
-                    <mat-slide-toggle [checked]="user.active" (change)="toggleUsers(user)">
+                    <mat-slide-toggle [checked]="user.active" (change)="toggleUsers(user)"
+                        aria-label="Toggle User Active Status">
                     </mat-slide-toggle>
 
                 </td>
@@ -64,12 +66,13 @@
 
 
 <div>
-    <button mat-raised-button color="primary" class="back-button" routerLink="/hr/settings">
+    <button mat-raised-button color="primary" class="back-button" routerLink="/hr/settings"
+        aria-label="Back to HR Settings">
         <mat-icon>arrow_back</mat-icon>
-        Back
+        Back to HR Settings
     </button>
 </div>
 
 
 
-<!-- VS Code Counter: 46 code lines (14/10/2026) -->
+<!-- VS Code Counter: 49 code lines (15/10/2026) -->

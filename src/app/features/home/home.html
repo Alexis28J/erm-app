@@ -5,6 +5,7 @@
     <a routerLink="/login">
         <img src="https://techjobsfair.it/prod/wp-content/uploads/2022/10/DGS_logo.png" alt="ERM Logo" class="app-logo"
             matTooltip="BUILDING THE FUTURE" matTooltipPosition="right">
+        <!-- Non aggiungo aria-label perché il tooltip fornisce già l'informazione, quindi sarebbe ridondante -->
     </a>
 
     <!-- Separatore -->
@@ -20,7 +21,7 @@
 
 
     <!---------- PULSANTE "PERSONAL AREA" ----------->
-    <button mat-button [matMenuTriggerFor]="loginMenu" class="personal-area">
+    <button mat-button [matMenuTriggerFor]="loginMenu" class="personal-area" aria-label="Personal Area">
 
         <mat-icon>arrow_drop_down</mat-icon>
         Personal Area
@@ -33,7 +34,7 @@
 <!-- MENU (TENDINA) DEL PULSANTE "PERSONAL AREA" -->
 <mat-menu #loginMenu>
 
-    <button mat-menu-item routerLink="/login">
+    <button mat-menu-item routerLink="/login" aria-label="Login">
 
         <mat-icon>login</mat-icon>
         Login
@@ -74,7 +75,7 @@
         <!----------------------------- AZIONI DELLA CARD ------------------------------------>
         <mat-card-actions>
 
-            <button mat-raised-button color="primary" routerLink="/login">
+            <button mat-raised-button color="primary" routerLink="/login" aria-label="Login">
                 Login
                 <mat-icon>login</mat-icon>
             </button>

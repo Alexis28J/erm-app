@@ -32,7 +32,8 @@
                     <mat-form-field appearance="outline">
 
                         <mat-label>Reference Month</mat-label>
-                        <input matInput type="month" formControlName="referenceMonth" pattern="\d{4}-\d{2}">
+                        <input matInput type="month" formControlName="referenceMonth" pattern="\d{4}-\d{2}"
+                            aria-label="Write the reference month in YYYY-MM format (Required)">
 
                     </mat-form-field>
 
@@ -40,7 +41,8 @@
                     <mat-form-field appearance="outline">
 
                         <mat-label>Employee Note</mat-label>
-                        <textarea matInput rows="3" formControlName="noteEmployee">
+                        <textarea matInput rows="3" formControlName="noteEmployee"
+                            aria-label="Write employee notes (Optional)">
                         </textarea>
 
                     </mat-form-field>
@@ -62,7 +64,7 @@
 
                         <!-- Pulsante per aggiungere una nuova spesa -->
                         <button mat-raised-button color="primary" type="button" (click)="addExpense()"
-                            style="margin-right: 1rem;">
+                            style="margin-right: 1rem;" aria-label="Add a new expense">
                             Add Expense
                             <mat-icon>add</mat-icon>
                         </button>
@@ -89,7 +91,8 @@
                                 <mat-form-field appearance="outline">
 
                                     <mat-label>Date</mat-label>
-                                    <input matInput type="date" formControlName="date">
+                                    <input matInput type="date" formControlName="date"
+                                        aria-label="Select the date of the expense (Required)">
 
                                 </mat-form-field>
 
@@ -99,7 +102,8 @@
 
                                     <mat-label>Category</mat-label>
 
-                                    <mat-select formControlName="category">
+                                    <mat-select formControlName="category"
+                                        aria-label="Select the category of the expense (Required)">
 
                                         <mat-option value="" disabled>Select a category</mat-option>
 
@@ -125,7 +129,8 @@
                                 <mat-form-field appearance="outline">
 
                                     <mat-label>Description</mat-label>
-                                    <textarea matInput formControlName="description" rows="1">
+                                    <textarea matInput formControlName="description" rows="1"
+                                        aria-label="Enter the description of the expense (Optional)">
                                     </textarea>
 
                                 </mat-form-field>
@@ -135,13 +140,15 @@
                                 <mat-form-field appearance="outline">
 
                                     <mat-label>Amount (€)</mat-label>
-                                    <input matInput type="number" formControlName="requestedAmount" min="0">
+                                    <input matInput type="number" formControlName="requestedAmount" min="0"
+                                        aria-label="Enter the requested amount of the expense (Required)">
 
                                 </mat-form-field>
 
                                 <!-- Pulsante per rimuovere la spesa corrente -->
                                 <button mat-icon-button color="warn" type="button" (click)="removeExpense($index)"
-                                    matTooltip="Remove all" matTooltipPosition="above" class="remove-btn">
+                                    matTooltip="Remove all" matTooltipPosition="above" class="remove-btn"
+                                    aria-label="Remove all expenses">
                                     <mat-icon>delete</mat-icon>
                                 </button>
 
@@ -150,8 +157,9 @@
                             <!------------------ FILE ALLEGATO --------------------->
                             <div class="attachment-btn">
                                 <button mat-raised-button type="button" color="primary" (click)="fileInput.click()"
-                                    matTooltip="Attach the receipt corresponding to this expense"
-                                    matTooltipPosition="right">
+                                    matTooltip="Attach the receipt/s corresponding to this expense"
+                                    matTooltipPosition="right"
+                                    aria-label="Attach files corresponding to this expense (PDF, JPG, JPEG, PNG) (Optional)">
                                     Attach File
                                     <mat-icon>attach_file</mat-icon>
                                 </button>
@@ -177,7 +185,7 @@
                                 <!-- Pulsante per rimuovere il file allegato corrente -->
                                 <button mat-icon-button color="warn" type="button"
                                     (click)="removeAttachment(expenseIndex, attachmentIndex)" matTooltip="Remove file"
-                                    matTooltipPosition="left" class="remove-btn">
+                                    matTooltipPosition="left" class="remove-btn" aria-label="Remove attached file">
                                     <mat-icon>cancel</mat-icon>
                                 </button>
 
@@ -225,17 +233,19 @@
             <!-- ACTIONS -->
             <div class="actions">
 
-                <button mat-stroked-button routerLink="/employee/dashboard" class="cancel-btn">
+                <button mat-stroked-button routerLink="/employee/dashboard" class="cancel-btn"
+                    aria-label="Cancel and go back to dashboard">
                     Cancel
                     <mat-icon>cancel</mat-icon>
                 </button>
 
-                <button mat-stroked-button type="button" (click)="saveDraft()" class="draft-btn">
+                <button mat-stroked-button type="button" (click)="saveDraft()" class="draft-btn"
+                    aria-label="Save draft of the request">
                     Save Draft
                     <mat-icon>save</mat-icon>
                 </button>
 
-                <button mat-raised-button color="primary" (click)="submitRequest()">
+                <button mat-raised-button color="primary" (click)="submitRequest()" aria-label="Submit the request">
                     Submit Request
                     <mat-icon>send</mat-icon>
                 </button>
@@ -251,4 +261,4 @@
 
 
 
-<!-- VS Code Counter: 149 code lines (15/10/2026) -->
+<!-- VS Code Counter: 159 code lines (15/10/2026) -->

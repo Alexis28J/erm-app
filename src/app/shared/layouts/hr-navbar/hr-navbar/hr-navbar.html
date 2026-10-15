@@ -3,7 +3,7 @@
     <!-- Logo dell'applicazione -->
     <a routerLink="/hr/dashboard">
         <img src="https://techjobsfair.it/prod/wp-content/uploads/2022/10/DGS_logo.png" alt="ERM Logo" class="app-logo"
-            matTooltip="BUILDING THE FUTURE" matTooltipPosition="right">
+            matTooltip="BUILDING THE FUTURE" matTooltipPosition="right" aria-label="Link to dashboard">
     </a>
 
 
@@ -32,22 +32,22 @@
 
     <mat-menu #hrMenu="matMenu">
 
-        <button mat-menu-item routerLink="/hr/dashboard" class="menu-item">
+        <button mat-menu-item routerLink="/hr/dashboard" class="menu-item" aria-label="Navigate to dashboard">
             Dashboard
             <mat-icon>dashboard</mat-icon>
         </button>
 
-        <button mat-menu-item routerLink="/hr/request-list" class="menu-item">
+        <button mat-menu-item routerLink="/hr/request-list" class="menu-item" aria-label="Navigate to request list">
             Request List
             <mat-icon>list</mat-icon>
         </button>
 
-        <button mat-menu-item routerLink="/hr/employee-list" class="menu-item">
+        <button mat-menu-item routerLink="/hr/employee-list" class="menu-item" aria-label="Navigate to employee list">
             Employees
             <mat-icon>people</mat-icon>
         </button>
 
-        <button mat-menu-item routerLink="/hr/settings" class="menu-item">
+        <button mat-menu-item routerLink="/hr/settings" class="menu-item" aria-label="Access to HR settings">
             Settings
             <mat-icon>settings</mat-icon>
         </button>
@@ -60,7 +60,8 @@
 
 
     <!-- PULSANTE DI LOGOUT -->
-    <button mat-button (click)="logout()" matTooltip="Logout" matTooltipPosition="left">
+    <button mat-button (click)="logout()" matTooltip="Logout" matTooltipPosition="left"
+        aria-label="Logout (Close session)">
         <mat-icon>logout</mat-icon>
         Exit
     </button>
@@ -70,4 +71,4 @@
 
 
 
-<!-- VS Code Counter: 39 code lines (08/10/2026) -->
+<!-- VS Code Counter: 44 code lines (15/10/2026) -->

@@ -1,16 +1,10 @@
-// CONTAINER PRINCIPALE DEL COMPONENTE
-:host {
-    padding: 8px;
+mat-card {
+    margin: 0 2rem !important;
+}
 
-    mat-card {
-        max-width: 1100px !important;
-        margin: 12px auto !important; // per centrare la card orizzontalmente
-    }
-
-    .space {
-        margin-top: 2rem !important; // spazio tra le sezioni
-    }
-
+// SPACING TRA LE SEZIONI DEL COMPONENTE
+.space {
+    margin-top: 2rem !important;
 }
 
 
@@ -144,9 +138,10 @@ mat-card-content {
 .navigation-buttons {
     display: flex;
     justify-content: space-between;
-    margin: 2rem 5.8rem 0 5.8rem;
+    margin: 2rem 2rem 0 2rem;
+    padding-bottom: 2rem;
 }
 
 
 
-// VS Code counter: 98 code lines (13/10/2026)
+// VS Code counter: 95 code lines (13/10/2026)
