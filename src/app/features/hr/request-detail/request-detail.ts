@@ -18,13 +18,15 @@ import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progr
 import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AppConfig } from '../../../core/interfaces/app-config';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   imports: [MatCardModule, MatLabel, MatInputModule,
     MatFormFieldModule, CommonModule, ReactiveFormsModule,
-    MatButtonModule, MatIconModule,
-    ProgressBar, MatDivider, TotalProgressBar, AttachmentList, MatTooltipModule],
+    MatButtonModule, MatIconModule, ProgressBar,
+    MatDivider, TotalProgressBar, AttachmentList,
+    MatTooltipModule, RouterLink],
   selector: 'app-request-detail',
   styleUrls: ['./request-detail.scss'],
   templateUrl: './request-detail.html',
@@ -331,4 +333,4 @@ export class RequestDetail {
 
 
 
-// VS Code Counter: 199 code lines (14/10/2026)
+// VS Code Counter: 201 code lines (16/10/2026)

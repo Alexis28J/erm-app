@@ -47,7 +47,7 @@ mat-card-title {
   color: red;
   border: 2px solid red !important;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: rgba(255, 0, 0, 0.1);
   }
 }

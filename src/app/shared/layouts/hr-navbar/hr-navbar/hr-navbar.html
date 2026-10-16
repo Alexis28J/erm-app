@@ -32,22 +32,22 @@
 
     <mat-menu #hrMenu="matMenu">
 
-        <button mat-menu-item routerLink="/hr/dashboard" class="menu-item" aria-label="Navigate to dashboard">
+        <button mat-menu-item routerLink="/hr/dashboard" aria-label="Navigate to dashboard">
             Dashboard
             <mat-icon>dashboard</mat-icon>
         </button>
 
-        <button mat-menu-item routerLink="/hr/request-list" class="menu-item" aria-label="Navigate to request list">
+        <button mat-menu-item routerLink="/hr/request-list" aria-label="Navigate to request list">
             Request List
             <mat-icon>list</mat-icon>
         </button>
 
-        <button mat-menu-item routerLink="/hr/employee-list" class="menu-item" aria-label="Navigate to employee list">
+        <button mat-menu-item routerLink="/hr/employee-list" aria-label="Navigate to employee list">
             Employees
             <mat-icon>people</mat-icon>
         </button>
 
-        <button mat-menu-item routerLink="/hr/settings" class="menu-item" aria-label="Access to HR settings">
+        <button mat-menu-item routerLink="/hr/settings" aria-label="Access to HR settings">
             Settings
             <mat-icon>settings</mat-icon>
         </button>
@@ -60,7 +60,7 @@
 
 
     <!-- PULSANTE DI LOGOUT -->
-    <button mat-button (click)="logout()" matTooltip="Logout" matTooltipPosition="left"
+    <button mat-button (click)="logout()" matTooltip="Logout" matTooltipPosition="left" class="exit-btn"
         aria-label="Logout (Close session)">
         <mat-icon>logout</mat-icon>
         Exit
@@ -71,4 +71,4 @@
 
 
 
-<!-- VS Code Counter: 44 code lines (15/10/2026) -->
+<!-- VS Code Counter: 44 code lines (16/10/2026) -->

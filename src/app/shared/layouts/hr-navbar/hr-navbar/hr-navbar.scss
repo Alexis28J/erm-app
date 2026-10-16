@@ -41,6 +41,19 @@
 
 .arrow-btn,
 .mat-mdc-icon-button,
+.exit-btn {
+
+  &:hover,
+  &:focus {
+    color: #005cbb !important;
+    transform: scale(1.1) !important;
+    transition: transform 0.3s ease-in-out !important;
+  }
+}
+
+
+.arrow-btn,
+.mat-mdc-icon-button,
 .mat-icon {
   display: flex !important;
   align-items: center !important;
@@ -50,20 +63,10 @@
 }
 
 
-.menu-item,
 .mat-menu-item,
 .mat-mdc-menu-item {
   margin-right: 1rem !important;
 }
 
 
-// se voglio aggiungere effetto quando si naviga con i tasti, uso :focus
-button:hover, button:focus {
-  color: #005cbb !important;
-  transform: scale(1.1) !important;
-  transition: transform 0.3s ease-in-out !important;
-}
-
-
-
-// VS Code Counter: 46 code lines (08/10/2026)
+// VS Code Counter: 50 code lines (16/10/2026)

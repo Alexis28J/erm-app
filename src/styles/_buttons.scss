@@ -4,11 +4,12 @@
     border-width: 2px !important;
     border-color: rgba(22, 80, 195, 0.35) !important;
 
-    &:hover {
+    &:hover,
+    &:focus {
         border-color: rgba(60, 98, 250, 0.6) !important;
     }
 }
 
 
 
-// VS Code Counter: 8 code lines (09/10/2026)
+// VS Code Counter: 9 code lines (16/10/2026)

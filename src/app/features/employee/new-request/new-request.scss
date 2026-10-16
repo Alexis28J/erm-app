@@ -114,7 +114,7 @@ mat-form-field {
 .remove-btn {
     top: 1.3rem;
 
-    &:hover {
+    &:hover, &:focus {
         background-color: rgba(255, 0, 0, 0.1);
         color: red;
         transform: scale(1.2);
@@ -176,7 +176,7 @@ mat-form-field {
     color: red !important;
     border-color: red !important;
 
-    &:hover {
+    &:hover, &:focus {
         background-color: rgb(249, 190, 190);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }

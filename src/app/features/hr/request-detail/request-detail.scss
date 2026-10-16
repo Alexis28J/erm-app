@@ -1,8 +1,5 @@
 .page-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 10px 18px 10px 18px;
-
+  padding: 16px;
   display: flex;
   flex-direction: column;
 }
@@ -60,9 +57,9 @@ mat-card-header {
 }
 
 .status-badge {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 20px;
+  display: flex;
+  width: 100%;
+  padding: 6px 24px;
   font-size: 1.7rem;
   font-weight: 600;
 }
@@ -169,6 +166,7 @@ mat-card-header {
   font-size: 4rem;
   font-weight: 700;
   color: #2e7d32;
+  padding-bottom: 8px;
 }
 
 
@@ -181,7 +179,13 @@ mat-card-header {
 
 .verify-btn,
 .edit-btn {
-  width: 100%;
+  color: red !important;
+  border: 2px groove red !important;
+  &:hover,
+  &:focus {
+    border-color: darkred !important;
+    background-color: rgba(255, 0, 0, 0.1) !important;
+  }
 }
 
 .reject-approve {
@@ -329,4 +333,4 @@ mat-divider {
 ///
 
 
-// VS Code Counter: 219 code lines (08/10/2026)
+// VS Code Counter: 224 code lines (16/10/2026)

@@ -1,6 +1,7 @@
 @use '@angular/material' as mat;
 
 
+/* Impedisce la comparsa dello scrollbar orizzontale in tutta la pagina */
 html {
     height: 100%;
 
@@ -13,6 +14,7 @@ html {
 }
 
 
+/* Stile per il corpo della pagina */
 body {
     color-scheme: light;
 
@@ -25,5 +27,12 @@ body {
 }
 
 
+/* Impedisce la comparsa dello scrollbar orizzontale in tutta la pagina */
+html,
+body {
+    overflow-x: hidden;
+}
 
-// VS Code Counter: 18 code lines (09/10/2026)
+
+
+// VS Code Counter: 22 code lines (16/10/2026)

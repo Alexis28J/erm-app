@@ -31,5 +31,29 @@
             color: #005cbb !important;
         }
     }
+
+    &:focus {
+        &:focus-visible {
+            // focus-visibile serve per gestire lo stato di focus tramite tastiera
+            // mi permette di applicare stili specifici quando l'elemento riceve il focus tramite tastiera
+            background-color: #c5d7fb !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+            transform: scale(1.1) !important;
+            overflow: hidden !important;
+            color: #005cbb !important;
+
+            mat-icon {
+                color: #005cbb !important;
+            }
+        }
+    }
+
+}
+
+
+/* PANNELLO DEL MENU */
+.mat-mdc-menu-panel {
+    /* Blocca lo scrollbar orizzontale specifico nei pannelli dei menu a tendina di Angular Material */
+    overflow-x: hidden !important;
 }
 ```

@@ -166,19 +166,19 @@
 
                     <span class="status-badge" [ngClass]="request.status.toLowerCase()">
                         @if (request.status === 'PARTIAL_APPROVED') {
-                        Partial Approved
+                        ✅ Partial Approved
                         }
                         @if (request.status === 'APPROVED') {
-                        Approved
+                        ⭐ Approved
                         }
                         @if (request.status === 'REJECTED') {
-                        Rejected
+                        ❌ Rejected
                         }
                         @if (request.status === 'PENDING') {
-                        Pending
+                        ⏳ Pending
                         }
                         @if( request.status === 'IN_PROGRESS') {
-                        In Progress
+                        🔄 In Progress
                         }
                     </span>
 

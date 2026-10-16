@@ -67,13 +67,12 @@
 
                 <p class="info-item">
                     <span class="info-label">Status:</span>
-                    <span [ngClass]="request.status.toLowerCase()" class="status-badge">
-                        {{ request.status === 'APPROVED' ? 'Approved'
-                        : request.status === 'REJECTED' ? 'Rejected'
-                        : request.status === 'PENDING' ? 'Pending'
-                        : request.status === 'PARTIAL_APPROVED' ? 'Partial Approved'
-                        : request.status === 'DRAFT' ? 'Draft'
-                        : request.status === 'IN_PROGRESS' ? 'In Progress'
+                    <span [ngClass]="request.status.toLowerCase()" class="status-badge border-text">
+                        {{ request.status === 'APPROVED' ? 'Approved ⭐'
+                        : request.status === 'REJECTED' ? 'Rejected ❌'
+                        : request.status === 'PENDING' ? 'Pending ⏳'
+                        : request.status === 'PARTIAL_APPROVED' ? 'Partial Approved ✅'
+                        : request.status === 'IN_PROGRESS' ? 'In Progress 🔄'
                         : request.status }}
                     </span>
                 </p>
@@ -295,13 +294,13 @@
 
         <div class="reject-approve">
             <button mat-raised-button color="warn" (click)="rejectRequest()" class="reject-btn"
-                [disabled]="request.status === 'REJECTED'" aria-label="Reject Request">
+                [disabled]="request.status === 'REJECTED'" aria-label="Reject this request">
                 Reject
                 <mat-icon>thumb_down</mat-icon>
             </button>
 
             <button mat-raised-button color="warn" (click)="approveRequest()" class="approve-btn"
-                [disabled]="request.status === 'APPROVED'" aria-label="Approve Request">
+                [disabled]="request.status === 'APPROVED'" aria-label="Approve this request">
                 Approve
                 <mat-icon>thumb_up</mat-icon>
             </button>
@@ -310,7 +309,29 @@
         }
 
 
-        <!-- PULSANTE DI MODIFICA DELLA REVIEW -->
+        <!-- CONTROLLO IN CASO DI NON MODALITÀ DI REVISIONE -->
+        @if (!reviewMode()) {
+
+
+        <!-- Pulsante per tornare alla lista delle richieste -->
+        <button mat-raised-button color="primary" routerLink="/hr/request-list" aria-label="Go to Request List area">
+            Request List
+            <mat-icon>list</mat-icon>
+        </button>
+
+
+        <!-- Pulsante di verifica della richiesta -->
+        <button mat-raised-button color="primary" (click)="startReview()"
+            [hidden]="request.status === 'APPROVED' || request.status === 'PARTIAL_APPROVED' || request.status === 'REJECTED'"
+            class="verify-btn" aria-label="Verify Request">
+            Verify Request
+
+            <mat-icon>
+                fact_check
+            </mat-icon>
+        </button>
+
+        <!-- Pulsante di modifica della review -->
         @if (
         request.status === 'APPROVED' ||
         request.status === 'PARTIAL_APPROVED' ||
@@ -320,28 +341,18 @@
         <button mat-raised-button color="accent" (click)="startReview()" [hidden]="reviewMode()" class="edit-btn"
             aria-label="Edit Review">
             Edit Review
-
             <mat-icon>
                 edit
             </mat-icon>
-
         </button>
 
         }
 
 
-        <!-- PULSANTE DI VERIFICA DELLA RICHIESTA -->
-        @if (!reviewMode()) {
-
-        <button mat-raised-button color="primary" (click)="startReview()"
-            [hidden]="request.status === 'APPROVED' || request.status === 'PARTIAL_APPROVED' || request.status === 'REJECTED'"
-            class="verify-btn" aria-label="Verify Request">
-            Verify Request
-
-            <mat-icon>
-                fact_check
-            </mat-icon>
-
+        <!-- Pulsante per accedere alla lista dei dipendenti -->
+        <button mat-raised-button color="primary" routerLink="/hr/employee-list" aria-label="Go to Employee List area">
+            Employee List
+            <mat-icon>people</mat-icon>
         </button>
 
         }
@@ -355,4 +366,4 @@
 
 
 
-<!-- VS Code Counter: 232 code lines (15/10/2026) -->
+<!-- VS Code Counter: 239 code lines (16/10/2026) -->

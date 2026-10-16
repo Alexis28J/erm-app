@@ -1,10 +1,22 @@
 // FONT PERSONALIZZATO: ZEN DOTS 
 .zen-dots-regular {
-    font-family: "Zen Dots", sans-serif;
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Zen Dots", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+// TESTO CON BORDO SEMITRASPARENTE
+.border-text {
+  font-size: 22px;
+  color: white;
+  text-shadow: // Aggiunge un bordo semitrasparente attorno al testo
+    -1px -1px 0 #00000080, // Ombra in alto a sinistra
+    1px -1px 0 #00000080, // Ombra in alto a destra
+    -1px 1px 0 #00000080, // Ombra in basso a sinistra
+    1px 1px 0 #00000080; // Ombra in basso a destra
 }
 
 
 
-// VS Code Counter: 5 code lines (09/10/2026)
+// VS Code Counter: 14 code lines (16/10/2026)

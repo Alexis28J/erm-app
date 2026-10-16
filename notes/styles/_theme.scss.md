@@ -32,4 +32,11 @@ body {
     margin: 0;
     height: 100%;
 }
+
+
+/* Impedisce la comparsa dello scrollbar orizzontale in tutta la pagina */
+html,
+body {
+    overflow-x: hidden;
+}
 ```

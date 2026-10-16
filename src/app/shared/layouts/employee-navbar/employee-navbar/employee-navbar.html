@@ -32,21 +32,19 @@
 
     <mat-menu #userMenu="matMenu">
 
-        <button mat-menu-item routerLink="/employee/dashboard" class="menu-item" aria-label="Navigate to dashboard">
+        <button mat-menu-item routerLink="/employee/dashboard" aria-label="Navigate to dashboard">
             Dashboard
             <mat-icon>dashboard</mat-icon>
         </button>
 
 
-        <button mat-menu-item routerLink="/employee/request-list" class="menu-item"
-            aria-label="Navigate to my requests">
+        <button mat-menu-item routerLink="/employee/request-list" aria-label="Navigate to my requests">
             My Requests
             <mat-icon>list</mat-icon>
         </button>
 
 
-        <button mat-menu-item routerLink="/employee/new-request" class="menu-item"
-            aria-label="Navigate to new request form">
+        <button mat-menu-item routerLink="/employee/new-request" aria-label="Navigate to new request form">
             New Request
             <mat-icon>add</mat-icon>
         </button>
@@ -59,7 +57,7 @@
 
 
     <!-- PULSANTE DI LOGOUT -->
-    <button mat-button (click)="logout()" matTooltip="Logout" matTooltipPosition="left"
+    <button mat-button (click)="logout()" matTooltip="Logout" matTooltipPosition="left" class="exit-btn"
         aria-label="Logout (Close session)">
         <mat-icon>logout</mat-icon>
         Exit
@@ -69,4 +67,4 @@
 
 
 
-<!-- VS Code Counter: 42 code lines (15/10/2026) -->
+<!-- VS Code Counter: 40 code lines (16/10/2026) -->

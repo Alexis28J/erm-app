@@ -79,7 +79,7 @@ mat-form-field {
         transform: translateY(-50%);
     }
 
-    button:hover {
+    button:hover, button:focus {
         color: #005cbb;
         scale: 1.05;
         transition: transform 0.3s ease-in-out;
