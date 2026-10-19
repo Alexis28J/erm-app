@@ -3,16 +3,11 @@
   margin: 2rem !important;
 
   mat-card-header {
-    padding-bottom: 1rem;
-    margin-bottom: 1.2rem;
+    padding-bottom: 0.7rem;
   }
 
   mat-card-title {
-    font-size: 1.7rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    padding-left: 0;
   }
 
 }
@@ -31,12 +26,10 @@
   font-weight: 500;
 }
 
-
 .active {
   background-color: #d4edda;
   color: #155724;
 }
-
 
 .inactive {
   background-color: #f8d7da;
@@ -60,6 +53,7 @@
 }
 
 
+// TABELLE A LARGHEZZA UGUALE
 .equal-width-table {
   table-layout: fixed; // Forza tutte le colonne ad avere la stessa larghezza
 
@@ -69,7 +63,6 @@
 
 }
 
-
 /* Distribuisce lo spazio equamente (es. 3 colonne = 33.33% ciascuna) */
 .equal-width-table th {
   width: calc(100% / 5); // Imposta la larghezza di ciascuna colonna al 20% (per 5 colonne)
@@ -78,4 +71,6 @@
   white-space: nowrap; // Impedisce al testo di andare a capo
 }
 
-// VS Code Counter: 52 code lines (14/10/2026)
+
+
+// VS Code Counter: 47 code lines (19/10/2026)

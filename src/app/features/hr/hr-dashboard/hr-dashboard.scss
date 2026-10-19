@@ -8,10 +8,9 @@
     flex-direction: column;
     gap: 40px;
 
-
     /* Paragrafo all'interno del contenitore del dashboard */
     p {
-        line-height: 1.6;
+        line-height: 1.5;
         color: #333;
         text-align: center;
         font-size: 16px;
@@ -19,23 +18,24 @@
 }
 
 
-/* Titolo del dashboard */
-h1 {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-
-    mat-icon {
-        font-size: 24px;
-    }
-}
-
-
-/* Header della scheda principale del dashboard */
-mat-card-header {
+/* Stile dell'header e del titolo della card  */
+mat-card-header,
+mat-card-title {
     display: flex;
     justify-content: center;
 }
+
+mat-card-title {
+    padding: 8px 0 16px 0;
+}
+
+
+/* Stile del sottotitolo della card */
+mat-card-subtitle {
+    font-size: 1.6rem;
+    font-weight: lighter;
+}
+
 
 
 /* Contenitore dei pulsanti di azione del dashboard */
@@ -46,13 +46,5 @@ mat-card-header {
 }
 
 
-/* Titolo del dashboard */
-h1 {
-    font-size: 32px;
-    font-weight: bold;
-    text-align: center;
-}
 
-
-
-// VS Code Counter: 36 code lines (08/10/2026)
+// VS Code Counter: 31 code lines (19/10/2026)

@@ -24,14 +24,7 @@
 
 
 mat-card-title {
-    display: flex;
-    align-items: center;
-
-    font-size: 24px;
-    font-weight: 600;
-
-    gap: 8px;
-    padding-bottom: 12px;
+    padding-left: 0;
 }
 
 
@@ -99,23 +92,22 @@ button {
 
 
 .equal-width-table {
-  table-layout: fixed; // Forza tutte le colonne ad avere la stessa larghezza
+    table-layout: fixed; // Forza tutte le colonne ad avere la stessa larghezza
 
-  th {
-    font-size: 1rem;
-  }
-
+    th {
+        font-size: 1rem;
+    }
 }
 
 
 /* Distribuisce lo spazio equamente (es. 3 colonne = 33.33% ciascuna) */
 .equal-width-table th {
-  width: calc(100% / 5); // Imposta la larghezza di ciascuna colonna al 20% (per 5 colonne)
-  overflow: hidden; // Opzionale: evita che testi troppo lunghi rompano il layout
-  text-overflow: ellipsis; // Mostra "..." per testi troppo lunghi
-  white-space: nowrap; // Impedisce al testo di andare a capo
+    width: calc(100% / 5); // Imposta la larghezza di ciascuna colonna al 20% (per 5 colonne)
+    overflow: hidden; // Opzionale: evita che testi troppo lunghi rompano il layout
+    text-overflow: ellipsis; // Mostra "..." per testi troppo lunghi
+    white-space: nowrap; // Impedisce al testo di andare a capo
 }
 
 
 
-// VS Code Counter: 79 code lines (14/10/2026)
+// VS Code Counter: 74 code lines (19/10/2026)

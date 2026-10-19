@@ -1,6 +1,6 @@
 // SPAZIATORE FLESSIBILE PER LAYOUT
 .spacer {
-    flex: 1 1 auto; // Permette allo spacer di crescere e ridursi automaticamente 
+    flex: 1 1 auto; // Permette allo spacer di crescere e ridursi automaticamente
     // Il primo 1 indica la capacità di crescere
     // Il secondo 1 indica la capacità di ridursi
     // auto indica la dimensione base flessibile
@@ -29,7 +29,7 @@ mat-toolbar {
 // TITOLO DELL'APPLICAZIONE CON FONT PERSONALIZZATO: ZEN DOTS
 h1 {
     font-family: "Zen Dots", sans-serif !important;
-    font-size: 36px !important; 
+    font-size: 36px !important;
 
     &:hover {
         color: #005cbb;
@@ -58,23 +58,24 @@ h1 {
 // CARD DI ANGULAR MATERIAL
 mat-card {
     width: 600px;
-    padding: 20px;
 }
 
 
 // HEADER DELLA CARD DI ANGULAR MATERIAL
 mat-card-header {
+    text-align: center;
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
 
     mat-card-title {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        gap: 10px;
+        position: relative;
+        left: 1.2rem;
+    }
+
+    .card-icon {
+        position: relative;
+        right: 2.5rem;
+        bottom: 0.4rem;
     }
 }
 
@@ -97,4 +98,4 @@ mat-card-actions {
 
 
 
-// VS Code Counter: 62 code lines (08/10/2026)
+// VS Code Counter: 62 code lines (19/10/2026)

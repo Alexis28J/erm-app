@@ -5,16 +5,14 @@
 <div class="page-container">
 
   <!-- TITOLO DELLA PAGINA -->
-  <div class="edit-request-header">
-
-    <mat-card-title>Edit Request</mat-card-title>
+  <mat-card-title>Edit Request
     <mat-icon>edit_document</mat-icon>
+  </mat-card-title>
 
-    @if (formError) {
-    <span class="error-message">{{ formError }}</span>
-    }
 
-  </div>
+  @if (formError) {
+  <span class="error-message">{{ formError }}</span>
+  }
 
 
   <!---------------------------------------- SEZIONE DI DETTAGLI DELLA RICHIESTA ---------------------------------------->
@@ -111,4 +109,4 @@
 
 
 
-<!-- VS Code Counter: 67 code lines (19/10/2026) -->
+<!-- VS Code Counter: 66 code lines (19/10/2026) -->

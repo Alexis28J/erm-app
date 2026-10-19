@@ -10,13 +10,7 @@ mat-card {
 
 // TITOLO DELLA CARD
 mat-card-title {
-    font-size: 28px;
-    font-weight: 600;
-    padding-bottom: 16px;
-
-    display: flex;
-    align-items: center;
-    gap: 8px; // spazio tra il titolo e l'icona
+    padding-left: 0;
 }
 
 
@@ -144,4 +138,4 @@ mat-card-content {
 
 
 
-// VS Code counter: 95 code lines (13/10/2026)
+// VS Code counter: 90 code lines (19/10/2026)

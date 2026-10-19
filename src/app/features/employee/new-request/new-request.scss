@@ -8,27 +8,12 @@
 }
 
 
-// HEADER DELLA SEZIONE DI MODIFICA DELLA RICHIESTA
-.new-request-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-
-    // TITOLO DELLA CARD
-    mat-card-title {
-        font-size: 1.7rem;
-        font-weight: bold;
-        padding-left: 1.2rem;
-    }
-
-    // MESSAGGIO DI ERRORE DEL FORM
-    .error-message {
-        color: red;
-        font-size: 1.8rem;
-        font-weight: 600;
-        margin: 5px 7rem;
-    }
+// MESSAGGIO DI ERRORE DEL FORM
+.error-message {
+    color: red;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 5px 7rem;
 }
 
 
@@ -89,7 +74,8 @@ mat-card-subtitle {
     color: red !important;
     border-color: red !important;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
         background-color: rgb(249, 190, 190);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
@@ -109,4 +95,4 @@ mat-card-subtitle {
 
 
 
-// VS Code Counter: 75 code lines (19/10/2026)
+// VS Code Counter: 65 code lines (19/10/2026)

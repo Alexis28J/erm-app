@@ -3,13 +3,7 @@ mat-card {
 }
 
 mat-card-title {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    font-size: 1.7rem;
-    font-weight: bold;
-    margin-bottom: 0.6rem;
+    padding-left: 0;
 }
 
 .equal-width-table {
@@ -18,7 +12,6 @@ mat-card-title {
     th {
         font-size: 1rem;
     }
-
 }
 
 /* Distribuisce lo spazio equamente (es. 3 colonne = 33.33% ciascuna) */
@@ -36,4 +29,4 @@ mat-card-title {
 
 
 
-// VS Code Counter: 27 code lines (15/10/2026)
+// VS Code Counter: 22 code lines (19/10/2026)

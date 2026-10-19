@@ -3,13 +3,13 @@ import { AuthService } from '../../../core/services/auth.service';
 import { RouterLink } from '@angular/router';
 import { User } from '../../../core/interfaces/user';
 import { MatAnchor } from "@angular/material/button";
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from "@angular/material/card";
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardSubtitle } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   imports: [MatAnchor, MatCard, MatCardHeader,
     MatCardTitle, MatCardContent, RouterLink,
-    MatIconModule],
+    MatIconModule, MatCardSubtitle],
   selector: 'app-employee-dashboard',
   styleUrls: ['./employee-dashboard.scss'],
   templateUrl: './employee-dashboard.html',
@@ -27,4 +27,4 @@ export class EmployeeDashboard {
 
 
 
-// VS Code counter: 19 code lines (08/10/2026)
+// VS Code counter: 19 code lines (19/10/2026)

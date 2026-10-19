@@ -8,27 +8,12 @@
 }
 
 
-// HEADER DELLA SEZIONE DI MODIFICA DELLA RICHIESTA
-.edit-request-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-
-    // TITOLO DELLE CARDS 
-    mat-card-title {
-        font-size: 1.7rem;
-        font-weight: bold;
-        padding-left: 1.2rem;
-    }
-
-    // MESSAGGIO DI ERRORE DEL FORM
-    .error-message {
-        color: red;
-        font-size: 1.8rem;
-        font-weight: 600;
-        margin: 5px 14rem;
-    }
+// MESSAGGIO DI ERRORE DEL FORM
+.error-message {
+    color: red;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 5px 14rem;
 }
 
 
@@ -135,4 +120,4 @@ mat-card-subtitle {
 
 
 
-// VS Code Counter:  92 code lines (15/10/2026)
+// VS Code Counter:  81 code lines (19/10/2026)
