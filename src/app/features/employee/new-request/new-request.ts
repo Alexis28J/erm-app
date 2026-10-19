@@ -10,25 +10,23 @@ import { RefundRequest } from '../../../core/interfaces/refund-request';
 import { RequestStatus } from '../../../core/interfaces/enum';
 import { Expense } from '../../../core/interfaces/expense';
 import { MatCardModule } from '@angular/material/card';
-import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { MatOptionModule } from "@angular/material/core";
 import { CommonModule } from '@angular/common';
-import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-bar';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list';
 import { ActivatedRoute } from '@angular/router';
 import { AppConfig } from '../../../core/interfaces/app-config';
+import { ExpenseEditor } from '../../../shared/expense-editor/expense-editor/expense-editor';
+import { RequestDetailsCard } from '../../../shared/request-details-card/request-details-card';
 
 @Component({
   imports: [ReactiveFormsModule, MatFormFieldModule, MatButtonModule,
-    MatCardModule, MatSelectModule, MatIconModule,
-    RouterLink, MatInputModule, MatOptionModule, CommonModule,
-    ProgressBar, TotalProgressBar, MatTooltipModule, AttachmentList],
+    MatCardModule, MatIconModule, RouterLink,
+    MatInputModule, CommonModule, TotalProgressBar,
+    MatTooltipModule, ExpenseEditor, RequestDetailsCard],
   selector: 'app-new-request',
   styleUrls: ['./new-request.scss'],
   templateUrl: './new-request.html',
@@ -147,7 +145,7 @@ export class NewRequest {
     const currentUser = this.authService.getCurrentUser();
 
     // Controllo se l'utente corrente esiste
-    if (!currentUser) {  
+    if (!currentUser) {
       return;
     }
 
@@ -359,4 +357,4 @@ export class NewRequest {
 
 
 
-// VS Code Counter: 229 code lines (15/10/2026)
+// VS Code Counter: 227 code lines (19/10/2026)

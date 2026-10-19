@@ -102,16 +102,17 @@
                     <div class="attachment-btn">
 
                         <button mat-raised-button type="button" color="primary" (click)="fileInput.click()"
-                            aria-label="Attach files (PDF, JPG, JPEG, PNG) (optional)">
+                            matTooltip="Attach the receipt/s corresponding to this expense" matTooltipPosition="right"
+                            aria-label="Attach files corresponding to this expense (PDF, JPG, JPEG, PNG) (Optional)">
                             Attach File
                             <mat-icon>attach_file</mat-icon>
                         </button>
 
-                        <input hidden #fileInput type="file" multiple (change)="filesSelected.emit(
+                        <input hidden #fileInput type="file" multiple accept=".pdf,.jpg,.jpeg,.png" (change)="filesSelected.emit(
                     {
                         event: $event, 
                         index: $index
-                    })" accept=".pdf,.jpg,.jpeg,.png">
+                    })">
 
                     </div>
 
@@ -133,7 +134,8 @@
                         <button mat-icon-button color="warn" type="button" (click)="removeAttachment.emit({
                     expenseIndex,
                     attachmentIndex
-                  })" matTooltip="Remove file" matTooltipPosition="left" class="remove-btn">
+                  })" matTooltip="Remove file" matTooltipPosition="left" class="remove-btn"
+                            aria-label="Remove attached file">
                             <mat-icon>cancel</mat-icon>
                         </button>
 
@@ -158,4 +160,4 @@
 
 
 
-<!-- VS Code Counter: 93 code lines (15/10/2016) -->
+<!-- VS Code Counter: 96 code lines (19/10/2016) -->

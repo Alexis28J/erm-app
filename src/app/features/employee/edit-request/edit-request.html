@@ -22,57 +22,8 @@
 
     <div class="form-section">
 
-      <!-- CARD DI EDIT REQUEST -->
-      <mat-card>
-
-        <mat-card-subtitle>
-          Request Details
-          <mat-icon>info</mat-icon>
-        </mat-card-subtitle>
-
-        <mat-card-content>
-
-          <!-- Mese di riferimento della richiesta -->
-          <mat-form-field appearance="outline">
-
-            <mat-label>Reference Month</mat-label>
-            <input matInput type="month" formControlName="referenceMonth" pattern="\d{4}-\d{2}"
-              aria-label="Write the reference month in YYYY-MM format (Required)">
-
-          </mat-form-field>
-
-          <!-- Note del dipendente -->
-          <mat-form-field appearance="outline">
-
-            <mat-label>Employee Notes</mat-label>
-            <textarea matInput rows="4" formControlName="noteEmployee" aria-label="Write employee notes (Optional)">
-            </textarea>
-
-          </mat-form-field>
-
-          <!-- Informazioni sulla richiesta -->
-          <div class="request-info">
-
-            <p>
-              <strong>Status:</strong>
-              {{ requestData.status }}
-            </p>
-
-            <p>
-              <strong>Created:</strong>
-              {{ requestData.creationDate | date:'yyyy-MM-dd' }}
-            </p>
-
-            <p>
-              <strong>Last Update:</strong>
-              {{ requestData.lastUpdateDate | date:'yyyy-MM-dd' }}
-            </p>
-
-          </div>
-
-        </mat-card-content>
-
-      </mat-card>
+      <app-request-details-card [form]="requestForm" [request]="request()">
+      </app-request-details-card>
 
 
       <!---------------------------------------- SEZIONE DELLE SPESE ---------------------------------------->
@@ -116,6 +67,7 @@
       </mat-card>
 
 
+      <!-- SEZIONE DEI PULSANTI DI AZIONE -->
       <div class="actions">
 
         <!-- Pulsante per tornare indietro -->
@@ -159,4 +111,4 @@
 
 
 
-<!-- VS Code Counter: 97 code lines (15/10/2026) -->
+<!-- VS Code Counter: 67 code lines (19/10/2026) -->

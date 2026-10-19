@@ -1,0 +1,26 @@
+mat-card-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.7rem;
+    font-weight: bold;
+    padding: 0.5rem 1.2rem 1rem 1rem;
+}
+
+mat-form-field {
+    width: 100%;
+    padding-top: 16px;
+}
+
+.request-info {
+    font-size: 1rem;
+
+    p {
+        display: flex;
+        gap: 8px;
+    }
+}
+
+
+
+// VS Code Counter: 19 code lines (19/10/2026)

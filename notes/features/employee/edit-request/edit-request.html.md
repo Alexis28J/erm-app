@@ -27,35 +27,35 @@
     <div class="form-section">
 
       <!-- CARD DI EDIT REQUEST -->
-      <mat-card>
+      <!-- <mat-card>
 
         <mat-card-subtitle>
           Request Details
           <mat-icon>info</mat-icon>
         </mat-card-subtitle>
 
-        <mat-card-content>
+        <mat-card-content> -->
 
           <!-- Mese di riferimento della richiesta -->
-          <mat-form-field appearance="outline">
+          <!-- <mat-form-field appearance="outline"> -->
 
-            <mat-label>Reference Month</mat-label>
+            <!-- <mat-label>Reference Month</mat-label> -->
             <!-- pattern="\d{4}-\d{2}" per il formato YYYY-MM -->
-            <input matInput type="month" formControlName="referenceMonth" pattern="\d{4}-\d{2}">
+            <!-- <input matInput type="month" formControlName="referenceMonth" pattern="\d{4}-\d{2}"> -->
 
-          </mat-form-field>
+          <!-- </mat-form-field> -->
 
           <!-- Note del dipendente -->
-          <mat-form-field appearance="outline">
+          <!-- <mat-form-field appearance="outline">
 
             <mat-label>Employee Notes</mat-label>
             <textarea matInput rows="4" formControlName="noteEmployee">
             </textarea>
 
-          </mat-form-field>
+          </mat-form-field> -->
 
           <!-- Informazioni sulla richiesta -->
-          <div class="request-info">
+          <!-- <div class="request-info">
 
             <p>
               <strong>Status:</strong>
@@ -76,7 +76,14 @@
 
         </mat-card-content>
 
-      </mat-card>
+      </mat-card> -->
+
+      <!-- Ho trasformato la sezione dei dettagli della richiesta in un componente separato. 
+       Il codice è stato reso più modulare e riutilizzabile ed è stato spostato in un componente separato e dedicato, semplificando il template principale.
+       Sto seguendo il principio di separazione delle responsabilità, mantenendo il template principale più pulito e leggibile. -->
+
+      <app-request-details-card [form]="requestForm" [request]="request()">
+      </app-request-details-card>
 
 
       <!---------------------------------- SEZIONE DELLE SPESE ------------------------------------->

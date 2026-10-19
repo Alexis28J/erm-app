@@ -6,7 +6,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefundRequestService } from '../../../core/services/refund-request.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -23,12 +22,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExpenseEditor } from '../../../shared/expense-editor/expense-editor/expense-editor';
 import { AppConfig } from '../../../core/interfaces/app-config';
 import { AuthService } from '../../../core/services/auth.service';
+import { RequestDetailsCard } from '../../../shared/request-details-card/request-details-card';
 
 @Component({
   imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule,
-    MatInputModule, MatButtonModule, MatProgressSpinnerModule,
-    DatePipe, MatSelectModule, MatIconModule, RouterLink,
-    CommonModule, TotalProgressBar, MatTooltipModule, ExpenseEditor],
+    MatInputModule, MatButtonModule, MatProgressSpinnerModule, MatSelectModule, MatIconModule, RouterLink,
+    CommonModule, TotalProgressBar, MatTooltipModule, ExpenseEditor, RequestDetailsCard],
   selector: 'app-edit-request',
   styleUrls: ['./edit-request.scss'],
   templateUrl: './edit-request.html',
@@ -409,4 +408,4 @@ export class EditRequest {
 
 
 
-// VS Code Counter: 267 code lines (15/10/2026)
+// VS Code Counter: 266 code lines (19/10/2026)

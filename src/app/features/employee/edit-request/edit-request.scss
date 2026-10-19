@@ -51,24 +51,6 @@ mat-card-subtitle {
 }
 
 
-// CAMPI DEL FORM
-mat-form-field {
-    width: 100%;
-    padding-top: 16px;
-}
-
-
-// INFORMAZIONI SULLA RICHIESTA
-.request-info {
-    font-size: 1rem;
-
-    p {
-        display: flex;
-        gap: 8px;
-    }
-}
-
-
 // VALORE TOTALE RICHIESTO
 .total-section {
     display: flex;
@@ -83,7 +65,6 @@ mat-form-field {
         margin-right: 1rem;
     }
 }
-
 
 
 // CONTENITORE DEL TOTALE DELLE SPESE
@@ -143,7 +124,6 @@ mat-form-field {
         background-color: rgb(236, 235, 235);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-
 }
 
 
@@ -155,4 +135,4 @@ mat-form-field {
 
 
 
-// VS Code Counter:  103 code lines (15/10/2026)
+// VS Code Counter:  92 code lines (15/10/2026)

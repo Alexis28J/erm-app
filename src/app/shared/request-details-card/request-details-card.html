@@ -1,0 +1,67 @@
+<mat-card>
+
+    <div [formGroup]="form()">
+
+        <mat-card-subtitle>
+            Request Details
+            <mat-icon>info</mat-icon>
+        </mat-card-subtitle>
+
+        <mat-card-content>
+
+            <!-- MESE DI RIFERIMENTO -->
+            <mat-form-field appearance="outline">
+
+                <mat-label>Reference Month</mat-label>
+
+                <input matInput type="month" formControlName="referenceMonth" pattern="\d{4}-\d{2}"
+                    aria-label="Write the reference month in YYYY-MM format (Required)"
+                    placeholder="'YYYY-MM' format (e.g., 2024-06)">
+
+            </mat-form-field>
+
+
+            <!-- NOTE DEL DIPENDENTE -->
+            <mat-form-field appearance="outline">
+
+                <mat-label>Employee Notes</mat-label>
+
+                <textarea matInput rows="4" formControlName="noteEmployee" aria-label="Write employee notes (Optional)">
+                </textarea>
+
+            </mat-form-field>
+
+
+            <!-- INFORMAZIONI SULLA RICHIESTA (SOLO PER IL COMPONENTE EDIT REQUEST) -->
+            @if (request(); as requestData) {
+
+            <div class="request-info">
+
+                <p>
+                    <strong>Status:</strong>
+                    {{ requestData.status }}
+                </p>
+
+                <p>
+                    <strong>Created:</strong>
+                    {{ requestData.creationDate | date:'yyyy-MM-dd' }}
+                </p>
+
+                <p>
+                    <strong>Last Update:</strong>
+                    {{ requestData.lastUpdateDate | date:'yyyy-MM-dd' }}
+                </p>
+
+            </div>
+
+            }
+
+        </mat-card-content>
+
+    </div>
+
+</mat-card>
+
+
+
+<!-- VS Code Counter: 37 code lines (19/10/2026) -->
