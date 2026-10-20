@@ -20,22 +20,22 @@
 
 // ICONA TONDA PER LE CARD
 .card-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: #e3f2fd;
-    border: 2px solid #1976d2;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #e3f2fd;
+  border: 2px solid #1976d2;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    mat-icon {
-        font-size: 32px;
-        height: 32px;
-        width: 32px;
-        color: #1976d2;
-    }
+  mat-icon {
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+    color: #1976d2;
+  }
 }
 
 

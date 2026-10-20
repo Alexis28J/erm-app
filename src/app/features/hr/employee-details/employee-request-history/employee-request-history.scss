@@ -1,0 +1,68 @@
+mat-card-title {
+    padding-left: 0;
+}
+
+
+// COLORI DEGLI STATI DELLE RICHIESTE (TESTO)
+.approved {
+    color: green;
+    font-weight: 600;
+}
+
+.pending {
+    color: orange;
+    font-weight: 600;
+}
+
+.rejected {
+    color: red;
+    font-weight: 600;
+}
+
+.partial_approved,
+// Scrivo entrambe le versioni per gestire 
+.partial-approved {
+    // sia underscore che trattino
+    color: rgb(30, 196, 30);
+    font-weight: 600;
+}
+
+.in_progress,
+.in-progress {
+    color: #009dff;
+    font-weight: 600;
+}
+
+
+// VUOTO
+.no-found {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-top: 2rem;
+}
+
+
+// TABELLE A LARGHEZZA UGUALE
+.equal-width-table {
+    table-layout: fixed; // Forza tutte le colonne ad avere la stessa larghezza
+
+    th {
+        font-size: 1rem;
+    }
+
+}
+
+/* Distribuisce lo spazio equamente (es. 3 colonne = 33.33% ciascuna) */
+.equal-width-table th {
+    width: calc(100% / 6); // Imposta la larghezza di ciascuna colonna al 16.66% (per 6 colonne)
+    overflow: hidden; // Opzionale: evita che testi troppo lunghi rompano il layout
+    text-overflow: ellipsis; // Mostra "..." per testi troppo lunghi
+    white-space: nowrap; // Impedisce al testo di andare a capo
+}
+
+
+
+// VS Code Counter: 48 code lines (20/10/2026)

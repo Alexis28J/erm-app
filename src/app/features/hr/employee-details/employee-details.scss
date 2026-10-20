@@ -7,9 +7,8 @@
 }
 
 
-// STILE DEI CARDS (EMPLOYEE CARD E STATS CARD)
-.employee-card,
-.stats-card {
+// EMPLOYEE CARD
+.employee-card {
     margin-bottom: 1rem;
 }
 
@@ -29,67 +28,6 @@ mat-card-title {
     justify-content: space-evenly;
     padding-top: 1.5rem;
     font-size: 1.2rem;
-}
-
-
-// LAYOUT DELLE STATISTICHE (STATS GRID)
-.stats-grid {
-    margin-top: 1rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 1rem;
-}
-
-.stat-item {
-    padding: 1rem;
-    padding-top: 2rem;
-    margin-top: 0.5rem;
-    border-radius: 12px;
-    border: 2px outset rgba(22, 80, 195, 0.212);
-    text-align: center;
-    background: #dcdcdc;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    &:hover {
-        transform: translateY(-2px);
-        transition: transform 0.3s ease;
-        border-color: rgba(22, 80, 195, 0.6);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-}
-
-.stat-item h3 {
-    margin: 0;
-    font-size: 1.5rem;
-}
-
-
-// STILE DEGLI STATI DELLE RICHIESTE (RIQUADRI COLORATI)
-.total-requests {
-    background: #cde8f7;
-}
-
-.approved-requests {
-    background: #cdeecf;
-}
-
-.rejected-requests {
-    background: #fad0d6;
-}
-
-.pending-requests {
-    background: #fde9a9;
-}
-
-.total-requested-amount {
-    background: #cde8f7;
-}
-
-.total-approved-amount {
-    background: #cdeecf;
 }
 
 
@@ -117,70 +55,9 @@ p {
 }
 
 
-// COLORI DEGLI STATI DELLE RICHIESTE (TESTO)
-.approved {
-    color: green;
-    font-weight: 600;
-}
-
-.pending {
-    color: orange;
-    font-weight: 600;
-}
-
-.rejected {
-    color: red;
-    font-weight: 600;
-}
-
-.partial_approved,
-// Scrivo entrambe le versioni per gestire 
-.partial-approved {
-    // sia underscore che trattino
-    color: rgb(30, 196, 30);
-    font-weight: 600;
-}
-
-.in_progress,
-.in-progress {
-    color: #009dff;
-    font-weight: 600;
-}
-
-
 // PULSANTE INDIETRO
 .back-btn {
     margin: 1rem;
-}
-
-
-// VUOTO
-.no-found {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin-top: 2rem;
-}
-
-
-// TABELLE A LARGHEZZA UGUALE
-.equal-width-table {
-    table-layout: fixed; // Forza tutte le colonne ad avere la stessa larghezza
-
-    th {
-        font-size: 1rem;
-    }
-
-}
-
-/* Distribuisce lo spazio equamente (es. 3 colonne = 33.33% ciascuna) */
-.equal-width-table th {
-    width: calc(100% / 6); // Imposta la larghezza di ciascuna colonna al 16.66% (per 6 colonne)
-    overflow: hidden; // Opzionale: evita che testi troppo lunghi rompano il layout
-    text-overflow: ellipsis; // Mostra "..." per testi troppo lunghi
-    white-space: nowrap; // Impedisce al testo di andare a capo
 }
 
 
@@ -195,4 +72,4 @@ p {
 /// 
 
 
-//  VS Code Counter: 132 code lines (19/10/2026)
+//  VS Code Counter: 43 code lines (20/10/2026)

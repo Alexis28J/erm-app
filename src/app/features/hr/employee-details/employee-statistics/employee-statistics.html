@@ -1,0 +1,66 @@
+<mat-card class="stats-card">
+
+    <!-- STATISTICHE DEL DIPENDENTE (Employee Statistics) -->
+    <mat-card-header>
+        <mat-card-title>
+            Statistics
+            <mat-icon>bar_chart</mat-icon>
+        </mat-card-title>
+    </mat-card-header>
+
+
+    <mat-card-content>
+
+        <div class="stats-grid">
+
+            <!-- Richieste totali -->
+            <div class="stat-item total-requests">
+                <!-- Se l'utente non ha ancora effettuato richieste -->
+                <h3>{{ totalRequests() }}</h3>
+                <p>Total Requests</p>
+            </div>
+
+
+            <!-- Richieste approvate -->
+            <div class="stat-item approved-requests">
+                <h3>{{ approvedRequests() }}</h3>
+                <p>Approved Requests</p>
+            </div>
+
+
+            <!-- Richieste rifiutate -->
+            <div class="stat-item rejected-requests">
+                <h3>{{ rejectedRequests() }}</h3>
+                <p>Rejected Requests</p>
+            </div>
+
+
+            <!-- Richieste in attesa -->
+            <div class="stat-item pending-requests">
+                <h3>{{ pendingRequests() }}</h3>
+                <p>Pending Requests</p>
+            </div>
+
+
+            <!-- Quantità totale richiesta -->
+            <div class="stat-item total-requested-amount">
+                <h3>{{ totalRequestedAmount() | number: '1.2-2'}} €</h3>
+                <p>Total Requested Amount</p>
+            </div>
+
+
+            <!-- Quantità totale approvata -->
+            <div class="stat-item total-approved-amount">
+                <h3>{{ totalApprovedAmount() | number: '1.2-2'}} €</h3>
+                <p>Total Approved Amount</p>
+            </div>
+
+        </div>
+
+    </mat-card-content>
+
+</mat-card>
+
+
+
+<!-- VS Code Counter: 36 code lines (20/10/2026) -->

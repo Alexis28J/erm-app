@@ -1,0 +1,76 @@
+.stats-card {
+    margin-bottom: 1rem;
+}
+
+mat-card {
+    margin-bottom: 1rem;
+}
+
+mat-card-title {
+    padding-left: 0;
+}
+
+
+// LAYOUT DELLE STATISTICHE (STATS GRID)
+.stats-grid {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+.stat-item {
+    padding: 1rem;
+    padding-top: 2rem;
+    margin-top: 0.5rem;
+    border-radius: 12px;
+    border: 2px outset rgba(22, 80, 195, 0.212);
+    text-align: center;
+    background: #dcdcdc;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &:hover {
+        transform: translateY(-2px);
+        transition: transform 0.3s ease;
+        border-color: rgba(22, 80, 195, 0.6);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.stat-item h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+
+// STILE DEGLI STATI DELLE RICHIESTE (RIQUADRI COLORATI)
+.total-requests {
+    background: #cde8f7;
+}
+
+.approved-requests {
+    background: #cdeecf;
+}
+
+.rejected-requests {
+    background: #fad0d6;
+}
+
+.pending-requests {
+    background: #fde9a9;
+}
+
+.total-requested-amount {
+    background: #cde8f7;
+}
+
+.total-approved-amount {
+    background: #cdeecf;
+}
+
+
+
+// VS Code Counter: 55 code lines (20/10/2026)
