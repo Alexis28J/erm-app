@@ -1,3 +1,4 @@
+// CONTENITORE PRINCIPALE DELLA PAGINA
 .page-container {
   padding: 16px;
   display: flex;
@@ -17,132 +18,6 @@ mat-card-header {
   mat-card-title {
     padding-left: 0;
   }
-}
-
-
-.full-width {
-  width: 100%;
-}
-
-
-// CARD INFORMAZIONE DELLA RICHIESTA
-.request-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 16px;
-}
-
-.info-item {
-  display: flex;
-  flex-direction: column;
-  text-align: start;
-  gap: 4px;
-}
-
-.info-label {
-  font-size: 1.2rem;
-  color: #666;
-  margin-bottom: 4px;
-}
-
-.info-value {
-  font-size: 1.4rem;
-  font-weight: 600;
-}
-
-.status-badge {
-  display: flex;
-  width: 100%;
-  padding: 6px 24px;
-  font-size: 1.7rem;
-  font-weight: 600;
-}
-
-
-// COLORI STATUS
-.approved {
-  color: green;
-  font-weight: 600;
-}
-
-.pending {
-  color: orange;
-  font-weight: 600;
-}
-
-.rejected {
-  color: red;
-  font-weight: 600;
-}
-
-.partial_approved,
-// Scrivo entrambe le versioni per gestire 
-.partial-approved {
-  // sia underscore che trattino
-  color: rgb(30, 196, 30);
-  font-weight: 600;
-}
-
-.draft {
-  color: gray;
-  font-weight: 600;
-}
-
-.in_progress,
-.in-progress {
-  color: #009dff;
-  font-weight: 600;
-}
-
-
-// SEZIONE SPESE
-.expenses-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-
-// CONTENITORE PER OGNI SINGOLA SPESA
-.expense-container {
-  border: 2px solid rgba(22, 80, 195, 0.223);
-  padding: 1.5rem;
-  border-radius: 8px;
-  background-color: #f5f5f572;
-  margin-bottom: 1rem;
-
-  &:hover {
-    border-color: rgba(60, 98, 250, 0.6);
-    transform: translateY(-0.5px);
-    background-color: rgba(255, 255, 255, 0.688);
-  }
-}
-
-
-// (OGNI) RIGA DI DATI DELLA SINGOLA SPESA
-.expense-row {
-  display: grid;
-  grid-template-columns:
-    120px // Category
-    2fr // Description
-    120px // Requested Amount
-    180px; // Approved Amount (input "Amount")
-  gap: 16px;
-  align-items: center;
-  margin-bottom: 2rem;
-
-  mat-form-field {
-    position: relative;
-    top: 8px;
-  }
-}
-
-
-// CONTENITORE PER L'INPUT DELLA SINGOLA SPESA
-.expense-input {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
 }
 
 
@@ -175,6 +50,7 @@ mat-card-header {
 .edit-btn {
   color: red !important;
   border: 2px groove red !important;
+
   &:hover,
   &:focus {
     border-color: darkred !important;
@@ -208,24 +84,6 @@ mat-card-header {
 }
 
 
-// CONTENITORE DEGLI ALLEGATI
-.attachment-container {
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 8px;
-  gap: 1rem;
-
-  strong {
-    margin-top: 8px;
-  }
-
-  app-attachment-list {
-    display: flex;
-    gap: 8px;
-  }
-}
-
-
 // STILE PER IL MESSAGGIO DI ERRORE DEL FORM
 .form-error {
   color: red;
@@ -234,58 +92,25 @@ mat-card-header {
 }
 
 
-// LINEA DIVISORIA TRA LE SPESE
-mat-divider {
-  margin-bottom: 1rem;
-  border-color: #121316;
-}
-
-
-// BANNER DI REVISIONE (REVIEW MODE)
-.review-banner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  margin-bottom: 1rem;
-  padding: 1rem;
-
-  background: #e3f2fd;
-  color: #1565c0;
-
-  border-radius: 8px;
+// CONTENITORE PER OGNI SINGOLA SPESA
+.expense-container {
   border: 2px solid rgba(22, 80, 195, 0.223);
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: #f5f5f572;
+  margin-bottom: 1rem;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.688);
-    border-color: rgba(60, 98, 250, 0.6)
-  }
-
-  strong {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  span {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    line-height: 1.5rem;
+    border-color: rgba(60, 98, 250, 0.6);
+    transform: translateY(-0.5px);
+    background-color: rgba(255, 255, 255, 0.688);
   }
 }
 
 
 // MEDIA QUERY PER SCHERMI PICCOLI (mobile responsive)
-// (Adatta il layout delle righe di spesa e dei pulsanti per schermi più piccoli)
+// (Adatta il layout dei pulsanti per schermi più piccoli)
 @media (max-width: 768px) {
-
-  .expense-row {
-    grid-template-columns: 1fr;
-  }
 
   .actions {
     flex-direction: column;
@@ -327,4 +152,4 @@ mat-divider {
 ///
 
 
-// VS Code Counter: 219 code lines (19/10/2026)
+// VS Code Counter: 89 code lines (21/10/2026)

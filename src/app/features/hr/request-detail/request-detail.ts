@@ -6,27 +6,29 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { RequestStatus } from '../../../core/interfaces/enum';
 import { FormBuilder } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { MatLabel, MatInputModule } from "@angular/material/input";
+import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ProgressBar } from '../../../shared/progress-bar/progress-bar/progress-bar';
-import { MatDivider } from '@angular/material/divider';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
-import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AppConfig } from '../../../core/interfaces/app-config';
 import { RouterLink } from '@angular/router';
+import { ExpenseList } from '../../../features/hr/request-detail/expense-list/expense-list';
+import { RequestInfo } from '../../../features/hr/request-detail/request-info/request-info';
+import { EmployeeNote } from '../../../features/hr/request-detail/employee-note/employee-note';
+import { A11yModule } from '@angular/cdk/a11y';
+import { HrNotes } from '../../../features/hr/request-detail/hr-notes/hr-notes';
 
 
 @Component({
-  imports: [MatCardModule, MatLabel, MatInputModule,
+  imports: [MatCardModule, MatInputModule,
     MatFormFieldModule, CommonModule, ReactiveFormsModule,
-    MatButtonModule, MatIconModule, ProgressBar,
-    MatDivider, TotalProgressBar, AttachmentList,
-    MatTooltipModule, RouterLink],
+    MatButtonModule, MatIconModule, TotalProgressBar,
+    MatTooltipModule, RouterLink, ExpenseList,
+    A11yModule, RequestInfo, EmployeeNote, HrNotes],
   selector: 'app-request-detail',
   styleUrls: ['./request-detail.scss'],
   templateUrl: './request-detail.html',
@@ -333,4 +335,4 @@ export class RequestDetail {
 
 
 
-// VS Code Counter: 201 code lines (16/10/2026)
+// VS Code Counter: 203 code lines (21/10/2026)

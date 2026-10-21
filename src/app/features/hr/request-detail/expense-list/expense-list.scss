@@ -1,0 +1,112 @@
+mat-card-header {
+  margin-bottom: 16px;
+  padding-top: 8px;
+
+  mat-card-title {
+    padding-left: 0;
+  }
+}
+
+
+// STILE PER IL MESSAGGIO DI ERRORE DEL FORM
+.form-error {
+  color: red;
+  font-size: 1.7rem;
+  margin: 2rem 0 0 6rem;
+}
+
+
+mat-card-content {
+  font-size: 1.1rem !important;
+}
+
+
+// SEZIONE SPESE
+.expenses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+
+// LINEA DIVISORIA TRA LE SPESE
+mat-divider {
+  margin-bottom: 1rem;
+  border-color: #121316;
+}
+
+
+// CONTENITORE PER OGNI SINGOLA SPESA
+.expense-container {
+  border: 2px solid rgba(22, 80, 195, 0.223);
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: #f5f5f572;
+  margin-bottom: 1rem;
+
+  &:hover {
+    border-color: rgba(60, 98, 250, 0.6);
+    transform: translateY(-0.5px);
+    background-color: rgba(255, 255, 255, 0.688);
+  }
+}
+
+
+// (OGNI) RIGA DI DATI DELLA SINGOLA SPESA
+.expense-row {
+  display: grid;
+  grid-template-columns:
+    120px // Category
+    2fr // Description
+    120px // Requested Amount
+    180px; // Approved Amount (input "Amount")
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  mat-form-field {
+    position: relative;
+    top: 8px;
+  }
+}
+
+
+// CONTENITORE PER L'INPUT DELLA SINGOLA SPESA
+.expense-input {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+
+// CONTENITORE DEGLI ALLEGATI
+.attachment-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 8px;
+  gap: 1rem;
+
+  strong {
+    margin-top: 8px;
+  }
+
+  app-attachment-list {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+
+// MEDIA QUERY PER SCHERMI PICCOLI (mobile responsive)
+// (Adatta il layout delle righe di spesa e dei pulsanti per schermi più piccoli)
+@media (max-width: 768px) {
+
+  .expense-row {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+
+// VS Code Counter: 74 code lines (21/10/2026)

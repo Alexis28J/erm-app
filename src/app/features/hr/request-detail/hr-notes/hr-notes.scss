@@ -1,0 +1,59 @@
+mat-card-content {
+    font-size: 1.1rem !important;
+}
+
+
+mat-card-header {
+    margin-bottom: 16px;
+    padding-top: 8px;
+
+    mat-card-title {
+        padding-left: 0;
+    }
+}
+
+
+// LARGHEZZA COMPLETA 
+.full-width {
+    width: 100%;
+}
+
+
+// BANNER DI REVISIONE (REVIEW MODE)
+.review-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    margin-bottom: 1rem;
+    padding: 1rem;
+
+    background: #e3f2fd;
+    color: #1565c0;
+
+    border-radius: 8px;
+    border: 2px solid rgba(22, 80, 195, 0.223);
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.688);
+        border-color: rgba(60, 98, 250, 0.6)
+    }
+
+    strong,
+    span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    span {
+        flex-direction: column;
+        line-height: 1.5rem;
+    }
+}
+
+
+
+// VS Code Counter: 40 code lines (21/10/2026)
