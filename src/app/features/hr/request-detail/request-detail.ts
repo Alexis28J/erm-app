@@ -12,23 +12,23 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AppConfig } from '../../../core/interfaces/app-config';
-import { RouterLink } from '@angular/router';
 import { ExpenseList } from '../../../features/hr/request-detail/expense-list/expense-list';
 import { RequestInfo } from '../../../features/hr/request-detail/request-info/request-info';
 import { EmployeeNote } from '../../../features/hr/request-detail/employee-note/employee-note';
 import { A11yModule } from '@angular/cdk/a11y';
 import { HrNotes } from '../../../features/hr/request-detail/hr-notes/hr-notes';
+import { TotalRequestedApproved } from '../../../features/hr/request-detail/total-requested-approved/total-requested-approved';
+import { ReviewActions } from '../../../features/hr/request-detail/review-actions/review-actions';
 
 
 @Component({
-  imports: [MatCardModule, MatInputModule,
-    MatFormFieldModule, CommonModule, ReactiveFormsModule,
-    MatButtonModule, MatIconModule, TotalProgressBar,
-    MatTooltipModule, RouterLink, ExpenseList,
-    A11yModule, RequestInfo, EmployeeNote, HrNotes],
+  imports: [MatCardModule, MatInputModule, MatFormFieldModule,
+    CommonModule, ReactiveFormsModule, MatButtonModule,
+    MatIconModule, MatTooltipModule, ExpenseList,
+    A11yModule, RequestInfo, EmployeeNote,
+    HrNotes, TotalRequestedApproved, ReviewActions],
   selector: 'app-request-detail',
   styleUrls: ['./request-detail.scss'],
   templateUrl: './request-detail.html',

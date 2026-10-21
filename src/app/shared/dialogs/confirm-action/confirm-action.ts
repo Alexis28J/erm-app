@@ -27,4 +27,5 @@ export class ConfirmAction {
 }
 
 
+
 // VS Code Counter: 20 code lines (08/10/2026)

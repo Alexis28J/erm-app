@@ -1,0 +1,41 @@
+<!-- QUANTITÀ TOTALE RICHIESTA -->
+<mat-card>
+
+    <mat-card-header class="overview-header">
+        <mat-card-title>
+            Total Requested Amount
+            <mat-icon>paid</mat-icon>
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div class="expense-container">
+            <app-total-progress-bar [requestedAmount]="requestedAmount()" [allowedAmount]="allowedAmount()">
+            </app-total-progress-bar>
+        </div>
+    </mat-card-content>
+
+</mat-card>
+
+
+<!-- QUANTITÀ TOTALE APPROVATA -->
+<mat-card class="space">
+
+    <mat-card-header class="overview-header">
+        <mat-card-title>
+            Total Approved Amount
+            <mat-icon>check_circle</mat-icon>
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div class="total-card">
+            <div class="total-amount">{{ approvedAmount() | number:'1.2-2' }} €</div>
+        </div>
+    </mat-card-content>
+
+</mat-card>
+
+
+
+<!-- VS Code Counter: 27 code lines (21/10/2026) -->

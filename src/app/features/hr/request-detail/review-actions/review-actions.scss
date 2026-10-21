@@ -1,0 +1,63 @@
+// MEDIA QUERY PER SCHERMI PICCOLI (mobile responsive)
+// (Adatta il layout dei pulsanti per schermi più piccoli)
+@media (max-width: 768px) {
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .approve-btn,
+  .reject-btn {
+    width: 100%;
+  }
+
+}
+
+
+// PULSANTI AZIONE
+.actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+
+.verify-btn,
+.edit-btn {
+  color: red !important;
+  border: 2px groove red !important;
+
+  &:hover,
+  &:focus {
+    border-color: darkred !important;
+    background-color: rgba(255, 0, 0, 0.1) !important;
+  }
+}
+
+.reject-approve {
+  display: flex;
+  gap: 12px;
+}
+
+.approve-btn {
+  min-width: 140px;
+  border-color: green !important;
+  color: green !important;
+
+  &:hover {
+    background-color: rgba(0, 255, 0, 0.1);
+  }
+}
+
+.reject-btn {
+  min-width: 140px;
+  border-color: red !important;
+  color: red !important;
+
+  &:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+  }
+}
+
+
+
+// VS Code Counter: 44 code lines (21/10/2026)
