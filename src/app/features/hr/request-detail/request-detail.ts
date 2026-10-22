@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefundRequestService } from '../../../core/services/refund-request.service';
 import { RefundRequest } from '../../../core/interfaces/refund-request';
@@ -21,6 +21,9 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { HrNotes } from '../../../features/hr/request-detail/hr-notes/hr-notes';
 import { TotalRequestedApproved } from '../../../features/hr/request-detail/total-requested-approved/total-requested-approved';
 import { ReviewActions } from '../../../features/hr/request-detail/review-actions/review-actions';
+import { AuthService } from '../../../core/services/auth.service';
+import { RequestWithUser, User } from '../../../core/interfaces/user';
+import { UserService } from '../../../core/services/user.service';
 
 
 @Component({
@@ -33,7 +36,7 @@ import { ReviewActions } from '../../../features/hr/request-detail/review-action
   styleUrls: ['./request-detail.scss'],
   templateUrl: './request-detail.html',
 })
-export class RequestDetail {
+export class RequestDetail implements OnInit {
 
   constructor() {
 
@@ -56,11 +59,22 @@ export class RequestDetail {
 
   }
 
+
+  // CICLO DI VITA DEL COMPONENTE: INIZIALIZZAZIONE DEL COMPONENTE
+  ngOnInit() {
+    this.userService.getRequestDetails(this.requestId).subscribe({
+      next: (data) => this.requestData.set(data),
+      error: (err) => console.error('Error fetching request details', err)
+    })
+  }
+
+
   // INIEZIONI DI DIPENDENZE
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private refundRequestService = inject(RefundRequestService);
   private fb = inject(FormBuilder);
+  private userService = inject(UserService);
 
 
   // VARIABILE CHE CONTIENE L'ID DELLA RICHIESTA DI RIMBORSO (PRESA DALL'URL)
@@ -78,6 +92,10 @@ export class RequestDetail {
 
   // VARIABILE CHE CONTIENE LA RICHIESTA DI RIMBORSO CORRENTE (AGGIORNATA IN BASE ALLA RISORSA)
   request = signal<RefundRequest | null>(null);
+
+
+  // VARIABILE CHE CONTIENE I DATI DELLA RICHIESTA ARRICCHITI CON I DATI DELL'UTENTE
+  requestData = signal<RequestWithUser | null>(null);
 
 
   // VARIABILE CHE INDICA SE SI È IN MODALITÀ DI REVISIONE DELLA RICHIESTA
@@ -335,4 +353,4 @@ export class RequestDetail {
 
 
 
-// VS Code Counter: 203 code lines (21/10/2026)
+// VS Code Counter: 214 code lines (22/10/2026)

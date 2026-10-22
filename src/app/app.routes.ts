@@ -14,19 +14,22 @@ export const routes: Routes = [
 
     {
         path: '',
-        component: Home
+        component: Home,
+        title: 'J-ERM App: Home'
     },
     {
         path: 'login',
         loadComponent: () =>
             import('./features/login/login/login')
-                .then(m => m.Login)
+                .then(m => m.Login),
+        title: 'J-ERM App: Login'
     },
     {
         path: 'reset-password',
         loadComponent: () =>
             import('./features/login/reset-password/reset-password/reset-password')
-                .then(c => c.ResetPassword)
+                .then(c => c.ResetPassword),
+        title: 'J-ERM App: Reset Password'
     },
     {  // AREA DIPENDENTE
         path: 'employee',
@@ -42,7 +45,8 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import(
                         './features/employee/employee-dashboard/employee-dashboard'
-                    ).then(m => m.EmployeeDashboard)
+                    ).then(m => m.EmployeeDashboard),
+                title: 'Employee Area: Dashboard'
             },
 
             {
@@ -50,7 +54,8 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import(
                         './features/employee/request-list/request-list'
-                    ).then(m => m.RequestList)
+                    ).then(m => m.RequestList),
+                title: 'Employee Area: Request List'
             },
 
             {
@@ -59,6 +64,7 @@ export const routes: Routes = [
                     import(
                         './features/employee/request-details/request-details'
                     ).then(m => m.RequestDetails),
+                title: 'Employee Area: Request Details',
                 resolve: {
                     config: configResolver
                 }
@@ -70,6 +76,7 @@ export const routes: Routes = [
                     import(
                         './features/employee/edit-request/edit-request'
                     ).then(m => m.EditRequest),
+                title: 'Employee Area: Edit Request',
                 resolve: {
                     config: configResolver
                 }
@@ -81,6 +88,7 @@ export const routes: Routes = [
                     import(
                         './features/employee/new-request/new-request'
                     ).then(m => m.NewRequest),
+                title: 'Employee Area: New Request',
                 resolve: {
                     config: configResolver
                 }
@@ -99,25 +107,29 @@ export const routes: Routes = [
 
             {
                 path: 'settings',
-                component: HrSettings
+                component: HrSettings,
+                title: 'HR Area: Settings'
             },
             {
                 path: 'settings/expense-limits',
                 component: ExpenseLimitsSettings,
+                title: 'HR Area: Expense Limits Settings',
                 resolve: {
                     config: configResolver
                 }
             },
             {
                 path: 'settings/user-management',
-                component: UserManagement
+                component: UserManagement,
+                title: 'HR Area: User Management'
             },
             {
                 path: 'dashboard',
                 loadComponent: () =>
                     import(
                         './features/hr/hr-dashboard/hr-dashboard'
-                    ).then(m => m.HrDashboard)
+                    ).then(m => m.HrDashboard),
+                title: 'HR Area: Dashboard'
             },
 
             {
@@ -125,7 +137,8 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import(
                         './features/hr/request-list/request-list'
-                    ).then(m => m.RequestList)
+                    ).then(m => m.RequestList),
+                title: 'HR Area: Request List'
             },
 
             {
@@ -134,6 +147,7 @@ export const routes: Routes = [
                     import(
                         './features/hr/request-detail/request-detail'
                     ).then(m => m.RequestDetail),
+                title: 'HR Area: Request Details',
                 resolve: {
                     config: configResolver
                 }
@@ -144,7 +158,8 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import(
                         './features/hr/employee-list/employee-list'
-                    ).then(m => m.EmployeeList)
+                    ).then(m => m.EmployeeList),
+                title: 'HR Area: Employee List'
             },
 
             {
@@ -152,7 +167,8 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import(
                         './features/hr/employee-details/employee-details'
-                    ).then(m => m.EmployeeDetails)
+                    ).then(m => m.EmployeeDetails),
+                title: 'HR Area: Employee Details'
             }
 
         ]
@@ -166,5 +182,5 @@ export const routes: Routes = [
 
 
 
-// VS Code Counter: 150 code lines (14/10/2026)
+// VS Code Counter: 166 code lines (22/10/2026)
 

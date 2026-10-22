@@ -1,84 +1,89 @@
-    <!-- AREA DELL'INFORMAZIONE DELLA RICHIESTA -->
-    <mat-card>
+<!-- AREA DELL'INFORMAZIONE DELLA RICHIESTA -->
+<mat-card>
 
-        <!-- DETTAGLI DELLA RICHIESTA -->
-        <mat-card-header>
-            <mat-card-title>
-                Request Details
-                <mat-icon>description</mat-icon>
-            </mat-card-title>
-        </mat-card-header>
+    <!-- DETTAGLI DELLA RICHIESTA -->
+    <mat-card-header>
+        <mat-card-title>
+            Request Details
+            <mat-icon>description</mat-icon>
+        </mat-card-title>
+    </mat-card-header>
 
 
-        <mat-card-content>
+    <mat-card-content>
 
-            <!-- BANNER DI REVISIONE -->
-            @if (!reviewMode()) {
+        <!-- BANNER DI REVISIONE -->
+        @if (!reviewMode()) {
 
-            <div class="review-banner">
+        <div class="review-banner">
 
-                <strong>
-                    <mat-icon>
-                        visibility
-                    </mat-icon>
-                    VIEWING MODE</strong>
+            <strong>
+                <mat-icon>
+                    visibility
+                </mat-icon>
+                VIEWING MODE</strong>
 
-                <span>
-                    <mat-icon>arrow_downward</mat-icon>
-                    Go below to:
+            <span>
+                <mat-icon>arrow_downward</mat-icon>
+                Go below to:
+            </span>
+
+            <span>
+                • Click "Verify Request" to start the review process <br>
+                • Click "Edit Review" to modify an existing review.
+            </span>
+
+        </div>
+
+        }
+
+
+        <!-- AREA INFORMAZIONI RICHIESTA -->
+        <div class="request-info">
+
+            <p class="info-item">
+                <span class="info-label">Requested By:</span>
+                <span class="info-value">{{ requestData()?.user.name }} {{ requestData()?.user.surname }}</span>
+            </p>
+
+            <p class="info-item">
+                <span class="info-label">Month:</span>
+                <span class="info-value">{{ request().referenceMonth }}</span>
+            </p>
+
+            <p class="info-item">
+                <span class="info-label">Creation Date:</span>
+                <span class="info-value">{{ request().creationDate | date: 'yyyy-MM-dd' }}</span>
+            </p>
+
+            <p class="info-item">
+                <span class="info-label">Last Update:</span>
+                <span class="info-value">{{ request().lastUpdateDate | date: 'yyyy-MM-dd' }}</span>
+            </p>
+
+            <p class="info-item">
+                <span class="info-label">Requested Amount:</span>
+                <span class="info-value">{{ request().totalRequestedAmount | number: '1.2-2' }} €</span>
+            </p>
+
+            <p class="info-item">
+                <span class="info-label">Status:</span>
+                <span [ngClass]="request().status.toLowerCase()" class="status-badge border-text">
+                    {{ request().status === 'APPROVED' ? 'Approved ⭐'
+                    : request().status === 'REJECTED' ? 'Rejected ❌'
+                    : request().status === 'PENDING' ? 'Pending ⏳'
+                    : request().status === 'PARTIAL_APPROVED' ? 'Partial Approved ✅'
+                    : request().status === 'IN_PROGRESS' ? 'In Progress 🔄'
+                    : request().status }}
                 </span>
+            </p>
 
-                <span>
-                    • Click "Verify Request" to start the review process <br>
-                    • Click "Edit Review" to modify an existing review.
-                </span>
+        </div>
 
-            </div>
+    </mat-card-content>
 
-            }
-
-
-            <!-- AREA INFORMAZIONI RICHIESTA -->
-            <div class="request-info">
-
-                <p class="info-item">
-                    <span class="info-label">Month:</span>
-                    <span class="info-value">{{ request().referenceMonth }}</span>
-                </p>
-
-                <p class="info-item">
-                    <span class="info-label">Creation Date:</span>
-                    <span class="info-value">{{ request().creationDate | date: 'yyyy-MM-dd' }}</span>
-                </p>
-
-                <p class="info-item">
-                    <span class="info-label">Last Update:</span>
-                    <span class="info-value">{{ request().lastUpdateDate | date: 'yyyy-MM-dd' }}</span>
-                </p>
-
-                <p class="info-item">
-                    <span class="info-label">Requested Amount:</span>
-                    <span class="info-value">{{ request().totalRequestedAmount | number: '1.2-2' }} €</span>
-                </p>
-
-                <p class="info-item">
-                    <span class="info-label">Status:</span>
-                    <span [ngClass]="request().status.toLowerCase()" class="status-badge border-text">
-                        {{ request().status === 'APPROVED' ? 'Approved ⭐'
-                        : request().status === 'REJECTED' ? 'Rejected ❌'
-                        : request().status === 'PENDING' ? 'Pending ⏳'
-                        : request().status === 'PARTIAL_APPROVED' ? 'Partial Approved ✅'
-                        : request().status === 'IN_PROGRESS' ? 'In Progress 🔄'
-                        : request().status }}
-                    </span>
-                </p>
-
-            </div>
-
-        </mat-card-content>
-
-    </mat-card>
+</mat-card>
 
 
 
-    <!-- VS Code Counter: 56 code lines (21/10/2026) -->
+<!-- VS Code Counter: 60 code lines (22/10/2026) -->

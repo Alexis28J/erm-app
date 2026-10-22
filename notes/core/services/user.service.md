@@ -75,6 +75,22 @@ export class UserService {
   // e filtrare i dati emessi dagli Observable.
   // Può essere utilizzato all'interno di un pipe INSIEME ad altri operatori come map e filter per creare catene di trasformazioni e filtri sugli Observable.
 
+
+
+  // METODO PER OTTENERE I DETTAGLI DI UNA RICHIESTA CON I DATI DELL'UTENTE ASSOCIATO
+  // Ottiene la richiesta arricchita con i dati utente
+  getRequestDetails(requestId: string): Observable<RequestWithUser> {
+
+    return this.http.get<RefundRequest>(`${environment.apiUrl}/refundRequests/${requestId}`).pipe(
+      switchMap(request =>
+        this.http.get<User>(`${environment.apiUrl}/users/${request.userId}`).pipe(
+          // Unisce l'oggetto user dentro l'oggetto request
+          // Questo metodo unisce i dati dell'utente all'interno della richiesta, creando un oggetto RequestWithUser
+          // In questo modo la richiesta conterrà direttamente i dati dell'utente associato.
+          map(user => ({ ...request, user }))
+        )
+      )
+    );
 }
 ```
 

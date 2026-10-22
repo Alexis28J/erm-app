@@ -13,8 +13,7 @@ export const configResolver: ResolveFn<AppConfig> = () => {
 
 
 
-// Un resolver in Angular è una funzione o un servizio che viene eseguito prima che una rotta venga attivata, 
-// permettendo di recuperare i dati necessari per la rotta prima che il componente venga caricato.
+// Un resolver in Angular è una funzione o un servizio che viene eseguito prima che una rotta venga attivata, permettendo di recuperare i dati necessari per la rotta prima che il componente venga caricato.
 // Quindi è utile per garantire che i dati necessari siano disponibili prima che il componente della rotta venga visualizzato.
 
 

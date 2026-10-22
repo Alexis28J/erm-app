@@ -46,6 +46,11 @@
             <div class="request-info">
 
                 <p class="info-item">
+                    <span class="info-label">Requested By:</span>
+                    <span class="info-value">{{ requestData()?.user.name }} {{ requestData()?.user.surname }}</span>
+                </p>
+
+                <p class="info-item">
                     <span class="info-label">Month:</span>
                     <span class="info-value">{{ request.referenceMonth }}</span>
                 </p>

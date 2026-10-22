@@ -34,11 +34,23 @@ export class RequestDetail {
 
   }
 
+  // CICLO DI VITA DEL COMPONENTE: INIZIALIZZAZIONE DEL COMPONENTE
+  // Questo ciclo di vita del componente si occupa di inizializzare i dati della richiesta arricchiti con i dati dell'utente
+  // In questo modo, la proprietà requestData conterrà sempre i dati aggiornati della richiesta insieme ai dati dell'utente associato.
+  ngOnInit() {
+    this.userService.getRequestDetails(this.requestId).subscribe({
+      next: (data) => this.requestData.set(data),
+      error: (err) => console.error('Error fetching request details', err)
+    })
+  }
+
+
   // INIEZIONI DI DIPENDENZE
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private refundRequestService = inject(RefundRequestService);
   private fb = inject(FormBuilder);
+  private userService = inject(UserService);
 
 
   // VARIABILE CHE CONTIENE L'ID DELLA RICHIESTA DI RIMBORSO (PRESA DALL'URL)
@@ -58,6 +70,10 @@ export class RequestDetail {
   request = signal<RefundRequest | null>(null);  
 
   // A differenza della risorsa grezza, questa variabile contiene la richiesta di rimborso corrente aggiornata in base ai cambiamenti della risorsa.
+
+
+  // VARIABILE CHE CONTIENE I DATI DELLA RICHIESTA ARRICCHITI CON I DATI DELL'UTENTE
+  requestData = signal<RequestWithUser | null>(null);
 
 
   // VARIABILE CHE INDICA SE LA RICHIESTA È GIÀ STATA REVISIONATA DALL'HR

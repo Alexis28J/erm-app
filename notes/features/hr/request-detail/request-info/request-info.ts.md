@@ -11,5 +11,7 @@ export class RequestInfo {
 
   reviewMode = input(false);  // Input che indica se la visualizzazione è in modalità revisione. Inizialmente impostato su false
 
+  requestData = input<any | null>(null);  // Dati aggiuntivi della richiesta, inclusi i dettagli dell'utente associato
+
 }
 ```

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-import { User } from '../interfaces/user';
+import { map, Observable, switchMap } from 'rxjs';
+import { RequestWithUser, User } from '../interfaces/user';
 import { UserRole } from '../interfaces/enum';
+import { RefundRequest } from '../interfaces/refund-request';
 
 
 @Injectable({
@@ -57,8 +58,21 @@ export class UserService {
     );
   }
 
+
+  // METODO PER OTTENERE I DETTAGLI DI UNA RICHIESTA CON I DATI DELL'UTENTE ASSOCIATO
+  getRequestDetails(requestId: string): Observable<RequestWithUser> {
+
+    return this.http.get<RefundRequest>(`${environment.apiUrl}/refundRequests/${requestId}`).pipe(
+      switchMap(request =>
+        this.http.get<User>(`${environment.apiUrl}/users/${request.userId}`).pipe(
+          map(user => ({ ...request, user }))
+        )
+      )
+    );
+
+  }
+
 }
 
 
-
-// VS Code counter: 39 code lines (13/10/2026)
+// VS Code counter: 49 code lines (22/10/2026)

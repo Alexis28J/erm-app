@@ -13,7 +13,9 @@ export const routes: Routes = [
 
     {
         path: '',
-        component: Home
+        component: Home,
+        title: 'J-ERM App: Home'  // La proprietà title definisce il titolo della pagina nel browser
+        // Questa proprietà può essere utile per persone che utilizzano lettori di schermo o per migliorare l'accessibilità del sito
     },
 
     {

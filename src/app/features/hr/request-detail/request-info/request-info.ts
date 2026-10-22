@@ -18,8 +18,10 @@ export class RequestInfo {
 
   reviewMode = input(false);  
 
+  requestData = input<any | null>(null);  
+
 }
 
 
 
-// VS Code Counter: 15 code lines (21/10/2026)
+// VS Code Counter: 16 code lines (22/10/2026)

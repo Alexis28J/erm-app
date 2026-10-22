@@ -16,6 +16,15 @@ export interface User {
 
     systemConfig?: boolean;  // Indica se l'utente ha accesso alla configurazione di sistema
 }
+
+
+// Interfaccia che rappresenta una richiesta di rimborso arricchita con i dati dell'utente
+// In parole semplici, rappresenta una richiesta di rimborso con i dati dell'utente associato.
+export interface RequestWithUser extends RefundRequest {  
+  user: User;
+  // extends significa che eredita tutte le proprietà di RefundRequest
+}
+
 ```
 
 - `UserRole` è un `enum` che definisce i ruoli degli utenti, come EMPLOYEE o HR ma su mockapi devo usare stringa perche non supporta enum
