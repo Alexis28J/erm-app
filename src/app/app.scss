@@ -1,0 +1,30 @@
+    // LINK DI SALTO
+    .skip-link {
+        position: absolute;  // Serve per posizionare il link fuori dallo schermo
+        top: auto;  // Posizione verticale automatica
+        width: 1px; // Indica la larghezza minima per nascondere il link fuori dallo schermo
+        height: 1px; // Indica l'altezza minima per nascondere il link fuori dallo schermo
+        overflow: hidden;  // Nasconde il contenuto che esce dai limiti del link
+        transform: translateX(300%);  // Centra orizzontalmente il link fuori dallo schermo
+        font-weight: bold;
+    }
+
+
+    // FOCUS DEL LINK DI SALTO
+    .skip-link:focus {
+        position: static;  // Mostra il link quando è a fuoco
+        width: auto;
+        height: auto;
+    }
+
+
+    // CONTENUTO CHE RICEVE IL FOCUS
+    .focus-target {
+        &:focus{
+            outline: 2px solid blue;  
+        }
+    }
+
+
+
+    // VS Code Counter: 19 code lines (22/10/2026)

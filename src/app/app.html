@@ -1,4 +1,14 @@
-<router-outlet></router-outlet>
+<!-- SKIP LINK PER LA NAVIGAZIONE TRAMITE TASTIERA (ID DI DESTINAZIONE DINAMICO)-->
+
+<button mat-button class="skip-link focus-target" (click)="jumpToTheContent()" aria-label="Jump to main content">
+    Jump to main content 👇
+</button>
 
 
-<!-- VS Code Counter: 1 code line (08/10/2026) -->
+<main #mainContent tabindex="-1" class="focus-target">
+    <router-outlet></router-outlet>
+</main>
+
+
+
+<!-- VS Code Counter: 6 code lines (22/10/2026) -->
