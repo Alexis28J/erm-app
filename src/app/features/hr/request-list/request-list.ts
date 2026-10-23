@@ -14,6 +14,8 @@ import { RouterLink } from '@angular/router';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ExcelExportService } from '../../../core/services/excel-export.service';
+import { UserService } from '../../../core/services/user.service';
 
 @Component({
   imports: [MatIconModule, MatCardModule, MatTableModule,
@@ -121,6 +123,8 @@ export class RequestList {
   private refundRequestService = inject(RefundRequestService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private excelExportService = inject(ExcelExportService);
+  private userService = inject(UserService);
 
 
   // SEGNALE PER MEMORIZZARE LE RICHIESTE DI RIMBORSO 
@@ -169,8 +173,29 @@ export class RequestList {
 
   }
 
+
+  // SEGNALE PER MEMORIZZARE GLI UTENTI
+  users = toSignal(
+    this.userService.getUsers(),
+    {
+      initialValue: []
+    }
+  )
+
+
+  // METODO PER ESPORTARE LE RICHIESTE DI RIMBORSO IN UN FILE EXCEL
+  exportRequests(): void {
+
+    this.excelExportService
+      .exportRequests(
+        this.requests(),
+        this.users()
+      );
+
+  }
+
 }
 
 
 
-// VS Code Counter: 101 code lines (08/10/2026)
+// VS Code Counter: 118 code lines (23/10/2026)

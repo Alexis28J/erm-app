@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { User } from '../../../core/interfaces/user';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { ExcelExportService } from '../../../core/services/excel-export.service';
 
 @Component({
   imports: [MatCardModule, MatFormFieldModule, MatInputModule,
@@ -96,6 +97,7 @@ export class EmployeeList {
   private userService = inject(UserService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private excelExportService = inject(ExcelExportService);
 
 
   // CONTROLLO DI RICERCA
@@ -144,8 +146,17 @@ export class EmployeeList {
     this.router.navigate(['/hr/employee-details', employeeId]);
   }
 
+
+  // METODO PER ESPORTARE GLI UTENTI IN UN FILE EXCEL
+  exportEmployees(): void {
+    this.excelExportService
+      .exportEmployees(
+        this.employees()
+      );
+  }
+
 }
 
 
 
-// VS Code Counter: 88 code lines (08/10/2026)
+// VS Code Counter: 96 code lines (23/10/2026)

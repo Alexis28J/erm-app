@@ -153,6 +153,11 @@
             <mat-icon>arrow_back</mat-icon>
         </button>
 
+        <button mat-raised-button color="accent" (click)="exportRequests()" class="excel" aria-label="Export Requests List to Excel">
+            Export Requests List
+            <mat-icon>file_download</mat-icon>
+        </button>
+
         <button mat-raised-button color="accent" routerLink="/hr/employee-list">
             See the Employee List
             <mat-icon>arrow_forward</mat-icon>

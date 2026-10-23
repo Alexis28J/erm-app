@@ -118,6 +118,15 @@ export class EmployeeList {
     this.router.navigate(['/hr/employee-details', employeeId])
   }
 
+
+  // METODO PER ESPORTARE GLI UTENTI IN UN FILE EXCEL
+  exportEmployees(): void {
+    this.excelExportService  // Chiamo il servizio per esportare gli utenti in un file Excel
+      .exportEmployees(  // Passo la lista degli utenti da esportare
+        this.employees()  // Recupero la lista degli utenti dal segnale (che esclude sia gli HR che l'utente tecnico "config")
+      );
+  }
+
 }
 ```
 

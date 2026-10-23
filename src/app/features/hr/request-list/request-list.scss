@@ -1,6 +1,6 @@
 // CONTAINER PRINCIPALE 
 .container {
-    margin: 1.5rem;
+    margin: 2rem 1rem 1.5rem 1rem;
     padding-bottom: 0.2rem;
 }
 
@@ -30,6 +30,25 @@ mat-card-title {
 
 button {
     min-width: 120px;
+}
+
+
+// TABELLA A LARGHEZZA UGUALE
+.equal-width-table {
+    table-layout: fixed; // Forza tutte le colonne ad avere la stessa larghezza
+
+    th {
+        font-size: 1rem;
+    }
+}
+
+
+/* Distribuisce lo spazio equamente (es. 3 colonne = 33.33% ciascuna) */
+.equal-width-table th {
+    width: calc(100% / 5); // Imposta la larghezza di ciascuna colonna al 20% (per 5 colonne)
+    overflow: hidden; // Opzionale: evita che testi troppo lunghi rompano il layout
+    text-overflow: ellipsis; // Mostra "..." per testi troppo lunghi
+    white-space: nowrap; // Impedisce al testo di andare a capo
 }
 
 
@@ -87,27 +106,23 @@ button {
 .navigation-buttons {
     display: flex;
     justify-content: space-between;
-    margin: 1.4rem 1rem;
+    margin: 2.5rem 1rem 1rem 1rem;
 }
 
 
-.equal-width-table {
-    table-layout: fixed; // Forza tutte le colonne ad avere la stessa larghezza
+// PULSANTE EXPORT EXCEL
+.excel {
+    color: green;
+    border-color: green !important;
 
-    th {
-        font-size: 1rem;
+    &:hover,
+    &:focus {
+        color: darkgreen;
+        border-color: darkgreen !important;
+        background-color: rgba(144, 238, 144, 0.218);
     }
 }
 
 
-/* Distribuisce lo spazio equamente (es. 3 colonne = 33.33% ciascuna) */
-.equal-width-table th {
-    width: calc(100% / 5); // Imposta la larghezza di ciascuna colonna al 20% (per 5 colonne)
-    overflow: hidden; // Opzionale: evita che testi troppo lunghi rompano il layout
-    text-overflow: ellipsis; // Mostra "..." per testi troppo lunghi
-    white-space: nowrap; // Impedisce al testo di andare a capo
-}
 
-
-
-// VS Code Counter: 74 code lines (19/10/2026)
+// VS Code Counter: 84 code lines (23/10/2026)

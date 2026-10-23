@@ -104,6 +104,14 @@ export class RequestList {
   private refundRequestService = inject(RefundRequestService);
   private router = inject(Router);
 
+  private cdr = inject(ChangeDetectorRef);  
+  // ChangeDetectorRef è un servizio di Angular che permette di rilevare e applicare manualmente i cambiamenti nel componente.
+  // Nel contesto di questo componente, viene utilizzato per forzare l'aggiornamento della vista quando i dati cambiano.
+
+  private excelExportService = inject(ExcelExportService);
+  private userService = inject(UserService);
+
+
   // Segnale per memorizzare le richieste di rimborso
   requests = signal<RefundRequest[]>([]);
 
@@ -174,6 +182,30 @@ export class RequestList {
       // 2. Il valore del campo di ricerca viene memorizzato nel segnale `filterValue`.
       // 3. L'effetto viene eseguito e aggiorna `this.dataSource.filter` con il valore corrente di `filterValue`.
       // 4. Angular Material utilizza `filterPredicate` per determinare quali righe della tabella corrispondono al filtro.
+
+
+  // SEGNALE PER MEMORIZZARE GLI UTENTI
+  // Questo segnale memorizza gli utenti recuperati dal servizio UserService.
+  // L'observable restituito dal servizio viene convertito in un segnale utilizzando toSignal.
+  users = toSignal(
+    this.userService.getUsers(),
+    {
+      initialValue: []
+    }
+  )
+
+
+  // METODO PER ESPORTARE LE RICHIESTE DI RIMBORSO IN UN FILE EXCEL
+  // Questo metodo utilizza il servizio ExcelExportService per esportare le richieste di rimborso correnti in un file Excel
+  exportRequests(): void {
+
+    this.excelExportService
+      .exportRequests(
+        this.requests(),
+        this.users()
+      );
+
+  }
 }
 ```
 
@@ -203,6 +235,7 @@ export class RequestList {
       this.dataSource.filter = this.filterValue().trim().toLowerCase(); // Applica il filtro di ricerca alla tabella
 
   }
+
 
   
   @ViewChild(MatSort)  // @ViewChild è un decoratore che permette di ottenere un riferimento a un elemento figlio del template, in questo caso il MatSort della tabella.
