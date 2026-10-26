@@ -3,8 +3,28 @@ mat-card {
 }
 
 
-mat-card-title {
-padding-left: 0;
+mat-card-header {
+  display: flex;
+  justify-content: space-between;
+
+  mat-card-title {
+    padding-left: 0;
+  }
+
+}
+
+
+.excel {
+  color: green;
+  border: 2px solid green !important;
+  bottom: 5px;
+
+  &:hover,
+  &:focus {
+    color: darkgreen;
+    border-color: darkgreen !important;
+    background-color: rgba(144, 238, 144, 0.218);
+  }
 }
 
 
@@ -42,11 +62,12 @@ padding-left: 0;
   color: red;
   border: 2px solid red !important;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background-color: rgba(255, 0, 0, 0.1);
   }
 }
 
 
 
-// VS Code Counter: 34 code lines (19/10/2026)
+// VS Code Counter: 50 code lines (26/10/2026)

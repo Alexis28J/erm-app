@@ -105,5 +105,154 @@ export class ExpenseLimitsSettings {
   }
 
 
+    // METODO PER IMPORTARE I LIMITI DI SPESE DA UN FILE EXCEL
+  // Questo metodo gestisce l'importazione dei limiti di spese da un file Excel
+  importExpenseLimits(event: Event): void {
+
+
+    const file = (event.target as HTMLInputElement).files?.[0];  // Ottieni il primo file selezionato dall'input file. 
+    // Questo vuol dire che se l'utente seleziona più file, verrà considerato solo il primo.
+
+    if (!file) {  // Se non è stato selezionato alcun file, esci dal metodo.                                                                                                                        
+      return;
+    }
+
+    const reader = new FileReader();  // Creo un oggetto FileReader per leggere il contenuto del file Excel.
+
+    reader.onload = (e) => {  // onload viene chiamato quando il file è stato letto correttamente
+
+      try {   // Provo a leggere e processare il file Excel. try è usato per catturare eventuali errori durante la lettura e il parsing del file.
+
+        const arrayBuffer = e.target?.result as ArrayBuffer;  // Converto il risultato della lettura del file in un ArrayBuffer, necessario per XLSX.read
+
+        const workbook = XLSX.read(  // Leggo il contenuto del file Excel e creo un oggetto workbook
+          arrayBuffer,  // ArrayBuffer contenente i dati del file Excel
+          {
+            type: 'array'  // Specifico che il tipo di input è un array di byte (ArrayBuffer)
+          }
+        );
+
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];  // Ottengo il primo foglio di lavoro dal workbook
+        // Questo vuol dire che consideriamo solo il primo foglio di lavoro del file Excel e non eventuali altri fogli presenti.
+
+        const rawData = XLSX.utils.sheet_to_json(  // Converto il foglio di lavoro in un array di oggetti JSON
+          worksheet
+        );
+
+        console.log('RAW DATA', rawData);  // Mostro i dati raw ottenuti dal foglio Excel prima della conversione in oggetti ExpenseLimit
+        // Questo aiuta a verificare che i dati siano stati letti correttamente dal file Excel prima di procedere con la conversione in oggetti ExpenseLimit.
+
+
+        // CONVERSIONE DEI DATI RAW IN OGGETTI DI TIPO ExpenseLimit
+        const limits: ExpenseLimit[] = rawData.map(  // Converto ogni riga dei dati raw in un oggetto ExpenseLimit
+          (row: any) => { // Converto una singola riga dei dati raw in un oggetto ExpenseLimit
+            // row rappresenta una singola riga dei dati raw ottenuti dal foglio Excel.
+
+            const currentLimitId = this.config().expenseLimits.find(limit => limit.name === row.Name); // Cerco se esiste già un limite di spesa con lo stesso nome nella configurazione esistente
+
+            return {  // Creo un nuovo oggetto ExpenseLimit basato sui dati della riga corrente e sull'eventuale limite esistente trovato
+              id: currentLimitId?.id ?? crypto.randomUUID(),  // Se esiste un limite esistente uso il suo ID, altrimenti genero un nuovo ID
+              name: row.Name,  // Nome del limite di spesa, preso dalla colonna "Name" del file Excel
+              maxAmount: Number(row.MaxAmount),  // Importo l'importo massimo del limite di spesa dalla colonna "MaxAmount" del file Excel
+              receiptRequired:  // Importo il flag "receiptRequired" dalla colonna "ReceiptRequired" del file Excel
+                row.ReceiptRequired === true ||  // Considero true anche se il valore è booleano true
+                row.ReceiptRequired === 'true'  // Considero true anche se il valore è la stringa 'true'
+            };
+          }
+        );
+
+        console.log('CONVERTED LIMITS', limits);  // Mostro i limiti di spesa convertiti in oggetti ExpenseLimit dopo la lettura dal file Excel
+        // In questo modo posso verificare che la conversione dei dati raw in oggetti ExpenseLimit sia avvenuta correttamente prima di procedere con la validazione e l'aggiornamento della configurazione.
+
+
+        // VALIDAZIONE DEI LIMITI DI SPESE IMPORTATI
+        const hasInvalidRows = limits.some(limit =>  // hasInvalid è un flag (un valore booleano) che indica se ci sono righe non valide nei limiti di spesa importati
+          !limit.name ||  // Il nome del limite di spesa non può essere vuoto
+          Number.isNaN(  // isNaN controlla se il valore non è un numero valido
+            limit.maxAmount  // Controllo se l'importo massimo è un numero valido
+          ) ||
+          limit.maxAmount < 0  // L'importo massimo non può essere negativo
+        );
+
+        if (hasInvalidRows) {  // Se ci sono righe non valide nei limiti di spesa importati, mostro un errore e interrompo l'importazione
+          this.notification.error('The Excel file contains invalid data');
+          return;
+        }
+
+
+        // AGGIORNAMENTO CONFIG 
+        const mergedLimits = this.config().expenseLimits.map(  // Mappo i limiti di spesa esistenti e li unisco con quelli importati dal file Excel
+
+          existingLimit => {
+
+            const importedLimit = limits.find(  // Cerco il limite importato corrispondente a quello esistente
+              limit =>
+                limit.name === existingLimit.name
+            );
+
+            if (!importedLimit) {   // Se non esiste un limite importato corrispondente, restituisco il limite esistente senza modifiche
+              return existingLimit;
+            }
+
+            return {
+              ...existingLimit,  // Mantengo tutte le proprietà del limite esistente
+
+              maxAmount: importedLimit.maxAmount,  // Aggiorno l'importo massimo con quello importato
+
+              receiptRequired: importedLimit.receiptRequired  // Aggiorno il flag receiptRequired con quello importato
+            };
+          }
+        );
+
+        // Equivale a "Sostituisci completamente la configurazione esistente    
+        // con quella presente nel file Excel".
+        // const updateConfig = {    
+        //   ...this.config(),
+        //   expenseLimits: limits
+        // };
+
+
+        // Equivale a "Aggiorna la configurazione esistente    
+        // con i limiti di spesa importati".
+        const updateConfig = {  // Creo un oggetto di configurazione aggiornato con i limiti di spesa uniti
+          ...this.config(),
+          expenseLimits: mergedLimits
+        };
+
+        this.hrConfigService  // Invio la configurazione aggiornata a ConfigService 
+          .updateConfig(updateConfig)
+          .subscribe({
+
+            next: () => {  // Gestisco il caso di successo dell'aggiornamento della configurazione
+              this.notification.success(
+                'Expense limits imported successfully'
+              );
+            },
+
+            error: () => {  // Gestisco il caso di errore durante l'aggiornamento della configurazione
+              this.notification.error(
+                'Error while importing expense limits'
+              );
+            }
+          });
+
+      }
+      catch (error) {  // Gestisco eventuali errori durante la lettura del file Excel
+        console.error(error);
+
+        this.notification.error(
+          'Unable to read the Excel file'
+        );
+
+      }
+    };
+
+    reader.readAsArrayBuffer(file);  // Avvio la lettura del file Excel come ArrayBuffer che verrà poi elaborato nella funzione onload
+
+    // Per ultimo faccio il refresh della pagina per riflettere i nuovi limiti di spesa importati
+    location.reload();  // location è un oggetto globale che rappresenta l'URL della pagina corrente e reload() ricarica la pagina
+  }
+
+
 }
 ```

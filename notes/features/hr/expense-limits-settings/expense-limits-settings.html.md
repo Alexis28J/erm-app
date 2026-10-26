@@ -9,6 +9,12 @@
             Expense Limits
             <mat-icon>price_change</mat-icon>
         </mat-card-title>
+
+        <button mat-raised-button color="primary" class="excel" (click)="fileInput.click()">
+            Import Expense Limits
+            <mat-icon>upload_file</mat-icon>
+        </button>
+        <input hidden #fileInput type="file" accept=".xlsx, .xls" (change)="importExpenseLimits($event)">
     </mat-card-header>
 
 

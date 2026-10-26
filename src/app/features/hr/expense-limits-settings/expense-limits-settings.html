@@ -6,6 +6,12 @@
             Expense Limits
             <mat-icon>price_change</mat-icon>
         </mat-card-title>
+
+        <button mat-raised-button color="primary" class="excel" (click)="fileInput.click()">
+            Import Expense Limits
+            <mat-icon>upload_file</mat-icon>
+        </button>
+        <input hidden #fileInput type="file" accept=".xlsx, .xls" (change)="importExpenseLimits($event)">
     </mat-card-header>
 
 
@@ -44,8 +50,8 @@
 
                 <ng-container matColumnDef="receiptRequired">
 
-                    <th mat-header-cell *matHeaderCellDef
-                        matTooltip="Check if a receipt is required for this category" matTooltipPosition="above">
+                    <th mat-header-cell *matHeaderCellDef matTooltip="Check if a receipt is required for this category"
+                        matTooltipPosition="above">
                         Receipt Required
                     </th>
 
@@ -81,4 +87,4 @@
 
 
 
-<!-- VS Code Counter:  54 code lines (15/10/2026) -->
+<!-- VS Code Counter:  59 code lines (26/10/2026) -->
