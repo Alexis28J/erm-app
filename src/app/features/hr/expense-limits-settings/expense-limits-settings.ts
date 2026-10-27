@@ -130,7 +130,6 @@ export class ExpenseLimitsSettings {
   // METODO PER IMPORTARE I LIMITI DI SPESE DA UN FILE EXCEL
   importExpenseLimits(event: Event): void {
 
-
     const file = (event.target as HTMLInputElement).files?.[0];
 
     if (!file) {
@@ -169,7 +168,7 @@ export class ExpenseLimitsSettings {
 
             return {
               id: currentLimitId?.id ?? crypto.randomUUID(),
-              name: row.Name,
+              name: row.Name?.trim(),
               maxAmount: Number(row.MaxAmount),
               receiptRequired:
                 row.ReceiptRequired === true ||
@@ -233,6 +232,8 @@ export class ExpenseLimitsSettings {
               this.notification.success(
                 'Expense limits imported successfully'
               );
+
+              location.reload();
             },
 
             error: () => {
@@ -254,8 +255,6 @@ export class ExpenseLimitsSettings {
     };
 
     reader.readAsArrayBuffer(file);
-
-    location.reload();
   }
 
 
@@ -263,4 +262,4 @@ export class ExpenseLimitsSettings {
 
 
 
-// VS Code counter: 174 code lines (26/10/2026)
+// VS Code counter: 174 code lines (27/10/2026)

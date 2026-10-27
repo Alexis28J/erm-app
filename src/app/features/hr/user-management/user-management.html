@@ -1,16 +1,37 @@
 <mat-card>
 
     <mat-card-header>
-        <mat-card-title matTooltip="Manages whether a user is active or inactive" matTooltipPosition="right">
+        <mat-card-title
+            matTooltip="Manages if a user is active or inactive. You can do it via the table or by importing from a file."
+            matTooltipPosition="right">
             User Management
             <mat-icon>group</mat-icon>
         </mat-card-title>
+
+        <button mat-raised-button color="primary" class="excel" (click)="fileInput.click()"
+            matTooltip="File must be .xlsx or .xls" matTooltipPosition="left">
+            Import
+            <mat-icon>upload_file</mat-icon>
+        </button>
+        <input hidden #fileInput type="file" accept=".xlsx, .xls" (change)="importActiveUsers($event)">
     </mat-card-header>
 
 
     <mat-card-content>
 
         <table mat-table [dataSource]="users()" class="equal-width-table">
+
+            <ng-container matColumnDef="employeeCode">
+
+                <th mat-header-cell *matHeaderCellDef>
+                    Employee Code
+                </th>
+
+                <td mat-cell *matCellDef="let user">
+                    {{user.employeeCode}}
+                </td>
+
+            </ng-container>
 
             <ng-container matColumnDef="name">
 
@@ -39,8 +60,7 @@
 
             <ng-container matColumnDef="active">
 
-                <th mat-header-cell *matHeaderCellDef matTooltip="Indicates whether the user is active or inactive"
-                    matTooltipPosition="above">
+                <th mat-header-cell *matHeaderCellDef matTooltip="✓ Active / − Inactive" matTooltipPosition="above">
                     Active
                 </th>
 
@@ -75,4 +95,4 @@
 
 
 
-<!-- VS Code Counter: 49 code lines (15/10/2026) -->
+<!-- VS Code Counter: 64 code lines (27/10/2026) -->

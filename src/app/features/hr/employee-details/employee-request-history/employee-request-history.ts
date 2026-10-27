@@ -16,6 +16,7 @@ import { RouterLink } from '@angular/router';
 import { RefundRequest } from '../../../../core/interfaces/refund-request';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, of, switchMap } from 'rxjs';
+import { ExcelExportService } from '../../../../core/services/excel-export.service';
 
 @Component({
   imports: [CommonModule, MatCardModule, MatTableModule,
@@ -99,6 +100,7 @@ export class EmployeeRequestHistory {
   private userService = inject(UserService);
   private requestService = inject(RefundRequestService);
   private cdr = inject(ChangeDetectorRef);
+  private excelExportService = inject(ExcelExportService);
 
 
   // REFERENZE AI COMPONENTI DELLA TABELLA (SORT E PAGINATOR)
@@ -130,6 +132,7 @@ export class EmployeeRequestHistory {
     }
   );
 
+  
   // COLONNE DA VISUALIZZARE NELLA TABELLA DELLE RICHIESTE
   displayedColumns = [
     'referenceMonth',
@@ -139,8 +142,30 @@ export class EmployeeRequestHistory {
     'totalApprovedAmount',
     'actions'
   ]
+
+
+  // SEGNALE PER MEMORIZZARE GLI UTENTI
+  users = toSignal(
+    this.userService.getUsers(),
+    {
+      initialValue: []
+    }
+  )
+
+
+  // METODO PER ESPORTARE LE RICHIESTE DI RIMBORSO IN UN FILE EXCEL
+  exportRequests(): void {
+
+    this.excelExportService
+      .exportRequests(
+        this.requests(),
+        this.users()
+      );
+
+  }
+
 }
 
 
 
-// VS Code Counter: 93 code lines (20/10/2026)
+// VS Code Counter: 108 code lines (26/10/2026)

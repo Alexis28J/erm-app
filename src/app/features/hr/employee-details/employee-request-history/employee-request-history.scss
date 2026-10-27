@@ -1,5 +1,11 @@
-mat-card-title {
-    padding-left: 0;
+mat-card-header {
+    display: flex;
+    justify-content: space-between;
+
+    mat-card-title {
+        padding-left: 0;
+    }
+
 }
 
 
@@ -64,5 +70,19 @@ mat-card-title {
 }
 
 
+// PULSANTE EXPORT EXCEL
+.excel {
+    color: green;
+    border-color: green !important;
+    bottom: 5px;
 
-// VS Code Counter: 48 code lines (20/10/2026)
+    &:hover,
+    &:focus {
+        color: darkgreen;
+        border-color: darkgreen !important;
+        background-color: rgba(144, 238, 144, 0.218);
+    }
+}
+
+
+// VS Code Counter: 60 code lines (26/10/2026)

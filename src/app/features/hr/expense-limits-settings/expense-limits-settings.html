@@ -1,14 +1,16 @@
 <mat-card>
 
     <mat-card-header>
-        <mat-card-title matTooltip="Manage expense limits and receipt requirements for each category"
+        <mat-card-title
+            matTooltip="Manage expense limits and receipt requirements for each category or import them from a file"
             matTooltipPosition="right">
             Expense Limits
             <mat-icon>price_change</mat-icon>
         </mat-card-title>
 
-        <button mat-raised-button color="primary" class="excel" (click)="fileInput.click()">
-            Import Expense Limits
+        <button mat-raised-button color="primary" class="excel" (click)="fileInput.click()"
+            matTooltip="File must be .xlsx or .xls" matTooltipPosition="above">
+            Import
             <mat-icon>upload_file</mat-icon>
         </button>
         <input hidden #fileInput type="file" accept=".xlsx, .xls" (change)="importExpenseLimits($event)">
@@ -87,4 +89,4 @@
 
 
 
-<!-- VS Code Counter:  59 code lines (26/10/2026) -->
+<!-- VS Code Counter:  61 code lines (26/10/2026) -->

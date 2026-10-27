@@ -2,9 +2,29 @@ mat-card {
     margin: 2rem !important;
 }
 
-mat-card-title {
-    padding-left: 0;
+mat-card-header {
+    display: flex;
+    justify-content: space-between;
+
+    mat-card-title {
+        padding-left: 0;
+    }
 }
+
+
+.excel {
+    color: green;
+    border: 2px solid green !important;
+    bottom: 5px;
+
+    &:hover,
+    &:focus {
+        color: darkgreen;
+        border-color: darkgreen !important;
+        background-color: rgba(144, 238, 144, 0.218);
+    }
+}
+
 
 .equal-width-table {
     table-layout: fixed; // Forza tutte le colonne ad avere la stessa larghezza
@@ -22,6 +42,7 @@ mat-card-title {
     white-space: nowrap; // Impedisce al testo di andare a capo
 }
 
+
 .back-button {
     margin-left: 2rem;
     width: calc(100% - 4rem); // Occupa tutta la larghezza disponibile meno il margine sinistro e destro
@@ -29,4 +50,4 @@ mat-card-title {
 
 
 
-// VS Code Counter: 22 code lines (19/10/2026)
+// VS Code Counter: 37 code lines (27/10/2026)

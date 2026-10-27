@@ -152,7 +152,7 @@ export class ExpenseLimitsSettings {
 
             return {  // Creo un nuovo oggetto ExpenseLimit basato sui dati della riga corrente e sull'eventuale limite esistente trovato
               id: currentLimitId?.id ?? crypto.randomUUID(),  // Se esiste un limite esistente uso il suo ID, altrimenti genero un nuovo ID
-              name: row.Name,  // Nome del limite di spesa, preso dalla colonna "Name" del file Excel
+              name: row.Name.trim(),  // .trim() per evitare spazi bianchi all'inizio o alla fine  // Nome del limite di spesa, preso dalla colonna "Name" del file Excel
               maxAmount: Number(row.MaxAmount),  // Importo l'importo massimo del limite di spesa dalla colonna "MaxAmount" del file Excel
               receiptRequired:  // Importo il flag "receiptRequired" dalla colonna "ReceiptRequired" del file Excel
                 row.ReceiptRequired === true ||  // Considero true anche se il valore è booleano true
@@ -227,6 +227,8 @@ export class ExpenseLimitsSettings {
               this.notification.success(
                 'Expense limits imported successfully'
               );
+
+              location.reload();  // Ricarica la pagina per applicare i nuovi limiti di spesa
             },
 
             error: () => {  // Gestisco il caso di errore durante l'aggiornamento della configurazione
@@ -248,9 +250,6 @@ export class ExpenseLimitsSettings {
     };
 
     reader.readAsArrayBuffer(file);  // Avvio la lettura del file Excel come ArrayBuffer che verrà poi elaborato nella funzione onload
-
-    // Per ultimo faccio il refresh della pagina per riflettere i nuovi limiti di spesa importati
-    location.reload();  // location è un oggetto globale che rappresenta l'URL della pagina corrente e reload() ricarica la pagina
   }
 
 
