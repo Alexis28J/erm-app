@@ -2,8 +2,8 @@
 
     <mat-card-header>
         <mat-card-title
-            matTooltip="Manages if a user is active or inactive. You can do it via the table or by importing from a file."
-            matTooltipPosition="right">
+            matTooltip="Manages if a user is active or inactive.&#10;If you prefer, import them from a file."
+            matTooltipPosition="right" matTooltipClass="tooltip-multiline">
             User Management
             <mat-icon>group</mat-icon>
         </mat-card-title>
@@ -19,11 +19,20 @@
 
     <mat-card-content>
 
-        <table mat-table [dataSource]="users()" class="equal-width-table">
+        <!-- Campo di ricerca per filtrare gli impiegati -->
+        <mat-form-field appearance="outline">
+            <mat-label>Search Employee (by name or email)</mat-label>
+            <input matInput [formControl]="searchControl"
+                aria-label="Write the name or email of the employee to search">
+        </mat-form-field>
+
+
+        <!-- <table mat-table [dataSource]="users()" class="equal-width-table"> -->
+        <table mat-table [dataSource]="dataSource" matSort class="equal-width-table">
 
             <ng-container matColumnDef="employeeCode">
 
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="employeeCode">
                     Employee Code
                 </th>
 
@@ -35,7 +44,7 @@
 
             <ng-container matColumnDef="name">
 
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="name">
                     Name
                 </th>
 
@@ -48,7 +57,7 @@
 
             <ng-container matColumnDef="email">
 
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="email">
                     Email
                 </th>
 
@@ -60,7 +69,7 @@
 
             <ng-container matColumnDef="active">
 
-                <th mat-header-cell *matHeaderCellDef matTooltip="✓ Active / − Inactive" matTooltipPosition="above">
+                <th mat-header-cell *matHeaderCellDef matTooltip="(✓) Active / (−) Inactive" matTooltipPosition="above">
                     Active
                 </th>
 
@@ -79,6 +88,9 @@
 
         </table>
 
+        <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons
+            aria-label="Select page"></mat-paginator>
+
     </mat-card-content>
 
 
@@ -95,4 +107,4 @@
 
 
 
-<!-- VS Code Counter: 64 code lines (27/10/2026) -->
+<!-- VS Code Counter: 71 code lines (28/10/2026) -->

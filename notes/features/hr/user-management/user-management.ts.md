@@ -3,14 +3,135 @@
 ```TYPESCRIPT
 export class UserManagement {
 
-  constructor() { this.loadUsers() }  // Carica gli utenti all'inizializzazione del componente
+  constructor() { 
 
-  private readonly userService = inject(UserService); // Iniezione del servizio per la gestione degli utenti
+    this.loadUsers(); // Carica gli utenti all'inizializzazione del componente
 
-  users = signal<User[]>([]);  // Segnale che contiene la lista degli utenti
+    // Sottoscrizione ai cambiamenti del controllo di ricerca per aggiornare il filtro degli utenti in tempo reale
+    this.searchControl.valueChanges.subscribe(value => {  // Aggiorna il segnale di ricerca ogni volta che il valore del controllo di ricerca cambia
+      this.search.set(value ?? '');
+    })
+
+
+    // EFFECT PER AGGIORNARE LA TABELLA QUANDO CAMBIANO I DATI O IL FILTRO DI RICERCA
+    effect(() => {
+
+      // Aggiorna i dati della tabella in base al filtro di ricerca corrente
+      // Filtra gli utenti in base al termine di ricerca corrente e aggiorna i dati della tabella
+      this.dataSource.data = this.filteredEmployees();
+
+      // Se non ci sono risultati filtrati, esci dall'effetto
+      if (!this.filteredEmployees() || this.filteredEmployees().length === 0) {
+        return;
+      }
+
+
+      // Forza l'aggiornamento della vista per riflettere i cambiamenti nei dati della tabella
+      this.cdr.detectChanges();
+
+
+      // Se il sortingDataAccessor non è ancora stato impostato, impostalo ora
+      if (!this.dataSource.sortingDataAccessor) {
+
+        this.dataSource.sortingDataAccessor = (item, property) => {
+          switch (property) {  // Gestisce l'ordinamento in base alla proprietà specificata
+            case "employeeCode": return item.employeeCode;
+            case "name": return item.name;
+            case "email": return item.email;
+            default: return item[property as keyof User] as any; // Fallback per altre proprietà non specificate
+            // Vuol dire che se la proprietà non è tra quelle specificate, si usa il valore corrispondente nell'oggetto User come fallback.
+          }
+        };
+
+      }
+
+
+      // Imposta il sorting della tabella se non è già stato impostato
+      if (this.sortComponent && !this.dataSource.sort) {
+        this.dataSource.sort = this.sortComponent;
+      }
+
+
+      // Imposta il paginatore della tabella se non è già stato impostato
+      if (this.paginatorComponent && !this.dataSource.paginator) {
+        this.dataSource.paginator = this.paginatorComponent;
+      }
+
+
+      // Applica il sorting iniziale della tabella se il sorting è già stato impostato
+      if (this.dataSource.sort) {
+        this.dataSource.sort.sort({ id: "employeeCode", start: "asc", disableClear: false })
+      }
+
+    });
+    
+    }  
+
+  // REFERENZE AI COMPONENTI DELLA TABELLA (SORT E PAGINATOR)
+  // Questi riferimenti ai componenti della tabella (sort e paginator) 
+  // vengono utilizzati per collegare il MatSort e il MatPaginator alla dataSource della tabella.
+  @ViewChild(MatSort) sortComponent!: MatSort;
+  @ViewChild(MatPaginator) paginatorComponent!: MatPaginator;
+
+
+  // DATA SOURCE DELLA TABELLA
+  dataSource = new MatTableDataSource<User>();  // User indica il tipo di dati contenuti nella tabella (array di oggetti User)
+  // Perché non scrivo User[]? Perché MatTableDataSource accetta un array di User come input, non un array di array di User (User[][]).
+  // Quindi User senza [] è un array? Sì, MatTableDataSource<User> si aspetta un array di User come input, quindi User rappresenta il tipo degli elementi dell'array.
+  // Con MatTableDataSource non è necessario specificare User[] perché il tipo generico indica già che si tratta di un array di User.
+
+
+  // INIEZIONE DEI SERVIZI NECESSARI
+  // Viene utilizzato il pattern inject per ottenere le istanze dei servizi UserService e Notification, 
+  // e del ChangeDetectorRef per gestire il rilevamento dei cambiamenti nel componente.
+  private readonly userService = inject(UserService);
+  private readonly notification = inject(Notification);
+  private cdr = inject(ChangeDetectorRef);
+
+
+  // SEGNALE CHE CONTIENE LA LISTA DEGLI UTENTI FILTRATI
+  users = signal<User[]>([]);  // User[] indica un array di oggetti User e ([]) indica che inizialmente è vuoto
+  // Questo segnale prende i dati dal servizio utenti già filtrati in base ai criteri specificati (non di sistema e con ruolo EMPLOYEE) grazie al metodo loadUsers.
+  // Questo segnale users è utile per mantenere uno stato reattivo degli utenti filtrati all'interno del componente, senza dover rifare il filtraggio ogni volta che i dati cambiano.
+
+
+  // SEGNALE CHE CONTIENE LA LISTA COMPLETA DEGLI UTENTI OTTENUTI DAL SERVIZIO
+  // Questo segnale contiene la lista completa degli utenti ottenuti dal servizio UserService, senza alcun filtraggio.
+  // E' un segnale reattivo ma non è writable, quindi non può essere modificato direttamente. A differenza del segnale users, non può essere aggiornato manualmente all'interno del componente.
+  usersResource = toSignal(
+    this.userService.getUsers(),
+    {
+      initialValue: []
+    }
+  );
+
+
+  // CONTROLLO DI RICERCA
+  // Questo FormControl viene utilizzato per gestire l'input di ricerca dell'utente nella tabella.
+  // Il valore di questo controllo viene utilizzato per aggiornare il segnale di ricerca e filtrare gli utenti in tempo reale.
+  searchControl = new FormControl('');
+
+
+  // SEGNALE DI RICERCA
+  // Segnale che contiene il termine di ricerca corrente inserito dall'utente nel FormControl di ricerca.
+  search = signal('');
+
+
+  // COMPUTED CHE RESTITUISCE LA LISTA DEGLI UTENTI FILTRATI IN BASE ALLA RICERCA
+  filteredEmployees = computed(() => {
+    const term = this.search().toLowerCase();  // Converte il termine di ricerca in minuscolo per confronti case-insensitive
+
+    return this.users().filter(u =>  // Quindi, filtra gli utenti in base al termine di ricerca confrontando nome, cognome ed email in modo case-insensitive
+      u.name.toLowerCase().includes(term)
+      || u.surname.toLowerCase().includes(term)
+      || u.email.toLowerCase().includes(term)
+    );
+  });
 
 
   // METODO PER CARICARE GLI UTENTI DAL SERVIZIO
+  // Questo metodo chiama il servizio UserService per ottenere la lista completa degli utenti,
+  // filtra quelli non di sistema con ruolo EMPLOYEE e aggiorna il segnale users con i risultati.
   loadUsers(): void {
 
     this.userService  // Chiamata al servizio per ottenere la lista degli utenti
@@ -55,11 +176,23 @@ export class UserManagement {
   ]
 
 
-
   // METODO PER IMPORTARE GLI UTENTI ATTIVI DA UN FILE EXCEL
+  // VEDI SOTTO SIA LA VERSIONE SENZA E CON forkJoin
+}
+```
 
-  // VERSIONE SENZA forkJoin
-  // Questo metodo importa gli utenti attivi da un file Excel e aggiorna lo stato "active" degli utenti esistenti.
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+# METODO PER IMPORTARE GLI UTENTI ATTIVI DA UN FILE EXCEL
+
+```TYPESCRIPT
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// VERSIONE SENZA forkJoin
+// Questo metodo importa gli utenti attivi da un file Excel e aggiorna lo stato "active" degli utenti esistenti.
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   importActiveUsers(event: Event): void {
 
     const file = (event.target as HTMLInputElement).files?.[0];  // Prende il primo file selezionato dall'input file
@@ -189,5 +322,167 @@ export class UserManagement {
     reader.readAsArrayBuffer(file);  // Legge il file Excel come ArrayBuffer per poterlo elaborare successivamente
   }
 
-}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+// VERSIONE CON forkJoin PER AGGIORNARE TUTTI GLI UTENTI INSIEME
+// A differenza della versione precedente, questa utilizza forkJoin per aggiornare tutti gli utenti insieme.
+// Questo mi permette di gestire gli aggiornamenti in modo più efficiente e di ricevere una notifica solo quando tutti gli aggiornamenti sono completati.
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  importActiveUsers(event: Event): void {
+
+    const file = (event.target as HTMLInputElement).files?.[0];
+    // HTMLInputElement.files contiene la lista dei file selezionati dall'utente
+
+    // La stringa event.target as HTMLInputElement serve a fare un type assertion (ovvero una conversione forzata del tipo o "casting").
+    // Significa: "Caro TypeScript, io so che l'elemento che ha scatenato questo evento (event.target) è specificamente un campo di input HTML (HTMLInputElement), quindi trattalo come tale".
+
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+
+      try {
+
+        const arrayBuffer = e.target?.result as ArrayBuffer;
+        // Un ArrayBuffer è un contenitore di byte: È una sequenza pura di dati binari (0 e 1) allocata in memoria.
+        // Non modificabile direttamente: Non puoi leggere o scrivere i byte dentro un ArrayBuffer usando le normali parentesi quadre (buffer[0]) o metodi degli array JavaScript classici.
+
+        const workbook = XLSX.read(
+          arrayBuffer,
+          {
+            type: 'array'
+          }
+        );
+
+        const worksheet = workbook.Sheets[
+          workbook.SheetNames[0]
+        ];
+
+        const rawData = XLSX.utils.sheet_to_json(
+          worksheet
+        );
+
+
+        // CONVERSIONE: Trasforma i dati grezzi del foglio Excel in oggetti utente con proprietà specifiche
+        const importedUsers = rawData.map(
+          (row: any) => ({
+
+            employeeCode: row.EmployeeCode.trim(),
+            fullName: row.Name.trim(),
+            active: row.Active === true || row.Active === 'true'
+          })
+        );
+
+
+        // VALIDAZIONE: Controlla che tutti gli utenti importati abbiano codice dipendente e nome completo validi
+        const hasInvalidRows = importedUsers.some(
+          user =>
+            !user.employeeCode ||
+            !user.fullName
+        )
+
+        if (hasInvalidRows) {
+          this.notification.error('The Excel file contains invalid data');
+          return;
+        }
+
+
+        // VALIDAZIONE: Controlla che tutti gli utenti importati esistano già nel sistema
+        const unknownEmployees = importedUsers.filter(  // Filtra gli utenti importati che non esistono nel sistema
+          imported => !this.users().some( // Il metodo some verifica se esiste almeno un utente esistente con lo stesso codice dipendente e nome completo
+            existing => existing.employeeCode === imported.employeeCode &&
+              `${existing.name} ${existing.surname}` === imported.fullName
+          )
+        );
+
+        if (unknownEmployees.length > 0) {  // Se ci sono utenti sconosciuti, mostra un errore e interrompi l'importazione
+          this.notification.error('The Excel file contains unknown employees.');
+          return;
+        }
+
+
+        // MERGE: Aggiorna lo stato degli utenti esistenti con i dati importati
+        const usersToUpdate = this.users()
+          .map(existingUser => {
+
+            const importedUser = importedUsers.find(
+              user => user.employeeCode === existingUser.employeeCode &&
+                user.fullName === `${existingUser.name} ${existingUser.surname}`
+            );
+
+            if (!importedUser) {
+              return null;
+            }
+
+            return {
+              ...existingUser,
+              active: importedUser.active
+            };
+
+
+          })
+          .filter(Boolean) as User[];
+
+
+        // CHIAMATE HTTP: Invia richieste di aggiornamento per gli utenti modificati
+        // PREPARAZIONE (updatedRequests): Crea un array di richieste HTTP per aggiornare gli utenti modificati
+        // updatedRequests conterrà le chiamate HTTP per aggiornare ciascun utente modificato
+        const updatedRequests = usersToUpdate.map(
+          user =>
+            this.userService.updateUser(
+              user.id,
+              user
+            )
+        );
+
+        if (updatedRequests.length === 0) {  // Se non ci sono utenti da aggiornare, mostra un errore e interrompi l'importazione
+          this.notification.error(
+            'Not matching users found.'
+          );
+          return;
+        }
+
+
+        // ESECUZIONE: Invia tutte le richieste di aggiornamento in parallelo e gestisce il risultato
+        // forkJoin: Combina tutte le richieste HTTP in un'unica osservabile che emette quando tutte le richieste sono completate
+        forkJoin(updatedRequests)  // Invia tutte le richieste HTTP in parallelo 
+          .subscribe({  // Gestisce il risultato delle richieste HTTP combinate
+            next: () => {  // Gestisce il caso in cui tutte le richieste HTTP siano completate con successo
+              this.notification.success(
+                'Users imported succesfully.'
+              );
+
+              this.loadUsers();  // Ricarica la lista degli utenti dopo l'aggiornamento
+            },
+
+            error: () => {  // Gestisce il caso in cui si verifichi un errore durante l'importazione degli utenti
+              this.notification.error(
+                'Error importing users.'
+              );
+            }
+          });
+
+      }
+
+      catch (error) {  // Gestisce il caso in cui si verifichi un errore durante la lettura del file Excel
+        console.error(error);
+        this.notification.error(
+          'Unable to read the Excel file'
+        );
+      }
+
+
+    };
+
+    reader.readAsArrayBuffer(file);  // Avvia la lettura del file Excel come array di byte
+    // Questo passaggio è necessario per leggere correttamente il contenuto del file Excel come array di byte, che verrà poi elaborato per aggiornare gli utenti.
+    // Senza questa lettura, non sarebbe possibile ottenere correttamente i dati dal file Excel.
+
+
+  }
+
 ```

@@ -26,8 +26,14 @@ mat-card-header {
 }
 
 
+.mat-mdc-form-field {
+    width: 100%;
+    padding-top: 1rem;
+}
+
+
 .equal-width-table {
-    table-layout: fixed; // Forza tutte le colonne ad avere la stessa larghezza
+    table-layout: fixed;
 
     th {
         font-size: 1rem;
@@ -36,18 +42,18 @@ mat-card-header {
 
 /* Distribuisce lo spazio equamente (es. 3 colonne = 33.33% ciascuna) */
 .equal-width-table th {
-    width: calc(100% / 3); // Imposta la larghezza di ciascuna colonna al 33.33% (per 3 colonne)
-    overflow: hidden; // Opzionale: evita che testi troppo lunghi rompano il layout
-    text-overflow: ellipsis; // Mostra "..." per testi troppo lunghi
-    white-space: nowrap; // Impedisce al testo di andare a capo
+    width: calc(100% / 3);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 
 .back-button {
     margin-left: 2rem;
-    width: calc(100% - 4rem); // Occupa tutta la larghezza disponibile meno il margine sinistro e destro
+    width: calc(100% - 4rem);
 }
 
 
 
-// VS Code Counter: 37 code lines (27/10/2026)
+// VS Code Counter: 41 code lines (28/10/2026)

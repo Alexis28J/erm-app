@@ -1,0 +1,59 @@
+# COMMENTI
+
+```SCSS
+mat-card {
+    margin: 2rem !important;
+}
+
+mat-card-header {
+    display: flex;
+    justify-content: space-between;
+
+    mat-card-title {
+        padding-left: 0;
+    }
+}
+
+
+.excel {
+    color: green;
+    border: 2px solid green !important;
+    bottom: 5px;
+
+    &:hover,
+    &:focus {
+        color: darkgreen;
+        border-color: darkgreen !important;
+        background-color: rgba(144, 238, 144, 0.218);
+    }
+}
+
+
+.mat-mdc-form-field {
+  width: 100%;
+  padding-top: 1rem;
+}
+
+
+.equal-width-table {
+    table-layout: fixed; // Forza tutte le colonne ad avere la stessa larghezza
+
+    th {
+        font-size: 1rem;
+    }
+}
+
+/* Distribuisce lo spazio equamente (es. 3 colonne = 33.33% ciascuna) */
+.equal-width-table th {
+    width: calc(100% / 3); // Imposta la larghezza di ciascuna colonna al 33.33% (per 3 colonne)
+    overflow: hidden; // Opzionale: evita che testi troppo lunghi rompano il layout
+    text-overflow: ellipsis; // Mostra "..." per testi troppo lunghi
+    white-space: nowrap; // Impedisce al testo di andare a capo
+}
+
+
+.back-button {
+    margin-left: 2rem;
+    width: calc(100% - 4rem); // Occupa tutta la larghezza disponibile meno il margine sinistro e destro
+}
+```
