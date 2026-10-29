@@ -1,6 +1,9 @@
-import { Component, signal, viewChild, ElementRef } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, signal, viewChild, ElementRef, inject, effect } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { FocusService } from './shared/focus-service/focus.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -11,21 +14,45 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class App {
 
+  constructor() {
+
+    const navEnd = toSignal(this.router.events.pipe(filter(e => e instanceof NavigationEnd)));
+
+    effect(() => {
+      if (navEnd()) {
+        this.focusService.resetTarget();
+      }
+    });
+
+  }
+
   // TITOLO DELL'APPLICAZIONE
   protected readonly title = signal('erm-app');
 
 
-  // CONTENITORE PRINCIPALE DELLA PAGINA
-  private mainContent = viewChild<ElementRef<HTMLElement>>('mainContent');
+  // RIFERIMENTO AL CONTENITORE PRINCIPALE DELLA PAGINA
+  private defaultMainContent = viewChild<ElementRef<HTMLElement>>('defaultMainContent');
 
 
-  // METODO PER SALTARE AL CONTENUTO PRINCIPALE
+  // SERVIZI INIETTATI 
+  private focusService = inject(FocusService);
+  private router = inject(Router);
+
+
+  // METODO PER SALTARE AL CONTENUTO PRINCIPALE (DEFAULT O CUSTOM)
   jumpToTheContent() {
-    this.mainContent()?.nativeElement.focus();
+
+    const customTarget = this.focusService.getTarget();
+
+    if (customTarget) {
+      customTarget.nativeElement.focus();
+    } else {
+      this.defaultMainContent()?.nativeElement.focus();
+    }
   }
 
 }
 
 
 
-// VS Code Counter: 17 code lines (22/10/2026)
+// VS Code Counter: 35 code lines (29/10/2026)

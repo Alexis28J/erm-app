@@ -1,10 +1,34 @@
 # COMMENTI
 
 ```TYPESCRIPT
+
+  // COSTRUTTORE DEL COMPONENTE CHE INIZIALIZZA IL FOCUS SULLA CARD
+  constructor() {
+
+    // afterNextRender garantisce che il DOM sia pronto prima di passare il riferimento
+    // Imposta il focus sulla card dopo che il DOM è pronto, utilizzando il servizio di focus 
+    // per gestire il salto al contenuto principale
+    afterNextRender(() => {
+      this.focusService.setCustomTarget(this.focusCard());
+    });
+
+  }
+
+  
+  // RIFERIMENTO ALLA FOCUS CARD (ELEMENTO DEL DOM)
+  // Prendi il riferimento della focusCard usando le template variables (es. #focusCard)
+  private focusCard = viewChild.required<ElementRef<HTMLElement>>('focusCard');
+
+
+  // INIEZIONE SERVIZIO FOCUS
+  private focusService = inject(FocusService);
+  
+
   // INPUTS
-    // Questi input rappresentano i dati che il componente riceve dal componente genitore.
+  // Questi input rappresentano i dati che il componente riceve dal componente genitore.
   // In questo modo, il componente può accedere ai dati passati dal componente genitore e utilizzarli nella sua logica e nel template.
   // Quindi, non devo copiare tutta la logica o i dati nel componente figlio, ma posso semplicemente riceverli come input.
+
   request = input.required<RefundRequest>();  // Input che rappresenta l'intero oggetto request passato dal componente genitore. Obbligatorio.
 
   reviewMode = input(false);  // input che indica se siamo in modalità revisione o meno. Inizialmente impostato su false.

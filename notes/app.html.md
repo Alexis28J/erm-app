@@ -38,7 +38,7 @@
 
 
 <!-- Ogni layout ha il suo contenitore principale -->
-<main #mainContent tabindex="-1" class="focus-target">
+<main #defaultMainContent tabindex="-1" class="focus-target">
     <router-outlet></router-outlet>
 </main>
 ```

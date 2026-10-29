@@ -21,8 +21,9 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { HrNotes } from '../../../features/hr/request-detail/hr-notes/hr-notes';
 import { TotalRequestedApproved } from '../../../features/hr/request-detail/total-requested-approved/total-requested-approved';
 import { ReviewActions } from '../../../features/hr/request-detail/review-actions/review-actions';
-import { RequestWithUser, User } from '../../../core/interfaces/user';
+import { RequestWithUser } from '../../../core/interfaces/user';
 import { UserService } from '../../../core/services/user.service';
+
 
 
 @Component({
@@ -352,4 +353,4 @@ export class RequestDetail implements OnInit {
 
 
 
-// VS Code Counter: 213 code lines (23/10/2026)
+// VS Code Counter: 213 code lines (29/10/2026)

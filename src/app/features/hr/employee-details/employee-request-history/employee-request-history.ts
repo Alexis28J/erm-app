@@ -1,4 +1,4 @@
-import { Component, effect, signal, ViewChild } from '@angular/core';
+import { afterNextRender, Component, effect, ElementRef, signal, viewChild, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import { inject } from '@angular/core';
@@ -17,6 +17,7 @@ import { RefundRequest } from '../../../../core/interfaces/refund-request';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, of, switchMap } from 'rxjs';
 import { ExcelExportService } from '../../../../core/services/excel-export.service';
+import { FocusService } from '../../../../shared/focus-service/focus.service';
 
 @Component({
   imports: [CommonModule, MatCardModule, MatTableModule,
@@ -28,6 +29,12 @@ import { ExcelExportService } from '../../../../core/services/excel-export.servi
 export class EmployeeRequestHistory {
 
   constructor() {
+
+    // AFTER NEXT RENDER PER IMPOSTARE IL FOCUS SULLA CARD PRINCIPALE CUSTOM
+    afterNextRender(() => {
+      this.focusService.setCustomTarget(this.focusCard());
+    })
+
 
     // EFFECT PER AGGIORNARE I DATI DELLA TABELLA QUANDO LE RICHIESTE CAMBIANO
     effect(() => {
@@ -101,6 +108,9 @@ export class EmployeeRequestHistory {
   private requestService = inject(RefundRequestService);
   private cdr = inject(ChangeDetectorRef);
   private excelExportService = inject(ExcelExportService);
+  private focusService = inject(FocusService);
+  private focusCard = viewChild.required<ElementRef<HTMLElement>>('focusCard');
+
 
 
   // REFERENZE AI COMPONENTI DELLA TABELLA (SORT E PAGINATOR)
@@ -168,4 +178,4 @@ export class EmployeeRequestHistory {
 
 
 
-// VS Code Counter: 108 code lines (26/10/2026)
+// VS Code Counter: 114 code lines (29/10/2026)

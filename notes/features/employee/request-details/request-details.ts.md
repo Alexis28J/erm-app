@@ -3,12 +3,39 @@
 ```TYPESCRIPT
 export class RequestDetails {
 
+  // COSTRUTTORE DEL COMPONENTE CHE INIZIALIZZA L'EFFECT PER IL FOCUS DELLA CARD
+  constructor() {
+
+    // 2. L'effect monitora costantemente il Signal 'focusCard'
+    effect(() => {
+      const card = this.focusCard();
+
+      // 3. Non appena la card appare nel DOM (diventa diversa da undefined), agisce di conseguenza
+      if (card) {
+        this.focusService.setCustomTarget(card);
+        // Se il servizio non fa già il .focus() internamente, puoi farlo qui:
+        // card.nativeElement.focus(); 
+      }
+    })
+
+  }
+
+
   // INIEZIONE DEI SERVIZI E RECUPERO DELL'ID DELLA RICHIESTA DI RIMBORSO
   private route = inject(ActivatedRoute); // ActivatedRoute è un servizio che fornisce informazioni sulla route attiva, inclusi i parametri della route
   private refundRequestService = inject(RefundRequestService);  // Servizio per interagire con le richieste di rimborso
 
   private requestId = this.route.snapshot.paramMap.get('id');  // utilizza il parametro 'id' della route per ottenere l'ID della richiesta di rimborso
   // snapshot è una proprietà di ActivatedRoute che rappresenta lo stato della route al momento dell'accesso, inclusi i parametri della route
+
+  private focusService = inject(FocusService);
+
+  // private focusCard = viewChild.required<ElementRef<HTMLElement>>('focusCard'); 
+  // Poiché l'elemento HTML da focalizzare si trova dentro un @if, non posso forzare il focus immediatamente alla creazione del componente. 
+  // Devo aspettare che il rendering successivo sia completato.
+
+  // 1. Rimuovo .required() -> Ora restituisce ElementRef o undefined
+  private focusCard = viewChild<ElementRef<HTMLElement>>('focusCard');
 
 
   // CONVERSIONE DELL'OBSERVABLE IN SIGNAL

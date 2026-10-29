@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { afterNextRender, Component, computed, effect, ElementRef, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -15,20 +15,41 @@ import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progr
 import { AttachmentList } from '../../../shared/attachment-list/attachment-list/attachment-list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AppConfig } from '../../../core/interfaces/app-config';
+import { FocusService } from '../../../shared/focus-service/focus.service';
 
 @Component({
   imports: [CommonModule, MatCardModule, MatIconModule,
     MatButtonModule, RouterLink, MatProgressSpinnerModule,
-    ProgressBar, TotalProgressBar, AttachmentList, MatTooltipModule],
+    ProgressBar, TotalProgressBar, AttachmentList,
+    MatTooltipModule],
   selector: 'app-request-details',
   styleUrls: ['./request-details.scss'],
   templateUrl: './request-details.html',
 })
 export class RequestDetails {
 
+  // COSTRUTTORE DEL COMPONENTE CHE INIZIALIZZA L'EFFECT PER IL FOCUS DELLA CARD
+  constructor() {
+
+    // 2. L'effect monitora costantemente il Signal 'focusCard'
+    effect(() => {
+      const card = this.focusCard();
+
+      // 3. Non appena la card appare nel DOM (diventa diversa da undefined), agisce di conseguenza
+      if (card) {
+        this.focusService.setCustomTarget(card);
+      }
+    })
+
+  }
+
   // INIEZIONE DEI SERVIZI E RECUPERO DELL'ID DELLA RICHIESTA DI RIMBORSO
   private route = inject(ActivatedRoute);
   private refundRequestService = inject(RefundRequestService);
+  private focusService = inject(FocusService);
+
+  // 1. Rimuovo .required() -> Ora restituisce ElementRef o undefined
+  private focusCard = viewChild<ElementRef<HTMLElement>>('focusCard');
 
 
   config = signal<AppConfig>(
@@ -57,10 +78,10 @@ export class RequestDetails {
 
   getMaxAmount(categoryName: string): number {
     return this.expenseCategories()
-           .find(c => c.name === categoryName)?.maxAmount ?? 0;
+      .find(c => c.name === categoryName)?.maxAmount ?? 0;
   }
 
-  
+
   // CALCOLO DELL'IMPORTO CONSENTITO TOTALE
   readonly totalAllowedAmount = computed(() => {
 
@@ -106,7 +127,7 @@ export class RequestDetails {
 
 
 
-// VS Code Counter: 70 code lines (13/10/2026)
+// VS Code Counter:  code lines (/10/2026)
 
 
 

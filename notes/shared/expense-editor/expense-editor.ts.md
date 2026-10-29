@@ -6,6 +6,34 @@
 
 export class ExpenseEditor {
 
+  // COSTRUTTORE DEL COMPONENTE CHE INIZIALIZZA L'EFFECT PER IL FOCUS DELLA CARD
+  constructor() {
+
+    // 2. L'effect monitora costantemente il Signal 'focusCard'
+    effect(() => {
+      
+      const card = this.focusCard();
+
+      // 3. IMPORTANTE: Controlla che card esista E che abbia il nativeElement
+      // nativeElement è un riferimento all'elemento DOM effettivo e serve per impostare il focus correttamente
+      // In sintesi, il controllo dice
+      if (card && card.nativeElement) {  // Se card (il riferimento all'elemento DOM) esiste e ha un nativeElement (cioè l'elemento DOM effettivo),
+        this.focusService.setCustomTarget(card);  // Imposta il focus sull'elemento card
+      }
+    })
+  }
+
+  private focusService = inject(FocusService);
+
+  // private focusCard = viewChild.required<ElementRef<HTMLElement>>('focusCard'); 
+  // Poiché l'elemento HTML da focalizzare si trova dentro un @if, non posso forzare il focus immediatamente alla creazione del componente. 
+  // Devo aspettare che il rendering successivo sia completato.
+
+  // 1. Definisco il viewChild SENZA .required() -> Ora restituisce ElementRef o undefined
+  private focusCard = viewChild<ElementRef<HTMLElement>>('focusCard')
+
+
+
   // Il metodo input viene utilizzato per dichiarare le proprietà che riceveranno valori dall'esterno del componente
   // Il metodo output viene utilizzato per dichiarare gli eventi che il componente può emettere verso l'esterno
 

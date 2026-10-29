@@ -2,7 +2,11 @@
 
 ```HTML
 <!---------------------------------------- SEZIONE DELLE SPESE ---------------------------------------->
-<mat-card>
+<mat-card #focusCard tabindex="-1" role="section">
+        <!-- #focusCard è il riferimento al titolo della card, usato per il focus -->
+        <!-- Il focus può essere impostato su questo elemento quando si salta al contenuto principale. In questo caso, il focus sarà sul titolo della card -->
+        <!-- tabindex="-1" permette di rendere l'elemento focusabile tramite script (ad esempio con element.focus()) ma non tramite tabulazione (tasto Tab) -->
+        <!-- role="section" indica che questo elemento rappresenta una sezione della pagina -->
 
     <div [formGroup]="form()">
 
