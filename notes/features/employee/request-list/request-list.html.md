@@ -15,6 +15,13 @@
                 My Refund Requests
             </mat-card-title>
 
+            <!-- PULSANTE PER ESPORTARE LE RICHIESTE IN EXCEL -->
+            <button mat-raised-button color="accent" (click)="exportRequests()" class="excel"
+                aria-label="Export Requests List to Excel">
+                Export Requests List
+                <mat-icon>file_download</mat-icon>
+            </button>
+
         </mat-card-header>
 
 

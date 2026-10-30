@@ -34,7 +34,8 @@ export class ExcelExportService {
                             : request.status === 'REJECTED' ? 'Rejected'
                                 : request.status === 'PARTIAL_APPROVED' ? 'Partial Approved'
                                     : request.status === 'IN_PROGRESS' ? 'In Progress'
-                                        : request.status,  // Stato della richiesta di rimborso non riconosciuto, viene riportato così com'è
+                                        : request.status === 'DRAFT' ? 'Draft'
+                                            : request.status,  // Stato della richiesta di rimborso non riconosciuto, viene riportato così com'è
 
                 RequestedAmount: `${request.totalRequestedAmount.toFixed(2)} €`,  // toFixed(2) per formattare l'importo con due decimali
                 ApprovedAmount: `${request.totalApprovedAmount?.toFixed(2) ?? '0.00'} €`, // '0.00' se l'importo approvato non è disponibile

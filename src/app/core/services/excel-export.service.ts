@@ -28,7 +28,8 @@ export class ExcelExportService {
                             : request.status === 'REJECTED' ? 'Rejected'
                                 : request.status === 'PARTIAL_APPROVED' ? 'Partial Approved'
                                     : request.status === 'IN_PROGRESS' ? 'In Progress'
-                                        : request.status,
+                                        : request.status === 'DRAFT' ? 'Draft'
+                                            : request.status,
 
                 RequestedAmount: `${request.totalRequestedAmount.toFixed(2)} €`,
                 ApprovedAmount: `${request.totalApprovedAmount?.toFixed(2) ?? '0.00'} €`,
@@ -111,4 +112,4 @@ export class ExcelExportService {
 
 
 
-// VS Code Counter: 78 code lines (23/10/2026)
+// VS Code Counter: 79 code lines (29/10/2026)

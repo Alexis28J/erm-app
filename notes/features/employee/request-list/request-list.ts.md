@@ -79,15 +79,21 @@ export class RequestList {
   private cdr = inject(ChangeDetectorRef);  // Serve per forzare il controllo del DOM dopo il cambio dati
   // In altre parole, il ChangeDetectorRef viene utilizzato per forzare il rilevamento dei cambiamenti nel DOM quando i dati della tabella vengono aggiornati.
 
-  // Riferimenti classici (non più setter complessi)
+
+  //// Riferimenti classici (non più setter complessi) ////
   // Con questi riferimenti classici, possiamo collegare facilmente il sort e il paginator al dataSource senza dover usare setter complessi
-  @ViewChild(MatSort) sortComponent!: MatSort;   //  sortComponent è il riferimento al componente MatSort presente nel DOM
+
+  @ViewChild(MatSort) sortComponent!: MatSort;   
+  // sortComponent è il riferimento al componente MatSort presente nel DOM
   // sortComponent!: MatSort indica che questa proprietà sarà inizializzata con il riferimento al componente MatSort presente nel DOM
+
   @ViewChild(MatPaginator) paginatorComponent!: MatPaginator;   //  paginatorComponent è il riferimento al componente MatPaginator presente nel DOM
   // paginatorComponent!: MatPaginator indica che questa proprietà sarà inizializzata con il riferimento al componente MatPaginator presente nel DOM
 
   // Ricorda che il DOM è l'elemento HTML che si crea quando Angular renderizza la pagina web e che i componenti Angular come MatSort e MatPaginator devono essere collegati al DOM per funzionare correttamente.
+
   // Il DOM è quindi l'insieme degli elementi HTML che vengono creati e aggiornati da Angular durante il rendering della pagina web.
+  ////    ////
 
   // FONTE DEI DATI PER LA TABELLA DELLE RICHIESTE DI RIMBORSO
   dataSource = new MatTableDataSource<RefundRequest>();  // Fonte dei dati per la tabella delle richieste di rimborso
@@ -97,6 +103,10 @@ export class RequestList {
   private authService = inject(AuthService);
   private refundRequestService = inject(RefundRequestService);
   private router = inject(Router); // Servizio per la navigazione tra le pagine dell'applicazione
+  private dialog = inject(MatDialog);
+  private notificationService = inject(Notification);
+  private excelExportService = inject(ExcelExportService);
+  private userService = inject(UserService);
 
 
   // UTENTE CORRENTE E RICHIESTE DI RIMBORSO
@@ -138,6 +148,7 @@ export class RequestList {
       '/employee/request-details',
       requestId
     ]);
+  }
 
   // Perché non utilizzare direttamente il routerLink nell'HTML invece di questo metodo?
   // Risposta: Utilizzare il routerLink direttamente nell'HTML è più semplice e leggibile,
@@ -211,7 +222,25 @@ export class RequestList {
       });
 
   }
-}
+
+    // UTENTI PER L'EXPORT IN EXCEL
+  users = toSignal(
+    this.userService.getUsers(),
+    {
+      initialValue: []
+    }
+  )
+
+  
+  // METODO PER ESPORTARE LE RICHIESTE IN EXCEL
+  exportRequests(): void {
+
+    this.excelExportService.exportRequests(
+      this.requests(),
+      this.users()
+    );
+
+  }
 
 }
 ```

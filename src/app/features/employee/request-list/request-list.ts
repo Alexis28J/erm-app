@@ -19,6 +19,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort } from '@angular/material/sort';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { ExcelExportService } from '../../../core/services/excel-export.service';
+import { UserService } from '../../../core/services/user.service';
 
 @Component({
   imports: [MatCardModule, MatTableModule, CommonModule,
@@ -100,7 +102,8 @@ export class RequestList {
   private dialog = inject(MatDialog);
   private notificationService = inject(Notification);
   private cdr = inject(ChangeDetectorRef);
-
+  private excelExportService = inject(ExcelExportService);
+  private userService = inject(UserService);
 
   // UTENTE CORRENTE E RICHIESTE DI RIMBORSO
   currentUser: User = this.authService.getCurrentUser()!;
@@ -202,8 +205,28 @@ export class RequestList {
     'actions'
   ];
 
+
+  // UTENTI PER L'EXPORT IN EXCEL
+  users = toSignal(
+    this.userService.getUsers(),
+    {
+      initialValue: []
+    }
+  )
+
+  
+  // METODO PER ESPORTARE LE RICHIESTE IN EXCEL
+  exportRequests(): void {
+
+    this.excelExportService.exportRequests(
+      this.requests(),
+      this.users()
+    );
+
+  }
+
 }
 
 
 
-// VS Code Counter: 143 code lines (08/10/2026)
+// VS Code Counter: 159 code lines (29/10/2026)

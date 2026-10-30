@@ -4,9 +4,30 @@
 }
 
 
+mat-card-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+
 mat-card-title {
     padding-bottom: 12px;
     padding-left: 0;
+}
+
+
+// PULSANTE EXPORT EXCEL
+.excel {
+    color: green;
+    border-color: green !important;
+    bottom: 5px;
+
+    &:hover,
+    &:focus {
+        color: darkgreen;
+        border-color: darkgreen !important;
+        background-color: rgba(144, 238, 144, 0.218);
+    }
 }
 
 
@@ -45,6 +66,35 @@ mat-card-title {
     font-weight: 600;
 }
 
+// PULSANTE DELETE DI OPZIONI DRAFT
+.delete:hover,
+.delete:focus {
+    background-color: rgba(255, 0, 0, 0.1) !important;
+    color: red !important;
+
+    mat-icon {
+        color: red !important;
+    }
+}
+
+
+// STILE DELLA TABELLA CON COLONNE A LARGHEZZA UGUALE
+.equal-width-table {
+    table-layout: fixed;
+
+    th {
+        font-size: 1rem;
+    }
+}
+
+/* Distribuisce lo spazio equamente (es. 3 colonne = 33.33% ciascuna) */
+.equal-width-table th {
+    width: calc(100% / 6);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 
 // STILE DEL MESSAGGIO "NON CI SONO RICHIESTE"
 .no-found {
@@ -65,38 +115,8 @@ mat-card-title {
     display: flex;
     justify-content: space-between;
     margin: 1.5rem 1rem;
-    padding-bottom: 1.5rem;
 }
 
 
-// PULSANTE DELETE DI OPZIONI DRAFT
-.delete:hover, .delete:focus {
-    background-color: rgba(255, 0, 0, 0.1) !important;
-    color: red !important;
 
-    mat-icon{
-        color: red !important;
-    }
-}
-
-
-.equal-width-table {
-  table-layout: fixed; // Forza tutte le colonne ad avere la stessa larghezza
-
-  th {
-    font-size: 1rem;
-  }
-
-}
-
-
-/* Distribuisce lo spazio equamente (es. 3 colonne = 33.33% ciascuna) */
-.equal-width-table th {
-  width: calc(100% / 6); // Imposta la larghezza di ciascuna colonna al 16.66% (per 6 colonne)
-  overflow: hidden; // Opzionale: evita che testi troppo lunghi rompano il layout
-  text-overflow: ellipsis; // Mostra "..." per testi troppo lunghi
-  white-space: nowrap; // Impedisce al testo di andare a capo
-}
-
-
-// VS Code Counter: 69 code lines (19/10/2026)
+// VS Code Counter: 84 code lines (29/10/2026)
