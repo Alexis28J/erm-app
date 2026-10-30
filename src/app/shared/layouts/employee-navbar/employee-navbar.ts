@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../../../../core/services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { Notification } from '../../../notification-service/notification';
-import { User } from '../../../../core/interfaces/user';
-import { ConfirmAction } from '../../../dialogs/confirm-action/confirm-action';
+import { Notification } from '../../../shared/notification-service/notification';
+import { User } from '../../../core/interfaces/user';
+import { ConfirmAction } from '../../../shared/dialogs/confirm-action/confirm-action';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';

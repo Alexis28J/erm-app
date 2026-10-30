@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { ExpenseAttachment } from '../../../core/interfaces/expense';
+import { ExpenseAttachment } from '../../core/interfaces/expense';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';

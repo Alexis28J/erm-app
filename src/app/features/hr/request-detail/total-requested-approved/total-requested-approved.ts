@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { TotalProgressBar } from '../../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
+import { TotalProgressBar } from '../../../../shared/total-progress-bar/total-progress-bar';
 
 @Component({
   imports: [CommonModule, MatCardModule, MatIconModule, TotalProgressBar],

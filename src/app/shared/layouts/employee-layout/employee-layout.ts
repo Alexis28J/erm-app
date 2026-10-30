@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { EmployeeNavbar } from '../../employee-navbar/employee-navbar/employee-navbar';
+import { EmployeeNavbar } from '../employee-navbar/employee-navbar';
 
 @Component({
   imports: [RouterOutlet, EmployeeNavbar],

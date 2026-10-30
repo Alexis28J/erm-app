@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { UserService } from '../../../../core/services/user.service';
+import { UserService } from '../../../core/services/user.service';
 import { Router, RouterLink } from '@angular/router';
-import { Notification } from '../../../../shared/notification-service/notification';
+import { Notification } from '../../../shared/notification-service/notification';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';

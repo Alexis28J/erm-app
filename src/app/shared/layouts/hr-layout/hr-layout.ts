@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HrNavbar } from '../../hr-navbar/hr-navbar/hr-navbar';
+import { HrNavbar } from '../hr-navbar/hr-navbar';
 
 @Component({
   imports: [RouterOutlet, HrNavbar],

@@ -15,11 +15,11 @@ import { MatInputModule } from "@angular/material/input";
 import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs';
-import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar/total-progress-bar';
+import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
 import { AppConfig } from '../../../core/interfaces/app-config';
-import { ExpenseEditor } from '../../../shared/expense-editor/expense-editor/expense-editor';
+import { ExpenseEditor } from '../../../shared/expense-editor/expense-editor';
 import { RequestDetailsCard } from '../../../shared/request-details-card/request-details-card';
 
 @Component({

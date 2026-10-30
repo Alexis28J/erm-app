@@ -9,8 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { ProgressBar } from '../../../../shared/progress-bar/progress-bar/progress-bar';
-import { AttachmentList } from '../../../../shared/attachment-list/attachment-list/attachment-list';
+import { ProgressBar } from '../../../../shared/progress-bar/progress-bar';
+import { AttachmentList } from '../../../../shared/attachment-list/attachment-list';
 
 import { RefundRequest } from '../../../../core/interfaces/refund-request';
 import { ExpenseLimit } from '../../../../core/interfaces/expense-limit';

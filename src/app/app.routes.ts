@@ -3,10 +3,10 @@ import { Home } from './features/home/home';
 import { authGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
 import { UserRole } from './core/interfaces/enum';
-import { EmployeeLayout } from './shared/layouts/employee-layout/employee-layout/employee-layout';
-import { HrLayout } from './shared/layouts/hr-layout/hr-layout/hr-layout';
+import { EmployeeLayout } from './shared/layouts/employee-layout/employee-layout';
+import { HrLayout } from './shared/layouts/hr-layout/hr-layout';
 import { configResolver } from './config-resolver';
-import { HrSettings } from './features/hr/hr-settings/hr-settings/hr-settings';
+import { HrSettings } from './features/hr/hr-settings/hr-settings';
 import { ExpenseLimitsSettings } from './features/hr/expense-limits-settings/expense-limits-settings';
 import { UserManagement } from './features/hr/user-management/user-management';
 
@@ -27,7 +27,7 @@ export const routes: Routes = [
     {
         path: 'reset-password',
         loadComponent: () =>
-            import('./features/login/reset-password/reset-password/reset-password')
+            import('./features/login/reset-password/reset-password')
                 .then(c => c.ResetPassword),
         title: 'J-ERM App: Reset Password'
     },
