@@ -11,12 +11,13 @@ import { ProgressBar } from '../progress-bar/progress-bar';
 import { AttachmentList } from '../attachment-list/attachment-list';
 import { ExpenseLimit } from '../../core/interfaces/expense-limit';
 import { FocusService } from '../focus-service/focus.service';
+import { CustomDatepicker } from '../custom-datepicker/custom-datepicker'; 
 
 @Component({
   imports: [ReactiveFormsModule, MatCardModule, MatButtonModule,
     MatFormFieldModule, MatInputModule, MatSelectModule,
     MatIconModule, MatTooltipModule, ProgressBar,
-    AttachmentList],
+    AttachmentList, CustomDatepicker],
   selector: 'app-expense-editor',
   styleUrls: ['./expense-editor.scss'],
   templateUrl: './expense-editor.html',

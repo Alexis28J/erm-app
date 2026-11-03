@@ -26,7 +26,8 @@ export class ExcelExportService {
 
             return {
                 Employee: `${employee?.name ?? ''} ${employee?.surname ?? ''}`,  // Nome e cognome dell'impiegato associato alla richiesta di rimborso 
-                ReferenceMonth: request.referenceMonth,  // Mese di riferimento della richiesta di rimborso
+                ReferenceMonth: new Date(request.referenceMonth).toLocaleDateString(undefined, { year: 'numeric', month: 'numeric' }), // Mese di riferimento della richiesta di rimborso. Mostro solo mese e anno. // undefined indica che verrà utilizzata la localizzazione predefinita dell'ambiente 
+                // cioè la lingua e il formato della data del sistema in uso
 
                 Status:  // Stato della richiesta di rimborso (Pending, Approved, Rejected, Partial Approved, In Progress, ecc.)
                     request.status === 'PENDING' ? 'Pending'
@@ -37,8 +38,9 @@ export class ExcelExportService {
                                         : request.status === 'DRAFT' ? 'Draft'
                                             : request.status,  // Stato della richiesta di rimborso non riconosciuto, viene riportato così com'è
 
-                RequestedAmount: `${request.totalRequestedAmount.toFixed(2)} €`,  // toFixed(2) per formattare l'importo con due decimali
-                ApprovedAmount: `${request.totalApprovedAmount?.toFixed(2) ?? '0.00'} €`, // '0.00' se l'importo approvato non è disponibile
+
+                RequestedAmount: Number(request.totalRequestedAmount),  // Converto l'importo richiesto in numero 
+                ApprovedAmount: Number(request.totalApprovedAmount ?? 0),  // Converto l'importo approvato in numero 
 
                 //CreationDate: request.creationDate,
                 CreationDate: new Date(request.creationDate).toLocaleDateString(),  // Data di creazione della richiesta di rimborso formattata come stringa locale 
@@ -49,6 +51,40 @@ export class ExcelExportService {
 
         // 2. Creo un foglio di lavoro (worksheet) a partire dai dati 
         const worksheet = XLSX.utils.json_to_sheet(data);
+
+
+        // 2.1. Ottengo l'intervallo di celle del foglio di lavoro
+        const range = XLSX.utils.decode_range(worksheet['!ref']!);
+        // decode_range restituisce l'intervallo di celle effettivamente utilizzate nel foglio di lavoro
+        // worksheet['!ref'] contiene l'intervallo di celle in formato stringa, ad esempio "A1:G10"  // Il simbolo ! indica che si tratta di una proprietà speciale di XLSX
+        // In parole molto semplici, ottengo l'intervallo di celle che contengono effettivamente dei dati nel foglio di lavoro
+
+
+        // Colonna D = RequestedAmount
+        // Itero su tutte le righe della colonna D (RequestedAmount) per formattarle come numeri con due decimali e simbolo dell'euro
+        for (let row = 1; row <= range.e.r; row++) {   // range.e.r è l'ultima riga effettivamente utilizzata nel foglio di lavoro
+            const cell = worksheet[XLSX.utils.encode_cell({ r: row, c: 3 })];  // Ottengo la cella corrispondente alla colonna D (RequestedAmount) della riga corrente
+
+            if (cell) {   // Se la cella esiste, la formatto come numero con due decimali e simbolo dell'euro
+                cell.t = 'n';  // Imposto il tipo della cella come numero cioè il valore sarà trattato come numero e non come testo
+                cell.z = '#,##0.00 €';  // Imposto il formato della cella come numero con due decimali e simbolo dell'euro
+            }
+        }
+
+
+        // Colonna E = ApprovedAmount 
+        for (let row = 1; row <= range.e.r; row++) {
+            const cell = worksheet[XLSX.utils.encode_cell({ r: row, c: 4 })];
+
+            if (cell) {
+                cell.t = 'n';
+                cell.z = '#,##0.00 €';
+            }
+        }
+
+        //In sintesi, nel punto 2.1 ottengo l'intervallo di celle effettivamente utilizzate 
+        // nel foglio di lavoro e formatto le colonne D e E come numeri con due decimali e simbolo dell'euro
+
 
             worksheet['!cols'] = [  // '!cols' è un array che definisce la larghezza delle colonne del foglio di lavoro
             { wch: 30 },  // wch significa "width in characters" cioè la larghezza della colonna in numero di caratteri

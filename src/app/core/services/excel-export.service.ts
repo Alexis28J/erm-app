@@ -20,7 +20,7 @@ export class ExcelExportService {
 
             return {
                 Employee: `${employee?.name ?? ''} ${employee?.surname ?? ''}`,
-                ReferenceMonth: request.referenceMonth,
+                ReferenceMonth: new Date(request.referenceMonth).toLocaleDateString(undefined, { year: 'numeric', month: 'numeric' }),
 
                 Status:
                     request.status === 'PENDING' ? 'Pending'
@@ -31,8 +31,8 @@ export class ExcelExportService {
                                         : request.status === 'DRAFT' ? 'Draft'
                                             : request.status,
 
-                RequestedAmount: `${request.totalRequestedAmount.toFixed(2)} €`,
-                ApprovedAmount: `${request.totalApprovedAmount?.toFixed(2) ?? '0.00'} €`,
+                RequestedAmount: Number(request.totalRequestedAmount),
+                ApprovedAmount: Number(request.totalApprovedAmount ?? 0),
                 CreationDate: new Date(request.creationDate).toLocaleDateString(),
                 LastUpdateDate: new Date(request.lastUpdateDate).toLocaleDateString()
             }
@@ -40,6 +40,35 @@ export class ExcelExportService {
 
         // 2. Creo un foglio di lavoro (worksheet) a partire dai dati 
         const worksheet = XLSX.utils.json_to_sheet(data);
+
+        // 2.1. Ottengo l'intervallo di celle del foglio di lavoro
+        const range = XLSX.utils.decode_range(worksheet['!ref']!);
+
+
+        // Colonna D = RequestedAmount
+        for (let row = 1; row <= range.e.r; row++) {
+            const cell = worksheet[XLSX.utils.encode_cell({ r: row, c: 3 })];
+
+            if (cell) {
+                cell.t = 'n';
+                cell.z = '#,##0.00 €';
+            }
+        }
+
+
+        // Colonna E = ApprovedAmount 
+        for (let row = 1; row <= range.e.r; row++) {
+            const cell = worksheet[XLSX.utils.encode_cell({ r: row, c: 4 })];
+
+            if (cell) {
+                cell.t = 'n';
+                cell.z = '#,##0.00 €';
+            }
+        }
+
+        //In sintesi, nel punto 2.1 ottengo l'intervallo di celle effettivamente utilizzate 
+        // nel foglio di lavoro e formatto le colonne D e E come numeri con due decimali e simbolo dell'euro
+
 
         worksheet['!cols'] = [
             { wch: 30 },
@@ -112,4 +141,4 @@ export class ExcelExportService {
 
 
 
-// VS Code Counter: 79 code lines (29/10/2026)
+// VS Code Counter: 94 code lines (03/11/2026)

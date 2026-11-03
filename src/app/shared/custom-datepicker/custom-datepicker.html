@@ -1,0 +1,46 @@
+<div class="datepicker-container">
+
+    <input readonly [value]="formattedDate()" (click)="toggleCalendar()">
+
+    @if (isOpen) {
+
+    <div class="calendar">
+        <div class="calendar-header">
+
+            <button (click)="goToPreviousMonth()">
+                ←
+            </button>
+
+            <span>
+                {{currentMonthName()}}
+                {{currentYear}}
+            </span>
+
+            <button (click)="goToNextMonth()" [disabled]="isNextMonthDisabled()">
+                →
+            </button>
+
+        </div>
+
+        <div class="calendar-grid">
+
+            @for (day of daysInMonth(); track $index) {
+                <!-- $index: Siccome stiamo tracciando l'indice, $index rappresenta l'indice corrente nel ciclo dei giorni del mese -->
+
+            @if (day) {
+            <button type="button" (click)="selectDate(day)">
+                {{day.getDate()}}
+            </button>
+            } @else {
+            <div class="empty-day"></div>
+            }
+
+            }
+
+        </div>
+
+    </div>
+
+    }
+
+</div>
