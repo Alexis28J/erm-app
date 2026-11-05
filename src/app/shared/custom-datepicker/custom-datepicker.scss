@@ -1,0 +1,138 @@
+.datepicker-container {
+    position: relative;
+    width: 100%;
+}
+
+
+.datepicker-field {
+    height: 56px;
+    border: 1px solid #7a7d86;
+    border-radius: 4px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+    bottom: 1.5px;
+    transition: border-color .2s;  // Transizione fluida del colore del bordo al passaggio del mouse
+
+    &:hover {
+        border-radius: 4px;
+        border-color: black;
+    }
+
+    input:focus-within {  
+        border-width: 2px;
+        border-color: #1976d2;
+    }
+
+    &.active-border {
+        border: 2px solid #1976d2;
+
+        span, mat-icon {
+            color: #1976d2;
+        }
+    }
+}
+
+.datepicker-value {
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 1rem;
+}
+
+.datepicker-value:empty {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+
+.calendar-popup {
+    position: absolute; // Posiziona il popup del calendario in modo assoluto rispetto al contenitore
+    top: 100%; // Posiziona il popup del calendario sotto il campo data
+    padding: 8px 12px; 
+    width: calc(100% - 24px); // Sottrae il padding orizzontale del campo data (12px per lato)
+    background: #c6d9fc;
+    border-radius: 4px;
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, .1),
+        0 8px 24px rgba(0, 0, 0, .15);
+    z-index: 99; // Assicura che il popup del calendario sia sopra altri elementi ma sotto eventuali overlay più alti
+}  
+
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: bold;
+
+    button {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 70%;
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        pointer-events: none;  // Disabilita l'interazione con il pulsante disabilitato
+    }
+
+    button:hover, button:focus {
+        background: rgba(25, 118, 210, 0.12);
+        border-radius: 50%;
+        color: #1976d2;
+    }
+}
+
+
+.calendar-container {
+    background-color: rgba(255, 255, 255, 0.506);
+    border: 1px solid rgba(60, 98, 250, 0.6);
+    border-radius: 4px;
+
+    &:hover,
+    &:focus {
+        background-color: white;
+    }
+}
+
+.calendar-weekdays {
+    border-bottom: 1px solid rgba(60, 98, 250, 0.6);
+    padding: 3px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    flex: 1;
+}
+
+
+.day-button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 4px;
+
+    &:hover, &:focus {
+        background: rgba(25, 118, 210, 0.12);
+        font-weight: bold;
+        border-radius: 50%;
+    }
+}
+
+
+.day-selected {
+    background: #1976d2 !important;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+}

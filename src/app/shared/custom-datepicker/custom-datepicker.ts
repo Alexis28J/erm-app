@@ -1,8 +1,10 @@
-import { Component, computed, forwardRef, signal } from '@angular/core';
+import { Component, computed, ElementRef, forwardRef, HostListener, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @Component({
-  imports: [],
+  imports: [MatIconModule],
   selector: 'app-custom-datepicker',
   styleUrls: ['./custom-datepicker.scss'],
   templateUrl: './custom-datepicker.html',
@@ -15,6 +17,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class CustomDatepicker implements ControlValueAccessor {
+
+  constructor(private elementRef: ElementRef) { }  // Inietto ElementRef per poter controllare i confini del componente
 
   // VALORE INTERNO DEL DATEPICKER
   value = '';
@@ -63,7 +67,7 @@ export class CustomDatepicker implements ControlValueAccessor {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // METODO PER SELEZIONARE UNA DATA
-  selectDate(date: Date): void {
+  selectDate(date: Date, event: Event): void {
 
     this.today.setHours(0, 0, 0, 0);
 
@@ -80,7 +84,7 @@ export class CustomDatepicker implements ControlValueAccessor {
     this.onChange(isoDate);
     this.onTouched();
 
-    this.toggleCalendar();
+    this.toggleCalendar(event);
 
   }
 
@@ -93,7 +97,7 @@ export class CustomDatepicker implements ControlValueAccessor {
     }
 
     const date = new Date(this.value);
-    return date.toLocaleDateString();
+    return date.toLocaleDateString();  
 
   }
 
@@ -102,9 +106,40 @@ export class CustomDatepicker implements ControlValueAccessor {
   isOpen: boolean = false;
 
 
+  // PROPRIETÀ PER TRACCIARE LO STATO DEL BORDO ATTIVO DEL DIV
+  isClicked: boolean = false;   
+
+
   // METODO PER TOGGLE DEL CALENDARIO
-  toggleCalendar(): void {
+  toggleCalendar(event: Event): void {
+
+    event.stopPropagation();
     this.isOpen = !this.isOpen;
+    
+    if(!this.isOpen){
+      this.isClicked = false; 
+    }
+
+  }
+
+
+  // LISTENER PER I CLICK SUL DOCUMENTO, PER CHIUDERE IL CALENDARIO SE SI CLICCA FUORI
+  @HostListener('document:click', ['$event'])  
+  onDocumentClick(event: MouseEvent): void {
+
+    const clickedInside = this.elementRef.nativeElement.contains(event.target);  
+
+    if (!clickedInside && this.isOpen) {
+      this.isOpen = false;     
+      this.isClicked = false;   
+    }
+
+  }
+
+
+  // METODO PER ATTIVARE IL BORDO DEL DIV QUANDO VI SI CLICCA DENTRO
+  activateBorder(event: Event): void {  
+    this.isClicked = true;  
   }
 
 
@@ -127,16 +162,14 @@ export class CustomDatepicker implements ControlValueAccessor {
 
     const previousMonth = new Date(
       current.getFullYear(),
-      current.getMonth() - 1,
-      1
+      current.getMonth() - 1,  
+      1 
     );
 
-    this.viewDate.set(previousMonth);
-
-    this.viewDate().getMonth();
-    this.viewDate().getFullYear();
-
-  }
+    this.viewDate.set(previousMonth);  
+    this.viewDate().getMonth();  
+    this.viewDate().getFullYear();  
+  } 
 
 
   // METODO PER ANDARE AL MESE SUCCESSIVO
@@ -146,22 +179,22 @@ export class CustomDatepicker implements ControlValueAccessor {
 
     const nextMonth = new Date(
       current.getFullYear(),
-      current.getMonth() + 1,
-      1
+      current.getMonth() + 1,  
+      1  
     );
 
-    if (  // Controlla se il mese successivo supera la data odierna
+    if (  
       nextMonth.getFullYear() > this.today.getFullYear() ||
       (nextMonth.getFullYear() === this.today.getFullYear() &&
         nextMonth.getMonth() > this.today.getMonth())
     ) {
-      return;
+      return;  
     }
 
     this.viewDate.set(nextMonth);
+    this.viewDate().getMonth();  
+    this.viewDate().getFullYear(); 
 
-    this.viewDate().getMonth();
-    this.viewDate().getFullYear();
   }
 
 
@@ -174,47 +207,106 @@ export class CustomDatepicker implements ControlValueAccessor {
 
   // METODO PER OTTENERE IL NOME DEL MESE CORRENTE
   currentMonthName(): string {
-    return this.months[this.viewDate().getMonth()];
+    return this.months[this.viewDate().getMonth()];  
   }
 
 
   // CALCOLO DINAMICO DEI GIORNI DEL MESE CORRENTE
   daysInMonth = computed(() => {
 
-    const currentViewDate = this.viewDate();
-
+    // Numero totale di giorni nel mese corrente
     const totalDays = new Date(
-      currentViewDate.getFullYear(),
-      currentViewDate.getMonth() + 1,
-      0
-    ).getDate();
+      this.viewDate().getFullYear(),
+      this.viewDate().getMonth() + 1,  
+      0  
+    ).getDate();  
 
-
+    // L'indice del primo giorno del mese corrente (0 = domenica, 6 = sabato)
     let firstDayIndex = new Date(
-      currentViewDate.getFullYear(),
-      currentViewDate.getMonth(),
-      1
-    ).getDay();
+      this.viewDate().getFullYear(),
+      this.viewDate().getMonth(),
+      1  
+    ).getDay();  
 
 
-    firstDayIndex = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
+    // Adattamento dell'indice del primo giorno del mese corrente (0 = lunedì, 6 = domenica)
+    firstDayIndex = firstDayIndex === 0 ? 6 : firstDayIndex - 1;  
 
-    const blanks = Array(firstDayIndex).fill(null);
+
+    // L'ultimo giorno del mese precedente
+    const previousMonthLastDay =
+    new Date(
+      this.viewDate().getFullYear(),
+      this.viewDate().getMonth(),
+      0  
+    ).getDate();  
+
+    
+    // Genera un array di Date per i giorni del mese precedente da mostrare all'inizio della griglia del calendario
+    const previousMonthDays = Array.from(  // Array.from genera un array 
+      {length: firstDayIndex},  // di lunghezza firstDayIndex, cioè il numero di giorni del mese precedente da mostrare all'inizio della griglia del calendario
+      (_, i) => // _ rappresenta l'indice corrente nell'array generato, cioè la posizione del giorno del mese precedente da mostrare all'inizio (prima riga) della griglia del calendario
+      // i rappresenta l'indice corrente nell'array generato, cioè il numero progressivo del giorno del mese precedente da mostrare all'inizio della griglia del calendario
+        new Date(
+          this.viewDate().getFullYear(),  // L'anno del giorno del mese precedente da mostrare all'inizio della griglia del calendario
+          this.viewDate().getMonth() - 1,  // Il mese del giorno del mese precedente da mostrare all'inizio della griglia del calendario
+          previousMonthLastDay - firstDayIndex + i + 1  // Il giorno del mese precedente da mostrare all'inizio della griglia del calendario
+        )
+    );
 
 
-    const days = Array.from(
+    // Genera un array di Date per i giorni del mese corrente
+    const currentMonthDays = Array.from(
       { length: totalDays },
       (_, i) => new Date(
-        currentViewDate.getFullYear(),
-        currentViewDate.getMonth(),
+        this.viewDate().getFullYear(),
+        this.viewDate().getMonth(),
         i + 1
       )
     );
-    return [...blanks, ...days];
+
+
+    // Combina i giorni del mese precedente e del mese corrente
+    const allDays = [...previousMonthDays, ...currentMonthDays];
+
+
+    // Calcola il numero di celle rimanenti per completare la griglia del calendario (6 righe x 7 colonne = 42 celle)
+    const remainingCells = 42 - allDays.length;  // I calendari veri completano la griglia a: 42 celle cioè 6 righe x 7 colonne
+
+
+    // Genera un array di Date per i giorni del mese successivo da mostrare alla fine della griglia del calendario
+    const nextMonthDays = Array.from(
+      { length: remainingCells },
+      (_, i) => new Date(
+        this.viewDate().getFullYear(),
+        this.viewDate().getMonth() + 1,
+        i + 1
+      )
+    );
+
+
+    // return [...blanks, ...currentMonthDays]; // Non più necessario, utilizziamo i giorni del mese precedente per riempire gli spazi vuoti all'inizio della griglia
+    return [...previousMonthDays, ...currentMonthDays, ...nextMonthDays];
   });
+
+
+  // METODO PER VERIFICARE SE UN GIORNO È SELEZIONATO
+  isDaySelected(date: Date): boolean {
+    if (!this.value) {
+      return false;
+    }
+
+    const selected = new Date(this.value);
+
+    return (
+      selected.getDate() === date.getDate()
+      && selected.getMonth() === date.getMonth()
+      && selected.getFullYear() === date.getFullYear()
+    );
+  }
 
 }
 
 
 
-// VS Code Counter: 122 code lines (04/11/2026)
+// VS Code Counter: code lines (/11/2026)

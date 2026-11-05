@@ -1,14 +1,26 @@
 <div class="datepicker-container">
 
-    <input type="text" placeholder="Select a date" readonly [value]="formattedDate()" (click)="toggleCalendar()">
+    <div class="datepicker-field" (click)="toggleCalendar($event)" tabindex="0" aria-label="Select a date. Required"
+        (keydown.enter)="toggleCalendar($event)" [class.active-border]="isClicked" (click)="activateBorder($event)">
+        <span class="datepicker-value">
+            {{formattedDate() || 'Date*'}}
+        </span>
+
+        <mat-icon>
+            <!-- calendar_month -->
+            arrow_drop_down
+        </mat-icon>
+    </div>
 
     @if (isOpen) {
 
-    <div class="calendar">
+    <div class="calendar-popup" (clickOutside)="toggleCalendar($event)">
+
+        <!-- HEADER DEL CALENDARIO -->
         <div class="calendar-header">
 
-            <button (click)="goToPreviousMonth()">
-                ←
+            <button type="button" (click)="goToPreviousMonth()" aria-label="Go to previous month">
+                ◄
             </button>
 
             <span>
@@ -16,26 +28,41 @@
                 {{viewDate().getFullYear()}}
             </span>
 
-            <button (click)="goToNextMonth()" [disabled]="isNextMonthDisabled()">
-                →
+            <button type="button" (click)="goToNextMonth()" [disabled]="isNextMonthDisabled()"
+                aria-label="Go to next month">
+                ►
             </button>
 
         </div>
 
-        <div class="calendar-grid">
+        <!-- GRIGLIA DEL CALENDARIO -->
+        <div class="calendar-container">
+            <div class="calendar-weekdays">
+                <span>Mo</span>
+                <span>Tu</span>
+                <span>We</span>
+                <span>Th</span>
+                <span>Fr</span>
+                <span>Sa</span>
+                <span style="color: red;">Su</span>
+            </div>
 
-            @for (day of daysInMonth(); track $index) {
-            @if (day) {
-            <button type="button" (click)="selectDate(day)">
-                {{day.getDate()}}
-            </button>
-            } @else {
-            <div class="empty-day"></div>
-            }
+            <div class="calendar-grid">
 
-            }
+                @for (day of daysInMonth(); track $index) {
+                @if (day) {
+                <button type="button" class="day-button" (click)="selectDate(day, $event)"
+                    [class.day-selected]="isDaySelected(day)">
+                    {{day.getDate()}}
+                </button>
+                } @else {
+                <div class="empty-day"></div>
+                }
 
-        </div>
+                }
+
+            </div>
+        </div> <!-- chiusura calendar-container -->
 
     </div>
 
@@ -45,4 +72,4 @@
 
 
 
-<!-- VS Code Counter: 30 code lines (04/11/2026) -->
+<!-- VS Code Counter: code lines (04/11/2026) -->
