@@ -119,9 +119,12 @@ export class CustomDatepicker implements ControlValueAccessor {
 
     this.toggleCalendar();  // Chiude il calendario dopo aver selezionato una data.
 
-  } 
-  
+    this.isTouched = false;  // Resetto lo stato di toccato dopo la selezione della data in modo che il bordo non rimanga attivo
 
+  }
+  
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
   // METODO PER OTTENERE LA DATA FORMATTATA
   formattedDate(): string {
 
@@ -284,7 +287,9 @@ export class CustomDatepicker implements ControlValueAccessor {
   ///// FINE SPIEGAZIONE DEL METODO currentMonthName()
 
 
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
   // CALCOLO DINAMICO DEI GIORNI DEL MESE CORRENTE
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Questo metodo calcola dinamicamente i giorni del mese corrente, tenendo conto dei giorni vuoti all'inizio del calendario per allineare correttamente i giorni della settimana.
   daysInMonth = computed(() => {
 
@@ -328,8 +333,8 @@ export class CustomDatepicker implements ControlValueAccessor {
     // const blanks = Array(firstDayIndex).fill(null); 
     // Crea un array di celle vuote per i giorni precedenti al primo giorno del mese corrente
     // Questo serve a riempire le celle vuote all'inizio del calendario per allineare correttamente i giorni del mese corrente con i giorni della settimana
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // L'ultimo giorno del mese precedente
     // Calcola l'ultimo giorno del mese precedente per determinare quali giorni mostrare nella griglia del calendario all'inizio del mese corrente
@@ -341,22 +346,172 @@ export class CustomDatepicker implements ControlValueAccessor {
     ).getDate();  // Quindi otteniamo l'ultimo giorno del mese precedente.
 
 
-    //
-    const days = Array.from(   // Crea un array di oggetti Date per ogni giorno del mese corrente
-      { length: totalDays },  // Lunghezza dell'array corrispondente al numero totale di giorni nel mese corrente
-      (_, i) => new Date(  // _ rappresenta l'indice corrente nell'array mentre i rappresenta il numero del giorno nel mese corrente (0-based, quindi si aggiunge 1)
-        currentViewDate.getFullYear(),  // Creo un oggetto Date per il giorno corrente del mese
-        currentViewDate.getMonth(),
-        i + 1  // Giorno del mese corrente (1-based)
-      )
-    );
-    return [...blanks, ...days];  // Restituisce un array combinato di celle vuote e giorni del mese corrente per il rendering del calendario
-  });
-   // Quindi, se dobbiamo dividere in passaggi il metodo daysInMonth, possiamo pensarlo come:
-   // 1. Calcolare il numero totale di giorni nel mese corrente
-   // 2. Determinare l'indice del primo giorno del mese corrente
-   // 3. Creare un array di celle vuote per i giorni precedenti al primo giorno del mese
-   // 4. Creare un array di oggetti Date per ogni giorno del mese corrente
-   // 5. Combinare le celle vuote e i giorni del mese corrente per il rendering del calendario
+    // Giorni del mese precedente
+    // Genera un array di Date per i giorni del mese precedente da mostrare all'inizio della griglia del calendario
+    const previousMonthDays = Array.from(  // Array.from genera un array 
+      {length: firstDayIndex},  // di lunghezza firstDayIndex, cioè il numero di giorni del mese precedente da mostrare all'inizio della griglia del calendario
 
+      (_, i) => // _ rappresenta l'indice corrente nell'array generato, cioè la posizione del giorno del mese precedente (spazio vuoto) da mostrare all'inizio della griglia del calendario
+      // i rappresenta l'indice corrente nell'array generato, cioè il numero progressivo del giorno del mese precedente (che si sta generando) da mostrare all'inizio della griglia del calendario
+
+        new Date(
+          this.viewDate().getFullYear(),  // Ottengo l'anno del giorno del mese precedente
+          this.viewDate().getMonth() - 1,  // - 1 indica il mese precedente rispetto al mese corrente della vista del calendario
+          previousMonthLastDay - firstDayIndex + i + 1  // Calcola il giorno del mese precedente da mostrare all'inizio della griglia del calendario
+          // Sottraendo firstDayIndex da previousMonthLastDay otteniamo il primo giorno del mese precedente da mostrare all'inizio della griglia del calendario
+          // Aggiungendo i, otteniamo il giorno corretto del mese precedente da mostrare all'inizio della griglia del calendario
+          // Si deve aggiungere 1 perché i giorni del mese iniziano da 1 e non da 0
+          // Di conseguenza, otteniamo il giorno corretto del mese precedente da mostrare all'inizio della griglia del calendario 
+          // Ad esempio, se firstDayIndex = 3 e previousMonthLastDay = 30, i = 0 darà 28, i = 1 darà 29, i = 2 darà 30
+        ) 
+    );
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Giorni del mese corrente
+    // Genera un array di Date per i giorni del mese corrente
+    const currentMonthDays = Array.from(  // Array.from genera un array di Date per i giorni del mese corrente
+      { length: totalDays },  // Array di lunghezza pari al numero totale di giorni nel mese corrente
+      (_, i) => new Date(  // In parole semplici stiamo dicendo che _ e i rappresentano rispettivamente l'elemento corrente (spazio vuoto) e l'indice corrente nell'array generato (che parte da 0)
+        this.viewDate().getFullYear(),  // Ottengo l'anno del mese corrente
+        this.viewDate().getMonth(),  // Ottengo il mese corrente
+        i + 1  // i + 1 rappresenta il giorno del mese corrente dove i parte da 0 quindi aggiungiamo 1 siccome i giorni del mese partono da 1.
+      )
+      // Se analizziamo il codice, vediamo che stiamo creando un nuovo oggetto Date per ogni giorno del mese corrente, partendo dal giorno 1 fino all'ultimo giorno del mese.
+    );
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Somma dei giorni del mese precedente e del mese corrente
+    // Questo array contiene tutti i giorni del mese precedente e del mese corrente, utili per costruire la griglia del calendario completa.a
+    // Uso il metodo spread per combinare i due array in un unico array di giorni
+    const allDays = [...previousMonthDays, ...currentMonthDays];
+
+    
+    // Numero di celle disponibili nella griglia del calendario (6 righe x 7 colonne = 42 celle)
+    // Calcola il numero di celle rimanenti per completare la griglia del calendario sottraendo il numero di giorni già presenti (mese precedente + mese corrente) da 42
+    const remainingCells = 42 - allDays.length;  // I calendari veri completano la griglia a: 42 celle cioè 6 righe x 7 colonne
+    // 42 = 6 righe x 7 colonne. 7 colonne per i giorni della settimana e 6 righe per coprire tutti i possibili giorni del mese, 
+    // inclusi quelli del mese precedente e successivo necessari per completare la griglia.
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Giorni del mese successivo
+    // Genera un array di Date per i giorni del mese successivo da mostrare alla fine della griglia del calendario
+    const nextMonthDays = Array.from(  // Array.from genera un array
+      { length: remainingCells },  // di lunghezza pari al numero di celle rimanenti da riempire nella griglia del calendario
+      (_, i) => new Date(  // e genera un oggetto Date per ciascun giorno del mese successivo da mostrare nella griglia
+        this.viewDate().getFullYear(),  // Ottengo l'anno corrente della vista del calendario
+        this.viewDate().getMonth() + 1,  // Ottengo il mese successivo della vista del calendario
+        i + 1   // Calcolo il giorno del mese successivo da mostrare nella griglia del calendario (ad esempio 1, 2, 3, ...)
+      )
+    ); 
+    
+    // Quindi a differenza degli array dei giorni del mese precedente e corrente, questo array utilizza _ e i per generare i giorni del mese successivo da mostrare nella griglia.
+    
+    // Come funziona?
+    // Array.from crea un array della lunghezza specificata (remainingCells)
+    // Per ogni elemento dell'array, viene chiamata la funzione (_, i) => new Date(...)
+    // In questo modo, generiamo tutti i giorni necessari del mese successivo per completare la griglia del calendario
+
+    // i è l'indice passato alla funzione di callback (indice dei numeri generati da Array.from) e viene utilizzato per calcolare il giorno del mese successivo da mostrare nella griglia (i + 1)
+
+    // _ è l'indice degli spazi rimanenti nella griglia del calendario.
+
+    // Nelle array precedenti, _ non veniva utilizzato perché i giorni venivano calcolati direttamente usando i + 1 o altre formule specifiche per il mese precedente o corrente. E Lo stesso concetto si applica anche ai giorni del mese successivo, dove _ rappresenta l'indice dell'array generato da Array.from, ma non viene utilizzato direttamente.
+
+    // Quindi considerando anche le array precedenti, possiamo dire che _ non viene mai utilizzato direttamente per calcolare i giorni del calendario, ma serve solo come placeholder (spazio vuoto) per l'indice corrente (che viene rappresentato da i) nell'array generato da Array.from.
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Non più necessario, utilizziamo i giorni del mese precedente per riempire gli spazi vuoti all'inizio della griglia
+    // return [...blanks, ...currentMonthDays]; 
+
+    // Restituzione dell'array completo dei giorni 
+    // L'array completo dei giorni include i giorni del mese precedente, del mese corrente e del mese successivo per riempire la griglia del calendario
+    return [...previousMonthDays, ...currentMonthDays, ...nextMonthDays];
+
+    // Li scrivo con il metodo spread operator (...) per unire i tre array in un unico array completo dei giorni
+    // Qual'è la differenza tra usare o meno lo spread operator?
+    // Senza lo spread operator, otterrei un array di array, mentre con lo spread operator ottieni un array piatto contenente tutti i giorni.
+
+    });
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Se analizziamo il metodo daysInMonth in passaggi:
+    // 1. Calcoliamo il numero totale di giorni nel mese corrente.
+    // 2. Determiniamo l'indice del primo giorno del mese corrente.
+    // 3. Adattiamo l'indice per considerare il lunedì come primo giorno della settimana.
+    // 4. Calcoliamo l'ultimo giorno del mese precedente.
+    // 5. Creiamo un array dei giorni del mese precedente.
+    // 6. Creiamo un array dei giorni del mese corrente.
+    // 7. Combiniamo i giorni del mese precedente e del mese corrente.
+    // 8. Calcoliamo il numero di celle rimanenti nella griglia del calendario.
+    // 9. Creiamo un array dei giorni del mese successivo.
+    // 10. Restituiamo l'array completo dei giorni per la visualizzazione nel calendario.
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //// FINE SPIEGAZIONE METODO daysInMonth
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    // METODO PER VERIFICARE SE UN GIORNO È SELEZIONATO
+    // Restituisce true se la data passata corrisponde alla data selezionata, altrimenti false
+  isDaySelected(date: Date): boolean {
+    if (!this.value) {  // Se non c'è un valore selezionato, il giorno non può essere selezionato
+      return false;  // Se non metto questo controllo, il metodo potrebbe generare un errore quando this.value è null o undefined
+    }
+
+    const selected = new Date(this.value);  // Converto il valore selezionato in un oggetto Date per confrontarlo con la data passata
+
+    return (  // Restituisce true se il giorno, il mese e l'anno corrispondono alla data selezionata
+      selected.getDate() === date.getDate()  // Confronto il giorno del mese
+      && selected.getMonth() === date.getMonth()  // Confronto il mese
+      && selected.getFullYear() === date.getFullYear()  // Confronto l'anno
+    );
+    // Perché verificare se un giorno è selezionato?
+    // Serve per evidenziare nel calendario il giorno che corrisponde alla data selezionata dall'utente. 
+    // Inoltre, permette di gestire correttamente la selezione e la visualizzazione della data nel componente del calendario.
+    // Senza questa verifica, il calendario non saprebbe quale giorno evidenziare come selezionato.
+  }
+
+
+  // METODO PER VERIFICARE SE UN GIORNO APPARTIENE AL MESE CORRENTE
+  // Questo helper verifica se un determinato giorno appartiene al mese corrente visualizzato nel calendario
+  isCurrentMonth(date: Date): boolean {
+    return (  
+      date.getMonth() === this.viewDate().getMonth() &&  // Verifica se il mese del giorno corrisponde al mese corrente visualizzato
+      date.getFullYear() === this.viewDate().getFullYear()  // Verifica se l'anno del giorno corrisponde all'anno corrente visualizzato
+    );
+  }
+  // Un helper è un metodo di supporto utilizzato all'interno della classe per semplificare determinate operazioni o calcoli.
+  // Il vantaggio degli helper è che rendono il codice più leggibile e riutilizzabile, evitando duplicazioni e semplificando la manutenzione.
+  
+
+
+  // METODO PER VERIFICARE SE è DOMENICA
+  // Restituisce true se il giorno è una domenica, altrimenti false
+  isSunday(date: Date): boolean {
+    return date.getDay() === 0;  // In JavaScript, 0 rappresenta la domenica, quindi questo metodo restituisce true se il giorno è domenica
+  }
+
+
+  // VARIABILE DI STATO PER SIMULARE IL TOUCHED DEL FORM CONTROL
+  isTouched = false;  
+
+
+  // METODO PER ATTIVARE LO STATO TOUCHED
+  setTouched(){
+
+    if (!this.isTouched) {  // Se il campo non è ancora stato toccato, impostalo come toccato
+      this.isTouched = true;
+    }
+  
+    if (this.value) {  // Se c'è un valore selezionato, impostalo come non toccato
+      this.isTouched = false;
+    }
+
+  }
+}
 ```

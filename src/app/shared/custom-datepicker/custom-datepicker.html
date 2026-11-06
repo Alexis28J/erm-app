@@ -1,7 +1,9 @@
 <div class="datepicker-container">
 
+    <!-- tabindex="0" rende il div focalizzabile. (blur) rileva l'uscita -->
     <div class="datepicker-field" (click)="toggleCalendar($event)" tabindex="0" aria-label="Select a date. Required"
-        (keydown.enter)="toggleCalendar($event)" [class.active-border]="isClicked" (click)="activateBorder($event)">
+        (keydown.enter)="toggleCalendar($event)" [class.active-border]="isClicked" (click)="activateBorder($event)"
+        (blur)="setTouched()" [class.touched]="isTouched">
         <span class="datepicker-value">
             {{formattedDate() || 'Date*'}}
         </span>
@@ -52,7 +54,8 @@
                 @for (day of daysInMonth(); track $index) {
                 @if (day) {
                 <button type="button" class="day-button" (click)="selectDate(day, $event)"
-                    [class.day-selected]="isDaySelected(day)">
+                    [class.day-selected]="isDaySelected(day)" [class.other-month]="!isCurrentMonth(day)"
+                    [class.sunday]="isSunday(day)">
                     {{day.getDate()}}
                 </button>
                 } @else {
@@ -72,4 +75,4 @@
 
 
 
-<!-- VS Code Counter: code lines (04/11/2026) -->
+<!-- VS Code Counter: 53 code lines (06/11/2026) -->

@@ -86,6 +86,8 @@ export class CustomDatepicker implements ControlValueAccessor {
 
     this.toggleCalendar(event);
 
+    this.isTouched = false;  
+
   }
 
 
@@ -97,7 +99,7 @@ export class CustomDatepicker implements ControlValueAccessor {
     }
 
     const date = new Date(this.value);
-    return date.toLocaleDateString();  
+    return date.toLocaleDateString();
 
   }
 
@@ -107,7 +109,7 @@ export class CustomDatepicker implements ControlValueAccessor {
 
 
   // PROPRIETÀ PER TRACCIARE LO STATO DEL BORDO ATTIVO DEL DIV
-  isClicked: boolean = false;   
+  isClicked: boolean = false;
 
 
   // METODO PER TOGGLE DEL CALENDARIO
@@ -115,31 +117,31 @@ export class CustomDatepicker implements ControlValueAccessor {
 
     event.stopPropagation();
     this.isOpen = !this.isOpen;
-    
-    if(!this.isOpen){
-      this.isClicked = false; 
+
+    if (!this.isOpen) {
+      this.isClicked = false;
     }
 
   }
 
 
   // LISTENER PER I CLICK SUL DOCUMENTO, PER CHIUDERE IL CALENDARIO SE SI CLICCA FUORI
-  @HostListener('document:click', ['$event'])  
+  @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
 
-    const clickedInside = this.elementRef.nativeElement.contains(event.target);  
+    const clickedInside = this.elementRef.nativeElement.contains(event.target);
 
     if (!clickedInside && this.isOpen) {
-      this.isOpen = false;     
-      this.isClicked = false;   
+      this.isOpen = false;
+      this.isClicked = false;
     }
 
   }
 
 
   // METODO PER ATTIVARE IL BORDO DEL DIV QUANDO VI SI CLICCA DENTRO
-  activateBorder(event: Event): void {  
-    this.isClicked = true;  
+  activateBorder(event: Event): void {
+    this.isClicked = true;
   }
 
 
@@ -162,14 +164,14 @@ export class CustomDatepicker implements ControlValueAccessor {
 
     const previousMonth = new Date(
       current.getFullYear(),
-      current.getMonth() - 1,  
-      1 
+      current.getMonth() - 1,
+      1
     );
 
-    this.viewDate.set(previousMonth);  
-    this.viewDate().getMonth();  
-    this.viewDate().getFullYear();  
-  } 
+    this.viewDate.set(previousMonth);
+    this.viewDate().getMonth();
+    this.viewDate().getFullYear();
+  }
 
 
   // METODO PER ANDARE AL MESE SUCCESSIVO
@@ -179,21 +181,21 @@ export class CustomDatepicker implements ControlValueAccessor {
 
     const nextMonth = new Date(
       current.getFullYear(),
-      current.getMonth() + 1,  
-      1  
+      current.getMonth() + 1,
+      1
     );
 
-    if (  
+    if (
       nextMonth.getFullYear() > this.today.getFullYear() ||
       (nextMonth.getFullYear() === this.today.getFullYear() &&
         nextMonth.getMonth() > this.today.getMonth())
     ) {
-      return;  
+      return;
     }
 
     this.viewDate.set(nextMonth);
-    this.viewDate().getMonth();  
-    this.viewDate().getFullYear(); 
+    this.viewDate().getMonth();
+    this.viewDate().getFullYear();
 
   }
 
@@ -207,7 +209,7 @@ export class CustomDatepicker implements ControlValueAccessor {
 
   // METODO PER OTTENERE IL NOME DEL MESE CORRENTE
   currentMonthName(): string {
-    return this.months[this.viewDate().getMonth()];  
+    return this.months[this.viewDate().getMonth()];
   }
 
 
@@ -217,45 +219,44 @@ export class CustomDatepicker implements ControlValueAccessor {
     // Numero totale di giorni nel mese corrente
     const totalDays = new Date(
       this.viewDate().getFullYear(),
-      this.viewDate().getMonth() + 1,  
-      0  
-    ).getDate();  
+      this.viewDate().getMonth() + 1,
+      0
+    ).getDate();
 
     // L'indice del primo giorno del mese corrente (0 = domenica, 6 = sabato)
     let firstDayIndex = new Date(
       this.viewDate().getFullYear(),
       this.viewDate().getMonth(),
-      1  
-    ).getDay();  
+      1
+    ).getDay();
 
 
     // Adattamento dell'indice del primo giorno del mese corrente (0 = lunedì, 6 = domenica)
-    firstDayIndex = firstDayIndex === 0 ? 6 : firstDayIndex - 1;  
+    firstDayIndex = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
 
 
     // L'ultimo giorno del mese precedente
     const previousMonthLastDay =
-    new Date(
-      this.viewDate().getFullYear(),
-      this.viewDate().getMonth(),
-      0  
-    ).getDate();  
+      new Date(
+        this.viewDate().getFullYear(),
+        this.viewDate().getMonth(),
+        0
+      ).getDate();
 
-    
-    // Genera un array di Date per i giorni del mese precedente da mostrare all'inizio della griglia del calendario
-    const previousMonthDays = Array.from(  // Array.from genera un array 
-      {length: firstDayIndex},  // di lunghezza firstDayIndex, cioè il numero di giorni del mese precedente da mostrare all'inizio della griglia del calendario
-      (_, i) => // _ rappresenta l'indice corrente nell'array generato, cioè la posizione del giorno del mese precedente da mostrare all'inizio (prima riga) della griglia del calendario
-      // i rappresenta l'indice corrente nell'array generato, cioè il numero progressivo del giorno del mese precedente da mostrare all'inizio della griglia del calendario
+
+    // Giorni del mese precedente
+    const previousMonthDays = Array.from(
+      { length: firstDayIndex },
+      (_, i) =>
         new Date(
-          this.viewDate().getFullYear(),  // L'anno del giorno del mese precedente da mostrare all'inizio della griglia del calendario
-          this.viewDate().getMonth() - 1,  // Il mese del giorno del mese precedente da mostrare all'inizio della griglia del calendario
-          previousMonthLastDay - firstDayIndex + i + 1  // Il giorno del mese precedente da mostrare all'inizio della griglia del calendario
+          this.viewDate().getFullYear(),
+          this.viewDate().getMonth() - 1,
+          previousMonthLastDay - firstDayIndex + i + 1
         )
     );
 
 
-    // Genera un array di Date per i giorni del mese corrente
+    // Giorni del mese corrente
     const currentMonthDays = Array.from(
       { length: totalDays },
       (_, i) => new Date(
@@ -266,15 +267,15 @@ export class CustomDatepicker implements ControlValueAccessor {
     );
 
 
-    // Combina i giorni del mese precedente e del mese corrente
+    // Somma dei giorni del mese precedente e del mese corrente
     const allDays = [...previousMonthDays, ...currentMonthDays];
 
 
-    // Calcola il numero di celle rimanenti per completare la griglia del calendario (6 righe x 7 colonne = 42 celle)
-    const remainingCells = 42 - allDays.length;  // I calendari veri completano la griglia a: 42 celle cioè 6 righe x 7 colonne
+    // Numero di celle disponibili nella griglia del calendario (6 righe x 7 colonne = 42 celle)
+    const remainingCells = 42 - allDays.length;
 
 
-    // Genera un array di Date per i giorni del mese successivo da mostrare alla fine della griglia del calendario
+    // Giorni del mese successivo
     const nextMonthDays = Array.from(
       { length: remainingCells },
       (_, i) => new Date(
@@ -285,14 +286,14 @@ export class CustomDatepicker implements ControlValueAccessor {
     );
 
 
-    // return [...blanks, ...currentMonthDays]; // Non più necessario, utilizziamo i giorni del mese precedente per riempire gli spazi vuoti all'inizio della griglia
+    // Restituzione dell'array completo dei giorni 
     return [...previousMonthDays, ...currentMonthDays, ...nextMonthDays];
   });
 
 
   // METODO PER VERIFICARE SE UN GIORNO È SELEZIONATO
   isDaySelected(date: Date): boolean {
-    if (!this.value) {
+    if (!this.value) {  
       return false;
     }
 
@@ -303,10 +304,44 @@ export class CustomDatepicker implements ControlValueAccessor {
       && selected.getMonth() === date.getMonth()
       && selected.getFullYear() === date.getFullYear()
     );
+
+  }
+
+
+  // METODO PER VERIFICARE SE UN GIORNO APPARTIENE AL MESE CORRENTE
+  isCurrentMonth(date: Date): boolean {
+    return (
+      date.getMonth() === this.viewDate().getMonth() &&
+      date.getFullYear() === this.viewDate().getFullYear()
+    );
+  }
+
+
+  // METODO PER VERIFICARE SE è DOMENICA
+  isSunday(date: Date): boolean {
+    return date.getDay() === 0;
+  }
+
+
+  // VARIABILE DI STATO PER SIMULARE IL TOUCHED DEL FORM CONTROL
+  isTouched = false;  
+
+
+  // METODO PER ATTIVARE LO STATO TOUCHED
+  setTouched(){
+
+    if (!this.isTouched) {  
+      this.isTouched = true;
+    }
+    
+    if (this.value) {
+      this.isTouched = false;
+    }
+    
   }
 
 }
 
 
 
-// VS Code Counter: code lines (/11/2026)
+// VS Code Counter: 193 code lines (06/11/2026)
