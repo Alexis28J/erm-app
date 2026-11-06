@@ -18,14 +18,22 @@
   // Per fare un'animazione quando lo stato della card cambia (ad esempio al passaggio del mouse o al clic)
   transition: all 0.3s ease !important;
 
+  position: relative !important;  // Necessario per gestire lo z-index delle card al passaggio del mouse
+  z-index: 1; // Imposta uno z-index di base per le card
+
   // Quindi, ora possiamo definire lo stile al passaggio del mouse
   &:hover {
+
     // & è un selettore che si riferisce all'elemento corrente, in questo caso .mat-mdc-card
     border-color: rgba(60, 98, 250, 0.6) !important;
+
     box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.4), // Ombra principale per profondità
       0 0 7px 0 rgba(56, 189, 248, 0.08) !important; // Ombra secondaria per effetto glow
     /* Solleva leggermente la card */
+    
     transform: translateY(-0.5px);
+    z-index: 10; // Alza l'intera card sopra le altre quando è attiva ma sotto eventuali overlay superiori
+
   }
 
 }

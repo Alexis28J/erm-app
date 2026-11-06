@@ -159,7 +159,6 @@ export class CustomDatepicker implements ControlValueAccessor {
 
   // METODO PER ANDARE AL MESE PRECEDENTE
   goToPreviousMonth(): void {
-
     const current = this.viewDate();
 
     const previousMonth = new Date(
@@ -304,7 +303,6 @@ export class CustomDatepicker implements ControlValueAccessor {
       && selected.getMonth() === date.getMonth()
       && selected.getFullYear() === date.getFullYear()
     );
-
   }
 
 

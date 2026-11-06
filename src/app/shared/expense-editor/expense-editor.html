@@ -1,5 +1,5 @@
 <!---------------------------------------- SEZIONE DELLE SPESE ---------------------------------------->
-<mat-card #focusCard tabindex="-1" role="section">
+<mat-card #focusCard tabindex="-1" role="section" class="expense-card">
 
     <div [formGroup]="form()">
 
@@ -35,16 +35,7 @@
 
                     <div [formGroupName]="$index" class="expenses-input">
 
-                        <!-- Data della spesa -->
-                        <!-- <mat-form-field appearance="outline">
-
-                            <mat-label>Date</mat-label>
-
-                            <input matInput type="date" formControlName="date"
-                                aria-label="Select the date of the expense (Required)">
-
-                        </mat-form-field> -->
-
+                        <!-- Sezione per la selezione della data della spesa -->
                         <div class="date-picker">
                             <app-custom-datepicker formControlName="date"
                                 aria-label="Select the date of the expense (Required)">
@@ -166,4 +157,4 @@
 
 
 
-<!-- VS Code Counter: 95 code lines (05/11/2026) -->
+<!-- VS Code Counter: 95 code lines (06/11/2026) -->

@@ -494,11 +494,14 @@ export class CustomDatepicker implements ControlValueAccessor {
   // Restituisce true se il giorno è una domenica, altrimenti false
   isSunday(date: Date): boolean {
     return date.getDay() === 0;  // In JavaScript, 0 rappresenta la domenica, quindi questo metodo restituisce true se il giorno è domenica
-  }
+  } 
+  // Il metodo getDay() di JavaScript serve a restituire il giorno della settimana corrispondente a una determinata data, espresso come un numero intero compreso tra 0 e 6.
+
 
 
   // VARIABILE DI STATO PER SIMULARE IL TOUCHED DEL FORM CONTROL
   isTouched = false;  
+
 
 
   // METODO PER ATTIVARE LO STATO TOUCHED

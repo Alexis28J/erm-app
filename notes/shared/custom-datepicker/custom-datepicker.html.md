@@ -1,0 +1,78 @@
+# COMMENTI
+
+```HTML
+<div class="datepicker-container">
+
+    <!-- tabindex="0" rende il div focalizzabile. (blur) rileva l'uscita -->
+    <div class="datepicker-field" (click)="toggleCalendar($event)" tabindex="0" aria-label="Select a date. Required"
+        (keydown.enter)="toggleCalendar($event)" [class.active-border]="isClicked" (click)="activateBorder($event)"
+        (blur)="setTouched()" [class.touched]="isTouched">
+        <span class="datepicker-value">
+            {{formattedDate() || 'Date*'}}
+        </span>
+
+        <mat-icon>
+            <!-- calendar_month -->
+            arrow_drop_down
+        </mat-icon>
+    </div>
+
+    @if (isOpen) {
+
+    <div class="calendar-popup" (clickOutside)="toggleCalendar($event)">
+
+        <!-- HEADER DEL CALENDARIO -->
+        <div class="calendar-header">
+
+            <button type="button" (click)="goToPreviousMonth()" aria-label="Go to previous month">
+                ◄
+            </button>
+
+            <span>
+                {{currentMonthName()}}
+                {{viewDate().getFullYear()}}
+            </span>
+
+            <button type="button" (click)="goToNextMonth()" [disabled]="isNextMonthDisabled()"
+                aria-label="Go to next month">
+                ►
+            </button>
+
+        </div>
+
+        <!-- GRIGLIA DEL CALENDARIO -->
+        <div class="calendar-container">
+            <div class="calendar-weekdays">
+                <span>Mo</span>
+                <span>Tu</span>
+                <span>We</span>
+                <span>Th</span>
+                <span>Fr</span>
+                <span>Sa</span>
+                <span style="color: red;">Su</span>
+            </div>
+
+            <div class="calendar-grid">
+
+                @for (day of daysInMonth(); track $index) {
+                @if (day) {
+                <button type="button" class="day-button" (click)="selectDate(day, $event)"
+                    [class.day-selected]="isDaySelected(day)" [class.other-month]="!isCurrentMonth(day)"
+                    [class.sunday]="isSunday(day)">
+                    {{day.getDate()}}
+                </button>
+                } @else {
+                <div class="empty-day"></div>
+                }
+
+                }
+
+            </div>
+        </div> <!-- chiusura calendar-container -->
+
+    </div>
+
+    }
+
+</div>
+```

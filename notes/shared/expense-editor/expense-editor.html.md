@@ -2,7 +2,7 @@
 
 ```HTML
 <!---------------------------------------- SEZIONE DELLE SPESE ---------------------------------------->
-<mat-card #focusCard tabindex="-1" role="section">
+<mat-card #focusCard tabindex="-1" role="section" class="expense-card">
         <!-- #focusCard è il riferimento al titolo della card, usato per il focus -->
         <!-- Il focus può essere impostato su questo elemento quando si salta al contenuto principale. In questo caso, il focus sarà sul titolo della card -->
         <!-- tabindex="-1" permette di rendere l'elemento focusabile tramite script (ad esempio con element.focus()) ma non tramite tabulazione (tasto Tab) -->
@@ -42,13 +42,20 @@
                     <div [formGroupName]="$index" class="expenses-input">
 
                         <!-- Data della spesa -->
-                        <mat-form-field appearance="outline">
+                        <!-- <mat-form-field appearance="outline">
 
                             <mat-label>Date</mat-label>
 
                             <input matInput type="date" formControlName="date">
 
-                        </mat-form-field>
+                        </mat-form-field> -->
+
+                        <!-- Sezione per la selezione della data della spesa -->
+                        <div class="date-picker">
+                            <app-custom-datepicker formControlName="date"
+                                aria-label="Select the date of the expense (Required)">
+                            </app-custom-datepicker>
+                        </div>
 
                         <!-- Categoria della spesa -->
                         <mat-form-field appearance="outline">
@@ -158,4 +165,14 @@
         </div>
     </div>
 </mat-card>
+```
+
+
+
+```SCSS
+// CARD DELLE SPESE
+.expense-card {
+    position: relative;  // Necessario per gestire lo z-index della card delle spese rispetto ad altri elementi
+    z-index: 20;   // Mi permette di sovrapporre la card delle spese ad altri elementi con z-index inferiore
+}
 ```

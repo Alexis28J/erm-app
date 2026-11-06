@@ -1,6 +1,5 @@
 <div class="datepicker-container">
 
-    <!-- tabindex="0" rende il div focalizzabile. (blur) rileva l'uscita -->
     <div class="datepicker-field" (click)="toggleCalendar($event)" tabindex="0" aria-label="Select a date. Required"
         (keydown.enter)="toggleCalendar($event)" [class.active-border]="isClicked" (click)="activateBorder($event)"
         (blur)="setTouched()" [class.touched]="isTouched">
@@ -9,7 +8,6 @@
         </span>
 
         <mat-icon>
-            <!-- calendar_month -->
             arrow_drop_down
         </mat-icon>
     </div>
@@ -38,7 +36,7 @@
         </div>
 
         <!-- GRIGLIA DEL CALENDARIO -->
-        <div class="calendar-container">
+        <div class="calendar-content">
             <div class="calendar-weekdays">
                 <span>Mo</span>
                 <span>Tu</span>
@@ -65,7 +63,7 @@
                 }
 
             </div>
-        </div> <!-- chiusura calendar-container -->
+        </div>
 
     </div>
 

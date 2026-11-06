@@ -1,3 +1,10 @@
+// CARD DELLE SPESE
+.expense-card {
+    position: relative;
+    z-index: 20;
+}
+
+
 // TITOLO DELLE CARDS 
 mat-card-title {
     font-size: 1.8rem;
@@ -99,7 +106,8 @@ mat-form-field {
 .remove-btn {
     top: 1.3rem;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
         background-color: rgba(255, 0, 0, 0.1);
         color: red;
         transform: scale(1.2);
@@ -107,10 +115,11 @@ mat-form-field {
 }
 
 
+// CONTENITORE DEL DATE PICKER (SELETTORE DATE)
 .date-picker {
     align-self: center;
 }
 
 
 
-// VS Code Counter: 72 code lines (05/11/2026)
+// VS Code Counter: 77 code lines (06/11/2026)
