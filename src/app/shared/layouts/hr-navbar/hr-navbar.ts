@@ -12,11 +12,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { LanguageService } from '../../../core/services/language.service';
+import { TranslatePipe } from '../../pipes/translate-pipe';
 
 @Component({
   imports: [MatToolbarModule, MatAnchor, MatButtonModule,
     RouterLink, MatCardModule, MatIconModule,
-    MatMenuModule, MatTooltipModule],
+    MatMenuModule, MatTooltipModule, TranslatePipe],
   selector: 'app-hr-navbar',
   styleUrls: ['./hr-navbar.scss'],
   templateUrl: './hr-navbar.html',
@@ -28,6 +30,7 @@ export class HrNavbar {
   private router = inject(Router);
   private notificationService = inject(Notification);
   private dialog = inject(MatDialog);
+  protected languageService = inject(LanguageService);
 
 
   // VARIABILE CHE CONTIENE L'UTENTE CORRENTE (OTTENUTO DAL SERVIZIO DI AUTENTICAZIONE) 
@@ -69,4 +72,4 @@ export class HrNavbar {
 /////////////////////////////////////////////////////////////////////
 
 
-// VS Code Counter: 46 code lines (08/10/2026)
+// VS Code Counter:  code lines (/11/2026)

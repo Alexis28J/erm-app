@@ -18,7 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class CustomDatepicker implements ControlValueAccessor {
 
-  constructor(private elementRef: ElementRef) { }  // Inietto ElementRef per poter controllare i confini del componente
+  constructor(private elementRef: ElementRef) { }
 
   // VALORE INTERNO DEL DATEPICKER
   value = '';
@@ -86,7 +86,7 @@ export class CustomDatepicker implements ControlValueAccessor {
 
     this.toggleCalendar(event);
 
-    this.isTouched = false;  
+    this.isTouched = false;
 
   }
 
@@ -222,6 +222,7 @@ export class CustomDatepicker implements ControlValueAccessor {
       0
     ).getDate();
 
+
     // L'indice del primo giorno del mese corrente (0 = domenica, 6 = sabato)
     let firstDayIndex = new Date(
       this.viewDate().getFullYear(),
@@ -292,7 +293,7 @@ export class CustomDatepicker implements ControlValueAccessor {
 
   // METODO PER VERIFICARE SE UN GIORNO È SELEZIONATO
   isDaySelected(date: Date): boolean {
-    if (!this.value) {  
+    if (!this.value) {
       return false;
     }
 
@@ -322,20 +323,20 @@ export class CustomDatepicker implements ControlValueAccessor {
 
 
   // VARIABILE DI STATO PER SIMULARE IL TOUCHED DEL FORM CONTROL
-  isTouched = false;  
+  isTouched = false;
 
 
   // METODO PER ATTIVARE LO STATO TOUCHED
-  setTouched(){
+  setTouched() {
 
-    if (!this.isTouched) {  
+    if (!this.isTouched) {
       this.isTouched = true;
     }
-    
+
     if (this.value) {
       this.isTouched = false;
     }
-    
+
   }
 
 }

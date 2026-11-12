@@ -30,9 +30,13 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class CustomDatepicker implements ControlValueAccessor {
+
+  constructor(private elementRef: ElementRef) { }  // Inietto ElementRef per poter controllare i confini del componente, cioè per sapere se un click è avvenuto dentro o fuori il componente
+
   
   // VALORE INTERNO DEL DATEPICKER
   value = '';
+
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
   /// METODI DI CONTROL VALUE ACCESSOR CHE SERVONO PER INTEGRARE IL MIO DATEPICKER CON ANGULAR FORMS
@@ -153,7 +157,8 @@ export class CustomDatepicker implements ControlValueAccessor {
   // METODO PER TOGGLE DEL CALENDARIO
   toggleCalendar(): void {  // Metodo per aprire o chiudere il calendario del datepicker.
 
-    event.stopPropagation();  // Evita che il click di apertura attivi subito il listener di chiusura (document:click)
+    event.stopPropagation();  // Evita che il click di apertura attivi subito il listener di chiusura (document:click) 
+    // Impedisce la propagazione del click per evitare che il calendario si chiuda immediatamente quando si clicca sul div del datepicker
     this.isOpen = !this.isOpen;  // Inverte lo stato di apertura del calendario.
 
     if(!this.isOpen){
@@ -327,6 +332,7 @@ export class CustomDatepicker implements ControlValueAccessor {
     // Adattamento dell'indice del primo giorno del mese corrente (0 = lunedì, 6 = domenica)
     firstDayIndex = firstDayIndex === 0 ? 6 : firstDayIndex - 1;  // Sposta l'indice in modo che 0 = lunedì, 6 = domenica
     // Adatta l'indice del primo giorno del mese corrente per iniziare da lunedì (0 = lunedì, 6 = domenica)
+    // 0 ? 6 indica che se il primo giorno è domenica (0), lo sposto alla fine (6), altrimenti decremento di 1 per avere lunedì come primo giorno della settimana
 
 
     // Non più necessario, utilizziamo i giorni del mese precedente per riempire gli spazi vuoti all'inizio della griglia

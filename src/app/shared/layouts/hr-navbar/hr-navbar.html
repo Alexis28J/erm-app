@@ -11,7 +11,15 @@
     <span class="spacer"></span>
 
 
-    <!-- Informazioni dell'utente corrente -->
+    <!-- PULSANTE PER CAMBIARE LA LINGUA CORRENTE -->
+    <button mat-icon-button (click)="languageService.toggleLanguage()">
+        {{languageService.language() === 'it' ? '🇬🇧' : '🇮🇹'}}
+        <!-- Se la lingua corrente è italiana, mostra la bandiera inglese, altrimenti mostra quella italiana -->
+        <!-- GB indica la lingua inglese, IT indica la lingua italiana -->
+    </button>
+
+
+    <!-- INFORMAZIONI DELL'UTENTE CORRENTE -->
     <div class="user-info">
         <mat-card-title>
             {{currentUser?.name}}
@@ -63,7 +71,8 @@
     <button mat-button (click)="logout()" matTooltip="Logout" matTooltipPosition="left" class="exit-btn"
         aria-label="Logout (Close session)">
         <mat-icon>logout</mat-icon>
-        Exit
+        <!-- Exit -->
+         {{ 'hr.navbar.exit' | translate }}
     </button>
 
 
@@ -71,4 +80,4 @@
 
 
 
-<!-- VS Code Counter: 44 code lines (16/10/2026) -->
+<!-- VS Code Counter:  code lines (/11/2026) -->

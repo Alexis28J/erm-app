@@ -12,10 +12,12 @@ import { ConfirmAction } from '../../../shared/dialogs/confirm-action/confirm-ac
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
+import { LanguageService } from '../../../core/services/language.service';
+import { TranslatePipe } from '../../pipes/translate-pipe';
 
 @Component({
   imports: [MatToolbarModule, MatButtonModule, MatTooltipModule,
-    MatIconModule, MatCardModule, MatMenuModule, RouterLink],
+    MatIconModule, MatCardModule, MatMenuModule, RouterLink, TranslatePipe],
   selector: 'app-employee-navbar',
   styleUrls: ['./employee-navbar.scss'],
   templateUrl: './employee-navbar.html',
@@ -27,6 +29,7 @@ export class EmployeeNavbar {
   private router = inject(Router);
   private dialog = inject(MatDialog);
   private notificationService = inject(Notification);
+  protected languageService = inject(LanguageService);
 
 
   // UTENTE CORRENTE: VARIABILE CHE CONTIENE LE INFORMAZIONI DELL'UTENTE LOGGATO
@@ -56,6 +59,7 @@ export class EmployeeNavbar {
     });
 
   }
+
 }
 
 
@@ -68,4 +72,4 @@ export class EmployeeNavbar {
 //////////////////////////////////////////////////////////////////////////
 
 
-// VS Code Counter: 45 code lines (08/10/2026)
+// VS Code Counter:  code lines (/11/2026)

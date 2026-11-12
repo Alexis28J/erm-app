@@ -5,11 +5,12 @@ import { User } from '../../../core/interfaces/user';
 import { MatAnchor } from "@angular/material/button";
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardSubtitle } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
+import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 
 @Component({
   imports: [MatAnchor, MatCard, MatCardHeader,
     MatCardTitle, MatCardContent, RouterLink,
-    MatIconModule, MatCardSubtitle],
+    MatIconModule, MatCardSubtitle, TranslatePipe],
   selector: 'app-employee-dashboard',
   styleUrls: ['./employee-dashboard.scss'],
   templateUrl: './employee-dashboard.html',
@@ -27,4 +28,4 @@ export class EmployeeDashboard {
 
 
 
-// VS Code counter: 19 code lines (19/10/2026)
+// VS Code counter:  code lines (/11/2026)
