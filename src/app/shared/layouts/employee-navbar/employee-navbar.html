@@ -11,12 +11,11 @@
     <span class="spacer"></span>
 
 
-
     <!-- PULSANTE PER CAMBIARE LA LINGUA CORRENTE -->
-    <button mat-icon-button (click)="languageService.toggleLanguage()">
+    <button mat-icon-button (click)="languageService.toggleLanguage()" class="flag-btn"
+        matTooltip="Change the language (Italian/English)" matTooltipPosition="left"
+        aria-label="Click to change language. Available options: Italian and English">
         {{languageService.language() === 'it' ? '🇬🇧' : '🇮🇹'}}
-        <!-- Se la lingua corrente è italiana, mostra la bandiera inglese, altrimenti mostra quella italiana -->
-        <!-- GB indica la lingua inglese, IT indica la lingua italiana -->
     </button>
 
 
@@ -48,13 +47,13 @@
 
 
         <button mat-menu-item routerLink="/employee/request-list" aria-label="Navigate to my requests">
-            My Requests
+            {{ 'employee.menu.myRequests' | translate }}
             <mat-icon>list</mat-icon>
         </button>
 
 
         <button mat-menu-item routerLink="/employee/new-request" aria-label="Navigate to new request form">
-            New Request
+            {{ 'employee.menu.newRequest' | translate }}
             <mat-icon>add</mat-icon>
         </button>
 
@@ -69,12 +68,11 @@
     <button mat-button (click)="logout()" matTooltip="Logout" matTooltipPosition="left" class="exit-btn"
         aria-label="Logout (Close session)">
         <mat-icon>logout</mat-icon>
-        <!-- Exit  -->
-         {{ 'employee.navbar.exit' | translate }}
+        {{ 'employee.navbar.exit' | translate }}
     </button>
 
 </mat-toolbar>
 
 
 
-<!-- VS Code Counter:  code lines (/11/2026) -->
+<!-- VS Code Counter: 45 code lines (13/11/2026) -->

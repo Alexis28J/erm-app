@@ -9,7 +9,7 @@ import { translations } from '../i18n/translations';
 export class LanguageService {
 
     // SIGNAL CHE CONTIENE LA LINGUA CORRENTE
-    private readonly _language = signal<Language>(  
+    private readonly _language = signal<Language>(
         (localStorage.getItem('language') as Language) ?? 'it'
     );
 
@@ -43,3 +43,5 @@ export class LanguageService {
 }
 
 
+
+// VS Code Counter: 26 code lines (13/11/2026)

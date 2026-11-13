@@ -1,0 +1,84 @@
+# COMMENTI
+
+```HTML
+<mat-toolbar color="primary">
+
+    <!-- Logo dell'applicazione -->
+    <a routerLink="/employee/dashboard">
+        <img src="https://techjobsfair.it/prod/wp-content/uploads/2022/10/DGS_logo.png" alt="ERM Logo" class="app-logo"
+            matTooltip="BUILDING THE FUTURE" matTooltipPosition="right" aria-label="Link to dashboard">
+    </a>
+
+
+    <!-- Separatore -->
+    <span class="spacer"></span>
+
+
+    <!-- PULSANTE PER CAMBIARE LA LINGUA CORRENTE -->
+    <button mat-icon-button (click)="languageService.toggleLanguage()" class="flag-btn"
+        matTooltip="Change the language (Italian/English)" matTooltipPosition="left"
+        aria-label="Click to change language. Available options: Italian and English">
+        {{languageService.language() === 'it' ? '🇬🇧' : '🇮🇹'}}
+        <!-- Se la lingua corrente è italiana, mostra la bandiera inglese, altrimenti mostra quella italiana -->
+        <!-- GB indica la lingua inglese, IT indica la lingua italiana -->
+    </button>
+
+
+    <!-- INFORMAZIONI DELL'UTENTE CORRENTE -->
+    <div class="user-info">
+        <mat-card-title>
+            {{currentUser?.name}}
+            {{currentUser?.surname}}
+        </mat-card-title>
+
+        <mat-card-subtitle>
+            ({{currentUser?.email}})
+        </mat-card-subtitle>
+    </div>
+
+
+    <!-- MENU A TENDINA PER SPORTARSI -->
+    <button mat-button [matMenuTriggerFor]="userMenu" matTooltip="You can navigate to different sections"
+        matTooltipPosition="right" class="arrow-btn">
+        <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+
+    <mat-menu #userMenu="matMenu">
+
+        <button mat-menu-item routerLink="/employee/dashboard" aria-label="Navigate to dashboard">
+            <!-- Dashboard -->
+            {{ 'employee.menu.dashboard' | translate }}
+            <mat-icon>dashboard</mat-icon>
+        </button>
+
+
+        <button mat-menu-item routerLink="/employee/request-list" aria-label="Navigate to my requests">
+            <!-- My Requests -->
+            {{ 'employee.menu.myRequests' | translate }}
+            <mat-icon>list</mat-icon>
+        </button>
+
+
+        <button mat-menu-item routerLink="/employee/new-request" aria-label="Navigate to new request form">
+            <!-- New Request -->
+            {{ 'employee.menu.newRequest' | translate }}
+            <mat-icon>add</mat-icon>
+        </button>
+
+    </mat-menu>
+
+
+    <!-- Separatore -->
+    <span class="spacer"></span>
+
+
+    <!-- PULSANTE DI LOGOUT -->
+    <button mat-button (click)="logout()" matTooltip="Logout" matTooltipPosition="left" class="exit-btn"
+        aria-label="Logout (Close session)">
+        <mat-icon>logout</mat-icon>
+        <!-- Exit  -->
+        {{ 'employee.navbar.exit' | translate }}
+    </button>
+
+</mat-toolbar>
+```

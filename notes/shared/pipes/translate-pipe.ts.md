@@ -14,14 +14,24 @@ export class TranslatePipe implements PipeTransform {
 
   private readonly languageService = inject(LanguageService);
 
-  // Il metodo transform prende una chiave come input e restituisce la traduzione corrispondente dal dizionario della lingua corrente.
-  // Se la chiave non è presente nel dizionario, viene restituita la chiave stessa.
+  // Il metodo transform prende una chiave come input e restituisce la traduzione corrispondente dal dizionario della lingua corrente. Se la chiave non è presente nel dizionario, viene restituita la chiave stessa.
   transform(key: string): string {  
-    return (
-      this.languageService.dictionary()[  // Ottieni il valore corrispondente alla chiave nel dizionario della lingua corrente
-      key as keyof ReturnType<typeof this.languageService.dictionary> // Tratta la chiave come una chiave valida del dizionario della lingua corrente
-      ] ?? key  // Se la chiave non è presente nel dizionario, restituisci la chiave stessa
+
+    const dictionary = this.languageService.dictionary();  // Ottieni il dizionario della lingua corrente
+
+    const value = key  // Suddividi la chiave in parti separate da '.' e naviga nel dizionario. Questo mi consente di ottenere il valore corretto anche per chiavi annidate.
+
+    .split('.')  // Ad esempio, 'employee.dashboard.title' diventa ['employee', 'dashboard', 'title']. Posso accedere al valore corretto navigando nel dizionario.
+
+    .reduce<any>(  // reduce<any> mi permette di iterare attraverso le parti della chiave e ottenere il valore corretto nel dizionario.
+
+      (obj, current) => obj?.[current],  // Questa riga indica come accedere al valore corrente nel dizionario durante l'iterazione.
+      
+      dictionary  // Inizia la riduzione partendo dal dizionario e navigando attraverso le chiavi annidate per ottenere il valore corretto.
     );
+
+    return value ?? key;  // Se il valore non esiste nel dizionario, restituisci la chiave stessa come fallback.
+
   }
 
 }

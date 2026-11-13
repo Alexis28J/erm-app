@@ -1,9 +1,6 @@
 // SPAZIATORE FLESSIBILE PER LAYOUT
 .spacer {
-    flex: 1 1 auto; // Permette allo spacer di crescere e ridursi automaticamente
-    // Il primo 1 indica la capacità di crescere
-    // Il secondo 1 indica la capacità di ridursi
-    // auto indica la dimensione base flessibile
+    flex: 1 1 auto;
 }
 
 
@@ -26,21 +23,29 @@ mat-toolbar {
 }
 
 
-// TITOLO DELL'APPLICAZIONE CON FONT PERSONALIZZATO: ZEN DOTS
-h1 {
-    font-family: "Zen Dots", sans-serif !important;
-    font-size: 36px !important;
+// PULSANTE DELLA BANDIERA (FLAG BUTTON)
+.flag-btn {
+    right: 20px;
+    padding-top: 5px;
 
-    &:hover {
-        color: #005cbb;
-        scale: 1.03;
-        transition: transform 0.3s ease-in-out;
+    &:hover,
+    &:focus {
+        background-color: rgb(191, 210, 252);
     }
 }
 
 
+// TITOLO DELL'APPLICAZIONE CON FONT PERSONALIZZATO: ZEN DOTS
+h1 {
+    font-family: "Zen Dots", sans-serif !important;
+    font-size: 36px !important;
+}
+
+
 // PULSANTE "PERSONAL AREA"
-.personal-area:hover {
+.personal-area:hover,
+.flag-btn:hover,
+h1:hover {
     color: #005cbb;
     transform: scale(1.1);
     transition: transform 0.3s ease-in-out;
@@ -61,6 +66,14 @@ mat-card {
 }
 
 
+// HEADER DELLA CARD DI ANGULAR MATERIAL
+mat-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+
 // TITOLO DELLA CARD
 mat-card-title {
     text-align: center;
@@ -74,10 +87,6 @@ mat-card-title {
     min-height: 60px;
     min-width: 60px;
     margin-bottom: 10px;
-
-    position: relative;
-    right: 2rem;
-    bottom: 0.2rem;
 }
 
 
@@ -100,4 +109,4 @@ mat-card-actions {
 
 
 
-// VS Code Counter: 62 code lines (20/10/2026)
+// VS Code Counter: 69 code lines (13/11/2026)

@@ -17,7 +17,8 @@ import { TranslatePipe } from '../../pipes/translate-pipe';
 
 @Component({
   imports: [MatToolbarModule, MatButtonModule, MatTooltipModule,
-    MatIconModule, MatCardModule, MatMenuModule, RouterLink, TranslatePipe],
+    MatIconModule, MatCardModule, MatMenuModule, 
+    RouterLink, TranslatePipe],
   selector: 'app-employee-navbar',
   styleUrls: ['./employee-navbar.scss'],
   templateUrl: './employee-navbar.html',
@@ -66,7 +67,7 @@ export class EmployeeNavbar {
 ///////////////////////////////////////////////////////////////////////////
 
 // COMMENTI:
-// QUESTO COMPONENTE DEFINISCE LA NAVBAR PER LE PAGINE DELL'EMPLOYEE, 
+// QUESTO COMPONENTE DEFINISCE LA NAVBAR PER LE PAGINE DELL'EMPLOYEE,
 // INCLUDENDO LE FUNZIONALITÀ DI LOGOUT E NOTIFICHE.
 
 //////////////////////////////////////////////////////////////////////////

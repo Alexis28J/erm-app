@@ -29,13 +29,11 @@ mat-card-title {
     padding: 8px 0 16px 0;
 }
 
-
-/* Stile del sottotitolo della card */
 mat-card-subtitle {
     font-size: 1.6rem;
     font-weight: lighter;
+    padding-bottom: 16px;
 }
-
 
 
 /* Contenitore dei pulsanti di azione del dashboard */
@@ -47,4 +45,4 @@ mat-card-subtitle {
 
 
 
-// VS Code Counter: 31 code lines (19/10/2026)
+// VS Code Counter: 32 code lines (13/11/2026)

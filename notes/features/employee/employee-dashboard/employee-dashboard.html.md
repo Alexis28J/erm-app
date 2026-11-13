@@ -1,0 +1,68 @@
+# COMMENTI
+
+```HTML
+<div class="dashboard-container">
+
+    <!-- Scheda principale del dashboard -->
+    <mat-card>
+
+        <!-- Titolo dell'area Employee -->
+        <mat-card-title> 
+            <!-- Employee Area -->
+            {{ 'employee.dashboard.title' | translate }}
+            <mat-icon>badge</mat-icon>
+        </mat-card-title>
+
+        <!-- Header della scheda principale -->
+        <mat-card-header>
+            <mat-card-subtitle>
+                <!-- Welcome, dear {{currentUser?.name}} -->
+                {{ 'employee.dashboard.welcome' | translate }} {{currentUser?.name}}
+            </mat-card-subtitle>
+        </mat-card-header>
+
+
+        <!-- Contenuto della scheda principale -->
+        <mat-card-content>
+            <!-- <p>
+                Here you can manage your expense reimbursement requests. <br>
+                <br>
+                Click the "New Request" button if you wish to make a new refund request, <br>
+                or the "Request List" button to view all previous requests. <br>
+                <br>
+                Furthermore, if you prefer, you can navigate through the different sections <br>
+                using the menu above (▾). <br>
+                <br>
+                Thank you for using our system and have a productive day!
+            </p> -->
+
+            <p>{{ 'employee.dashboard.text1' | translate }}</p>
+            <p>{{ 'employee.dashboard.text2' | translate }}</p>
+            <p>{{ 'employee.dashboard.text3' | translate }}</p>
+            <p>{{ 'employee.dashboard.text4' | translate }}</p>
+                
+        </mat-card-content>
+
+    </mat-card>
+
+
+    <!-- CONTENITORE DEI PULSANTI DI AZIONE DEL DASHBOARD -->
+    <div class="actions-container">
+
+        <button mat-raised-button color="primary" routerLink="/employee/new-request" aria-label="Create a new request">
+            <!-- New Request -->
+            {{ 'employee.dashboard.newRequest' | translate }}
+            <mat-icon>add</mat-icon>
+        </button>
+
+        <button mat-raised-button color="primary" routerLink="/employee/request-list" aria-label="View my requests">
+            <!-- My Requests -->
+            {{ 'employee.dashboard.myRequests' | translate }}
+            <mat-icon>list</mat-icon>
+        </button>
+
+    </div>
+
+
+</div>
+```

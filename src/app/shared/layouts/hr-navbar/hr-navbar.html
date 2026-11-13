@@ -12,10 +12,10 @@
 
 
     <!-- PULSANTE PER CAMBIARE LA LINGUA CORRENTE -->
-    <button mat-icon-button (click)="languageService.toggleLanguage()">
+    <button mat-icon-button (click)="languageService.toggleLanguage()" class="flag-btn"
+        matTooltip="Change the language (Italian/English)" matTooltipPosition="left"
+        aria-label="Click to change language. Available options: Italian and English">
         {{languageService.language() === 'it' ? '🇬🇧' : '🇮🇹'}}
-        <!-- Se la lingua corrente è italiana, mostra la bandiera inglese, altrimenti mostra quella italiana -->
-        <!-- GB indica la lingua inglese, IT indica la lingua italiana -->
     </button>
 
 
@@ -46,17 +46,17 @@
         </button>
 
         <button mat-menu-item routerLink="/hr/request-list" aria-label="Navigate to request list">
-            Request List
+            {{ 'hr.menu.requestList' | translate }}
             <mat-icon>list</mat-icon>
         </button>
 
         <button mat-menu-item routerLink="/hr/employee-list" aria-label="Navigate to employee list">
-            Employees
+            {{ 'hr.menu.EmployeeList' | translate }}
             <mat-icon>people</mat-icon>
         </button>
 
         <button mat-menu-item routerLink="/hr/settings" aria-label="Access to HR settings">
-            Settings
+            {{ 'hr.menu.settings' | translate }}
             <mat-icon>settings</mat-icon>
         </button>
 
@@ -71,8 +71,7 @@
     <button mat-button (click)="logout()" matTooltip="Logout" matTooltipPosition="left" class="exit-btn"
         aria-label="Logout (Close session)">
         <mat-icon>logout</mat-icon>
-        <!-- Exit -->
-         {{ 'hr.navbar.exit' | translate }}
+        {{ 'hr.navbar.exit' | translate }}
     </button>
 
 
@@ -80,4 +79,4 @@
 
 
 
-<!-- VS Code Counter:  code lines (/11/2026) -->
+<!-- VS Code Counter: 49 code lines (13/11/2026) -->

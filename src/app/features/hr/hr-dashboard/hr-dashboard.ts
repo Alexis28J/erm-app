@@ -6,11 +6,12 @@ import { MatCardModule, MatCardHeader, MatCardTitle, MatCardContent } from "@ang
 import { RouterLink } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 
 @Component({
-  imports: [MatAnchor, MatCardModule,
-    MatCardHeader, MatCardTitle, MatCardContent,
-    RouterLink, MatTooltipModule, MatIconModule],
+  imports: [MatAnchor, MatCardModule, MatCardHeader,
+    MatCardTitle, MatCardContent, RouterLink,
+    MatTooltipModule, MatIconModule, TranslatePipe],
   selector: 'app-hr-dashboard',
   styleUrls: ['./hr-dashboard.scss'],
   templateUrl: './hr-dashboard.html',
@@ -28,4 +29,4 @@ export class HrDashboard {
 
 
 
-// VS Code Counter: 20 code lines (08/10/2026)
+// VS Code Counter: 21 code lines (13/11/2026)

@@ -11,21 +11,25 @@ export class TranslatePipe implements PipeTransform {
   private readonly languageService = inject(LanguageService);
 
   // METODO PER TRADURRE UNA CHIAVE IN BASE AL DIZIONARIO DELLA LINGUA CORRENTE
-  transform(key: string): string {  
+  transform(key: string): string {
 
     const dictionary = this.languageService.dictionary();
 
     const value = key
-    .split('.')
-    .reduce<any>(
-      (obj, current) => obj?.[current],
-      dictionary
-    );
+      .split('.')
+      .reduce<any>(
+        (obj, current) => obj?.[current],
+        dictionary
+      );
 
     return value ?? key;
 
   }
 
 }
+
+
+
+// VS Code Counter: 19 code lines (13/11/2026)
 
 

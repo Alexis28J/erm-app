@@ -1,19 +1,20 @@
 .spacer {
-  flex: 1 1 auto; // Permette allo spacer di crescere e ridursi automaticamente 
-  // Il primo 1 indica la capacità di crescere
-  // Il secondo 1 indica la capacità di ridursi
-  // auto indica la dimensione base flessibile
+  flex: 1 1 auto; 
 }
 
 
 .app-logo {
   height: 120px;
   margin-right: 10px;
+}
 
-  &:hover {
-    // Aggiungo un effetto al passaggio del mouse
-    transform: scale(1.1) !important;
-    transition: transform 0.3s ease-in-out !important;
+
+.flag-btn {
+  right: 20px;  
+
+  &:hover,
+  &:focus {
+    background-color: rgb(191, 210, 252);
   }
 }
 
@@ -42,8 +43,8 @@
 
 .arrow-btn,
 .mat-mdc-icon-button,
-.exit-btn {
-
+.exit-btn,
+.app-logo {
   &:hover,
   &:focus {
     color: #005cbb !important;
@@ -71,4 +72,4 @@
 
 
 
-// VS Code Counter: 51 code lines (19/10/2026)
+// VS Code Counter: 55 code lines (13/11/2026)
