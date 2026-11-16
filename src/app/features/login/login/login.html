@@ -7,14 +7,17 @@
 
             <!-- TITOLO E SOTTOTITOLO DEL LOGIN CARD -->
             <mat-card-title>
-                Login to
+                <!-- Login to -->
+                 {{ 'login.title' | translate }}
             </mat-card-title>
 
             <mat-card-subtitle matTooltip="Service Mark" matTooltipPosition="above">
                 J - E. R. M.℠
             </mat-card-subtitle>
 
-            <span>Application</span>
+            <span>
+                Application
+            </span>
 
         </mat-card-header>
 
@@ -76,7 +79,8 @@
                 <!-- PULSANTE DI LOGIN -->
                 <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid"
                     aria-label="Login (Initiate session)">
-                    Login
+                    <!-- Login -->
+                     {{ 'login.login' | translate }}
                 </button>
 
             </form>
@@ -88,13 +92,15 @@
                 <!-- PULSANTE PER TORNARE ALLA HOME -->
                 <button mat-raised-button routerLink="" aria-label="Back to Home">
                     <mat-icon>home</mat-icon>
-                    Back to Home
+                    <!-- Back to Home -->
+                     {{ 'login.back' | translate }}
                 </button>
 
                 <!-- PULSANTE PER RIPRISTINARE LA PASSWORD -->
                 <button mat-raised-button routerLink="/reset-password" aria-label="Reset Password">
                     <mat-icon>lock_reset</mat-icon>
-                    Reset Password
+                    <!-- Reset Password -->
+                    {{ 'login.resetPassword' | translate }}
                 </button>
 
             </mat-card-actions>

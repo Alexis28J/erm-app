@@ -1,4 +1,5 @@
 import { Component, effect, inject, computed, signal } from '@angular/core';
+import { EditRequestFacade } from '../../../core/services/edit-request.facade';
 import { Notification } from '../../../shared/notification-service/notification';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -7,405 +8,457 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RefundRequestService } from '../../../core/services/refund-request.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { RefundRequest } from '../../../core/interfaces/refund-request';
-import { Expense } from '../../../core/interfaces/expense';
-import { RequestStatus } from '../../../core/interfaces/enum';
+// import { RefundRequestService } from '../../../core/services/refund-request.service';
+// import { toSignal } from '@angular/core/rxjs-interop';
+// import { RefundRequest } from '../../../core/interfaces/refund-request';
+// import { Expense } from '../../../core/interfaces/expense';
+// import { RequestStatus } from '../../../core/interfaces/enum';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { startWith } from 'rxjs';
+// import { startWith } from 'rxjs';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExpenseEditor } from '../../../shared/expense-editor/expense-editor';
-import { AppConfig } from '../../../core/interfaces/app-config';
-import { AuthService } from '../../../core/services/auth.service';
+// import { AppConfig } from '../../../core/interfaces/app-config';
+// import { AuthService } from '../../../core/services/auth.service';
 import { RequestDetailsCard } from '../../../shared/request-details-card/request-details-card';
 
 @Component({
   imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule,
-    MatInputModule, MatButtonModule, MatProgressSpinnerModule, MatSelectModule, MatIconModule, RouterLink,
-    CommonModule, TotalProgressBar, MatTooltipModule, ExpenseEditor, RequestDetailsCard],
+    MatInputModule, MatButtonModule, MatProgressSpinnerModule,
+    MatSelectModule, MatIconModule, RouterLink,
+    CommonModule, TotalProgressBar, MatTooltipModule,
+    ExpenseEditor, RequestDetailsCard],
+  providers: [EditRequestFacade],
   selector: 'app-edit-request',
   styleUrls: ['./edit-request.scss'],
   templateUrl: './edit-request.html',
 })
+
+// I providers servono a rendere disponibili i servizi specificati all'interno del componente. In questo caso, EditRequestFacade viene fornito come provider locale al componente.
+// Qual'è la differenza con imports
+// I moduli specificati in imports servono a rendere disponibili le direttive, i componenti e i servizi forniti dai moduli importati all'interno del template del componente.
+// I providers servono a rendere disponibili i servizi specificati all'interno del componente stesso, indipendentemente dai moduli importati.
+
 export class EditRequest {
 
-  constructor() {
-
-    effect(() => {
-
-      const request = this.request();
-
-      if (!request || this.formInitialized) {
-        return;
-      }
-
-      this.populateForm(request);
-      this.formInitialized = true;
-
-    })
-
-  }
-
-
-  // INIEZIONE DELLE DIPENDENZE 
-  private fb = inject(FormBuilder);
-  private route = inject(ActivatedRoute);
+  facade = inject(EditRequestFacade);
   private router = inject(Router);
-  private refundRequestService = inject(RefundRequestService);
-  private notificationService = inject(Notification);
-  private authService = inject(AuthService);
+  private notification = inject(Notification);
 
-
-  // INIZIALIZZAZIONE DELLE VARIABILI
-
-  // Variabile che indica se il form è stato inizializzato.
-  private formInitialized = false;
-
-
-  // Variabile che contiene l'ID della richiesta corrente.
-  private requestId = this.route.snapshot.paramMap.get('id');
-
-
-  // Variabile che rappresenta il form reattivo per la richiesta di rimborso.
-  requestForm = this.fb.group({
-    referenceMonth: ['', Validators.required],
-    noteEmployee: [''],
-    expenses: this.fb.array([])
-  });
-
-
-  // Variabile che rappresenta il segnale della richiesta di rimborso corrente.
-  request = toSignal(
-    this.refundRequestService.getRequestById(
-      this.requestId ?? ''
-    ),
-    {
-      initialValue: null
-    }
-  );
-
-
-  // GETTER PER L'ARRAY DELLE SPESE DEL FORM
-  get expenses(): FormArray {
-
-    return this.requestForm.get(
-      'expenses'
-    ) as FormArray;
-
-  }
-
-
-  // GETTER PER IL TOTALE DELLE SPESE DEL FORM
-  get totalAmount(): number {
-    return this.expenses.controls.reduce(
-      (total, control) => total + Number(
-        control.get('requestedAmount')
-          ?.value || 0
-      ),
-      0
-    )
-  }
-
-
-  // METODO PRIVATO PER POPOLARE IL FORM CON I DATI DELLA RICHIESTA CORRENTE 
-  // (SI USA QUANDO SI CARICA UNA RICHIESTA ESISTENTE)
-  private populateForm(request: RefundRequest): void {
-
-    this.requestForm.patchValue({
-
-      referenceMonth: request.referenceMonth,
-
-      noteEmployee: request.noteEmployee ?? ''
-
-    });
-
-    this.expenses.clear();
-
-    request.expenses.forEach(expense => {
-
-      this.expenses.push(
-        this.fb.group({
-          date: [expense.date, Validators.required],
-          category: [expense.category, Validators.required],
-          description: [expense.description],
-          requestedAmount: [expense.requestedAmount, Validators.required],
-          attachments: [expense.attachments ?? []]
-        })
-      );
-    });
-
-  }
-
-
-  // METODO PER AGGIUNGERE UNA NUOVA SPESA AL FORM
-  addExpense(): void {
-    this.expenses.push(
-      this.fb.group({
-        date: ['', Validators.required],
-        category: ['', Validators.required],
-        description: [''],
-        requestedAmount: ['', Validators.required],
-        attachments: [[]]
-      })
-    );
-  }
-
-
-  // METODO PER RIMUOVERE UNA SPESA DAL FORM
-  removeExpense(index: number): void {
-    this.expenses.removeAt(index);
-  }
-
-
-  // METODO PER SALVARE LA RICHIESTA COME BOZZA
-  saveDraft(): void {
-
-    const currentRequest = this.request();
-
-    if (!currentRequest) {
-      return;
-    }
-
-
-    // Oggetto che rappresenta la richiesta aggiornata da salvare come bozza.
-    const updatedRequest: RefundRequest = {
-
-      ...currentRequest,
-
-      referenceMonth: this.requestForm.value.referenceMonth ?? '',
-      noteEmployee: this.requestForm.value.noteEmployee ?? '',
-      expenses: (this.requestForm.value.expenses ?? []) as Expense[],
-      totalRequestedAmount: this.totalAmount,
-      status: RequestStatus.DRAFT,
-      lastUpdateDate: new Date().toISOString()
-
-    };
-
-    this.refundRequestService
-      .updateRequest(
-        currentRequest.id!,
-        updatedRequest
-      )
-      .subscribe({
-
-        next: () => {
-
-          this.notificationService.success('Request saved as draft successfully');
-
-          this.router.navigate([
-            'employee/request-list'
-          ]);
-        }
-
-      })
-
-  }
-
-
-  // VARIABILE PER IL MESSAGGIO DI ERRORE DEL FORM
   formError = '';
 
+  saveDraft() {
+    this.facade.saveDraft()
+      .subscribe(() => {
+        this.notification.success(
+          'Request saved as draft successfully'
+        );
 
-  // METODO PER INVIARE LA RICHIESTA
-  submitRequest(): void {
+        this.router.navigate([
+          '/employee/request-list'
+        ]);
+      });
+  }
 
-    const currentUser = this.authService.getCurrentUser();
 
-    // Controllo se l'utente corrente esiste
-    if (!currentUser) {
-      return;
-    }
-
-    // Controllo se il form è valido
-    if (this.requestForm.invalid) {
-      this.requestForm.markAllAsTouched();
-      this.formError = 'Please fill in all required fields';
-      return;
-    }
-
-    // Controllo se ci sono spese aggiunte
-    if (this.requestForm.valid && this.expenses.length === 0) {
-      this.formError = 'Please add at least one expense';
-      return;
-    }
-
-    // Controllo se tutte le spese sono valide
-    if (this.expenses.controls.some(expense => !expense.valid)) {
-      this.formError = 'Please fill in all required fields for each expense';
-      return;
-    }
-
-    const currentRequest = this.request();
-
-    // Controllo se la richiesta corrente esiste
-    if (!currentRequest) {
-      return;
-    }
-
-    const updatedRequest: RefundRequest = {
-
-      ...currentRequest,
-
-      referenceMonth: this.requestForm.value.referenceMonth ?? '',
-      noteEmployee: this.requestForm.value.noteEmployee ?? '',
-      expenses: (this.requestForm.value.expenses ?? []) as Expense[],
-      totalRequestedAmount: this.totalAmount,
-      status: RequestStatus.PENDING,
-      lastUpdateDate: new Date().toISOString()
-
-    };
-
-    this.refundRequestService
-      .updateRequest(
-        currentRequest.id!,
-        updatedRequest
-      )
+  submitRequest() {
+    this.facade.submitRequest()
       .subscribe({
-        next: () => {
 
-          this.notificationService.success('Request submitted successfully');
+        next: () => {
+          this.notification.success(
+            'Request submitted successfully'
+          );
 
           this.router.navigate([
             '/employee/request-list'
           ]);
+        },
+
+        error: error => {
+          this.formError = error.message;
         }
       });
-
   }
 
-
-  // SIGNAL PER TENERE TRACCIA DEI VALORI DELLE SPESE (IMPORTO RICHIESTO, CATEGORIA, ETC.)
-  expensesValue = toSignal(
-    this.expenses.valueChanges.pipe(
-      startWith(this.expenses.getRawValue())
-    ),
-    { initialValue: [] }
-  )
-
-
-  // COMPUTED PER OTTENERE I DATI DI PROGRESSO DELLE SPESE (CATEGORIA E IMPORTO RICHIESTO)
-  expenseProgressData = computed(() => {
-    return this.expensesValue().map((expense: Expense) => ({
-      category: expense.category ?? '',
-      amount: Number(expense.requestedAmount ?? 0)
-    }))
-  })
-
-
-  // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
-  config = signal<AppConfig>(
-    this.route.snapshot.data['config']
-  );
-
-
-  // COMPUTED DELLE CATEGORIE DI SPESA
-  expenseCategories = computed(
-    () => this.config().expenseLimits
-  );
-
-
-  // COMPUTED PER OTTENERE L'IMPORTO MASSIMO CONSENTITO PER LE SPESE (SOMMA DEI MASSIMI PER CATEGORIA O TOTALE MASSIMO CONSENTITO)
-  readonly totalAllowedAmount = computed(() => {
-
-    const request = this.expensesValue();
-
-    if (!request || request.length === 0) {
-      return 0;
-    }
-
-    return request.reduce((total: number, expense: Expense) => {
-
-      const category = this.expenseCategories().find(
-        c => c.name === expense.category
-      );
-
-      return total + (category?.maxAmount ?? 0);
-    }, 0
-    );
-  });
-
-
-  // COMPUTED PER OTTENERE L'IMPORTO TOTALE RICHIESTO PER LE SPESE
-  readonly totalRequestedAmount = computed(() => {
-
-    const request = this.expensesValue();
-
-    if (!request || request.length === 0) {
-      return 0;
-    }
-
-    return request.reduce(
-      (total: number, expense: Expense) => {
-        return total + (expense.requestedAmount ?? 0);
-      }, 0
-    );
-  });
-
-
-  // GESTIONE DEI FILE ALLEGATI PER LE SPESE
-  onFilesSelected(event: Event, expenseIndex: number): void {
-
-    const files = (event.target as HTMLInputElement).files;
-
-    if (!files?.length) {
-      return;
-    }
-
-    Array.from(files).forEach(file => {
-
-      const reader = new FileReader();
-
-      reader.onload = () => {
-
-        const expense = this.expenses.at(expenseIndex);
-
-        const attachments = expense.get('attachments')?.value ?? [];
-
-        attachments.push({
-          fileName: file.name,
-          fileType: file.type,
-          fileContent: reader.result as string
-        });
-
-        expense.patchValue({
-          attachments
-        });
-      };
-
-      reader.readAsDataURL(file);
-    });
-  }
-
-
-  // METODO PER RIMUOVERE UN FILE ALLEGATO (PER OGNI SINGOLA SPESA)
-  removeAttachment(
-    expenseIndex: number,
-    attachmentIndex: number
-  ): void {
-
-    const expense = this.expenses.at(expenseIndex);
-
-    const attachments = [
-      ...expense.value.attachments ?? []
-    ];
-
-    attachments.splice(
-      attachmentIndex,
-      1
-    );
-
-    expense.patchValue({
-      attachments
-    });
-
-  }
 }
+// export class EditRequest {
+
+//   constructor() {
+
+//     effect(() => {
+
+//       const request = this.request();
+
+//       if (!request || this.formInitialized) {
+//         return;
+//       }
+
+//       this.populateForm(request);
+//       this.formInitialized = true;
+
+//     })
+
+//   }
+
+
+//   // INIEZIONE DELLE DIPENDENZE
+//   private fb = inject(FormBuilder);
+//   private route = inject(ActivatedRoute);
+//   private router = inject(Router);
+//   private refundRequestService = inject(RefundRequestService);
+//   private notification = inject(Notification);
+//   private authService = inject(AuthService);
+
+
+//   // INIZIALIZZAZIONE DELLE VARIABILI
+
+//   // Variabile che indica se il form è stato inizializzato.
+//   private formInitialized = false;
+
+
+//   // Variabile che contiene l'ID della richiesta corrente.
+//   private requestId = this.route.snapshot.paramMap.get('id');
+
+
+//   // Variabile che rappresenta il form reattivo per la richiesta di rimborso.
+//   requestForm = this.fb.group({
+//     referenceMonth: ['', Validators.required],
+//     noteEmployee: [''],
+//     expenses: this.fb.array([])
+//   });
+
+
+//   // Variabile che rappresenta il segnale della richiesta di rimborso corrente.
+//   request = toSignal(
+//     this.refundRequestService.getRequestById(
+//       this.requestId ?? ''
+//     ),
+//     {
+//       initialValue: null
+//     }
+//   );
+
+
+//   // GETTER PER L'ARRAY DELLE SPESE DEL FORM
+//   get expenses(): FormArray {
+
+//     return this.requestForm.get(
+//       'expenses'
+//     ) as FormArray;
+
+//   }
+
+
+//   // GETTER PER IL TOTALE DELLE SPESE DEL FORM
+//   get totalAmount(): number {
+//     return this.expenses.controls.reduce(
+//       (total, control) => total + Number(
+//         control.get('requestedAmount')
+//           ?.value || 0
+//       ),
+//       0
+//     )
+//   }
+
+
+//   // METODO PRIVATO PER POPOLARE IL FORM CON I DATI DELLA RICHIESTA CORRENTE
+//   // (SI USA QUANDO SI CARICA UNA RICHIESTA ESISTENTE)
+//   private populateForm(request: RefundRequest): void {
+
+//     this.requestForm.patchValue({
+
+//       referenceMonth: request.referenceMonth,
+
+//       noteEmployee: request.noteEmployee ?? ''
+
+//     });
+
+//     this.expenses.clear();
+
+//     request.expenses.forEach(expense => {
+
+//       this.expenses.push(
+//         this.fb.group({
+//           date: [expense.date, Validators.required],
+//           category: [expense.category, Validators.required],
+//           description: [expense.description],
+//           requestedAmount: [expense.requestedAmount, Validators.required],
+//           attachments: [expense.attachments ?? []]
+//         })
+//       );
+//     });
+
+//   }
+
+
+//   // METODO PER AGGIUNGERE UNA NUOVA SPESA AL FORM
+//   addExpense(): void {
+//     this.expenses.push(
+//       this.fb.group({
+//         date: ['', Validators.required],
+//         category: ['', Validators.required],
+//         description: [''],
+//         requestedAmount: ['', Validators.required],
+//         attachments: [[]]
+//       })
+//     );
+//   }
+
+
+//   // METODO PER RIMUOVERE UNA SPESA DAL FORM
+//   removeExpense(index: number): void {
+//     this.expenses.removeAt(index);
+//   }
+
+
+//   // METODO PER SALVARE LA RICHIESTA COME BOZZA
+//   saveDraft(): void {
+
+//     const currentRequest = this.request();
+
+//     if (!currentRequest) {
+//       return;
+//     }
+
+
+//     // Oggetto che rappresenta la richiesta aggiornata da salvare come bozza.
+//     const updatedRequest: RefundRequest = {
+
+//       ...currentRequest,
+
+//       referenceMonth: this.requestForm.value.referenceMonth ?? '',
+//       noteEmployee: this.requestForm.value.noteEmployee ?? '',
+//       expenses: (this.requestForm.value.expenses ?? []) as Expense[],
+//       totalRequestedAmount: this.totalAmount,
+//       status: RequestStatus.DRAFT,
+//       lastUpdateDate: new Date().toISOString()
+
+//     };
+
+//     this.refundRequestService
+//       .updateRequest(
+//         currentRequest.id!,
+//         updatedRequest
+//       )
+//       .subscribe({
+
+//         next: () => {
+
+//           this.notification.success('Request saved as draft successfully');
+
+//           this.router.navigate([
+//             'employee/request-list'
+//           ]);
+//         }
+
+//       })
+
+//   }
+
+
+//   // VARIABILE PER IL MESSAGGIO DI ERRORE DEL FORM
+//   formError = '';
+
+
+//   // METODO PER INVIARE LA RICHIESTA
+//   submitRequest(): void {
+
+//     const currentUser = this.authService.getCurrentUser();
+
+//     // Controllo se l'utente corrente esiste
+//     if (!currentUser) {
+//       return;
+//     }
+
+//     // Controllo se il form è valido
+//     if (this.requestForm.invalid) {
+//       this.requestForm.markAllAsTouched();
+//       this.formError = 'Please fill in all required fields';
+//       return;
+//     }
+
+//     // Controllo se ci sono spese aggiunte
+//     if (this.requestForm.valid && this.expenses.length === 0) {
+//       this.formError = 'Please add at least one expense';
+//       return;
+//     }
+
+//     // Controllo se tutte le spese sono valide
+//     if (this.expenses.controls.some(expense => !expense.valid)) {
+//       this.formError = 'Please fill in all required fields for each expense';
+//       return;
+//     }
+
+//     const currentRequest = this.request();
+
+//     // Controllo se la richiesta corrente esiste
+//     if (!currentRequest) {
+//       return;
+//     }
+
+//     const updatedRequest: RefundRequest = {
+
+//       ...currentRequest,
+
+//       referenceMonth: this.requestForm.value.referenceMonth ?? '',
+//       noteEmployee: this.requestForm.value.noteEmployee ?? '',
+//       expenses: (this.requestForm.value.expenses ?? []) as Expense[],
+//       totalRequestedAmount: this.totalAmount,
+//       status: RequestStatus.PENDING,
+//       lastUpdateDate: new Date().toISOString()
+
+//     };
+
+//     this.refundRequestService
+//       .updateRequest(
+//         currentRequest.id!,
+//         updatedRequest
+//       )
+//       .subscribe({
+//         next: () => {
+
+//           this.notification.success('Request submitted successfully');
+
+//           this.router.navigate([
+//             '/employee/request-list'
+//           ]);
+//         }
+//       });
+
+//   }
+
+
+//   // SIGNAL PER TENERE TRACCIA DEI VALORI DELLE SPESE (IMPORTO RICHIESTO, CATEGORIA, ETC.)
+//   expensesValue = toSignal(
+//     this.expenses.valueChanges.pipe(
+//       startWith(this.expenses.getRawValue())
+//     ),
+//     { initialValue: [] }
+//   )
+
+
+//   // COMPUTED PER OTTENERE I DATI DI PROGRESSO DELLE SPESE (CATEGORIA E IMPORTO RICHIESTO)
+//   expenseProgressData = computed(() => {
+//     return this.expensesValue().map((expense: Expense) => ({
+//       category: expense.category ?? '',
+//       amount: Number(expense.requestedAmount ?? 0)
+//     }))
+//   })
+
+
+//   // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
+//   config = signal<AppConfig>(
+//     this.route.snapshot.data['config']
+//   );
+
+
+//   // COMPUTED DELLE CATEGORIE DI SPESA
+//   expenseCategories = computed(
+//     () => this.config().expenseLimits
+//   );
+
+
+//   // COMPUTED PER OTTENERE L'IMPORTO MASSIMO CONSENTITO PER LE SPESE (SOMMA DEI MASSIMI PER CATEGORIA O TOTALE MASSIMO CONSENTITO)
+//   readonly totalAllowedAmount = computed(() => {
+
+//     const request = this.expensesValue();
+
+//     if (!request || request.length === 0) {
+//       return 0;
+//     }
+
+//     return request.reduce((total: number, expense: Expense) => {
+
+//       const category = this.expenseCategories().find(
+//         c => c.name === expense.category
+//       );
+
+//       return total + (category?.maxAmount ?? 0);
+//     }, 0
+//     );
+//   });
+
+
+//   // COMPUTED PER OTTENERE L'IMPORTO TOTALE RICHIESTO PER LE SPESE
+//   readonly totalRequestedAmount = computed(() => {
+
+//     const request = this.expensesValue();
+
+//     if (!request || request.length === 0) {
+//       return 0;
+//     }
+
+//     return request.reduce(
+//       (total: number, expense: Expense) => {
+//         return total + (expense.requestedAmount ?? 0);
+//       }, 0
+//     );
+//   });
+
+
+//   // GESTIONE DEI FILE ALLEGATI PER LE SPESE
+//   onFilesSelected(event: Event, expenseIndex: number): void {
+
+//     const files = (event.target as HTMLInputElement).files;
+
+//     if (!files?.length) {
+//       return;
+//     }
+
+//     Array.from(files).forEach(file => {
+
+//       const reader = new FileReader();
+
+//       reader.onload = () => {
+
+//         const expense = this.expenses.at(expenseIndex);
+
+//         const attachments = expense.get('attachments')?.value ?? [];
+
+//         attachments.push({
+//           fileName: file.name,
+//           fileType: file.type,
+//           fileContent: reader.result as string
+//         });
+
+//         expense.patchValue({
+//           attachments
+//         });
+//       };
+
+//       reader.readAsDataURL(file);
+//     });
+//   }
+
+
+//   // METODO PER RIMUOVERE UN FILE ALLEGATO (PER OGNI SINGOLA SPESA)
+//   removeAttachment(
+//     expenseIndex: number,
+//     attachmentIndex: number
+//   ): void {
+
+//     const expense = this.expenses.at(expenseIndex);
+
+//     const attachments = [
+//       ...expense.value.attachments ?? []
+//     ];
+
+//     attachments.splice(
+//       attachmentIndex,
+//       1
+//     );
+
+//     expense.patchValue({
+//       attachments
+//     });
+
+//   }
+// }
 
 
 
-// VS Code Counter: 266 code lines (19/10/2026)
+// VS Code Counter: 62 code lines (16/11/2026)

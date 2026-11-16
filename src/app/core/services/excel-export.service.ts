@@ -66,8 +66,8 @@ export class ExcelExportService {
             }
         }
 
-        //In sintesi, nel punto 2.1 ottengo l'intervallo di celle effettivamente utilizzate 
-        // nel foglio di lavoro e formatto le colonne D e E come numeri con due decimali e simbolo dell'euro
+        //In sintesi, nel punto 2.1 ottengo l'intervallo (range) di celle effettivamente utilizzate. 
+        // Questo mi permette di iterare sulle righe corrette e formattare le colonne D e E come numeri con due decimali e simbolo dell'euro.
 
 
         worksheet['!cols'] = [

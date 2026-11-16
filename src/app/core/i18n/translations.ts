@@ -14,6 +14,13 @@ export const translations = {
                 login: 'Accedi'
             }
         },
+        // LOGIN
+        login: {
+            title: 'Accedi a',
+            login: 'Accedi',
+            back: 'Torna alla Home',
+            resetPassword: 'Nuova password'
+        },
         // EMPLOYEE
         employee: {
             navbar: { exit: 'Esci' },
@@ -66,6 +73,13 @@ export const translations = {
                 text4: 'Thank you for using our system and have a great day!',
                 login: 'Login'
             }
+        },
+        // LOGIN
+        login: {
+            title: 'Login to',
+            login: 'Login',
+            back: 'Back to Home',
+            resetPassword: 'Reset Password'
         },
         // EMPLOYEE
         employee: {

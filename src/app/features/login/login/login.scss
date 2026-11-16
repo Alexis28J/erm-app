@@ -22,26 +22,19 @@ mat-card-header {
 
     mat-card-title {
         text-align: start;
-        font-size: 1.5rem;
-        padding-bottom: 8px;
+        padding-bottom: 1.2rem;
     }
 
     mat-card-subtitle {
         font-family: "Zen Dots", sans-serif;
-        font-size: 2rem;
+        color: #005cbb;
+        font-size: 2.3rem;
         text-align: center;
-        padding-bottom: 8px;
-        cursor: pointer;
-
-        &:hover {
-            color: #005cbb;
-            scale: 1.05;
-            transition: transform 0.3s ease-in-out;
-        }
+        padding-bottom: 1.2rem;
     }
 
     span {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         text-align: end;
     }
 }
@@ -108,4 +101,4 @@ mat-card-actions {
 
 
 
-// VS Code Counter: 79 code lines (14/10/2026)
+// VS Code Counter:  code lines (/11/2026)

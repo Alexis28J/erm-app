@@ -14,11 +14,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ChangeDetectorRef } from '@angular/core';
+import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 
 @Component({
   imports: [ReactiveFormsModule, CommonModule, MatCardModule,
     MatInputModule, MatButtonModule, MatFormFieldModule,
-    MatIconModule, RouterLink, MatTooltipModule],
+    MatIconModule, RouterLink, MatTooltipModule, TranslatePipe],
   selector: 'app-login',
   styleUrls: ['./login.scss'],
   templateUrl: './login.html',

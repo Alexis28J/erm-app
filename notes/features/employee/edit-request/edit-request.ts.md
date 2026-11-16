@@ -100,6 +100,9 @@ export class EditRequest {
       'expenses'       // Poiché il form contiene un array di spese, accediamo a questo array tramite il nome 'expenses'.
     ) as FormArray;   // Poiché il controllo del form rappresenta un array di spese, lo castiamo come FormArray per poter accedere ai metodi specifici degli array di form.
 
+
+    // Nota: Scrivere "this.requestForm.get('expenses') as FormArray" è uguale a scrivere "this.requestForm.controls.expenses". Non c'è bisogno di fare il cast a FormArray se si usa controls. Non c'è differenza tra queste due modalità di accesso all'array delle spese.
+
   }
 
 
