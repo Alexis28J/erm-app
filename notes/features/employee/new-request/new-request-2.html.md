@@ -1,0 +1,122 @@
+# COMMENTI
+
+```HTML
+<!-- CONTAINER PRINCIPALE -->
+<div class="page-container">
+
+    <!-- TITULO DELLA CARD -->
+    <mat-card-title>
+        New Refund Request
+        <mat-icon>request_page</mat-icon>
+    </mat-card-title>
+
+    @if (formError) {
+    <span class="error-message">{{ formError }}</span>
+    }
+
+    <!---------------------------------------- SEZIONE DI DETTAGLI DELLA RICHIESTA ---------------------------------------->
+
+    <!-- <form [formGroup]="requestForm"> -->
+    <form [formGroup]="newFacade.requestForm">
+
+        <!-- DATI DELLA RICHIESTA -->
+        <div class="form-section">
+
+            <!-- <app-request-details-card [form]="requestForm"> -->
+            <app-request-details-card [form]="newFacade.requestForm">
+            </app-request-details-card>
+
+            <!---------------------------------------- SEZIONE DELLE SPESE ---------------------------------------->
+            <!-- <app-expense-editor [form]="requestForm" [expenses]="expenses" [expenseProgressData]="expenseProgressData()"
+                [expenseCategories]="expenseCategories()" (addExpense)="addExpense()"
+                (removeExpense)="removeExpense($event)" (filesSelected)="onFilesSelected(
+    $event.event,
+    $event.index
+  )" (removeAttachment)="removeAttachment(
+    $event.expenseIndex,
+    $event.attachmentIndex
+  )"> -->
+            <app-expense-editor [form]="newFacade.requestForm"
+                [expenses]="newFacade.expenses"
+                [expenseProgressData]="newFacade.expenseProgressData()"
+                [expenseCategories]="newFacade.expenseCategories()"
+                (addExpense)="newFacade.addExpense()"
+                (removeExpense)="newFacade.removeExpense($event)" (filesSelected)="newFacade.onFilesSelected(
+                    $event.event,
+                    $event.index
+                )" (removeAttachment)="newFacade.removeAttachment(
+    $event.expenseIndex,
+    $event.attachmentIndex
+  )">
+            </app-expense-editor>
+
+
+            <!-------------------------------- SEZIONE DI RIEPILOGO DEL TOTALE RICHIESTO --------------------------------->
+            <mat-card>
+
+                <div class="total-section">
+
+                    <mat-card-subtitle>
+                        Total Requested
+                        <mat-icon>payments</mat-icon>
+                    </mat-card-subtitle>
+
+                    <strong>
+                        <!-- {{ totalAmount | number: '1.2-2' }} € -->
+                        {{ newFacade.totalRequestedAmount() | number: '1.2-2' }} €
+                    </strong>
+
+                </div>
+
+                <div class="total-expense-container">
+
+                    <div class="expense-grid">
+                        <!-- <app-total-progress-bar [allowedAmount]="totalAllowedAmount()"
+                            [requestedAmount]="totalRequestedAmount()"></app-total-progress-bar> -->
+                        <app-total-progress-bar [allowedAmount]="newFacade.totalAllowedAmount()"
+                            [requestedAmount]="newFacade.totalRequestedAmount()"></app-total-progress-bar>
+                    </div>
+                </div>
+
+            </mat-card>
+
+            <!-- ACTIONS -->
+            <div class="actions">
+
+                <button mat-stroked-button routerLink="/employee/dashboard" class="cancel-btn"
+                    aria-label="Cancel and go back to dashboard">
+                    Cancel
+                    <mat-icon>cancel</mat-icon>
+                </button>
+
+                <!-- <button mat-stroked-button type="button" (click)="saveDraft()" class="draft-btn"
+                    aria-label="Save draft of the request">
+                    Save Draft
+                    <mat-icon>save</mat-icon>
+                </button>
+
+                <button mat-raised-button color="primary" (click)="submitRequest()" aria-label="Submit the request">
+                    Submit Request
+                    <mat-icon>send</mat-icon>
+                </button> -->
+                <button mat-stroked-button type="button" (click)="newRequestFacade.saveDraft()" class="draft-btn"
+                    aria-label="Save draft of the request">
+                    Save Draft
+                    <mat-icon>save</mat-icon>
+                </button>
+
+                <button mat-raised-button color="primary" (click)="newRequestFacade.submitRequest()"
+                    aria-label="Submit the request">
+                    Submit Request
+                    <mat-icon>send</mat-icon>
+                </button>
+
+            </div>
+
+        </div>
+
+
+    </form>
+
+</div>
+```

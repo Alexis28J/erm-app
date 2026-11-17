@@ -1,3 +1,39 @@
+# COMMENTI
+
+In un'applicazione Angular, una Facade è un servizio intermedio che funge da unico punto di accesso semplificato tra i componenti (la UI) e i sottosistemi complessi (servizi HTTP, gestione dello stato, Signal, NgRx, router, ecc.).
+
+
+- COME FUNZIONA IN PRATICA
+
+Invece di iniettare cinque servizi diversi in un componente e gestirne la logica al suo interno, il componente comunica solo con il servizio Facade.
+
+• Il Componente (UI) diventa "stupido" (dumb/presentational): si limita a mostrare i dati e a chiamare metodi semplici della Facade (es. caricaOrdini()), ignorando come vengono recuperati.
+
+• La Facade orchestra le chiamate ai vari servizi sottostanti, gestisce lo stato e restituisce al componente solo i dati pronti per essere visualizzati.
+
+
+
+- PERCHE' è PARTICOLARMENTE UTILE IN ANGULAR 22
+
+Con le novità introdotte in Angular 22 (architettura Zoneless di default, strategia OnPush predefinita, Signal Forms e Resource API stabili), il pattern Facade diventa ancora più pulito:
+
+1. Centralizzazione dei Signal. La Facade incapsula la logica reattiva (es. resource(), httpResource(), computed(), signal()) esponendo ai componenti solo Signal in sola lettura, perfetti per il rilevamento delle modifiche Zoneless.
+
+2. Disaccoppiamento. Se cambi il modo in cui recuperi i dati (es. passi da RxJS a Resource API o cambi libreria di state management), modifichi solo la Facade senza toccare i componenti.
+
+3. Test più semplici. Per testare un componente basta fare il mock della sola Facade invece di simulare decine di dipendenze.
+
+
+- COMMANDO RAPIDO TRAMITE ANGULAR CLI
+
+ng generate service nome --type=facade
+(Oppure in forma abbreviata: ng g s nome --type=facade)
+
+
+Consiglio: Mantieni la Facade il più semplice possibile, esponendo solo i segnali e i metodi necessari ai componenti. Evita di mettere logica complessa nei componenti stessi.
+
+
+```TYPESCRIPT
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -14,9 +50,9 @@ import { AttachmentService } from './attachment.service';
 @Injectable()
 export class EditRequestFacade {
 
-
     constructor() {
 
+        // EFFECT PER POPOLARE IL FORM QUANDO LA RICHIESTA VIENE CARICATA
         effect(() => {
             const request = this.request();
 
@@ -28,6 +64,7 @@ export class EditRequestFacade {
 
             this.formInitialized = true;
         })
+
     }
 
 
@@ -68,11 +105,12 @@ export class EditRequestFacade {
 
     // GETTER PER L'ARRAY DELLE SPESE DEL FORM
     get expenses(): FormArray {
-        return this.requestForm.controls.expenses;  // E' uguale a this.requestForm.get('expenses') as FormArray
+        return this.requestForm.controls.expenses;  // Questa riga è uguale a "this.requestForm.get('expenses') as FormArray"
     }   // Non c'è bisogno di fare il cast a FormArray se si usa controls.
     // Non c'è differenza tra queste due modalità di accesso all'array delle spese.
 
 
+    // METODO PRIVATO PER CREARE UN FORM GROUP PER UNA SINGOLA SPESA
     private createExpenseForm(
         expense?: Partial<Expense>
     ) {
@@ -222,7 +260,7 @@ export class EditRequestFacade {
 
 
     // METODO PER COSTRUIRE LA RICHIESTA DI RIMBORSO CON LO STATO SPECIFICATO (BOZZA O INVIATA)
-    // Questo metodo serve a costruire l'oggetto RefundRequest con i dati correnti del form e lo stato specificato.
+    // Questo metodo serve a costruire l'oggetto RefundRequest con i dati correnti del form e lo stato specificato,
     // in modo che il componente non debba preoccuparsi di costruire manualmente l'oggetto RefundRequest.
     // Quindi questo metodo viene utilizzato internamente da saveDraft() e submitRequest() per costruire l'oggetto RefundRequest con lo stato corretto.
     private buildRequest(
@@ -269,6 +307,11 @@ export class EditRequestFacade {
         }
 
         return null;
+
+      // Cosa succede se non aggiungo private a un metodo?
+      // Se non aggiungo private a un metodo, esso diventa pubblico per default e può essere chiamato da altre classi o componenti.
+      // Questo evita che altri componenti o classi possano chiamare il metodo direttamente, garantendo un migliore incapsulamento della logica interna.
+      // Un migliore incapsulamento della logica interna è garantire che i metodi e le proprietà che non devono essere accessibili dall'esterno siano dichiarati come private, riducendo il rischio di utilizzo improprio e facilitando la manutenzione del codice.
 
     }
 
@@ -321,9 +364,6 @@ export class EditRequestFacade {
     // METODO PER GESTIRE LA SELEZIONE DEI FILE ALLEGATI PER LE SPESE
     // Questo metodo legge i file selezionati, li converte in oggetti ExpenseAttachment e li aggiunge alla spesa corrispondente.
     async onFilesSelected(event: Event, expenseIndex: number): Promise<void> {
-        // async è una parola chiave che indica che la funzione è asincrona e restituisce una Promise.
-        // async funziona insieme alla parola chiave await, permettendo di scrivere codice asincrono come se fosse sincrono, 
-        // utilizzando await per attendere il completamento delle operazioni asincrone.
 
         const files = (event.target as HTMLInputElement).files;  // Ottiene i file selezionati dall'input HTML.
 
@@ -371,6 +411,15 @@ export class EditRequestFacade {
             attachments
         });
 
+
+        // async è una parola chiave che indica che la funzione è asincrona e restituisce una Promise.
+        // async funziona insieme alla parola chiave await, permettendo di scrivere codice asincrono come se fosse sincrono, 
+        // utilizzando await per attendere il completamento delle operazioni asincrone.
+
+        // Cosa vuol dire "scrivere codice asincrono come se fosse sincrono"?
+        // Significa che possiamo scrivere codice che sembra sequenziale, ma in realtà alcune operazioni possono essere asincrone, 
+        // cioè non vengono completate immediatamente e richiedono tempo per terminare.
+
     }
 
 
@@ -398,60 +447,24 @@ export class EditRequestFacade {
 
     }
 
-    // Perché non inviare i metodi dei file allegati direttamente al servizio attachment.service?
-    // La Facade funge da intermediario tra i componenti e i servizi sottostanti, 
-    // permettendo di centralizzare la logica di gestione degli allegati e mantenere i componenti più semplici e disaccoppiati.
-    // Senza la Facade, i componenti dovrebbero interagire direttamente con il servizio attachment.service, 
-    // aumentando la complessità e il rischio di duplicazione della logica.
-
-    // Quindi, ogni componente de avere una facade?
-    // Non necessariamente. La Facade è utile quando un componente deve interagire con più servizi o gestire logica complessa.
-    // Per componenti semplici che interagiscono con un solo servizio, potrebbe non essere necessario creare una Facade dedicata.
-
-    // Due servizi possono usare un'unica facade?
-    // Sì, una Facade può orchestrare più servizi sottostanti, centralizzando la logica e fornendo un'interfaccia semplificata ai componenti.
-    // Tuttavia, è importante non sovraccaricare la Facade con troppa responsabilità, mantenendo un buon equilibrio tra semplicità e modularità.
 }
+```
 
 
+- Perché non inviare i metodi dei file allegati direttamente al servizio attachment.service?
 
-// VS Code Counter: 224 code lines (16/11/2026)
+La Facade funge da intermediario tra i componenti e i servizi sottostanti, permettendo di centralizzare la logica di gestione degli allegati e mantenere i componenti più semplici e disaccoppiati.
 
-
-
-// cosa succede se non aggiungo private a un metodo?
-// Se non aggiungo private a un metodo, esso diventa pubblico per default e può essere chiamato da altre classi o componenti.
-// Questo evita che altri componenti o classi possano chiamare il metodo direttamente, garantendo un migliore incapsulamento della logica interna.
-// Un migliore incapsulamento della logica interna è garantire che i metodi e le proprietà che non devono essere accessibili dall'esterno siano dichiarati come private, 
-// riducendo il rischio di utilizzo improprio e facilitando la manutenzione del codice.
+Senza la Facade, i componenti dovrebbero interagire direttamente con il servizio attachment.service, aumentando la complessità e il rischio di duplicazione della logica.
 
 
-// In un'applicazione Angular, una Facade è un servizio intermedio che funge da unico punto di accesso semplificato 
-// tra i componenti (la UI) e i sottosistemi complessi (servizi HTTP, gestione dello stato, Signal, NgRx, router, ecc.).
+- Quindi, ogni componente de avere una facade?
+
+Non necessariamente. La Facade è utile quando un componente deve interagire con più servizi o gestire logica complessa.
+Per componenti semplici che interagiscono con un solo servizio, potrebbe non essere necessario creare una Facade dedicata.
 
 
-// COME FUNZIONA IN PRATICA
+- Due servizi possono usare un'unica facade?
 
-// Invece di iniettare cinque servizi diversi in un componente e gestirne la logica al suo interno, il componente comunica solo con il servizio Facade.
-
-// • Il Componente (UI) diventa "stupido" (dumb/presentational): si limita a mostrare i dati e a chiamare metodi semplici della Facade (es. caricaOrdini()), ignorando come vengono recuperati.
-// • La Facade orchestra le chiamate ai vari servizi sottostanti, gestisce lo stato e restituisce al componente solo i dati pronti per essere visualizzati.
-
-
-
-// PERCHE' è PARTICOLARMENTE UTILE IN ANGULAR 22
-
-// Con le novità introdotte in Angular 22 (architettura Zoneless di default, strategia OnPush predefinita, Signal Forms e Resource API stabili), il pattern Facade diventa ancora più pulito:
-// 1. Centralizzazione dei Signal. La Facade incapsula la logica reattiva (es. resource(), httpResource(), computed(), signal()) 
-// esponendo ai componenti solo Signal in sola lettura, perfetti per il rilevamento delle modifiche Zoneless.
-// 2. Disaccoppiamento. Se cambi il modo in cui recuperi i dati (es. passi da RxJS a Resource API o cambi libreria di state management), 
-// modifichi solo la Facade senza toccare i componenti.
-// 3. Test più semplici. Per testare un componente basta fare il mock della sola Facade invece di simulare decine di dipendenze.
-
-
-// COMMANDO RAPIDO TRAMITE ANGULAR CLI
-// ng generate service nome --type=facade
-// (Oppure in forma abbreviata: ng g s nome --type=facade)
-
-
-// Consiglio: Mantieni la Facade il più semplice possibile, esponendo solo i segnali e i metodi necessari ai componenti. Evita di mettere logica complessa nei componenti stessi.
+Sì, una Facade può orchestrare più servizi sottostanti, centralizzando la logica e fornendo un'interfaccia semplificata ai componenti.
+Tuttavia, è importante non sovraccaricare la Facade con troppa responsabilità, mantenendo un buon equilibrio tra semplicità e modularità.

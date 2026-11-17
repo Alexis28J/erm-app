@@ -1,5 +1,5 @@
 <!-- CONTROLLA SE LA RICHIESTA ESISTE -->
-@if (request(); as requestData) {
+@if (editRequestFacade.request(); as requestData) {
 
 <!-- CONTENITORE PRINCIPALE -->
 <div class="page-container">
@@ -16,21 +16,21 @@
 
 
   <!---------------------------------------- SEZIONE DI DETTAGLI DELLA RICHIESTA ---------------------------------------->
-  <form [formGroup]="requestForm">
+  <form [formGroup]="editFacade.requestForm">
 
     <div class="form-section">
 
-      <app-request-details-card [form]="requestForm" [request]="request()">
+      <app-request-details-card [form]="editFacade.requestForm" [request]="editRequestFacade.request()">
       </app-request-details-card>
 
 
       <!---------------------------------------- SEZIONE DELLE SPESE ---------------------------------------->
-      <app-expense-editor [form]="requestForm" [expenses]="expenses" [expenseProgressData]="expenseProgressData()"
-        [expenseCategories]="expenseCategories()" (addExpense)="addExpense()" (removeExpense)="removeExpense($event)"
-        (filesSelected)="onFilesSelected(
+      <app-expense-editor [form]="editFacade.requestForm" [expenses]="editFacade.expenses"
+        [expenseProgressData]="editFacade.expenseProgressData()" [expenseCategories]="editFacade.expenseCategories()"
+        (addExpense)="editFacade.addExpense()" (removeExpense)="editFacade.removeExpense($event)" (filesSelected)="editFacade.onFilesSelected(
     $event.event,
     $event.index
-  )" (removeAttachment)="removeAttachment(
+  )" (removeAttachment)="editFacade.removeAttachment(
     $event.expenseIndex,
     $event.attachmentIndex
   )">
@@ -47,7 +47,7 @@
           </mat-card-subtitle>
 
           <strong>
-            {{ totalRequestedAmount() | number:'1.2-2' }} €
+            {{ editFacade.totalRequestedAmount() | number:'1.2-2' }} €
           </strong>
         </div>
 
@@ -55,7 +55,8 @@
 
           <div class="expense-grid">
 
-            <app-total-progress-bar [allowedAmount]="totalAllowedAmount()" [requestedAmount]="totalRequestedAmount()">
+            <app-total-progress-bar [allowedAmount]="editFacade.totalAllowedAmount()"
+              [requestedAmount]="editFacade.totalRequestedAmount()">
             </app-total-progress-bar>
 
           </div>
@@ -78,14 +79,14 @@
         </div>
 
         <!-- Pulsante per salvare la richiesta come bozza -->
-        <button mat-stroked-button color="primary" type="button" (click)="saveDraft()" class="draft-btn"
-          aria-label="Save draft of the request">
+        <button mat-stroked-button color="primary" type="button" (click)="editRequestFacade.saveDraft()"
+          class="draft-btn" aria-label="Save draft of the request">
           Save Draft
           <mat-icon>save</mat-icon>
         </button>
 
         <!-- Pulsante per inviare la richiesta -->
-        <button mat-raised-button color="accent" type="button" (click)="submitRequest()"
+        <button mat-raised-button color="accent" type="button" (click)="editRequestFacade.submitRequest()"
           aria-label="Submit the request">
           Submit Request
           <mat-icon>send</mat-icon>
@@ -109,4 +110,4 @@
 
 
 
-<!-- VS Code Counter: 66 code lines (19/10/2026) -->
+<!-- VS Code Counter: 67 code lines (17/11/2026) -->

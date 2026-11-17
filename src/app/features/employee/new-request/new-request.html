@@ -12,22 +12,22 @@
     }
 
     <!---------------------------------------- SEZIONE DI DETTAGLI DELLA RICHIESTA ---------------------------------------->
-
-    <form [formGroup]="requestForm">
+    <form [formGroup]="newFacade.requestForm">
 
         <!-- DATI DELLA RICHIESTA -->
         <div class="form-section">
 
-            <app-request-details-card [form]="requestForm">
+            <app-request-details-card [form]="newFacade.requestForm">
             </app-request-details-card>
 
             <!---------------------------------------- SEZIONE DELLE SPESE ---------------------------------------->
-            <app-expense-editor [form]="requestForm" [expenses]="expenses" [expenseProgressData]="expenseProgressData()"
-                [expenseCategories]="expenseCategories()" (addExpense)="addExpense()"
-                (removeExpense)="removeExpense($event)" (filesSelected)="onFilesSelected(
-    $event.event,
-    $event.index
-  )" (removeAttachment)="removeAttachment(
+            <app-expense-editor [form]="newFacade.requestForm" [expenses]="newFacade.expenses"
+                [expenseProgressData]="newFacade.expenseProgressData()"
+                [expenseCategories]="newFacade.expenseCategories()" (addExpense)="newFacade.addExpense()"
+                (removeExpense)="newFacade.removeExpense($event)" (filesSelected)="newFacade.onFilesSelected(
+                    $event.event,
+                    $event.index
+                )" (removeAttachment)="newFacade.removeAttachment(
     $event.expenseIndex,
     $event.attachmentIndex
   )">
@@ -36,6 +36,7 @@
 
             <!-------------------------------- SEZIONE DI RIEPILOGO DEL TOTALE RICHIESTO --------------------------------->
             <mat-card>
+
                 <div class="total-section">
 
                     <mat-card-subtitle>
@@ -44,15 +45,16 @@
                     </mat-card-subtitle>
 
                     <strong>
-                        {{ totalAmount | number: '1.2-2' }} €
+                        {{ newFacade.totalRequestedAmount() | number: '1.2-2' }} €
                     </strong>
+
                 </div>
 
                 <div class="total-expense-container">
 
                     <div class="expense-grid">
-                        <app-total-progress-bar [allowedAmount]="totalAllowedAmount()"
-                            [requestedAmount]="totalRequestedAmount()"></app-total-progress-bar>
+                        <app-total-progress-bar [allowedAmount]="newFacade.totalAllowedAmount()"
+                            [requestedAmount]="newFacade.totalRequestedAmount()"></app-total-progress-bar>
                     </div>
                 </div>
 
@@ -67,13 +69,14 @@
                     <mat-icon>cancel</mat-icon>
                 </button>
 
-                <button mat-stroked-button type="button" (click)="saveDraft()" class="draft-btn"
+                <button mat-stroked-button type="button" (click)="newRequestFacade.saveDraft()" class="draft-btn"
                     aria-label="Save draft of the request">
                     Save Draft
                     <mat-icon>save</mat-icon>
                 </button>
 
-                <button mat-raised-button color="primary" (click)="submitRequest()" aria-label="Submit the request">
+                <button mat-raised-button color="primary" (click)="newRequestFacade.submitRequest()"
+                    aria-label="Submit the request">
                     Submit Request
                     <mat-icon>send</mat-icon>
                 </button>
@@ -88,5 +91,4 @@
 </div>
 
 
-
-<!-- VS Code Counter: 58 code lines (19/10/2026) -->
+<!-- VS Code Counter: 60 code lines (17/11/2026) -->

@@ -1,0 +1,113 @@
+# COMMENTI
+
+```HTML
+<!-- CONTROLLA SE LA RICHIESTA ESISTE -->
+@if (editRequestFacade.request(); as requestData) {
+
+<!-- CONTENITORE PRINCIPALE -->
+<div class="page-container">
+
+  <!-- TITOLO DELLA PAGINA -->
+  <mat-card-title>Edit Request
+    <mat-icon>edit_document</mat-icon>
+  </mat-card-title>
+
+
+  @if (formError) {
+  <span class="error-message">{{ formError }}</span>
+  }
+
+
+  <!---------------------------------------- SEZIONE DI DETTAGLI DELLA RICHIESTA ---------------------------------------->
+  <form [formGroup]="editFacade.requestForm">
+
+    <div class="form-section">
+
+      <app-request-details-card [form]="editFacade.requestForm" [request]="editRequestFacade.request()">
+      </app-request-details-card>
+
+
+      <!---------------------------------------- SEZIONE DELLE SPESE ---------------------------------------->
+      <app-expense-editor [form]="editFacade.requestForm" [expenses]="editFacade.expenses"
+        [expenseProgressData]="editFacade.expenseProgressData()" [expenseCategories]="editFacade.expenseCategories()"
+        (addExpense)="editFacade.addExpense()" (removeExpense)="editFacade.removeExpense($event)" (filesSelected)="editFacade.onFilesSelected(
+    $event.event,
+    $event.index
+  )" (removeAttachment)="editFacade.removeAttachment(
+    $event.expenseIndex,
+    $event.attachmentIndex
+  )">
+      </app-expense-editor>
+
+
+      <!-------------------------------- SEZIONE DI RIEPILOGO DEL TOTALE RICHIESTO --------------------------------->
+      <mat-card>
+
+        <div class="total-section">
+          <mat-card-subtitle>
+            Total Requested Amount
+            <mat-icon>payments</mat-icon>
+          </mat-card-subtitle>
+
+          <strong>
+            {{ editFacade.totalRequestedAmount() | number:'1.2-2' }} €
+          </strong>
+        </div>
+
+        <div class="total-expense-container">
+
+          <div class="expense-grid">
+
+            <app-total-progress-bar [allowedAmount]="editFacade.totalAllowedAmount()"
+              [requestedAmount]="editFacade.totalRequestedAmount()">
+            </app-total-progress-bar>
+
+          </div>
+
+        </div>
+
+      </mat-card>
+
+
+      <!-- SEZIONE DEI PULSANTI DI AZIONE -->
+      <div class="actions">
+
+        <!-- Pulsante per tornare indietro -->
+        <div class="cancel-btn">
+          <button mat-stroked-button color="primary" type="button" routerLink="/employee/request-list"
+            aria-label="Cancel and go back to request list">
+            Cancel
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
+
+        <!-- Pulsante per salvare la richiesta come bozza -->
+        <button mat-stroked-button color="primary" type="button" (click)="editRequestFacade.saveDraft()" class="draft-btn"
+          aria-label="Save draft of the request">
+          Save Draft
+          <mat-icon>save</mat-icon>
+        </button>
+
+        <!-- Pulsante per inviare la richiesta -->
+        <button mat-raised-button color="accent" type="button" (click)="editRequestFacade.submitRequest()"
+          aria-label="Submit the request">
+          Submit Request
+          <mat-icon>send</mat-icon>
+        </button>
+
+      </div>
+
+    </div>
+
+  </form>
+
+</div>
+
+} @else {
+
+<div class="loading-spinner centered-spinner">
+  <mat-spinner></mat-spinner>
+</div>
+
+}
+```

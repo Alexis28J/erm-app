@@ -1,360 +1,98 @@
-import { Component, inject, computed, signal } from '@angular/core';
-import { Notification } from '../../../shared/notification-service/notification';
-import { FormBuilder, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
-import { AuthService } from '../../../core/services/auth.service';
-import { RefundRequestService } from '../../../core/services/refund-request.service';
 import { Router, RouterLink } from '@angular/router';
-import { RefundRequest } from '../../../core/interfaces/refund-request';
-import { RequestStatus } from '../../../core/interfaces/enum';
-import { Expense } from '../../../core/interfaces/expense';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { CommonModule } from '@angular/common';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { startWith } from 'rxjs';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActivatedRoute } from '@angular/router';
-import { AppConfig } from '../../../core/interfaces/app-config';
 import { ExpenseEditor } from '../../../shared/expense-editor/expense-editor';
 import { RequestDetailsCard } from '../../../shared/request-details-card/request-details-card';
+import { NewRequestFacade } from '../../../core/services/facades/new-request.facade';
+import { RequestFormFacade } from '../../../core/services/facades/request-form.facade';
+import { Notification } from '../../../shared/notification-service/notification';
 
 @Component({
   imports: [ReactiveFormsModule, MatFormFieldModule, MatButtonModule,
     MatCardModule, MatIconModule, RouterLink,
     MatInputModule, CommonModule, TotalProgressBar,
     MatTooltipModule, ExpenseEditor, RequestDetailsCard],
+  providers: [RequestFormFacade, NewRequestFacade],
   selector: 'app-new-request',
   styleUrls: ['./new-request.scss'],
   templateUrl: './new-request.html',
 })
+
 export class NewRequest {
 
-  // INIEZIONE DEI SERVIZI NECESSARI
-  private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
-  private refundRequestService = inject(RefundRequestService);
+
+  // INIEZIONE DEL FACADE PER LA CREAZIONE DI UNA NUOVA RICHIESTA
+  newRequestFacade = inject(NewRequestFacade);
+
+
+  // FACADE PROTETTO PER LA CREAZIONE DI UNA NUOVA RICHIESTA
+  protected readonly newFacade = this.newRequestFacade.formFacade;
+
+
   private router = inject(Router);
   private notificationService = inject(Notification);
-  private route = inject(ActivatedRoute);
 
 
-  // FORM
-  requestForm = this.fb.group({
-    referenceMonth: ['', Validators.required],
-    noteEmployee: [''],
-    expenses: this.fb.array([])
-  });
-
-
-  // GETTER PER LE SPESE
-  get expenses() {
-    return this.requestForm.get('expenses') as FormArray;
-  }
-
-
-  // METODO PER AGGIUNGERE UNA SPESA
-  addExpense(): void {
-
-    const expense = this.fb.group({
-      id: [crypto.randomUUID(), Validators.required],
-      date: ['', Validators.required],
-      category: ['', Validators.required],
-      description: [''],
-      requestedAmount: [null, Validators.required],
-      approvedAmount: [0],
-      attachments: [[]]
-    });
-
-    this.expenses.push(expense);
-  }
-
-
-  // METODO PER RIMUOVERE UNA SPESA
-  removeExpense(index: number): void {
-    this.expenses.removeAt(index);
-  }
-
-
-  // GETTER PER IL TOTALE DELLE SPESE
-  get totalAmount(): number {
-
-    return this.expenses.controls.reduce(
-      (total, control) => total + Number(control.get('requestedAmount')?.value || 0),
-      0
-    );
-
-  }
-
-
-  // METODO PER SALVARE LA RICHIESTA COME BOZZA
-  saveDraft(): void {
-
-    const currentUser = this.authService.getCurrentUser();
-
-    if (!currentUser) {
-      return;
-    }
-
-    // Oggetto della richiesta di rimborso
-    const request: RefundRequest = {
-
-      userId: currentUser.id,
-
-      referenceMonth: this.requestForm.value.referenceMonth!,
-
-      noteEmployee: this.requestForm.value.noteEmployee || '',
-
-      noteHr: "",
-
-      expenses: (this.requestForm.value.expenses || []) as Expense[],
-
-      totalRequestedAmount: this.totalAmount,
-
-      totalApprovedAmount: 0,
-
-      status: RequestStatus.DRAFT,
-
-      creationDate: new Date().toISOString(),
-
-      lastUpdateDate: new Date().toISOString(),
-
-    };
-
-    this.refundRequestService.
-      createRequest(request)
-      .subscribe({
-        next: () => {
-          this.notificationService.success('Request saved as draft successfully');
-          this.router.navigate(['/employee/dashboard']);
-        }
-      });
-
-  }
-
-
-  // VARIABILE PER IL MESSAGGIO DI ERRORE DEL FORM
+  // VARIABILE PER MEMORIZZARE EVENTUALI ERRORI DEL FORM
   formError = '';
 
-  // METODO PER L'INVIO DEL FORM
-  submitRequest(): void {
 
-    const currentUser = this.authService.getCurrentUser();
+  saveDraft(): void {
 
-    // Controllo se l'utente corrente esiste
-    if (!currentUser) {
-      return;
-    }
+    this.formError = '';
 
-    // Controllo se il form è valido
-    if (this.requestForm.invalid) {
-      this.requestForm.markAllAsTouched();
-      this.formError = 'Please fill in all required fields';
-      return;
-    }
-
-    // Controllo se ci sono spese aggiunte
-    if (this.requestForm.valid && this.expenses.length === 0) {
-      this.formError = 'Please add at least one expense';
-      return;
-    }
-
-    // Controllo se tutte le spese sono valide
-    if (this.expenses.controls.some(expense => !expense.valid)) {
-      this.formError = 'Please fill in all required fields for each expense';
-      return;
-    }
-
-
-    // Oggetto della richiesta di rimborso
-    const request: RefundRequest = {
-
-      userId: currentUser.id,
-
-      referenceMonth: this.requestForm.value.referenceMonth!,
-
-      noteEmployee: this.requestForm.value.noteEmployee || '',
-
-      noteHr: "",
-
-      expenses: (this.requestForm.value.expenses) as Expense[],
-
-      totalRequestedAmount: this.totalAmount,
-
-      totalApprovedAmount: 0,
-
-      status: RequestStatus.PENDING,
-
-      creationDate: new Date().toISOString(),
-
-      lastUpdateDate: new Date().toISOString(),
-
-    };
-
-
-    // Invio della richiesta al servizio
-    this.refundRequestService.createRequest(request)
+    this.newRequestFacade.saveDraft()
       .subscribe({
+
         next: () => {
-          this.notificationService.success('Request submitted successfully');
-          this.router.navigate(['/employee/dashboard']);
+
+          this.notificationService.success(
+            'Request saved as draft sucessfully'
+          );
+
+          this.router.navigate([
+            '/employee/dashboard'
+          ]);
+        },
+        error: error => {
+          this.formError = error.message;
         }
       });
-
   }
 
 
-  // SIGNAL PER TENERE TRACCIA DEI VALORI DELLE SPESE
-  expensesValue = toSignal(
-    this.expenses.valueChanges.pipe(
-      startWith(this.expenses.getRawValue())
-    ),
-    { initialValue: [] }
-  )
+  submitRequest(): void {
 
+    this.formError = '';
 
-  // COMPUTED PER OTTENERE I DATI DI PROGRESSO DELLE SPESE
-  expenseProgressData = computed(() => {
-    return this.expensesValue().map((expense: Expense) => ({
-      category: expense.category ?? '',
-      amount: Number(expense.requestedAmount ?? 0)
-    }));
-  });
+    this.newRequestFacade.submitRequest()
+      .subscribe({
 
+        next: () => {
+          this.notificationService.success(
+            'Request submitted successfully'
+          );
 
-  // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
-  config = signal<AppConfig>(this.route.snapshot.data['config']);
-
-
-  // COMPUTED PER LE CATEGORIE DI SPESE
-  expenseCategories = computed(
-    () => this.config().expenseLimits
-  );
-
-
-  // METODO PER OTTENERE L'IMPORTO MASSIMO CONSENTITO PER UNA CATEGORIA DI SPESA SPECIFICA
-  getMaxAmount(categoryName: string): number {
-
-    return this.expenseCategories()
-      .find(c => c.name === categoryName)?.maxAmount ?? 0;
-
-  }
-
-
-  // COMPUTED PER OTTENERE IL TOTALE MASSIMO CONSENTITO DELLE SPESE
-  readonly totalAllowedAmount = computed(() => {
-
-    const request = this.expensesValue();
-
-    if (!request || request.length === 0) {
-      return 0;
-    }
-
-    return request.reduce((total: number, expense: Expense) => {
-      const category = this.expenseCategories().find(
-        c => c.name === expense.category
-      );
-      return total + (category?.maxAmount ?? 0);
-    }, 0
-    );
-  });
-
-
-  // COMPUTED PER OTTENERE IL TOTALE DELLE SPESE RICHIESTE
-  readonly totalRequestedAmount = computed(() => {
-
-    const request = this.expensesValue();
-
-    if (!request || request.length === 0) {
-      return 0;
-    }
-
-    return request.reduce(
-      (total: number, expense: Expense) => {
-        return total + (expense.requestedAmount ?? 0);
-      },
-      0
-    )
-
-  })
-
-
-  // GESTIONE DEI FILE ALLEGATI PER LE SPESE
-  onFilesSelected(event: Event, expenseIndex: number): void {
-
-    const files = (event.target as HTMLInputElement).files;
-
-    if (!files?.length) {
-      return;
-    }
-
-
-    Array.from(files).forEach(file => {
-
-      const reader = new FileReader();
-
-      reader.onload = () => {
-
-        const expense = this.expenses.at(expenseIndex);
-
-        const attachments = expense.get('attachments')?.value ?? [];
-
-        const allowedTypes = [
-          'application/pdf',
-          'image/jpeg',
-          'image/jpg',
-          'image/png'
-        ];
-
-        if (!allowedTypes.includes(file.type)) {
-          this.notificationService.error('Only PDF and image files are allowed');
-          return;
+          this.router.navigate([
+            '/employee/dashboard'
+          ]);
+        },
+        error: error => {
+          this.formError = error.message;
         }
-
-        attachments.push({
-          fileName: file.name,
-          fileType: file.type,
-          fileContent: reader.result as string
-        });
-
-        expense.patchValue({
-          attachments
-        });
-      };
-
-      reader.readAsDataURL(file);
-    });
-
-  }
-
-
-  // METODO PER RIMUOVERE UN FILE ALLEGATO (PER OGNI SINGOLA SPESA)
-  removeAttachment(
-    expenseIndex: number,
-    attachmentIndex: number
-  ): void {
-
-    const expense = this.expenses.at(expenseIndex);
-
-    const attachments = [
-      ...(expense.value.attachments ?? [])
-    ];
-
-    attachments.splice(
-      attachmentIndex,
-      1
-    );
-
-    expense.patchValue({
-      attachments
-    });
+      });
   }
 
 }
 
 
 
-// VS Code Counter: 227 code lines (19/10/2026)
+// VS Code Counter: 67 code lines (17/11/2026)
