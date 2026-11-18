@@ -162,7 +162,7 @@ export class RequestFormFacade {
 
 
         if (this.expenses.length === 0) {
-            return ('Please add at leat one expense')
+            return ('Please add at least one expense')
         };
 
         return null;
