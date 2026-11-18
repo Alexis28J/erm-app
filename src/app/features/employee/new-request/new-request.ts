@@ -37,6 +37,7 @@ export class NewRequest {
   protected readonly newFacade = this.newRequestFacade.formFacade;
 
 
+  // INIEZIONE DEL ROUTER E DEL SERVIZIO DI NOTIFICA
   private router = inject(Router);
   private notificationService = inject(Notification);
 
@@ -45,6 +46,7 @@ export class NewRequest {
   formError = '';
 
 
+  // METODO PER SALVARE LA RICHIESTA COME BOZZA (tramite il facade della nuova richiesta)
   saveDraft(): void {
 
     this.formError = '';
@@ -69,6 +71,7 @@ export class NewRequest {
   }
 
 
+  // METODO PER INVIARE LA RICHIESTA (tramite il facade della nuova richiesta)
   submitRequest(): void {
 
     this.formError = '';

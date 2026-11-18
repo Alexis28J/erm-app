@@ -50,283 +50,95 @@ import { AttachmentService } from './attachment.service';
 @Injectable()
 export class EditRequestFacade {
 
+  // RESPONSABILITA': 
+  // Caricare la richiesta
+  // Popolare il form
+  // Aggiornare la richiesta (salvare come bozza o inviare per approvazione)
+
     constructor() {
 
-        // EFFECT PER POPOLARE IL FORM QUANDO LA RICHIESTA VIENE CARICATA
+        // EFFETTO PER POPOLARE IL FORM QUANDO LA RICHIESTA VIENE CARICATA
         effect(() => {
-            const request = this.request();
 
-            if (!request || this.formInitialized) {
+            const request = this.request();  // Ottiene la richiesta corrente dal segnale
+
+            if (!request || this.initialized) {  // Se la richiesta non è caricata o il form è già inizializzato, esce dall'effetto
                 return;
             }
 
-            this.populateForm(request);
+            this.formFacade.requestForm.patchValue({  // Popola il form con i dati della richiesta
 
-            this.formInitialized = true;
-        })
+                referenceMonth: request.referenceMonth,
+
+                noteEmployee: request.noteEmployee ?? '',
+
+            });
+
+            this.formFacade.populateExpenses(request.expenses);  // Popola le spese nel form
+
+            this.initialized = true;  // Segnala che il form è stato inizializzato con i dati della richiesta
+        });
 
     }
 
 
-    // INIEZIONE DELLE DIPENDENZE
-    private fb = inject(FormBuilder);
+    // INIEZIONE DEI SERVIZI E VARIABILI NECESSARIE PER LA MODIFICA DELLA RICHIESTA
+    readonly formFacade = inject(RequestFormFacade);
     private route = inject(ActivatedRoute);
-    private refundRequestService = inject(RefundRequestService);
     private authService = inject(AuthService);
-    private attachmentService = inject(AttachmentService);
+    private refundRequestService = inject(RefundRequestService);
+    private initialized = false;
 
-
-    // Variabile che indica se il form è stato inizializzato.
-    private formInitialized = false;
-
-
-    // Variabile che contiene l'ID della richiesta corrente.
     readonly requestId = this.route.snapshot.paramMap.get('id');
 
 
-    // Variabile che rappresenta il segnale della richiesta di rimborso corrente.
+    // SEGNALE PER OTTENERE LA RICHIESTA DAL SERVIZIO DI RIMBORSO
     readonly request = toSignal(
-        this.refundRequestService.getRequestById(
-            this.requestId ?? ''
-        ),
+        this.refundRequestService
+            .getRequestById(this.requestId ?? ''),  // Ottiene la richiesta di rimborso dal servizio utilizzando l'ID della richiesta
         {
-            initialValue: null
+            initialValue: null  // Valore iniziale del segnale prima che la richiesta venga caricata
         }
     );
 
 
-    // Variabile che rappresenta il form reattivo per la richiesta di rimborso.
-    readonly requestForm = this.fb.group({
-        referenceMonth: ['', Validators.required],
-        noteEmployee: [''],
-        expenses: this.fb.array([])
-    });
-
-
-    // GETTER PER L'ARRAY DELLE SPESE DEL FORM
-    get expenses(): FormArray {
-        return this.requestForm.controls.expenses;  // Questa riga è uguale a "this.requestForm.get('expenses') as FormArray"
-    }   // Non c'è bisogno di fare il cast a FormArray se si usa controls.
-    // Non c'è differenza tra queste due modalità di accesso all'array delle spese.
-
-
-    // METODO PRIVATO PER CREARE UN FORM GROUP PER UNA SINGOLA SPESA
-    private createExpenseForm(
-        expense?: Partial<Expense>
-    ) {
-        return this.fb.group({
-
-            date: [expense?.date ?? '', Validators.required],
-            category: [expense?.category ?? '', Validators.required],
-            description: [expense?.description ?? ''],
-            requestedAmount: [
-                expense?.requestedAmount ?? '',
-                Validators.required
-            ],
-            attachments: [expense?.attachments ?? []]
-        });
-    }
-
-
-
-
-    // METODO PRIVATO PER POPOLARE IL FORM CON I DATI DELLA RICHIESTA CORRENTE 
-    // (SI USA QUANDO SI CARICA UNA RICHIESTA ESISTENTE)
-    private populateForm(
-        request: RefundRequest
-    ): void {
-
-        this.requestForm.patchValue({
-            referenceMonth: request.referenceMonth,
-            noteEmployee: request.noteEmployee ?? ''
-        });
-
-        this.expenses.clear();
-
-        // request.expenses.forEach(expense => {
-
-        //     this.expenses.push(
-        //         this.fb.group({
-        //             date: [expense.date, Validators.required],
-        //             category: [expense.category, Validators.required],
-        //             description: [expense.description],
-        //             requestedAmount: [expense.requestedAmount, Validators.required],
-        //             attachments: [expense.attachments ?? []]
-        //         })
-        //     );
-        // });
-
-        request.expenses.forEach(expense => {
-
-            this.expenses.push(
-                this.createExpenseForm(expense)
-            );
-        });
-
-    }
-
-
-    // METODO PER AGGIUNGERE UNA NUOVA SPESA AL FORM
-    addExpense(): void {
-        // this.expenses.push(
-        //     this.fb.group({
-        //         date: ['', Validators.required],
-        //         category: ['', Validators.required],
-        //         description: [''],
-        //         requestedAmount: ['', Validators.required],
-        //         attachments: [[]]
-        //     })
-        // );
-        this.expenses.push(
-            this.createExpenseForm()
-        );
-    }
-
-
-    // METODO PER RIMUOVERE UNA SPESA DAL FORM
-    removeExpense(index: number): void {
-        this.expenses.removeAt(index);
-    }
-
-
-    // SIGNAL PER TENERE TRACCIA DEI VALORI DELLE SPESE (IMPORTO RICHIESTO, CATEGORIA, ETC.)
-    expensesValue = toSignal(
-        this.expenses.valueChanges.pipe(
-            startWith(this.expenses.getRawValue())
-        ),
-        {
-            initialValue: []
-        }
-    )
-
-
-    // COMPUTED PER OTTENERE I DATI DI PROGRESSO DELLE SPESE (CATEGORIA E IMPORTO RICHIESTO)
-    expenseProgressData = computed(() => {
-        return this.expensesValue().map((expense: Expense) => ({
-            category: expense.category ?? '',
-            amount: Number(expense.requestedAmount ?? 0)
-        }))
-    })
-
-
-    // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
-    config = signal<AppConfig>(
-        this.route.snapshot.data['config']
-    );
-
-
-    // COMPUTED DELLE CATEGORIE DI SPESA
-    expenseCategories = computed(
-        () => this.config().expenseLimits
-    );
-
-
-    // COMPUTED PER OTTENERE L'IMPORTO MASSIMO CONSENTITO PER LE SPESE 
-    // (SOMMA DEI MASSIMI PER CATEGORIA O TOTALE MASSIMO CONSENTITO)
-    readonly totalAllowedAmount = computed(() => {
-        const request = this.expensesValue();
-
-        if (!request || request.length === 0) {
-            return 0
-        }
-
-        return request.reduce((total: number, expense: Expense) => {
-            const category = this.expenseCategories().find(
-                c => c.name === expense.category
-            );
-
-            return total + (category?.maxAmount ?? 0);
-        }, 0
-        );
-
-    });
-
-
-    // COMPUTED PER OTTENERE L'IMPORTO TOTALE RICHIESTO PER LE SPESE
-    readonly totalRequestedAmount = computed(() => {
-
-        const request = this.expensesValue();
-
-        if (!request || request.length === 0) {
-            return 0
-        }
-
-        return request.reduce(
-            (total: number, expense: Expense) => {
-                return total + (expense.requestedAmount ?? 0);
-            }, 0
-        );
-    });
-
-
-    // METODO PER COSTRUIRE LA RICHIESTA DI RIMBORSO CON LO STATO SPECIFICATO (BOZZA O INVIATA)
-    // Questo metodo serve a costruire l'oggetto RefundRequest con i dati correnti del form e lo stato specificato,
-    // in modo che il componente non debba preoccuparsi di costruire manualmente l'oggetto RefundRequest.
-    // Quindi questo metodo viene utilizzato internamente da saveDraft() e submitRequest() per costruire l'oggetto RefundRequest con lo stato corretto.
+    // METODO PRIVATO PER COSTRUIRE LA STRUTTURA DELLA RICHIESTA AGGIORNATA
     private buildRequest(
         status: RequestStatus
     ): RefundRequest {
 
-        const request = this.request();
+        const request = this.request();  // Ottiene la richiesta corrente dal segnale
 
-        if (!request) {
+        if (!request) {  // Se la richiesta non è caricata, lancia un errore
             throw new Error('Request not loaded');
         }
 
-        return {
+        return {   // Altrimenti costruisce la richiesta aggiornata con i dati del form e lo stato passato come parametro
+
             ...request,
 
-            referenceMonth: this.requestForm.value.referenceMonth ?? '',
-            noteEmployee: this.requestForm.value.noteEmployee ?? '',
-            expenses: (this.requestForm.value.expenses ?? []) as Expense[],
-            totalRequestedAmount: this.totalRequestedAmount(),
+            referenceMonth: this.formFacade.requestForm.value.referenceMonth ?? '',
+
+            noteEmployee: this.formFacade.requestForm.value.noteEmployee ?? '',
+
+            expenses: (this.formFacade.requestForm.value.expenses ?? []) as Expense[],
+
+            totalRequestedAmount: this.formFacade.totalRequestedAmount(),
+
             status,
+
             lastUpdateDate: new Date().toISOString()
+
         };
-    }
-
-
-    // METODO PER VALIDARE IL FORM 
-    private validateForm(): string | null {
-
-        if (this.requestForm.invalid) {
-            this.requestForm.markAllAsTouched();
-            return 'Please fill in all required fields'
-        }
-
-        if (this.expenses.length === 0) {
-            return 'Please add at least one expense';
-        }
-
-        if (this.expenses.controls.some(
-            expense => !expense.valid
-        )
-        ) {
-            return 'Please fill in all required fields for each expense'
-
-        }
-
-        return null;
-
-      // Cosa succede se non aggiungo private a un metodo?
-      // Se non aggiungo private a un metodo, esso diventa pubblico per default e può essere chiamato da altre classi o componenti.
-      // Questo evita che altri componenti o classi possano chiamare il metodo direttamente, garantendo un migliore incapsulamento della logica interna.
-      // Un migliore incapsulamento della logica interna è garantire che i metodi e le proprietà che non devono essere accessibili dall'esterno siano dichiarati come private, riducendo il rischio di utilizzo improprio e facilitando la manutenzione del codice.
-
     }
 
 
     // METODO PER SALVARE LA RICHIESTA COME BOZZA
     saveDraft() {
 
-        const request = this.buildRequest(
-            RequestStatus.DRAFT
-        );
+        const request = this.buildRequest(RequestStatus.DRAFT);  // Costruisce la richiesta aggiornata con lo stato DRAFT
 
-        return this.refundRequestService.updateRequest(
-            request.id!,
-            request
-        );
+        return this.refundRequestService.updateRequest(request.id!, request);  // Aggiorna la richiesta nel servizio con i dati della bozza
 
     }
 
@@ -334,131 +146,39 @@ export class EditRequestFacade {
     // METODO PER INVIARE LA RICHIESTA
     submitRequest() {
 
-        const currentUser = this.authService.getCurrentUser();
+        const currentUser = this.authService.getCurrentUser();  // Ottiene l'utente corrente
 
-        if (!currentUser) {
+        if (!currentUser) {  // Se l'utente corrente non è trovato, restituisce un errore
             return throwError(
                 () => new Error('User not found')
             );
         }
 
-        const validationError = this.validateForm();
+        const validationError = this.formFacade.validateForm();  // Valida il form e restituisce eventuali errori di validazione
 
-        if (validationError) {
-            return throwError(
-                () => new Error(validationError)
+        if (validationError) {  // Se ci sono errori di validazione, interrompe il processo e restituisce un errore
+
+            return throwError(   // Restituisce un errore Observable se ci sono errori di validazione
+                () => new Error(validationError)  // Messaggio di errore di validazione del form
             );
         }
 
-        const request = this.buildRequest(
-            RequestStatus.PENDING
-        );
+        const request = this.buildRequest(RequestStatus.PENDING);  // Costruisce la richiesta aggiornata con lo stato PENDING
 
-        return this.refundRequestService.updateRequest(
-            request.id!,
-            request
-        );
+        return this.refundRequestService.updateRequest(request.id!, request);  // Aggiorna la richiesta nel servizio con i dati inviati per approvazione
+        
     }
 
-
-    // METODO PER GESTIRE LA SELEZIONE DEI FILE ALLEGATI PER LE SPESE
-    // Questo metodo legge i file selezionati, li converte in oggetti ExpenseAttachment e li aggiunge alla spesa corrispondente.
-    async onFilesSelected(event: Event, expenseIndex: number): Promise<void> {
-
-        const files = (event.target as HTMLInputElement).files;  // Ottiene i file selezionati dall'input HTML.
-
-        if (!files?.length) {   // Se non ci sono file selezionati, esce dalla funzione.
-            return;
-        }
-
-        // Array.from(files).forEach(file => {
-
-        //     const reader = new FileReader();
-
-        //     reader.onload = () => {
-
-        //         const expense = this.expenses.at(expenseIndex);
-
-        //         const attachments = expense.get('attachments')?.value ?? [];
-
-        //         attachments.push({
-        //             fileName: file.name,
-        //             fileType: file.type,
-        //             fileContent: reader.result as string
-        //         });
-
-        //         expense.patchValue({
-        //             attachments
-        //         });
-        //     };
-
-        //     reader.readAsDataURL(file);
-        // });
-
-        const expense = this.expenses.at(expenseIndex);  // Ottiene la spesa corrispondente all'indice specificato.
-
-        const attachments = expense.get('attachments')?.value ?? [];  // Ottiene gli allegati esistenti della spesa, se presenti.
-
-        for (const file of Array.from(files)) {
-
-            attachments.push(  // Converte il file selezionato in un oggetto ExpenseAttachment e lo aggiunge all'array degli allegati.
-                await this.attachmentService
-                    .fileToAttachment(file)
-            );
-        }
-
-        expense.patchValue({  // Aggiorna la spesa con il nuovo array di allegati.
-            attachments
-        });
-
-
-        // async è una parola chiave che indica che la funzione è asincrona e restituisce una Promise.
-        // async funziona insieme alla parola chiave await, permettendo di scrivere codice asincrono come se fosse sincrono, 
-        // utilizzando await per attendere il completamento delle operazioni asincrone.
-
-        // Cosa vuol dire "scrivere codice asincrono come se fosse sincrono"?
-        // Significa che possiamo scrivere codice che sembra sequenziale, ma in realtà alcune operazioni possono essere asincrone, 
-        // cioè non vengono completate immediatamente e richiedono tempo per terminare.
-
-    }
-
-
-    // METODO PER RIMUOVERE UN FILE ALLEGATO (PER OGNI SINGOLA SPESA)
-    removeAttachment(
-        expenseIndex: number,
-        attachmentIndex: number
-    ): void {
-
-        const expense = this.expenses.at(expenseIndex);  // Ottiene la spesa corrispondente all'indice specificato.
-
-        const attachments = [  // Crea una copia dell'array degli allegati esistenti della spesa.
-            ...expense.value.attachments ?? []
-        ];
-
-        attachments.splice(  //  Il metodo splice rimuove elementi dall'array a partire dall'indice specificato.
-            attachmentIndex,
-            1  // Numero di elementi da rimuovere.
-        );
-
-        expense.patchValue({  // Aggiorna la spesa con il nuovo array di allegati. 
-            // patchValue è un metodo di FormGroup che permette di aggiornare parzialmente i valori del form.
-            attachments // Indica il nuovo array di allegati da aggiornare nella spesa.
-        });
-
-    }
+    // throwError è un metodo di RxJS che crea un Observable che emette un errore e termina immediatamente.
+    // Viene utilizzato per gestire gli errori durante la validazione del form o il recupero dell'utente corrente.
+    // new Error(validationError) indica l'errore specifico riscontrato durante la validazione del form.
+    // Quindi validationError che è un metodo di RequestFormFacade restituisce il messaggio di errore se la validazione del form fallisce.
 
 }
 ```
 
 
-- Perché non inviare i metodi dei file allegati direttamente al servizio attachment.service?
-
-La Facade funge da intermediario tra i componenti e i servizi sottostanti, permettendo di centralizzare la logica di gestione degli allegati e mantenere i componenti più semplici e disaccoppiati.
-
-Senza la Facade, i componenti dovrebbero interagire direttamente con il servizio attachment.service, aumentando la complessità e il rischio di duplicazione della logica.
-
-
-- Quindi, ogni componente de avere una facade?
+Ogni componente de avere una facade?
 
 Non necessariamente. La Facade è utile quando un componente deve interagire con più servizi o gestire logica complessa.
 Per componenti semplici che interagiscono con un solo servizio, potrebbe non essere necessario creare una Facade dedicata.

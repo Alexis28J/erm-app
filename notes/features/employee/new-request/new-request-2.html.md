@@ -99,13 +99,13 @@
                     Submit Request
                     <mat-icon>send</mat-icon>
                 </button> -->
-                <button mat-stroked-button type="button" (click)="newRequestFacade.saveDraft()" class="draft-btn"
+                <button mat-stroked-button type="button" (click)="saveDraft()" class="draft-btn"
                     aria-label="Save draft of the request">
                     Save Draft
                     <mat-icon>save</mat-icon>
                 </button>
 
-                <button mat-raised-button color="primary" (click)="newRequestFacade.submitRequest()"
+                <button mat-raised-button color="primary" (click)="submitRequest()"
                     aria-label="Submit the request">
                     Submit Request
                     <mat-icon>send</mat-icon>

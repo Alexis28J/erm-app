@@ -40,6 +40,7 @@ export class EditRequest {
   protected readonly editFacade = this.editRequestFacade.formFacade;
 
 
+  // INIEZIONE DEL ROUTER E DEL SERVIZIO DI NOTIFICA
   private router = inject(Router);
   private notificationService = inject(Notification);
 
@@ -48,6 +49,7 @@ export class EditRequest {
   formError = '';
 
 
+  // METODO PER SALVARE LA RICHIESTA COME BOZZA (tramite il facade della modifica della richiesta)
   saveDraft(): void {
 
     this.formError = '';
@@ -71,6 +73,7 @@ export class EditRequest {
   }
 
 
+  // METODO PER INVIARE LA RICHIESTA (tramite il facade della modifica della richiesta)
   submitRequest(): void {
 
     this.formError = '';

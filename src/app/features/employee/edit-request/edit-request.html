@@ -79,14 +79,14 @@
         </div>
 
         <!-- Pulsante per salvare la richiesta come bozza -->
-        <button mat-stroked-button color="primary" type="button" (click)="editRequestFacade.saveDraft()"
-          class="draft-btn" aria-label="Save draft of the request">
+        <button mat-stroked-button color="primary" type="button" (click)="saveDraft()" class="draft-btn"
+          aria-label="Save draft of the request">
           Save Draft
           <mat-icon>save</mat-icon>
         </button>
 
         <!-- Pulsante per inviare la richiesta -->
-        <button mat-raised-button color="accent" type="button" (click)="editRequestFacade.submitRequest()"
+        <button mat-raised-button color="accent" type="button" (click)="submitRequest()"
           aria-label="Submit the request">
           Submit Request
           <mat-icon>send</mat-icon>

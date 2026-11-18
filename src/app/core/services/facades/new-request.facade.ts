@@ -20,8 +20,6 @@ export class NewRequestFacade {
 
 
     // METODO PRIVATO PER COSTRUIRE LA RICHIESTA DI RIMBORSO
-    // Questo metodo costruisce la struttura della richiesta di rimborso
-    // a partire dai dati presenti nel form e dallo stato passato come parametro
     private buildRequest(
         status: RequestStatus
     ): RefundRequest {
@@ -65,8 +63,6 @@ export class NewRequestFacade {
 
 
     // METODO PER SALVARE LA BOZZA DELLA RICHIESTA DI RIMBORSO
-    // Questo metodo crea una bozza della richiesta di rimborso utilizzando lo stato DRAFT
-    // Prende la struttura della richiesta di rimborso costruita dal metodo buildRequest con lo stato DRAFT
     saveDraft() {
 
         const request = this.buildRequest(RequestStatus.DRAFT);
@@ -77,13 +73,11 @@ export class NewRequestFacade {
 
 
     // METODO PER INVIARE LA RICHIESTA DI RIMBORSO
-    // Questo metodo valida il form e, se non ci sono errori, crea la richiesta di rimborso con lo stato PENDING
     submitRequest() {
 
         const validationError = this.formFacade.validateForm();
 
         if (validationError) {
-
             return throwError(
                 () => new Error(
                     validationError
@@ -96,11 +90,11 @@ export class NewRequestFacade {
         );
 
         return this.refundRequestService.createRequest(request);
+
     }
+
 }
 
 
-// RESPONSABILITA': 
-// createRequest
-// saveDraft
-// submitRequest
+
+// VS Code Counter: 60 code lines (18/11/2026)

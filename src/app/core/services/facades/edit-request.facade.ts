@@ -18,6 +18,7 @@ export class EditRequestFacade {
 
     constructor() {
 
+        // EFFETTO PER POPOLARE IL FORM QUANDO LA RICHIESTA VIENE CARICATA
         effect(() => {
 
             const request = this.request();
@@ -42,6 +43,7 @@ export class EditRequestFacade {
     }
 
 
+    // INIEZIONE DEI SERVIZI E VARIABILI NECESSARIE PER LA MODIFICA DELLA RICHIESTA
     readonly formFacade = inject(RequestFormFacade);
     private route = inject(ActivatedRoute);
     private authService = inject(AuthService);
@@ -50,6 +52,8 @@ export class EditRequestFacade {
 
     readonly requestId = this.route.snapshot.paramMap.get('id');
 
+
+    // SEGNALE PER OTTENERE LA RICHIESTA DAL SERVIZIO DI RIMBORSO
     readonly request = toSignal(
         this.refundRequestService
             .getRequestById(this.requestId ?? ''),
@@ -59,6 +63,7 @@ export class EditRequestFacade {
     );
 
 
+    // METODO PRIVATO PER COSTRUIRE LA STRUTTURA DELLA RICHIESTA AGGIORNATA
     private buildRequest(
         status: RequestStatus
     ): RefundRequest {
@@ -89,6 +94,7 @@ export class EditRequestFacade {
     }
 
 
+    // METODO PER SALVARE LA RICHIESTA COME BOZZA
     saveDraft() {
 
         const request = this.buildRequest(RequestStatus.DRAFT);
@@ -98,6 +104,7 @@ export class EditRequestFacade {
     }
 
 
+    // METODO PER INVIARE LA RICHIESTA
     submitRequest() {
 
         const currentUser = this.authService.getCurrentUser();
@@ -120,19 +127,14 @@ export class EditRequestFacade {
         const request = this.buildRequest(RequestStatus.PENDING);
 
         return this.refundRequestService.updateRequest(request.id!, request);
-        
+
     }
 
 }
 
 
-// RESPONSABILITA': 
-// Caricare la richiesta
-// Popolare il form
-// Aggiornare la richiesta (salvare come bozza o inviare per approvazione)
 
-
-// VS Code Counter:  code lines (/11/2026)
+// VS Code Counter: 79 code lines (18/11/2026)
 
 
 

@@ -1,11 +1,11 @@
 <!---------------------------------------- SEZIONE DELLE SPESE ---------------------------------------->
-<mat-card #focusCard tabindex="-1" role="section" class="expense-card">
+<mat-card class="expense-card">
 
     <div [formGroup]="form()">
 
         <div formArrayName="expenses">
 
-            <div class="expenses-header">
+            <div class="expenses-header" #focusCard tabindex="-1" role="section">
 
                 <mat-card-subtitle>Expenses
                     <mat-icon>receipt</mat-icon>

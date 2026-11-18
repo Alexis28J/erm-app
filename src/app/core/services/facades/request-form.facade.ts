@@ -65,7 +65,6 @@ export class RequestFormFacade {
 
 
     // METODO PER POPOLARE LE SPESE NEL FORM
-    // Questo metodo viene utilizzato per popolare le spese nel form quando si carica una richiesta esistente.
     populateExpenses(
         expenses: Expense[]
     ): void {
@@ -90,6 +89,7 @@ export class RequestFormFacade {
         {
             initialValue: []
         }
+
     );
 
 
@@ -128,6 +128,7 @@ export class RequestFormFacade {
                 0
             );
         }
+
     );
 
 
@@ -147,6 +148,7 @@ export class RequestFormFacade {
                 0
             );
         }
+
     );
 
 
@@ -168,7 +170,6 @@ export class RequestFormFacade {
 
 
     // METODO PER GESTIRE LA SELEZIONE DEI FILE ALLEGATI PER LE SPESE
-    // Questo metodo legge i file selezionati, li converte in oggetti ExpenseAttachment e li aggiunge alla spesa corrispondente.
     async onFilesSelected(
         event: Event,
         expendeIndex: number
@@ -222,5 +223,7 @@ export class RequestFormFacade {
 
 
 
-// Questo facade contiene tutto il codice condiviso tra i componenti new-request ed edit-request 
-// come la gestione delle spese, degli allegati e la validazione del modulo.
+// VS Code Counter: 147 code lines (18/11/2026)
+
+
+
