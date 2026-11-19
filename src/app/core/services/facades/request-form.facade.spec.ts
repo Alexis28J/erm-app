@@ -147,7 +147,7 @@ describe('RequestFormFacade', () => {
 
   });
 
-
+ 
 
   // TEST PER VERIFICARE LA SOMMA TOTALE DELLE SPESE RICHIESTE (totalRequestedAmount)
   // totalRequestedAmount() è un computed

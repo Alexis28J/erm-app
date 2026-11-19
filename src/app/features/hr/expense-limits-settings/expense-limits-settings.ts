@@ -1,6 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { AppConfig } from '../../../core/interfaces/app-config';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormBuilder, FormArray } from '@angular/forms';
 import { ConfigService } from '../../../core/services/config-service';
 import { ExpenseLimit } from '../../../core/interfaces/expense-limit';
@@ -19,18 +19,10 @@ import * as XLSX from 'xlsx';
 
 
 @Component({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatTableModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTooltipModule,
-    RouterLink
-  ],
+  imports: [CommonModule, ReactiveFormsModule, MatCardModule,
+    MatTableModule, MatInputModule, MatCheckboxModule,
+    MatIconModule, MatButtonModule, MatTooltipModule,
+    RouterLink],
   selector: 'app-expense-limits-settings',
   styleUrls: ['./expense-limits-settings.scss'],
   templateUrl: './expense-limits-settings.html',
@@ -38,12 +30,30 @@ import * as XLSX from 'xlsx';
 export class ExpenseLimitsSettings {
 
   constructor() {
-    this.initializeForm();
+
+    // EFFECT CHE OSSERVA IL SIGNAL DELLA CONFIGURAZIONE HR E AGGIORNA I LIMITI DI SPESA DI CONSEGUENZA
+    effect(() => {
+      const config = this.config();
+
+      if (!config) {
+        return;
+      }
+
+      this.expenseLimits.clear();
+
+      config.expenseLimits.forEach(limit => {
+        this.expenseLimits.push(
+          this.fb.group({
+            id: [limit.id],
+            name: [limit.name],
+            maxAmount: [limit.maxAmount],
+            receiptRequired: [limit.receiptRequired]
+          })
+        );
+      })
+    });
+
   }
-
-
-  // INIETTAZIONE DELLA ROTTA ATTIVA
-  private readonly route = inject(ActivatedRoute);
 
 
   // INIETTAZIONE DEL FORM BUILDER
@@ -51,7 +61,7 @@ export class ExpenseLimitsSettings {
 
 
   // INIETTAZIONE DEL SERVIZIO DI CONFIGURAZIONE HR
-  private readonly hrConfigService = inject(ConfigService);
+  private readonly configService = inject(ConfigService);
 
 
   // INIETTAZIONE DEL SERVIZIO DI NOTIFICHE
@@ -70,10 +80,8 @@ export class ExpenseLimitsSettings {
   ]
 
 
-  // SIGNAL PER LA CONFIGURAZIONE OTTENUTA DAL RESOLVER
-  config = signal<AppConfig>(
-    this.route.snapshot.data['config']
-  );
+  // SIGNAL CHE CONTIENE LA CONFIGURAZIONE HR
+  readonly config = this.configService.config;
 
 
   // INIZIALIZZAZIONE DEL FORM REATTIVO
@@ -83,59 +91,62 @@ export class ExpenseLimitsSettings {
 
 
   // GETTER PER L'ARRAY REATTIVO DEI LIMITI DI SPESE
-  get expenseLimits(): FormArray {
-    return this.form.get('expenseLimits') as FormArray;
-  }
-
-
-  // INIZIALIZZAZIONE DEI CONTROLLI DEL FORM CON I DATI DELLA CONFIGURAZIONE HR
-  private initializeForm(): void {
-    this.config()?.expenseLimits.forEach(limit => {
-
-      this.expenseLimits.push(
-        this.fb.group({
-          id: [limit.id],
-          name: [limit.name],
-          maxAmount: [limit.maxAmount],
-          receiptRequired: [limit.receiptRequired]
-        })
-      );
-
-    });
+  get expenseLimits(): FormArray<any> {
+    return this.form.controls.expenseLimits;
   }
 
 
   // METODO PER SALVARE LE MODIFICHE ALLA CONFIGURAZIONE HR
   save(): void {
 
+    const currentConfig = this.config();
+
+    if (!currentConfig) {
+      this.notification.error('No configuration available.');
+      return;
+    }
+
     const updatedConfig: AppConfig = {
-      ...this.config(),
-      expenseLimits: this.form.value.expenseLimits as ExpenseLimit[] ?? []
+      ...currentConfig,
+      expenseLimits: (this.form.getRawValue().expenseLimits as ExpenseLimit[] ?? [])
     };
 
-    this.hrConfigService
+    this.configService
       .updateConfig(updatedConfig)
-      .subscribe(config => {
-        this.config.set(config);
+      .subscribe({
+        next: (config) => {
+          this.configService.setConfig(config);
+          this.notification.success('Configuration saved successfully.');
+          this.router.navigate(['/hr/settings']);
+        },
+        error: (err) => {
+          this.notification.error('Failed to save configuration.');
+        }
       });
-
-
-    this.notification.success('Configuration saved successfully.');
-
-
-    this.router.navigate(['/hr/settings']);
   }
 
 
   // METODO PER IMPORTARE I LIMITI DI SPESE DA UN FILE EXCEL
-  importExpenseLimits(event: Event): void {
+  importExpenseLimits(
+    event: Event
+  ): void {
+
+    const config = this.config();
+
+    if (!config) {
+      this.notification.error('Configuration not loaded');
+      return;
+    }
 
     const file = (event.target as HTMLInputElement).files?.[0];
 
     if (!file) {
+      this.notification.error('No file selected');
       return;
     }
 
+
+    // LETTURA DEL FILE EXCEL
     const reader = new FileReader();
 
     reader.onload = (e) => {
@@ -144,50 +155,35 @@ export class ExpenseLimitsSettings {
 
         const arrayBuffer = e.target?.result as ArrayBuffer;
 
-        const workbook = XLSX.read(
-          arrayBuffer,
-          {
-            type: 'array'
-          }
-        );
+        const workbook = XLSX.read(arrayBuffer, { type: 'array' });
 
         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
 
-        const rawData = XLSX.utils.sheet_to_json(
-          worksheet
-        );
-
-        console.log('RAW DATA', rawData);
+        const rawData = XLSX.utils.sheet_to_json(worksheet);
 
 
         // CONVERSIONE DEI DATI RAW IN OGGETTI DI TIPO ExpenseLimit
-        const limits: ExpenseLimit[] = rawData.map(
-          (row: any) => {
+        const limits: ExpenseLimit[] =
+          rawData.map((row: any) => {
 
-            const currentLimitId = this.config().expenseLimits.find(limit => limit.name === row.Name);
+            const existingLimit = config.expenseLimits.find(
+              limit => limit.name === row.Name
+            );
 
             return {
-              id: currentLimitId?.id ?? crypto.randomUUID(),
+              id: existingLimit?.id ?? crypto.randomUUID(),
               name: row.Name?.trim(),
               maxAmount: Number(row.MaxAmount),
-              receiptRequired:
-                row.ReceiptRequired === true ||
+              receiptRequired: row.ReceiptRequired === true ||
                 row.ReceiptRequired === 'true'
             };
-          }
-        );
 
-        console.log('CONVERTED LIMITS', limits);
+          });
 
 
         // VALIDAZIONE DEI LIMITI DI SPESE IMPORTATI
-        const hasInvalidRows = limits.some(limit =>
-          !limit.name ||
-          Number.isNaN(
-            limit.maxAmount
-          ) ||
-          limit.maxAmount < 0
-        );
+        const hasInvalidRows = limits.some(limit => !limit.name || isNaN(limit.maxAmount) ||
+          limit.maxAmount < 0);
 
         if (hasInvalidRows) {
           this.notification.error('The Excel file contains invalid data');
@@ -196,70 +192,74 @@ export class ExpenseLimitsSettings {
 
 
         // AGGIORNAMENTO CONFIG 
-        const mergedLimits = this.config().expenseLimits.map(
+        const mergedLimits = config.expenseLimits.map(
 
           existingLimit => {
 
-            const importedLimit = limits.find(
-              limit =>
-                limit.name === existingLimit.name
-            );
+            const importedLimit = limits.find(limit => limit.name === existingLimit.name);
 
             if (!importedLimit) {
               return existingLimit;
             }
 
             return {
+
               ...existingLimit,
+
               maxAmount: importedLimit.maxAmount,
               receiptRequired: importedLimit.receiptRequired
+
             };
+
           }
+
         );
 
 
-        const updateConfig = {
-          ...this.config(),
+        // CREAZIONE CONFIG AGGIORNATA
+        const updatedConfig: AppConfig = {
+          ...config,
           expenseLimits: mergedLimits
         };
 
 
-        this.hrConfigService
-          .updateConfig(updateConfig)
+        this.configService
+          .updateConfig(updatedConfig)
           .subscribe({
-
-            next: () => {
-              this.notification.success(
-                'Expense limits imported successfully'
-              );
-
-              location.reload();
+            next: (saveConfig) => {
+              this.configService.setConfig(saveConfig);
+              this.notification.success('Expense limits imported successfully');
+              // location.reload();
             },
 
             error: () => {
-              this.notification.error(
-                'Error while importing expense limits'
-              );
+              this.notification.error('Error while importing expense limits');
             }
           });
 
-      }
-      catch (error) {
+      } catch (error) {
         console.error(error);
-
-        this.notification.error(
-          'Unable to read the Excel file'
-        );
-
+        this.notification.error('Unable to read the Excel file');
       }
+
     };
 
     reader.readAsArrayBuffer(file);
   }
 
 
+  // Se analizzo pezzo per pezzo il metodo importExpenseLimits:
+  // 1. Legge il file Excel come ArrayBuffer.
+  // 2. Converte il contenuto del file in un workbook.
+  // 3. Estrae i dati dal primo foglio del workbook.
+  // 4. Mappa i dati in un array di limiti di spesa.
+  // 5. Unisce i limiti importati con quelli esistenti.
+  // 6. Crea una nuova configurazione aggiornata.
+  // 7. Aggiorna la configurazione tramite il servizio.
+  // 8. Gestisce eventuali errori durante il processo.
+
 }
 
 
 
-// VS Code counter: 174 code lines (27/10/2026)
+// VS Code counter:  code lines (/11/2026)

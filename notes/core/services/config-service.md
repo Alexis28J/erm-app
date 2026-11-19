@@ -22,24 +22,72 @@ export class ConfigService {
     // Nel mio caso dentro la resource "users" del servizio MockAPI.
 
 
-    constructor(private http: HttpClient) { }  // Inietta il servizio HttpClient per effettuare richieste HTTP
+    // constructor(private http: HttpClient) { }  // Inietta il servizio HttpClient per effettuare richieste HTTP
+    private readonly http = inject(HttpClient);  // E' il modo moderno di ottenere il servizio HttpClient senza usare il costruttore.
+    // Non c'è differenza funzionale rispetto all'uso del costruttore, ma è più conciso e moderno.
 
 
-    // METODO PER OTTENERE LA CONFIGURAZIONE DEGLI UTENTI
-    getConfig() {  
-        return this.http.get<AppConfig>(this.apiUrl);  // Effettua una richiesta GET per ottenere la configurazione degli utenti
-        // <AppConfig> indica il tipo di dati attesi come risposta dalla richiesta GET 
-    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // // METODO PER OTTENERE LA CONFIGURAZIONE DEGLI UTENTI
+    // getConfig() {  
+    //     return this.http.get<AppConfig>(this.apiUrl);  // Effettua una richiesta GET per ottenere la configurazione degli utenti
+    //     // <AppConfig> indica il tipo di dati attesi come risposta dalla richiesta GET 
+    // }
 
 
+    // SIGNAL PER MEMORIZZARE LA CONFIGURAZIONE DEGLI UTENTI
+    readonly config = signal<AppConfig | null>(null);
+
+
+    // Il metodo getConfig() è stato commentato perché ora utilizzo il signal che memorizza la configurazione localmente.
+    // Rispetto al metodo getConfig() che faceva sempre una richiesta HTTP, il signal permette di memorizzare la configurazione localmente e ridurre le chiamate al server.
+    // In questo modo, posso accedere alla configurazione corrente direttamente dal signal senza fare una nuova richiesta HTTP ogni volta.
+    // Questo approccio migliora le prestazioni e riduce il carico sul server.
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     // METODO PER AGGIORNARE LA CONFIGURAZIONE DEGLI UTENTI
     updateConfig(config: AppConfig) {
         return this.http.put<AppConfig>(  // Effettua una richiesta PUT per aggiornare la configurazione degli utenti
-            // <AppConfig> indica il tipo di dati attesi come risposta dalla richiesta PUT cioè la configurazione aggiornata degli utenti
+            // <AppConfig> indica il tipo (modello) di dati attesi come risposta dalla richiesta PUT cioè la configurazione aggiornata degli utenti
             this.apiUrl,  // Endpoint per la configurazione degli utenti
-            config   // Dati della configurazione degli utenti da aggiornare
+            config   // Dati da inviare al server per aggiornare la configurazione
         )  // Effettua una richiesta PUT per aggiornare la configurazione degli utenti
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // METODO PER CARICARE LA CONFIGURAZIONE DEGLI UTENTI
+    loadConfig(){
+        return this.http.get<AppConfig>(this.apiUrl);  // get<AppConfig> indica che ci aspettiamo una risposta di tipo AppConfig dal server.
+        // Quindi, non c'è modo di ottenere per sbaglio una risposta di tipo diverso da AppConfig.
+    }
+
+    // I metodi loadConfig() e updateConfig() fanno ancora richieste HTTP per ottenere e aggiornare la configurazione sul server.
+    // Questo è necessario perché vogliamo mantenere la configurazione aggiornata sia localmente che sul server.
+    // Ricorda che il signal (this.config) solo aggiorna la configurazione localmente mentre loadConfig() e updateConfig() gestiscono la comunicazione con il server.
+    // Tuttavia, setConfig() permette di aggiornare il signal localmente senza fare una richiesta HTTP.
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // METODO PER IMPOSTARE LA CONFIGURAZIONE DEGLI UTENTI
+    setConfig(config: AppConfig){
+        this.config.set(config);
+    }
+    // Questo metodo utilizza il signal per aggiornare la configurazione localmente senza fare una richiesta HTTP al server.
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Prima il servizio faceva solo richieste HTTP per ottenere e aggiornare la configurazione degli utenti, 
+    // ora utilizza anche un signal per memorizzare localmente la configurazione.
+
+    // ConfigService deve mantenere la configurazione in memoria (signal) per poterla utilizzare senza dover fare sempre richieste HTTP.
+
+    // Quindi usare signal è una scelta migliore per mantenere la configurazione in memoria e ridurre le richieste HTTP.
+    // Usando solo richieste HTTP, ogni volta che serve la configurazione si dovrebbe fare una nuova richiesta, aumentando il carico sul server.
 }
 ```
 

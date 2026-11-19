@@ -1,11 +1,10 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { AttachmentService } from '../attachment.service';
 import { Expense } from '../../interfaces/expense';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs';
-import { AppConfig } from '../../interfaces/app-config';
+import { ConfigService } from '../config-service';
 
 
 @Injectable({
@@ -16,7 +15,8 @@ export class RequestFormFacade {
 
     // INIEZIONE DELLE DIPENDENZE
     private fb = inject(FormBuilder);
-    private route = inject(ActivatedRoute);
+    // private route = inject(ActivatedRoute);  // Non più necessario perché accedo alla configurazione tramite il ConfigService
+    private configService = inject(ConfigService);  // Servizio per accedere alla configurazione dell'applicazione tramite signal
     private attachmentService = inject(AttachmentService);
 
 
@@ -93,15 +93,27 @@ export class RequestFormFacade {
     );
 
 
-    // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
-    readonly config = signal<AppConfig>(
-        this.route.snapshot.data['config']
-    );
+    // // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
+    // readonly config = signal<AppConfig>(
+    //     this.route.snapshot.data['config']
+    // );
+
+    // readonly config = computed(() => this.configService.config());  // Computed per ottenere la configurazione dell'applicazione tramite il ConfigService
+    // Uso il computed perché voglio che la configurazione dell'applicazione sia reattiva.
+    // In questo modo, se la configurazione cambia nel ConfigService, tutte le parti dell'app che dipendono da questa computed verranno aggiornate automaticamente.
+
+    readonly config = this.configService.config();  // Accesso diretto al signal della configurazione tramite il ConfigService
+    // Non ho bisogno di usare computed perché sto accedendo direttamente al signal della configurazione tramite il ConfigService
+    // Quindi, uso direttamente il signal senza bisogno di computed. E' più semplice e reattivo.
 
 
     // COMPUTED DELLE CATEGORIE DI SPESA
+    // readonly expenseCategories = computed(
+    //     () => this.config().expenseLimits
+    // );
+
     readonly expenseCategories = computed(
-        () => this.config().expenseLimits
+        () => this.config?.expenseLimits ?? []  // Chiamo il signal della configurazione per ottenere i limiti delle spese, con fallback a array vuoto se non disponibile
     );
 
 
@@ -221,6 +233,11 @@ export class RequestFormFacade {
 
 }
 
+
+// Ho cambiato il modo in cui accedo alla configurazione, ora utilizzo il ConfigService invece di ActivatedRoute.
+// In questo modo, posso accedere alla configurazione corrente direttamente dal ConfigService senza dover passare per le route.
+// Prima accedevo alla configurazione tramite la route attiva (ActivatedRoute), ora la ottengo direttamente dal ConfigService che fornisce la configurazione corrente.
+// Il facade non deve avere responsabilità legate alla gestione della route per ottenere la configurazione.
 
 
 // VS Code Counter: 147 code lines (18/11/2026)

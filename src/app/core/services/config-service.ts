@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '../interfaces/app-config';
@@ -11,14 +11,11 @@ export class ConfigService {
 
     private readonly apiUrl = `${environment.apiUrl}/users/config`;
 
+    private readonly http = inject(HttpClient);
 
-    constructor(private http: HttpClient) { }
 
-
-    // METODO PER OTTENERE LA CONFIGURAZIONE DEGLI UTENTI
-    getConfig() {
-        return this.http.get<AppConfig>(this.apiUrl);
-    }
+    // SIGNAL PER MEMORIZZARE LA CONFIGURAZIONE DEGLI UTENTI
+    readonly config = signal<AppConfig | null>(null);
 
 
     // METODO PER AGGIORNARE LA CONFIGURAZIONE DEGLI UTENTI
@@ -29,9 +26,21 @@ export class ConfigService {
         )
     }
 
+
+    // METODO PER CARICARE LA CONFIGURAZIONE DEGLI UTENTI
+    loadConfig() {
+        return this.http.get<AppConfig>(this.apiUrl);
+    }
+
+
+    // METODO PER IMPOSTARE LA CONFIGURAZIONE DEGLI UTENTI
+    setConfig(config: AppConfig) {
+        this.config.set(config);
+    }
+
 }
 
 
 
-// VS Code counter: 20 code lines (13/10/2026)
+// VS Code counter:  code lines (/11/2026)
 
