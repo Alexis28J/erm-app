@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject } from '@angular/core';
 import { AppConfig } from '../../../core/interfaces/app-config';
 import { Router } from '@angular/router';
 import { FormBuilder, FormArray } from '@angular/forms';
@@ -33,24 +33,22 @@ export class ExpenseLimitsSettings {
 
     // EFFECT CHE OSSERVA IL SIGNAL DELLA CONFIGURAZIONE HR E AGGIORNA I LIMITI DI SPESA DI CONSEGUENZA
     effect(() => {
+
       const config = this.config();
 
       if (!config) {
         return;
       }
 
-      this.expenseLimits.clear();
+      this.form.setControl(
+        'expenseLimits',
+        this.buildExpenseLimitForm(
+          config.expenseLimits
+        )
+      );
 
-      config.expenseLimits.forEach(limit => {
-        this.expenseLimits.push(
-          this.fb.group({
-            id: [limit.id],
-            name: [limit.name],
-            maxAmount: [limit.maxAmount],
-            receiptRequired: [limit.receiptRequired]
-          })
-        );
-      })
+      this.cdr.detectChanges();
+
     });
 
   }
@@ -70,6 +68,10 @@ export class ExpenseLimitsSettings {
 
   // INIETTAZIONE DEL ROUTER
   private readonly router = inject(Router);
+
+
+  // INIETTAZIONE DEL CHANGE DETECTOR REF
+  private readonly cdr = inject(ChangeDetectorRef);
 
 
   // COLONNE DA VISUALIZZARE NELLA TABELLA DEI LIMITI DI SPESE
@@ -229,7 +231,6 @@ export class ExpenseLimitsSettings {
             next: (saveConfig) => {
               this.configService.setConfig(saveConfig);
               this.notification.success('Expense limits imported successfully');
-              // location.reload();
             },
 
             error: () => {
@@ -248,18 +249,37 @@ export class ExpenseLimitsSettings {
   }
 
 
-  // Se analizzo pezzo per pezzo il metodo importExpenseLimits:
-  // 1. Legge il file Excel come ArrayBuffer.
-  // 2. Converte il contenuto del file in un workbook.
-  // 3. Estrae i dati dal primo foglio del workbook.
-  // 4. Mappa i dati in un array di limiti di spesa.
-  // 5. Unisce i limiti importati con quelli esistenti.
-  // 6. Crea una nuova configurazione aggiornata.
-  // 7. Aggiorna la configurazione tramite il servizio.
-  // 8. Gestisce eventuali errori durante il processo.
+  // METODO PER COSTRUIRE IL FORM DEI LIMITI DI SPESA
+  private buildExpenseLimitForm(
+    limits: ExpenseLimit[]
+  ): FormArray {
+    return this.fb.array(
+      limits.map(limit =>
+        this.fb.group({
+          id: [limit.id],
+          name: [limit.name],
+          maxAmount: [limit.maxAmount],
+          receiptRequired: [limit.receiptRequired]
+        })
+      )
+    );
+  }
 
 }
 
 
 
-// VS Code counter:  code lines (/11/2026)
+// VS Code counter: 172 code lines (20/11/2026)
+
+
+
+// Se analizzo pezzo per pezzo il metodo importExpenseLimits:
+// 1. Legge il file Excel come ArrayBuffer.
+// 2. Converte il contenuto del file in un workbook.
+// 3. Estrae i dati dal primo foglio del workbook.
+// 4. Mappa i dati in un array di limiti di spesa.
+// 5. Valida i limiti importati.
+// 6. Unisce i limiti importati con quelli esistenti.
+// 7. Crea una nuova configurazione aggiornata.
+// 8. Aggiorna la configurazione tramite il servizio.
+// 9. Gestisce eventuali errori durante il processo.

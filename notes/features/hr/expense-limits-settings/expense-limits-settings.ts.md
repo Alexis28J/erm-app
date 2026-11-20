@@ -17,25 +17,58 @@ export class ExpenseLimitsSettings {
 
     // EFFECT CHE OSSERVA IL SIGNAL DELLA CONFIGURAZIONE HR E AGGIORNA I LIMITI DI SPESA DI CONSEGUENZA
     effect(() => {
+
       const config = this.config();  // config() restituisce il valore corrente del signal
 
       if (!config) {  // Se la configurazione non è ancora disponibile, esci dall'effect
         return;
       }
 
-      this.expenseLimits.clear();  // Pulisce l'array dei limiti di spesa prima di popolarlo 
-      // con i nuovi dati della configurazione
+      //////////////////////////////////////////////////////////////////////////
+      // this.expenseLimits.clear();  // Pulisce l'array dei limiti di spesa prima di popolarlo 
+      // // con i nuovi dati della configurazione
 
-      config.expenseLimits.forEach(limit => { // Popola l'array dei limiti di spesa con i dati della configurazione corrente
-        this.expenseLimits.push(  // Aggiunge il gruppo di controlli appena creato all'array dei limiti di spesa
-          this.fb.group({  // Crea un gruppo di controlli per ciascun limite di spesa
-            id: [limit.id], 
-            name: [limit.name],
-            maxAmount: [limit.maxAmount],
-            receiptRequired: [limit.receiptRequired]
-          }) // limit è il parametro corrente del ciclo forEach che rappresenta un singolo limite di spesa
-        );
-      })
+      // config.expenseLimits.forEach(limit => { // Popola l'array dei limiti di spesa con i dati della configurazione corrente
+      //   this.expenseLimits.push(  // Aggiunge il gruppo di controlli appena creato all'array dei limiti di spesa
+      //     this.fb.group({  // Crea un gruppo di controlli per ciascun limite di spesa
+      //       id: [limit.id], 
+      //       name: [limit.name],
+      //       maxAmount: [limit.maxAmount],
+      //       receiptRequired: [limit.receiptRequired]
+      //     }) // limit è il parametro corrente del ciclo forEach che rappresenta un singolo limite di spesa
+      //   );
+      // })
+
+
+      // Ho commentato questo pezzo di codice perché la tabella non si aggiornava correttamente (immediatamente) quando modificavo i limiti di spesa
+      // Ora utilizzo setControl che mi permette di sostituire l'intero array dei limiti di spesa nel form in modo più efficiente
+      // Inoltre, usando detectChanges() forzo il rilevamento delle modifiche subito dopo aver aggiornato il form
+      // this.expenseLimits.clear();
+      ///////////////////////////////////////////////////////////////////////////////
+
+      // this.form.setControl(   // Commentato: Faccio un refactoring in modo di facilitare l'unit test
+      //   'expenseLimits',      // Ho creato un metodo separato per costruire il form dei limiti di spesa (vedi buildExpenseLimitForm)
+      //   this.fb.array<any>(
+      //     config.expenseLimits.map(limit =>
+      //       this.fb.group({
+      //         id: [limit.id],
+      //         name: [limit.name],
+      //         maxAmount: [limit.maxAmount],
+      //         receiptRequired: [limit.receiptRequired]
+      //       })
+      //     )
+      //   )
+      // );
+
+      this.form.setControl(  // Aggiorna il controllo 'expenseLimits' con i nuovi valori dal form costruito
+        'expenseLimits',  // Nome del controllo da aggiornare nel form. Viene messo come stringa perché setControl richiede il nome del controllo come primo argomento.
+        this.buildExpenseLimitForm(  // Chiama il metodo che costruisce un FormArray a partire dai limiti di spesa presenti nella configurazione HR
+          config.expenseLimits  // Array dei limiti di spesa presenti nella configurazione HR
+        )
+      );
+
+      this.cdr.detectChanges();  // Forza il rilevamento delle modifiche dopo l'aggiornamento del form
+
     });
 
   }
@@ -65,6 +98,11 @@ export class ExpenseLimitsSettings {
   private readonly router = inject(Router);  // Inietta il Router per la navigazione programmatica.
 
 
+  // INIETTAZIONE DEL CHANGE DETECTOR REF
+  private readonly cdr = inject(ChangeDetectorRef);
+  // Il change detector ref viene utilizzato per forzare il rilevamento delle modifiche quando il form viene aggiornato dinamicamente, ad esempio all'interno di un effect.
+
+
   // COLONNE DA VISUALIZZARE NELLA TABELLA DEI LIMITI DI SPESE
   displayedColumns = [
     'category',
@@ -75,12 +113,12 @@ export class ExpenseLimitsSettings {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // SIGNAL PER LA CONFIGURAZIONE OTTENUTA DAL RESOLVER
-  config = signal<AppConfig>(  // Inizializza il signal con i dati della configurazione ottenuti dal resolver.
-    this.route.snapshot.data['config'] // Recupera i dati della configurazione risolti dal resolver prima che la rotta venga attivata.
+  // config = signal<AppConfig>(  // Inizializza il signal con i dati della configurazione ottenuti dal resolver.
+    // this.route.snapshot.data['config'] // Recupera i dati della configurazione risolti dal resolver prima che la rotta venga attivata.
     // snapshot permette di avere accesso ai dati risolti (forniti dal resolver) senza dover sottoscrivere un observable.
     // data contiene i dati risolti (forniti) dal resolver, in questo caso la configurazione HR.
     // [config] contiene la configurazione HR risolta dal resolver cioè quei dati che sono stati preparati prima che la rotta venisse attivata.
-  );
+  // );
 
   // Commentato: il signal per la configurazione ottenuta dal resolver non è più utilizzato perché ora si utilizza il signal del ConfigService.
   // In questo modo, il componente osserva direttamente il signal della ConfigService per ottenere la configurazione HR aggiornata.
@@ -498,7 +536,7 @@ export class ExpenseLimitsSettings {
             next: (saveConfig) => {
               this.configService.setConfig(saveConfig);   // Aggiorno la configurazione locale con quella salvata
               this.notification.success('Expense limits imported successfully');   // Mostro una notifica di successo
-              location.reload();   // Ricarico la pagina per applicare le modifiche
+              // location.reload();   // Ricarico la pagina per applicare le modifiche
             },
 
             error: () => {   // Gestisco l'errore durante l'importazione dei limiti di spesa
@@ -514,16 +552,42 @@ export class ExpenseLimitsSettings {
     };
 
     reader.readAsArrayBuffer(file);  // Leggo il file Excel come ArrayBuffer per poterlo elaborare successivamente
-  }
 
   // Se analizzo pezzo per pezzo il metodo importExpenseLimits:
   // 1. Legge il file Excel come ArrayBuffer.
   // 2. Converte il contenuto del file in un workbook.
   // 3. Estrae i dati dal primo foglio del workbook.
   // 4. Mappa i dati in un array di limiti di spesa.
-  // 5. Unisce i limiti importati con quelli esistenti.
-  // 6. Crea una nuova configurazione aggiornata.
-  // 7. Aggiorna la configurazione tramite il servizio.
-  // 8. Gestisce eventuali errori durante il processo.
-}
+  // 5. Valida i limiti importati.
+  // 6. Unisce i limiti importati con quelli esistenti.
+  // 7. Crea una nuova configurazione aggiornata.
+  // 8. Aggiorna la configurazione tramite il servizio.
+  // 9. Gestisce eventuali errori durante il processo.
+
+
+  // METODO PER COSTRUIRE IL FORM DEI LIMITI DI SPESA
+  // Questo metodo costruisce un FormArray a partire dai limiti di spesa forniti come parametro
+  private buildExpenseLimitForm( 
+    limits: ExpenseLimit[]  
+  ): FormArray {  
+    return this.fb.array(  
+      limits.map(limit =>  // Mappa ogni limite di spesa in un FormGroup corrispondente
+        this.fb.group({  // Costruisce un FormGroup per ogni limite di spesa con i campi id, name, maxAmount e receiptRequired
+          id: [limit.id],
+          name: [limit.name],
+          maxAmount: [limit.maxAmount],
+          receiptRequired: [limit.receiptRequired]
+        })
+      )
+    );
+  }
+
+  }
 ```
+
+# NOTA: location.reload()
+
+In Angular è quasi sempre considerato un anti-pattern (una cattiva pratica) usare location.reload() dopo aver completato un'operazione, indipendentemente dalla versione (inclusa Angular 22).
+
+Il motivo principale è che Angular è progettato per creare Single Page Application (SPA): ricaricare l'intera pagina distrugge lo stato dell'applicazione, azzera la cache in memoria e costringe il browser a riscaricare ed eseguire nuovamente tutti i bundle JavaScript e CSS, peggiorando l'esperienza utente (schermata bianca/lampeggio) e le prestazioni.
+

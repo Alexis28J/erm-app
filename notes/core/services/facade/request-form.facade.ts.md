@@ -48,14 +48,23 @@ import { AppConfig } from '../../interfaces/app-config';
     providedIn: 'root'
 })
 
+
 // Questo facade contiene tutto il codice condiviso tra i componenti new-request ed edit-request 
 // come la gestione delle spese, degli allegati e la validazione del modulo.
+
+// 19/11/2026
+// Ho cambiato il modo in cui accedo alla configurazione, ora utilizzo il ConfigService invece di ActivatedRoute.
+// In questo modo, posso accedere alla configurazione corrente direttamente dal ConfigService senza dover passare per le route.
+// Prima accedevo alla configurazione tramite la route attiva (ActivatedRoute), ora la ottengo direttamente dal ConfigService che fornisce la configurazione corrente.
+// Il facade non deve avere responsabilità legate alla gestione della route per ottenere la configurazione.
+
 
 export class RequestFormFacade {
 
     // INIEZIONE DELLE DIPENDENZE
     private fb = inject(FormBuilder);
-    private route = inject(ActivatedRoute);
+    // private route = inject(ActivatedRoute);  // Non più necessario perché accedo alla configurazione tramite il ConfigService
+    private configService = inject(ConfigService);  // Servizio per accedere alla configurazione dell'applicazione tramite signal
     private attachmentService = inject(AttachmentService);
 
 
@@ -102,6 +111,7 @@ export class RequestFormFacade {
         this.expenses.removeAt(index);  // removeAt è un metodo per rimuovere un elemento dall'array delle spese in base all'indice specificato
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // METODO PER POPOLARE LE SPESE NEL FORM
     // Questo metodo viene utilizzato per popolare le spese nel form quando si carica una richiesta esistente.
@@ -121,6 +131,7 @@ export class RequestFormFacade {
         });
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // SIGNAL PER TENERE TRACCIA DEI VALORI DELLE SPESE (IMPORTO RICHIESTO, CATEGORIA, ETC.)
     readonly expensesValue = toSignal(
@@ -138,18 +149,41 @@ export class RequestFormFacade {
         // Quindi inizia vuoto e poi si aggiorna man mano che i valori delle spese cambiano.
     );
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
-    readonly config = signal<AppConfig>( 
-        this.route.snapshot.data['config']  // Recupera la configurazione dell'applicazione dai dati della route corrente
-    );
+    // readonly config = signal<AppConfig>(
+    //     this.route.snapshot.data['config']
+    // );
 
+    // Commentato perché questo approccio utilizza direttamente i dati della route snapshot, mentre ora utilizziamo il service per ottenere il signal della configurazione.
+    // Non è una buona pratica accedere direttamente ai dati della route snapshot della configurazione perché si perderebbe la reattività ai cambiamenti della configurazione stessa.
+    // Ma più importante, questo approccio è compito del service della configurazione, non del facade.
+
+
+    // readonly config = computed(() => this.configService.config());  // Computed per ottenere la configurazione dell'applicazione tramite il ConfigService
+    // Uso il computed perché voglio che la configurazione dell'applicazione sia reattiva.
+    // In questo modo, se la configurazione cambia nel ConfigService, tutte le parti dell'app che dipendono da questa computed verranno aggiornate automaticamente.
+
+    readonly config = this.configService.config();  // Accesso diretto al signal della configurazione tramite il ConfigService
+    // Non ho bisogno di usare computed perché sto accedendo direttamente al signal della configurazione tramite il ConfigService
+    // Quindi, uso direttamente il signal senza bisogno di computed. E' più semplice e reattivo.
+
+    // Il facade non deve conoscere i dettagli della configurazione, ma solo esporre il signal.
+    // Ecco perché utilizziamo un signal per la configurazione, così il facade può reagire ai cambiamenti senza conoscere i dettagli interni della configurazione stessa.
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // COMPUTED DELLE CATEGORIE DI SPESA
-    readonly expenseCategories = computed(
-        () => this.config().expenseLimits  // Recupera i limiti delle spese dalla configurazione dell'applicazione
-    );
+    // readonly expenseCategories = computed(
+    //     () => this.config().expenseLimits  // Recupera i limiti delle spese dalla configurazione dell'applicazione
+    // );  // E' meglio se uso un fallback a array vuoto se non disponibile
 
+    readonly expenseCategories = computed(
+        () => this.config?.expenseLimits ?? []  // Chiamo il signal della configurazione per ottenere i limiti delle spese, con fallback a array vuoto se non disponibile
+    );  
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // COMPUTED PER OTTENERE I DATI DI PROGRESSO DELLE SPESE (CATEGORIA E IMPORTO RICHIESTO)
     readonly expenseProgressData = computed(
@@ -164,6 +198,7 @@ export class RequestFormFacade {
         // Viene utilizzato per visualizzare il progresso delle spese in base alle categorie e agli importi richiesti.
     );
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // COMPUTED PER OTTENERE L'IMPORTO TOTALE RICHIESTO PER LE SPESE
     readonly totalRequestedAmount = computed(
@@ -183,6 +218,7 @@ export class RequestFormFacade {
 
     );
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // COMPUTED PER OTTENERE L'IMPORTO MASSIMO CONSENTITO PER LE SPESE 
     // (SOMMA DEI MASSIMI PER CATEGORIA O TOTALE MASSIMO CONSENTITO)
