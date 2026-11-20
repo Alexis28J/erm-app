@@ -88,17 +88,16 @@ export class RequestFormFacade {
         {
             initialValue: []
         }
-
     );
 
 
     // SIGNAL PER LA CONFIGURAZIONE DELL'APPLICAZIONE
-    readonly config = this.configService.config();
+    readonly config = this.configService.config;
 
 
     // COMPUTED DELLE CATEGORIE DI SPESA 
     readonly expenseCategories = computed(
-        () => this.config?.expenseLimits ?? []
+        () => this.config()?.expenseLimits ?? []
     );
 
 

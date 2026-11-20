@@ -50,8 +50,28 @@ import { RequestFormFacade } from '../../../core/services/facades/request-form.f
 
 export class EditRequest {
 
-  // VARIABILE PER MEMORIZZARE EVENTUALI ERRORI DEL FORM
-  formError = '';
+  // COSTRUTTORE DEL COMPONENTE CHE INIZIALIZZA IL FACADE CON I DATI DELLA RICHIESTA
+  constructor() {
+
+    // Perché usare route.snapshot.data['request'] se il resolver ha già caricato la richiesta dal backend?
+    // Perché il resolver assicura che la richiesta sia disponibile prima che il componente venga caricato,
+    // e route.snapshot.data['request'] permette di accedere a questa richiesta caricata dal resolver.
+
+    // NON è la stessa cosa. Il resolver garantisce che i dati siano PRONTI prima del caricamento del componente,
+    // mentre route.snapshot.data['request'] è semplicemente il modo per ACCEDERE a quei dati già pronti.
+
+    const request = this.route.snapshot.data['request'] as RefundRequest;   
+    // Recupero i dati della richiesta dalla rotta risolta dal resolver
+    // Le richieste vengono risolte (cioè recuperate) dal resolver prima che il componente venga inizializzato e il resolver, a sua volta, utilizza il servizio per ottenere i dati della richiesta dal backend prima che il componente venga creato
+    
+
+    // Perché usare il metodo initialize del facade?
+    // Perché il facade gestisce lo stato del form e popola i campi con i dati della richiesta caricata dal resolver.
+    this.editRequestFacade.initialize(request);
+    // Inizializzo il facade della modifica della richiesta (EditRequestFacade) con i dati recuperati.
+    // Una volta inizializzato il facade, il componente può utilizzare i metodi del facade per gestire la richiesta
+
+  }
 
 
   // INIEZIONE DEL FACADE PER LA MODIFICA DELLA RICHIESTA
@@ -62,5 +82,63 @@ export class EditRequest {
   protected readonly editFacade = this.editRequestFacade.formFacade;
 
  // La proprietà protected indica che la proprietà è accessibile solo all'interno della classe e delle sue sottoclassi.
+
+
+ // INIEZIONE DEL ROUTER, DELLA ROUTE ATTIVA E DEL SERVIZIO DI NOTIFICA
+  private route = inject(ActivatedRoute);  // Inietto la rotta attiva per accedere ai dati risolti dal resolver
+  private router = inject(Router);  // Inietto il router per navigare tra le pagine
+  private notificationService = inject(Notification);  // Inietto il servizio di notifica per mostrare messaggi all'utente
+
+  
+ // VARIABILE PER MEMORIZZARE EVENTUALI ERRORI DEL FORM
+  formError = '';
+
+
+    // METODO PER SALVARE LA RICHIESTA COME BOZZA (tramite il facade della modifica della richiesta)
+  saveDraft(): void {
+
+    this.formError = '';
+
+    this.editRequestFacade.saveDraft()
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Request saved as draft successfully'
+          );
+
+          this.router.navigate([
+            '/employee/request-list'
+          ]);
+        },
+
+        error: error => {
+          this.formError = error.message;
+        }
+      });
+  }
+
+
+  // METODO PER INVIARE LA RICHIESTA (tramite il facade della modifica della richiesta)
+  submitRequest(): void {
+
+    this.formError = '';
+
+    this.editRequestFacade.submitRequest()
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Request submitted sucessfully'
+          );
+
+          this.router.navigate([
+            '/employee/request-list'
+          ]);
+        },
+        error: error => {
+          this.formError = error.message;
+        }
+      });
+  }
+  
 }
 ```

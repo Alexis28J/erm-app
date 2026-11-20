@@ -165,9 +165,17 @@ export class RequestFormFacade {
     // Uso il computed perché voglio che la configurazione dell'applicazione sia reattiva.
     // In questo modo, se la configurazione cambia nel ConfigService, tutte le parti dell'app che dipendono da questa computed verranno aggiornate automaticamente.
 
-    readonly config = this.configService.config();  // Accesso diretto al signal della configurazione tramite il ConfigService
     // Non ho bisogno di usare computed perché sto accedendo direttamente al signal della configurazione tramite il ConfigService
     // Quindi, uso direttamente il signal senza bisogno di computed. E' più semplice e reattivo.
+
+
+    // "readonly config" chiama la signal dal ConfigService per ottenere la configurazione dell'applicazione
+    readonly config = this.configService.config;  // Accesso diretto al signal della configurazione tramite il ConfigService
+
+    // Perché this.configService.config; e non this.configService.config() cioè con la parentesi tonde?
+    // La differenza è che this.configService.config è una signal, quindi è un oggetto che può essere letto come funzione per ottenere il valore corrente.
+    // Se mettessimo le parentesi tonde, chiameremmo la funzione che restituisce la signal stessa, non il valore della signal.
+    // In altre parole, this.config() restituirebbe il valore  corrente della signal (valore statico), mentre this.config senza parentesi è la signal stessa (oggetto reattivo).
 
     // Il facade non deve conoscere i dettagli della configurazione, ma solo esporre il signal.
     // Ecco perché utilizziamo un signal per la configurazione, così il facade può reagire ai cambiamenti senza conoscere i dettagli interni della configurazione stessa.
@@ -335,3 +343,22 @@ Per componenti semplici che interagiscono con un solo servizio, potrebbe non ess
 
 Sì, una Facade può orchestrare più servizi sottostanti, centralizzando la logica e fornendo un'interfaccia semplificata ai componenti.
 Tuttavia, è importante non sovraccaricare la Facade con troppa responsabilità, mantenendo un buon equilibrio tra semplicità e modularità.
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## NB - ASSEGNARE SIGNAL A UNA PROPRIETà DI UNA CLASSE
+
+Non devi mettere le parentesi tonde quando assegni il signal a una proprietà della classe: readonly config = this.configService.config; è la sintassi corretta.
+
+Le parentesi tonde servono per leggere il valore attuale del signal, mentre senza parentesi passi il riferimento al signal stesso, mantenendone intatta la reattività.
+
+Cosa succede nei due casi
+
+
+Sintassi	                                              Cosa fa	                                                          Risultato
+readonly config = this.configService.config;	          Assegna il riferimento al signal.	                                  La proprietà resta un Signal. Nel template userai {{ config() }} e si aggiornerà automaticamente.
+
+
+Sintassi	                                              Cosa fa	                                                          Risultato
+readonly config = this.configService.config();	          Legge il valore una sola volta al momento dell'inizializzazione.	  La proprietà diventa un valore statico (es. un oggetto o una stringa) e perde la reattività.

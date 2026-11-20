@@ -1,39 +1,59 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
+// import { ActivatedRoute } from '@angular/router';
 import { vi, describe, beforeEach, it, expect } from 'vitest';
 import { RequestFormFacade } from './request-form.facade';
 import { AttachmentService } from '../attachment.service';
 import { ExpenseCategoryName } from '../../interfaces/enum';
 import { Expense } from '../../interfaces/expense';
+import { signal } from '@angular/core';
+import { ConfigService } from '../config-service';
+// import { config } from 'rxjs';
 
 describe('RequestFormFacade', () => {
 
   let facade: RequestFormFacade;
 
 
-  // Mock for ActivatedRoute
-  const activatedRouteMock = {
-    snapshot: {
-      data: {
-        config: {
-          expenseLimits: [
-            {
-              name: 'MEAL',
-              maxAmount: 30
-            },
-            {
-              name: 'TRAIN',
-              maxAmount: 50
-            }
+  // // Mock for ActivatedRoute
+  // const activatedRouteMock = {
+  //   snapshot: {
+  //     data: {
+  //       config: {
+  //         expenseLimits: [
+  //           {
+  //             name: 'MEAL',
+  //             maxAmount: 30
+  //           },
+  //           {
+  //             name: 'TRAIN',
+  //             maxAmount: 50
+  //           }
 
-          ]
+  //         ]
+  //       }
+  //     }
+  //   }
+  // };
+
+
+  // Mock per Config
+  const configServiceMock = {
+    config: signal({
+      expenseLimits: [
+        {
+          name: ExpenseCategoryName.MEAL,
+          maxAmount: 30
+        },
+        {
+          name: ExpenseCategoryName.TRAIN,
+          maxAmount: 50
         }
-      }
-    }
+      ]
+    })
   };
 
 
-  // Mock for AttachmentService
+  // Mock per AttachmentService
   const attachmentServiceMock = {
     fileToAttachment: vi.fn()
   };
@@ -42,14 +62,21 @@ describe('RequestFormFacade', () => {
   // MODULO DI TEST E INIEZIONE DEL FACADE PRIMA DI OGNI TEST
   beforeEach(() => {
     TestBed.configureTestingModule({
+      // providers: [
+      //   RequestFormFacade,
+      //   { provide: ActivatedRoute, useValue: activatedRouteMock },
+      //   { provide: AttachmentService, useValue: attachmentServiceMock }
+      // ]
       providers: [
         RequestFormFacade,
-        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: ConfigService, useValue: configServiceMock },
         { provide: AttachmentService, useValue: attachmentServiceMock }
       ]
     });
+
     facade = TestBed.inject(RequestFormFacade);
   });
+
 
   // // TEST PER VERIFICARE L'AGGIUNTA DI UNA NUOVA SPESA (METODO ADD EXPENSE)
   it('should add expense', () => {
@@ -147,7 +174,7 @@ describe('RequestFormFacade', () => {
 
   });
 
- 
+
 
   // TEST PER VERIFICARE LA SOMMA TOTALE DELLE SPESE RICHIESTE (totalRequestedAmount)
   // totalRequestedAmount() è un computed
@@ -211,11 +238,11 @@ describe('RequestFormFacade', () => {
 
 
 
-// VS Code Counter: 146 code lines (18/11/2026)
+// VS Code Counter: code lines (/11/2026)
 
 
 
-// TEST VERIFICATI (18/11/2026): 
+// TEST VERIFICATI (20/11/2026): 
 // - 'should add a new expense' (addExpense)  (avvenuto con successo)
 // - 'should remove expense' (removeExpense)  (avvenuto con successo)
 // - 'should populate expenses' (populateExpenses)  (avvenuto con successo)

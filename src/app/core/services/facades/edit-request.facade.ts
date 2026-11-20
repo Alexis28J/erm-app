@@ -1,9 +1,7 @@
-import { effect, inject, Injectable } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { RequestFormFacade } from './request-form.facade';
-import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { RefundRequestService } from '../refund-request.service';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { RequestStatus } from '../../interfaces/enum';
 import { RefundRequest } from '../../interfaces/refund-request';
 import { Expense } from '../../interfaces/expense';
@@ -30,13 +28,11 @@ export class EditRequestFacade {
             this.formFacade.requestForm.patchValue({
 
                 referenceMonth: request.referenceMonth,
-
                 noteEmployee: request.noteEmployee ?? '',
 
             });
 
             this.formFacade.populateExpenses(request.expenses);
-
             this.initialized = true;
         });
 
@@ -45,22 +41,28 @@ export class EditRequestFacade {
 
     // INIEZIONE DEI SERVIZI E VARIABILI NECESSARIE PER LA MODIFICA DELLA RICHIESTA
     readonly formFacade = inject(RequestFormFacade);
-    private route = inject(ActivatedRoute);
     private authService = inject(AuthService);
     private refundRequestService = inject(RefundRequestService);
     private initialized = false;
 
-    readonly requestId = this.route.snapshot.paramMap.get('id');
+
+    // SEGNALE PER MEMORIZZARE LA RICHIESTA CARICATA DAL RESOLVER
+    readonly request = signal<RefundRequest | null>(null);
 
 
-    // SEGNALE PER OTTENERE LA RICHIESTA DAL SERVIZIO DI RIMBORSO
-    readonly request = toSignal(
-        this.refundRequestService
-            .getRequestById(this.requestId ?? ''),
-        {
-            initialValue: null
-        }
-    );
+    // METODO PER INIZIALIZZARE IL FACADE CON LA RICHIESTA CARICATA DAL RESOLVER
+    initialize(request: RefundRequest): void {
+        this.formFacade.requestForm.reset();
+        this.formFacade.populateExpenses([]);
+        this.initialized = false;
+        this.request.set(request);
+    }
+
+    // Quindi, il flusso per ottenere la richiesta aggiornata nel form è il seguente:
+    // 1. Il resolver carica la richiesta dal backend tramite il RefundRequestService.
+    // 2. Il componente (EditRequest) chiama il metodo initialize del facade con la richiesta caricata.
+    // 3. Il signal request viene aggiornato e tramite, l'effetto definito nel costruttore, 
+    // il form viene popolato con i dati della richiesta.
 
 
     // METODO PRIVATO PER COSTRUIRE LA STRUTTURA DELLA RICHIESTA AGGIORNATA
@@ -91,6 +93,7 @@ export class EditRequestFacade {
             lastUpdateDate: new Date().toISOString()
 
         };
+
     }
 
 
@@ -134,7 +137,7 @@ export class EditRequestFacade {
 
 
 
-// VS Code Counter: 79 code lines (18/11/2026)
+// VS Code Counter: 75 code lines (20/11/2026)
 
 
 

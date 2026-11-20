@@ -58,3 +58,6 @@ export const configResolver: ResolveFn<AppConfig> = () => {
  Questo significa che Initializer è più pesante in termini di avvio dell'applicazione, poiché deve completare il caricamento della configurazione prima che l'app sia pronta.
 
  Il resolver, invece, non rallenta l'avvio dell'app, ma garantisce che la configurazione sia disponibile solo quando necessario per una determinata rotta.
+
+
+ # NOTA: Non dimenticare di aggiungere questo resolver alla configurazione delle rotte del componente che ne ha bisogno.

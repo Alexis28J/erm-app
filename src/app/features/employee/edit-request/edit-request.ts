@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TotalProgressBar } from '../../../shared/total-progress-bar/total-progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -16,6 +16,7 @@ import { ExpenseEditor } from '../../../shared/expense-editor/expense-editor';
 import { RequestDetailsCard } from '../../../shared/request-details-card/request-details-card';
 import { RequestFormFacade } from '../../../core/services/facades/request-form.facade';
 import { Notification } from '../../../shared/notification-service/notification';
+import { RefundRequest } from '../../../core/interfaces/refund-request';
 
 @Component({
   imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule,
@@ -31,6 +32,15 @@ import { Notification } from '../../../shared/notification-service/notification'
 
 export class EditRequest {
 
+  // COSTRUTTORE DEL COMPONENTE CHE INIZIALIZZA IL FACADE CON I DATI DELLA RICHIESTA
+  constructor() {
+
+    const request = this.route.snapshot.data['request'] as RefundRequest;   
+    
+    this.editRequestFacade.initialize(request);
+
+  }
+
 
   // INIEZIONE DEL FACADE PER LA MODIFICA DELLA RICHIESTA
   editRequestFacade = inject(EditRequestFacade);
@@ -40,7 +50,8 @@ export class EditRequest {
   protected readonly editFacade = this.editRequestFacade.formFacade;
 
 
-  // INIEZIONE DEL ROUTER E DEL SERVIZIO DI NOTIFICA
+  // INIEZIONE DEL ROUTER, DELLA ROUTE ATTIVA E DEL SERVIZIO DI NOTIFICA
+  private route = inject(ActivatedRoute);  
   private router = inject(Router);
   private notificationService = inject(Notification);
 
@@ -94,8 +105,9 @@ export class EditRequest {
         }
       });
   }
+  
 }
 
 
 
-// VS Code Counter: 70 code lines (17/11/2026)
+// VS Code Counter: 76 code lines (20/11/2026)

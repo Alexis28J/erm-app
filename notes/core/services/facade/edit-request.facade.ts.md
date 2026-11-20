@@ -84,23 +84,53 @@ export class EditRequestFacade {
 
     // INIEZIONE DEI SERVIZI E VARIABILI NECESSARIE PER LA MODIFICA DELLA RICHIESTA
     readonly formFacade = inject(RequestFormFacade);
-    private route = inject(ActivatedRoute);
+    // private route = inject(ActivatedRoute);  // Commentato perché non utilizziamo più la rotta per ottenere l'ID della richiesta
     private authService = inject(AuthService);
     private refundRequestService = inject(RefundRequestService);
     private initialized = false;
 
-    readonly requestId = this.route.snapshot.paramMap.get('id');
+    // readonly requestId = this.route.snapshot.paramMap.get('id');  // Commentato perché ora utilizziamo il resolver per ottenere la richiesta
 
 
-    // SEGNALE PER OTTENERE LA RICHIESTA DAL SERVIZIO DI RIMBORSO
-    readonly request = toSignal(
-        this.refundRequestService
-            .getRequestById(this.requestId ?? ''),  // Ottiene la richiesta di rimborso dal servizio utilizzando l'ID della richiesta
-        {
-            initialValue: null  // Valore iniziale del segnale prima che la richiesta venga caricata
-        }
-    );
+    // // SEGNALE PER OTTENERE LA RICHIESTA DAL SERVIZIO DI RIMBORSO
+    // Commentato perché ora utilizziamo il resolver per ottenere la richiesta, 
+    // quindi non abbiamo più bisogno di recuperarla tramite l'ID dalla route.
+    // readonly request = toSignal(
+    //     this.refundRequestService
+    //         .getRequestById(this.requestId ?? ''),
+    //     {
+    //         initialValue: null
+    //     }
+    // );
 
+
+    // SEGNALE PER MEMORIZZARE LA RICHIESTA CARICATA DAL RESOLVER
+    // Questo signal memorizza la richiesta caricata dal resolver e viene utilizzato per popolare il form (vedi l'effect) quando la richiesta viene inizializzata.
+    readonly request = signal<RefundRequest | null>(null); 
+    // Ricorda che questo signal viene aggiornato solo quando viene chiamato il metodo initialize con la richiesta caricata dal resolver.
+
+
+    // METODO PER INIZIALIZZARE IL FACADE CON LA RICHIESTA CARICATA DAL RESOLVER
+    // Questo metodo è utilizzato per inizializzare il facade con la richiesta caricata dal resolver.
+    // In pratica, questo metodo prepara il facade per lavorare con la richiesta specifica, 
+    // assicurandosi che il form sia pulito e pronto per essere popolato con i dati della richiesta.
+    initialize(request: RefundRequest): void {
+        this.formFacade.requestForm.reset();  // Resetta il form per assicurarsi che non ci siano dati residui
+        this.formFacade.populateExpenses([]); // Pulisce le spese nel form per evitare dati residui. 
+        // Non basta resettare il form perché le spese potrebbero essere gestite separatamente. 
+        // Ad esempio, potrebbero essere memorizzate in un array separato o in un componente figlio.
+        this.initialized = false;  // Segnala che il form non è ancora stato popolato con i dati della richiesta corrente
+        this.request.set(request);  // Aggiorna il signal con la richiesta corrente, in modo che il form possa essere popolato tramite l'effetto definito nel costruttore
+    }
+
+    // Quindi, il flusso per ottenere la richiesta aggiornata nel form è il seguente:
+    // 1. Il resolver carica la richiesta dal backend tramite il RefundRequestService.
+    // 2. Il componente (EditRequest) chiama il metodo initialize del facade con la richiesta caricata.
+    // 3. Il signal request viene aggiornato e tramite, l'effetto definito nel costruttore, 
+    // il form viene popolato con i dati della richiesta.
+
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // METODO PRIVATO PER COSTRUIRE LA STRUTTURA DELLA RICHIESTA AGGIORNATA
     private buildRequest(

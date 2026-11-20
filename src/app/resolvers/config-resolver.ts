@@ -1,8 +1,8 @@
 import { ResolveFn } from '@angular/router';
-import { AppConfig } from './core/interfaces/app-config';
+import { AppConfig } from '../core/interfaces/app-config';
 import { inject } from '@angular/core';
 import { tap } from 'rxjs/operators';
-import { ConfigService } from './core/services/config-service';
+import { ConfigService } from '../core/services/config-service';
 
 export const configResolver: ResolveFn<AppConfig> = () => {
 

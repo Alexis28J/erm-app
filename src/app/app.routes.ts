@@ -5,10 +5,11 @@ import { roleGuard } from './core/guards/role-guard';
 import { UserRole } from './core/interfaces/enum';
 import { EmployeeLayout } from './shared/layouts/employee-layout/employee-layout';
 import { HrLayout } from './shared/layouts/hr-layout/hr-layout';
-import { configResolver } from './config-resolver';
+import { configResolver } from './resolvers/config-resolver';
 import { HrSettings } from './features/hr/hr-settings/hr-settings';
 import { ExpenseLimitsSettings } from './features/hr/expense-limits-settings/expense-limits-settings';
 import { UserManagement } from './features/hr/user-management/user-management';
+import { requestResolver } from './resolvers/request-resolver';
 
 export const routes: Routes = [
 
@@ -78,7 +79,8 @@ export const routes: Routes = [
                     ).then(m => m.EditRequest),
                 title: 'Employee Area: Edit Request',
                 resolve: {
-                    config: configResolver
+                    config: configResolver,
+                    request: requestResolver
                 }
             },
 
@@ -182,5 +184,5 @@ export const routes: Routes = [
 
 
 
-// VS Code Counter: 166 code lines (22/10/2026)
+// VS Code Counter: 168 code lines (20/11/2026)
 

@@ -143,7 +143,8 @@ export const routes: Routes = [
                         './features/employee/edit-request/edit-request'
                     ).then(m => m.EditRequest),
                 resolve: {  // "resolve" indica che prima di attivare questa rotta, Angular deve risolvere i dati specificati qui.
-                    config: configResolver // la proprietà "config" sarà risolta utilizzando il configResolver prima che la rotta venga attivata.
+                    config: configResolver, // la proprietà "config" sarà risolta utilizzando il configResolver prima che la rotta venga attivata.
+                    request: requestResolver  // Resolver per recuperare i dettagli della richiesta basata sull'ID fornito nei parametri della rotta
                 }
             },
 
