@@ -34,6 +34,7 @@ export class EditRequestFacade {
 
             this.formFacade.populateExpenses(request.expenses);
             this.initialized = true;
+            
         });
 
     }

@@ -232,3 +232,32 @@ describe('RequestFormFacade', () => {
     
 });
 ```
+
+- vi.fn è una funzione di Vitest che crea un mock function, utile per intercettare e verificare le chiamate ai metodi durante i test.
+
+Come funziona? 
+Quando viene chiamata una funzione mockata con vi.fn, Vitest registra le chiamate e i parametri passati.
+Questo permette di verificare se la funzione è stata chiamata, quante volte e con quali argomenti.
+
+
+- it(...): è la funzione di Vitest che definisce un singolo unit test.
+La stringa passata a it(...) descrive il comportamento atteso dal test.
+
+- expect(...): è la funzione di Vitest che verifica che una condizione sia vera.
+
+- toHaveBeenCalled(): è un matcher di Vitest che verifica che un mock sia stato chiamato almeno una volta.
+
+- toBe(...): è un matcher di Vitest che verifica che il valore atteso sia uguale al valore ricevuto.
+
+- Pattern AAA è un approccio comune nei test unitari che suddivide il test in tre fasi distinte: Arrange, Act e Assert.
+
+1. Arrange: prepara l'ambiente di test, inizializza mock e dati necessari.
+
+2. Act: esegue l'azione da testare (ad esempio chiamata a facade.saveDraft() o facade.submitRequest()).
+
+3. Assert: verifica che il risultato sia quello atteso, utilizzando expect(...) e matcher come toBe(...) o toHaveBeenCalled().
+
+Non sempre è necessario utilizzare tutti e tre i passaggi del pattern AAA, soprattutto nei test più semplici, ma è una buona pratica mantenerli separati per chiarezza e manutenzione del test.
+
+- Quando il metodo delega a un altro servizio, è utile intercettare le chiamate ai mock per verificare che i dati passati siano corretti.
+Quindi è necessario usare un mock per "spiare" (spy) le chiamate al servizio e verificare i dati passati, tramite .mock.calls (o toHaveBeenCalledWith).
