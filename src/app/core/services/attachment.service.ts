@@ -23,7 +23,9 @@ export class AttachmentService {
                     fileType: file.type,
                     fileContent: reader.result as string
                 })
+
             }
+
             reader.readAsDataURL(file);
         })
     }
