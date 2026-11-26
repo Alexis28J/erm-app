@@ -73,6 +73,15 @@ describe('ExcelExportService', () => {
 
   });
 
+  // Cos'è l'intervallo di celle?
+  // L'intervallo di celle rappresenta l'area del foglio di calcolo che contiene i dati.
+  // Viene definito da una cella iniziale (s: start) e una cella finale (e: end),
+  // dove r indica la riga e c indica la colonna.
+  // Ad esempio, s: { r: 0, c: 0 }, e: { r: 1, c: 6 } significa che l'intervallo va dalla cella A1 alla cella G2.
+  // Perché G2 e non F2?
+  // La colonna finale c: 6 corrisponde alla colonna G (A=0, B=1, ..., G=6).
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // TEST PER LA CREAZIONE DEL WORKSHEET
   // Questo test verifica che il servizio ExcelExportService sia in grado di creare correttamente un worksheet a partire dalle richieste mockate. 
@@ -189,6 +198,209 @@ describe('ExcelExportService', () => {
       XLSX.utils.book_new  // book_new dovrebbe essere chiamato per creare un nuovo workbook Excel
     ).toHaveBeenCalled();  // toHaveBeenCalled verifica che la funzione book_new sia stata effettivamente chiamata
     // Potremmo anche verificare che json_to_sheet e decode_range siano stati chiamati con i dati corretti, se necessario
+
+  });
+
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // TEST PER L'AGGIUNTA DEL WORKSHEET AL WORKBOOK (XLSX.utils.book_append_sheet)
+  // Questo test verifica che il worksheet venga aggiunto correttamente al workbook. 
+  // Per fare ciò, utilizziamo il mock del workbook e del worksheet creati in precedenza.
+  it('should append worksheet to workbook', () => {
+
+    // 1. Creiamo i mock del workbook e del worksheet che verranno utilizzati nel test
+    const workbook = {};
+    const worksheet = {
+      '!ref': 'A1:G2'
+    };
+
+    // 2. Facciamo il mock delle funzioni book_new, json_to_sheet e decode_range per restituire i mock creati
+    // Necessario per simulare la creazione del workbook e del worksheet senza interagire con il file system reale (file system del computer).
+    // In questo modo, possiamo testare la funzione exportRequests senza creare effettivamente file Excel sul disco.
+    vi.mocked(
+      XLSX.utils.book_new
+    ).mockReturnValue(
+      workbook as never
+    );
+    
+
+    // 3. Facciamo il mock della funzione json_to_sheet per restituire il worksheet simulato
+    vi.mocked(
+      XLSX.utils.json_to_sheet  // Mock della funzione json_to_sheet per restituire il worksheet simulato
+    ).mockReturnValue(
+      worksheet as never  // Mock del worksheet simulato castato come never per compatibilità con il tipo atteso
+    );
+
+
+    // 4. Facciamo il mock della funzione decode_range per restituire l'intervallo decodificato del worksheet 
+    // (simulando la decodifica dell'intervallo di celle)
+    vi.mocked(
+      XLSX.utils.decode_range
+    ).mockReturnValue({
+      s: { r: 0, c: 0 },
+      e: { r: 1, c: 6 }
+    });
+    // Siccome abbiamo fatto il mock di tutte le funzioni necessarie cioè book_new, json_to_sheet e decode_range, 
+    // possiamo chiamare exportRequests senza interagire con il file system reale
+
+
+    // 5. Chiamiamo la funzione exportRequests per verificare che il worksheet venga aggiunto al workbook
+    service.exportRequests(  // Chiamata della funzione exportRequests con i mock dei dati delle richieste e degli utenti
+      mockRequests as never, // Mock dei dati delle richieste
+      mockUsers as never // Mock dei dati degli utenti
+    );
+
+
+    // 6. Verifichiamo che la funzione book_append_sheet sia stata chiamata con il workbook, 
+    // il worksheet e il nome del foglio corretto
+    expect(
+      XLSX.utils.book_append_sheet
+    ).toHaveBeenCalledWith(
+      workbook,
+      worksheet,
+      'Requests'
+    );
+
+  });
+
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // TEST PER SALVATAGGIO DEL FILE EXCEL (XLSX.writeFile)
+  // Questo test verifica che la funzione writeFile venga chiamata per salvare il file Excel generato
+  // Insomma, questo test cerca di simulare il salvataggio del file Excel utilizzando la funzione writeFile
+  it('should write excel file', () => {
+
+    // 1. Facciamo il mock della funzione json_to_sheet per restituire un worksheet simulato
+    vi.mocked(
+      XLSX.utils.json_to_sheet
+    ).mockReturnValue({
+      '!ref': 'A1:G2'
+    } as never);
+
+    // 2. Facciamo il mock della funzione decode_range per restituire l'intervallo decodificato del worksheet
+    // (simulando la decodifica dell'intervallo di celle)
+    vi.mocked(
+      XLSX.utils.decode_range
+    ).mockReturnValue({
+      s: { r: 0, c: 0 },  // Cella iniziale (A1)
+      e: { r: 1, c: 6 }   // Cella finale (G2)
+    });
+
+    // 3. Chiamiamo la funzione exportRequests per generare il file Excel (simulando la creazione del file)
+    service.exportRequests(
+      mockRequests as never,  // Passiamo i mock delle richieste come argomento
+      mockUsers as never  // Passiamo i mock degli utenti come argomento
+    );
+
+    // 4. Verifichiamo che la funzione writeFile sia stata chiamata per salvare il file Excel generato
+    // (simulando il salvataggio del file)
+    expect(
+      XLSX.writeFile  
+    ).toHaveBeenCalled();
+
+  });
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // TEST PER ESPORTAZIONE DI LISTA DEI DIPENDENTI (exportEmployees)
+  // Questo test verifica che la funzione exportEmployees generi correttamente un worksheet dai dati dei dipendenti
+  // e che il file Excel venga salvato tramite la funzione writeFile.
+  it('should export employees', () => {
+
+    // 1. Facciamo il mock della funzione json_to_sheet per restituire un worksheet simulato
+    vi.mocked(
+      XLSX.utils.json_to_sheet
+    ).mockReturnValue(
+      {} as never  // Simuliamo un worksheet vuoto per il test
+    );
+
+    // 2. Facciamo il mock della funzione writeFile per simulare il salvataggio del file Excel
+    service.exportEmployees(
+      mockUsers as never  // Simuliamo i dati dei dipendenti per il test
+    );
+
+
+    // 3. Verifichiamo che le funzioni json_to_sheet e writeFile siano state chiamate correttamente
+    expect(
+      XLSX.utils.json_to_sheet  
+    ).toHaveBeenCalled();
+
+
+    // 4. Verifichiamo che la funzione writeFile sia stata chiamata per salvare il file Excel
+    expect(
+      XLSX.writeFile   // Simuliamo il salvataggio del file Excel
+    ).toHaveBeenCalled();
+
+  });
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // TEST PER VERIFICARE LA TRASFORMAZIONE DEI DATI (mapRequestData)
+  // Questo test verifica che la funzione exportRequests trasformi correttamente i dati delle richieste prima di generarne il worksheet.
+  // Insomma, verifica che i dati passati al worksheet siano corretti.
+  it('should map request data correctly', () => {
+
+    // 1. Facciamo il mock della funzione json_to_sheet per restituire un worksheet simulato
+    vi.mocked(
+      XLSX.utils.json_to_sheet
+    ).mockReturnValue({
+      '!ref': 'A1:G2'
+    } as never);
+
+
+    // 2. Facciamo il mock della funzione decode_range per restituire l'intervallo decodificato del worksheet
+    // (simulando la decodifica dell'intervallo di celle)
+    vi.mocked(
+      XLSX.utils.decode_range
+    ).mockReturnValue({
+      s: { r: 0, c: 0 },
+      e: { r: 1, c: 6 }
+    });
+
+
+    // 3. Chiamiamo la funzione exportRequests per generare il file Excel (simulando la creazione del file)
+    service.exportRequests(
+      mockRequests as never,
+      mockUsers as never
+    );
+
+
+    // 4. Recuperiamo i dati passati al worksheet per verificarne la correttezza
+    // dataPassedToWorksheet contiene i dati trasformati che sono stati passati al worksheet tramite json_to_sheet
+    const dataPassedToWorksheet = vi.mocked(
+      XLSX.utils.json_to_sheet
+    ).mock.calls[0][0];  // Recuperiamo il primo argomento passato alla prima chiamata di json_to_sheet (i dati trasformati) 
+    // .mock.calls è un array che contiene tutte le chiamate effettuate alla funzione mockata.
+    // Ogni elemento dell'array rappresenta una chiamata e contiene un array degli argomenti passati.
+    // Quindi mock.calls[0][0] è il primo argomento della prima chiamata.
+    // Il primo [0] indica la prima chiamata alla funzione mockata.
+    // Il secondo [0] indica il primo argomento passato a quella chiamata.
+
+
+    // 5. Verifichiamo che i dati passati al worksheet siano corretti
+    expect(
+      dataPassedToWorksheet[0].Employee  // [0] indica il primo elemento dell'array dei dati trasformati cioè la prima richiesta
+    ).toBe('Mario Rossi');  // Quindi il primo elemento dell'array dei dati trasformati ha Employee uguale a 'Mario Rossi'
+
+
+    // 6. Verifichiamo che l'importo richiesto e l'importo approvato siano corretti
+    expect(
+      dataPassedToWorksheet[0].Status  
+    ).toBe('Approved');
+
+
+    // 7. Verifichiamo che l'importo richiesto e l'importo approvato siano corretti
+    expect(
+      dataPassedToWorksheet[0].RequestedAmount
+    ).toBe(100);
+
+
+    // 8. Verifichiamo che l'importo approvato sia corretto
+    expect(
+      dataPassedToWorksheet[0].ApprovedAmount
+    ).toBe(80);
 
   });
 
