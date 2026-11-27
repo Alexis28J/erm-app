@@ -79,19 +79,22 @@
                             <!-- Ma se voglio fare lo stesso per altri status, avrei bisogno di utilizzare @if -->
 
                             @if (request.status === 'PARTIAL_APPROVED') {
-                            'Partial Approved'
+                            ✅ Partial Approved
                             }
                             @if (request.status === 'APPROVED') {
-                            'Approved'
+                            ⭐ Approved
                             }
                             @if (request.status === 'REJECTED') {
-                            'Rejected'
+                            ❌ Rejected
                             }
                             @if (request.status === 'DRAFT') {
-                            'Draft'
+                            📝 Draft
                             }
                             @if (request.status === 'PENDING') {
-                            'Pending'
+                            ⏳ Pending
+                            }
+                            @if( request.status === 'IN_PROGRESS') {
+                            🔄 In Progress
                             }
 
                         </span>

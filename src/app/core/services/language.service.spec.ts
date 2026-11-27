@@ -194,7 +194,7 @@ describe('LanguageService', () => {
 
 
 
-// VS Code Counter: code lines (26/11/2026)
+// VS Code Counter: 90 code lines (26/11/2026)
 
 
 

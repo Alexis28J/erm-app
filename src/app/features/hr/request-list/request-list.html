@@ -97,9 +97,6 @@
                             @if (request.status === 'REJECTED') {
                             ❌ Rejected
                             }
-                            @if (request.status === 'DRAFT') {
-                            📝 Draft
-                            }
                             @if (request.status === 'PENDING') {
                             ⏳ Pending
                             }
@@ -150,7 +147,8 @@
             <mat-icon>arrow_back</mat-icon>
         </button>
 
-        <button mat-raised-button color="accent" (click)="exportRequests()" class="excel" aria-label="Export Requests List to Excel">
+        <button mat-raised-button color="accent" (click)="exportRequests()" class="excel"
+            aria-label="Export Requests List to Excel">
             Export Requests List
             <mat-icon>file_download</mat-icon>
         </button>
@@ -165,4 +163,4 @@
 
 
 
-<!-- VS Code Counter: 113 code lines (23/10/2026) -->
+<!-- VS Code Counter: 111 code lines (27/11/2026) -->

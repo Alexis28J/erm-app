@@ -223,7 +223,7 @@ export class RequestList {
 
   }
 
-    // UTENTI PER L'EXPORT IN EXCEL
+  // SEGNALE PER MEMORIZZARE GLI UTENTI (PER L'EXPORT DELLE RICHIESTE IN EXCEL)
   users = toSignal(
     this.userService.getUsers(),
     {

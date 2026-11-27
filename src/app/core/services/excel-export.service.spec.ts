@@ -343,7 +343,7 @@ describe('ExcelExportService', () => {
 
 
 
-// VS Code Counter: code lines (25/11/2026)
+// VS Code Counter: 195 code lines (26/11/2026)
 
 
 

@@ -68,15 +68,9 @@ export class RefundRequestService {
       `${this.apiUrl}/${id}`
     );
   }
-
-
-  // METODO PER OTTENERE TUTTE LE RICHIESTE DI RIMBORSO (PER L'HR)
-  getAllRequests(): Observable<RefundRequest[]> {
-    return this.http.get<RefundRequest[]>(this.apiUrl);
-  }
-
+  
 }
 
 
 
-// VS Code counter: 47 code lines (08/10/2026)
+// VS Code counter: 44 code lines (27/11/2026)

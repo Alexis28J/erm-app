@@ -92,6 +92,7 @@ export class RequestList {
   // Con questi riferimenti classici, possiamo collegare facilmente il sort e il paginator al dataSource senza dover usare setter complessi
   @ViewChild(MatSort) sortComponent!: MatSort;   //  sortComponent è il riferimento al componente MatSort presente nel DOM
   // sortComponent!: MatSort indica che questa proprietà sarà inizializzata con il riferimento al componente MatSort presente nel DOM
+
   @ViewChild(MatPaginator) paginatorComponent!: MatPaginator;   //  paginatorComponent è il riferimento al componente MatPaginator presente nel DOM
   // paginatorComponent!: MatPaginator indica che questa proprietà sarà inizializzata con il riferimento al componente MatPaginator presente nel DOM
 
@@ -117,7 +118,8 @@ export class RequestList {
 
   // Segnale per memorizzare la risorsa delle richieste di rimborso
   requestResource = toSignal(
-    this.refundRequestService.getAllRequests(),
+    //this.refundRequestService.getAllRequests(),
+    this.refundRequestService.getRequests(),
     {
       initialValue: [] // Valore iniziale vuoto per il segnale 'requestResource' per garantire che ci sia sempre un array disponibile anche prima che l'Observable emetta il primo valore.
     }

@@ -73,6 +73,14 @@ export class RefundRequestService {
     );
   }
 
+
+  // COMMENTATO IL METODO PERCHé NON AGGIUNGE NUOVA LOGICA RISPETTO A getRequests()
+  // SOLO DUPLICA LA LOGICA DI getRequests() QUINDI DUPLICA IL CODICE INUTILMENTE
+  // // METODO PER OTTENERE TUTTE LE RICHIESTE DI RIMBORSO (PER L'HR)
+  // getAllRequests(): Observable<RefundRequest[]> {
+  //   return this.http.get<RefundRequest[]>(this.apiUrl);
+  // }
+  
 }
   ```
 

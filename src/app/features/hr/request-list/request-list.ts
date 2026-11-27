@@ -133,7 +133,7 @@ export class RequestList {
 
   // SEGNALE PER MEMORIZZARE LA RISORSA DELLE RICHIESTE DI RIMBORSO 
   requestResource = toSignal(
-    this.refundRequestService.getAllRequests(),
+    this.refundRequestService.getRequests(),
     {
       initialValue: []
     }
@@ -198,4 +198,4 @@ export class RequestList {
 
 
 
-// VS Code Counter: 118 code lines (23/10/2026)
+// VS Code Counter: 118 code lines (27/11/2026)
